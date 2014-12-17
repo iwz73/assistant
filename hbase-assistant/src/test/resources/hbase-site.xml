@@ -1,0 +1,6 @@
+<configuration>
+	<property>
+		<name>hbase.zookeeper.quorum</name>
+		<value>hm,dn1,dn2</value>
+	</property>
+</configuration>

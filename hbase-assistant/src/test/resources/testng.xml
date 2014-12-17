@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="suite" verbose="1">
+	<test name="test_1">
+		<classes>
+			<class name="idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting" />
+			<class name="idv.hsiehpinghan.hbaseassistant.utility.HbaseAssistantTest" />
+		</classes>
+	</test>
+</suite>

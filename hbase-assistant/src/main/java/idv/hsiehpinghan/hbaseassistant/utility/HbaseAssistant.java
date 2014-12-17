@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -22,10 +23,12 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
+import org.springframework.data.hadoop.hbase.RowMapper;
 import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
@@ -80,10 +83,7 @@ public class HbaseAssistant {
 	 */
 	public void put(Object entity) throws IllegalAccessException {
 		Class<?> cls = entity.getClass();
-		HBaseTable table = cls.getAnnotation(HBaseTable.class);
-		if (table == null) {
-			throw new RuntimeException("Not a table entity !!!");
-		}
+		String tableName = getTableName(cls);
 		// Get row key
 		Object rowKyeObj = ObjectUtility.readField(entity, "rowKey");
 		byte[] rowKey = ((HBaseRowKey) rowKyeObj).toBytes();
@@ -108,7 +108,7 @@ public class HbaseAssistant {
 				}
 			}
 		}
-		hbaseTemplate.execute(table.value(), new TableCallback<Boolean>() {
+		hbaseTemplate.execute(tableName, new TableCallback<Boolean>() {
 			@Override
 			public Boolean doInTable(HTableInterface tableItf) throws Throwable {
 				tableItf.put(put);
@@ -117,24 +117,50 @@ public class HbaseAssistant {
 		});
 	}
 
-//	public Object get(HBaseRowKey rowKey) {
-//		byte[] rkArr = rowKey.toBytes();
-//		
-//	}
-//	
-//	public List<User> findAll() {
-//		return hbaseTemplate.find(tableName, "cfInfo", new RowMapper<User>() {
-//			@Override
-//			public User mapRow(Result result, int rowNum) throws Exception {
-//				return new User(Bytes.toString(result.getValue(CF_INFO, qUser)), 
-//							    Bytes.toString(result.getValue(CF_INFO, qEmail)),
-//							    Bytes.toString(result.getValue(CF_INFO, qPassword)));
-//			}
-//		});
-//
-//	}
-	
-	
+	public Object get(HBaseRowKey rowKey) throws NoSuchFieldException,
+			SecurityException, IllegalArgumentException, IllegalAccessException {
+		Object tableObj = ObjectUtility.getOuterObject(rowKey);
+		Class<?> tableCls = tableObj.getClass();
+		String tableName = getTableName(tableCls);
+		String rowName = new String(rowKey.toBytes());
+		final String[] colFamArr = getColumnFamilyNames(tableCls);
+		return hbaseTemplate.get(tableName, rowName, new RowMapper<Object>() {
+			@Override
+			public Object mapRow(Result result, int rowNum) throws Exception {
+				for (String colFamNm : colFamArr) {
+					NavigableMap<byte[], byte[]> map = result
+							.getFamilyMap(Bytes.toBytes(colFamNm));
+					for (Map.Entry<byte[], byte[]> entry : map.entrySet()) {
+						
+						
+						
+						System.out.println(new String(entry.getKey()) + "/"
+								+ new String(entry.getValue()));
+						
+						
+					}
+					
+					System.err.println("finish");
+					
+				}
+				return null;
+			}
+
+		});
+	}
+
+	// public List<User> findAll() {
+	// return hbaseTemplate.find(tableName, "cfInfo", new RowMapper<User>() {
+	// @Override
+	// public User mapRow(Result result, int rowNum) throws Exception {
+	// return new User(Bytes.toString(result.getValue(CF_INFO, qUser)),
+	// Bytes.toString(result.getValue(CF_INFO, qEmail)),
+	// Bytes.toString(result.getValue(CF_INFO, qPassword)));
+	// }
+	// });
+	//
+	// }
+
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
 		HTableDescriptor tDesc = new HTableDescriptor(
@@ -170,5 +196,13 @@ public class HbaseAssistant {
 				HBaseColumnFamily.class);
 		List<String> colFamNms = convertToFiledNames(colFamFields);
 		return colFamNms.toArray(new String[colFamNms.size()]);
+	}
+
+	private String getTableName(Class<?> cls) {
+		HBaseTable table = cls.getAnnotation(HBaseTable.class);
+		if (table == null) {
+			throw new RuntimeException("Not a table entity !!!");
+		}
+		return table.value();
 	}
 }

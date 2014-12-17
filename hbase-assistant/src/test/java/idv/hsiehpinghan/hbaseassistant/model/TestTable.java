@@ -59,24 +59,12 @@ public class TestTable {
 	 * @author thank.hsiehpinghan
 	 *
 	 */
-	public static class Key implements HBaseRowKey {
-		static {
-			int idLength = 10;
-			int idBegin = 0;
-			int idEnd = idBegin + idLength;
-			int orderBegin = idEnd;
-			int orderEnd = idEnd + IntegerUtility.INT_BYTE_AMOUNT;
-			ID_LENGTH = idLength;
-			ID_BEGIN = idBegin;
-			ID_END = idEnd;
-			ORDER_BEGIN = orderBegin;
-			ORDER_END = orderEnd;
-		}
-		private static final int ID_LENGTH;
-		private static final int ID_BEGIN;
-		private static final int ID_END;
-		private static final int ORDER_BEGIN;
-		private static final int ORDER_END;
+	public class Key implements HBaseRowKey {
+		private static final int ID_LENGTH = 10;
+		private static final int ID_BEGIN = 0;
+		private static final int ID_END = 10;
+		private static final int ORDER_BEGIN = 10;
+		private static final int ORDER_END = 10 + IntegerUtility.INT_BYTE_AMOUNT;
 		private String id;
 		private int order;
 
@@ -129,7 +117,7 @@ public class TestTable {
 	 * @author thank.hsiehpinghan
 	 *
 	 */
-	public static class ColFam implements HBaseColumnFamily {
+	public class ColFam implements HBaseColumnFamily {
 		private Map<TestQualifier1, TestValue1> map = new HashMap<TestQualifier1, TestValue1>();
 
 		public void add(String s, BigDecimal v) {
@@ -144,7 +132,7 @@ public class TestTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public static class TestQualifier1 implements HBaseQualifier {
+		public class TestQualifier1 implements HBaseQualifier {
 			private static final int LEN = 10;
 			private String s;
 
@@ -178,7 +166,7 @@ public class TestTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public static class TestValue1 implements HBaseValue {
+		public class TestValue1 implements HBaseValue {
 			private BigDecimal v;
 
 			public TestValue1() {

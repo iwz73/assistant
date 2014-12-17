@@ -1,8 +1,10 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
+import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam;
+import idv.hsiehpinghan.hbaseassistant.model.TestTable.Key;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -49,13 +51,32 @@ public class HbaseAssistantTest {
 	}
 	
 	@Test(dependsOnMethods = { "scanAndCreateTable" })
-	public void put() throws IllegalAccessException {
-		TestTable.Key rowKey = new TestTable.Key("TestId", 3);
-		ColFam colFam = new ColFam();
-		colFam.add("aa11", new BigDecimal("111"));
-		colFam.add("bb222", new BigDecimal("222"));
+	public void put() throws IllegalAccessException, IOException {
+		TestTable table = new TestTable();
+		TestTable.Key rowKey = createRowKey(table);
+		ColFam colFam = createColFam(table);
 		TestTable entity = new TestTable(rowKey, colFam);
 		hbaseAssistant.put(entity);
+		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
+	}
+	
+	@Test(dependsOnMethods = { "put" })
+	public void get() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		TestTable table = new TestTable();
+		TestTable.Key rowKey = createRowKey(table);
+		hbaseAssistant.get(rowKey);
+	}
+	
+	private TestTable.Key createRowKey(TestTable table) {
+		TestTable.Key rowKey = table.new Key("TestId", 3);
+		return rowKey;
+	}
+	
+	private ColFam createColFam(TestTable table) {
+		ColFam colFam = table.new ColFam();
+		colFam.add("aa11", new BigDecimal("111"));
+		colFam.add("bb222", new BigDecimal("222"));
+		return colFam;
 	}
 	
 	private void setObjects() {

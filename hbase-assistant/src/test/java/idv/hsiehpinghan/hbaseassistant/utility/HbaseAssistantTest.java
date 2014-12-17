@@ -6,6 +6,7 @@ import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import junit.framework.Assert;
 
@@ -26,13 +27,13 @@ public class HbaseAssistantTest {
 		dropTables();
 	}
 
-	@Test
+//	@Test
 	public void createTable() throws IOException {
 		hbaseAssistant.createTable(tableName, colFamilies);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName));
 	}
 
-	@Test(dependsOnMethods = { "createTable" })
+//	@Test(dependsOnMethods = { "createTable" })
 	public void dropTable() throws IOException {
 		hbaseAssistant.dropTable(tableName);
 		Assert.assertFalse(hbaseAssistant.isTableExists(tableName));
@@ -51,6 +52,8 @@ public class HbaseAssistantTest {
 	public void put() throws IllegalAccessException {
 		TestTable.Key rowKey = new TestTable.Key("TestId", 3);
 		ColFam colFam = new ColFam();
+		colFam.add("aa11", new BigDecimal("111"));
+		colFam.add("bb222", new BigDecimal("222"));
 		TestTable entity = new TestTable(rowKey, colFam);
 		hbaseAssistant.put(entity);
 	}

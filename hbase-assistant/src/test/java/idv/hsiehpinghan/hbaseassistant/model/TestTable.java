@@ -9,6 +9,8 @@ import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +24,6 @@ import org.apache.hadoop.hbase.util.Bytes;
  */
 @HBaseTable("TestTable")
 public class TestTable {
-
-	public static void main(String[] args) {
-		Key k = new Key("iiiddd", 3);
-		byte[] bs = k.toBytes();
-		Key k2 = new Key(bs);
-		System.out.println(k2.getId() + " : " + k2.getOrder());
-	}
-
 	private Key rowKey;
 	private ColFam colFam;
 
@@ -44,10 +38,6 @@ public class TestTable {
 	}
 
 	public Key getRowKey() {
-		String id = rowKey.getId();
-		int order = rowKey.getOrder();
-		// ArrayUtils.addAll(Bytes.toBytes(id), Bytes.toBytes(order))
-
 		return rowKey;
 	}
 
@@ -131,7 +121,6 @@ public class TestTable {
 			byte[] all = ArrayUtility.addAll(idArr, orderArr);
 			return all;
 		}
-
 	}
 
 	/**
@@ -141,6 +130,14 @@ public class TestTable {
 	 *
 	 */
 	public static class ColFam implements HBaseColumnFamily {
+		private Map<TestQualifier1, TestValue1> map = new HashMap<TestQualifier1, TestValue1>();
+
+		public void add(String s, BigDecimal v) {
+			TestQualifier1 q = new TestQualifier1(s);
+			TestValue1 val = new TestValue1(v);
+			map.put(q, val);
+		}
+
 		/**
 		 * Qualifier.
 		 * 

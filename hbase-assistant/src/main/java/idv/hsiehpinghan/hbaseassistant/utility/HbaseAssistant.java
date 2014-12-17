@@ -4,23 +4,29 @@ import idv.hsiehpinghan.classutility.utility.ClassUtility;
 import idv.hsiehpinghan.hbaseassistant.annotation.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnFamily;
+import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseQualifier;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
+import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
 import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.HTableInterface;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
+import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -66,34 +72,69 @@ public class HbaseAssistant {
 		}
 	}
 
+	/**
+	 * Add records.
+	 * 
+	 * @param entity
+	 * @throws IllegalAccessException
+	 */
 	public void put(Object entity) throws IllegalAccessException {
 		Class<?> cls = entity.getClass();
 		HBaseTable table = cls.getAnnotation(HBaseTable.class);
 		if (table == null) {
 			throw new RuntimeException("Not a table entity !!!");
 		}
-		// Get table name
-		byte[] tableName = Bytes.toBytes(table.value());
 		// Get row key
 		Object rowKyeObj = ObjectUtility.readField(entity, "rowKey");
 		byte[] rowKey = ((HBaseRowKey) rowKyeObj).toBytes();
+		final Put put = new Put(rowKey);
 		// Get column families
 		String[] colFamArr = getColumnFamilyNames(cls);
-		for(String colFamNm : colFamArr) {
+		for (String colFamNm : colFamArr) {
 			Object colFamObj = ObjectUtility.readField(entity, colFamNm);
-			
-			System.err.println(colFamObj);
-			
+			List<Field> qualAndValFields = ObjectUtility
+					.getFieldsByAssignableType(colFamObj.getClass(), Map.class);
+			byte[] columnFamily = Bytes.toBytes(colFamNm);
+			// Get qualifier and value
+			for (Field qvField : qualAndValFields) {
+				@SuppressWarnings("unchecked")
+				Map<HBaseQualifier, HBaseValue> qvMap = (Map<HBaseQualifier, HBaseValue>) ObjectUtility
+						.readField(colFamObj, qvField.getName());
+				for (Map.Entry<HBaseQualifier, HBaseValue> entry : qvMap
+						.entrySet()) {
+					byte[] qualifier = entry.getKey().toBytes();
+					byte[] value = entry.getValue().toBytes();
+					put.add(columnFamily, qualifier, value);
+				}
+			}
 		}
+		hbaseTemplate.execute(table.value(), new TableCallback<Boolean>() {
+			@Override
+			public Boolean doInTable(HTableInterface tableItf) throws Throwable {
+				tableItf.put(put);
+				return true;
+			}
+		});
 	}
 
-	/**
-	 * Create table.
-	 * 
-	 * @param tableName
-	 * @param families
-	 * @throws IOException
-	 */
+//	public Object get(HBaseRowKey rowKey) {
+//		byte[] rkArr = rowKey.toBytes();
+//		
+//	}
+//	
+//	public List<User> findAll() {
+//		return hbaseTemplate.find(tableName, "cfInfo", new RowMapper<User>() {
+//			@Override
+//			public User mapRow(Result result, int rowNum) throws Exception {
+//				return new User(Bytes.toString(result.getValue(CF_INFO, qUser)), 
+//							    Bytes.toString(result.getValue(CF_INFO, qEmail)),
+//							    Bytes.toString(result.getValue(CF_INFO, qPassword)));
+//			}
+//		});
+//
+//	}
+	
+	
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
 		HTableDescriptor tDesc = new HTableDescriptor(
@@ -105,12 +146,6 @@ public class HbaseAssistant {
 		admin.createTable(tDesc);
 	}
 
-	/**
-	 * Drop table.
-	 * 
-	 * @param tableName
-	 * @throws IOException
-	 */
 	void dropTable(String tableName) throws IOException {
 		if (admin.isTableEnabled(tableName)) {
 			admin.disableTable(tableName);
@@ -118,13 +153,6 @@ public class HbaseAssistant {
 		admin.deleteTable(tableName);
 	}
 
-	/**
-	 * Judging if table exists.
-	 * 
-	 * @param tableName
-	 * @return
-	 * @throws IOException
-	 */
 	boolean isTableExists(String tableName) throws IOException {
 		return admin.tableExists(tableName);
 	}

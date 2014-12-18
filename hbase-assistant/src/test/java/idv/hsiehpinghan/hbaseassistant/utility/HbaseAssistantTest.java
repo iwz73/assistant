@@ -1,9 +1,9 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
-import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam;
+import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam2;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -45,9 +45,6 @@ public class HbaseAssistantTest {
 
 //	@Test
 	public void scanAndCreateTable() throws ClassNotFoundException, IOException {
-		
-		System.err.println(tableName2);
-		
 		Assert.assertFalse(hbaseAssistant.isTableExists(tableName2));
 		hbaseAssistant.scanAndCreateTable(packageName, TableOperation.ADD_NONEXISTS);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
@@ -60,8 +57,9 @@ public class HbaseAssistantTest {
 	public void put() throws IllegalAccessException, IOException {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
-		HBaseColumnFamily colFam = createColFam(table);
-		TestTable entity = new TestTable(rowKey, colFam);
+		ColFam colFam = createColFam(table);
+		ColFam2 colFam2 = createColFam2(table);
+		TestTable entity = new TestTable(rowKey, colFam, colFam2);
 		hbaseAssistant.put(entity);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
 	}
@@ -79,13 +77,22 @@ public class HbaseAssistantTest {
 		return rowKey;
 	}
 	
-	private HBaseColumnFamily createColFam(TestTable table) {
+	private ColFam createColFam(TestTable table) {
 		ColFam colFam = table.new ColFam();
 		Date dt = Calendar.getInstance().getTime();
 		colFam.add("qual_1", dt, new BigDecimal("111"));
 		colFam.add("qual_2", dt, new BigDecimal("222"));
 		return colFam;
 	}
+	
+	private ColFam2 createColFam2(TestTable table) {
+		ColFam2 colFam = table.new ColFam2();
+		Date dt = Calendar.getInstance().getTime();
+		colFam.add("qual_21", dt, new BigDecimal("222111"));
+		colFam.add("qual_22", dt, new BigDecimal("222222"));
+		return colFam;
+	}
+	
 	
 	private void setObjects() {
 		ApplicationContext applicationContext = TestngSuitSetting

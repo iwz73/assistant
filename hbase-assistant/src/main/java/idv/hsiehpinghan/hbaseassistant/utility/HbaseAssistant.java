@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -160,8 +161,26 @@ public class HbaseAssistant {
 		String tableName = tableCls.getSimpleName();
 		String rowKy = new String(rowKey.toBytes());
 
-		Object o = ObjectUtility.getOuterObject(rowKey);
-		logger.error("o : " + o.getClass());
+		// Get Table.
+		Object table = ObjectUtility.getOuterObject(rowKey);
+		// Get Column families.
+		List<Field> colFamFields = ObjectUtility.getFieldsByAssignableType(table.getClass(),
+				HBaseColumnFamily.class);
+		
+		logger.error("colFamFields.size : " + colFamFields.size());
+		
+		for(Field fld : colFamFields) {
+
+			Object columnFamily = ObjectUtility.createInnerClassInstance(table, fld.getType());
+			
+			logger.error("o1 : " + table);
+			FieldUtils.writeField(table, fld.getName(), columnFamily, true);
+			logger.error("o2 : " + table);
+		}
+		
+//		String[] colFamNms = getColumnFamilyNames(o.getClass());
+//		for(String colFamN : colFamNms)
+//		logger.error("o : " + colFamNms);
 		
 		return hbaseTemplate.getAllVersion(tableName, rowKy, new RowMapper<Object>() {
 			@Override

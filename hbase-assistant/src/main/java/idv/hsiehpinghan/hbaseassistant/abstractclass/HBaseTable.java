@@ -14,7 +14,7 @@ public abstract class HBaseTable {
 		super();
 		this.rowKey = rowKey;
 	}
-	
+
 	public HBaseRowKey getRowKey() {
 		return rowKey;
 	}

@@ -24,23 +24,33 @@ import org.apache.hadoop.hbase.util.Bytes;
  *
  */
 public class TestTable extends HBaseTable {
-	private HBaseColumnFamily cf1;
+	private ColFam cf1;
+	private ColFam2 cf2;
 
 	public TestTable() {
 		super();
 	}
 
-	public TestTable(Key rowKey, HBaseColumnFamily cf1) {
+	public TestTable(Key rowKey, ColFam cf1, ColFam2 cf2) {
 		super(rowKey);
 		this.cf1 = cf1;
+		this.cf2 = cf2;
 	}
 
 	public HBaseColumnFamily getCf1() {
 		return cf1;
 	}
 
-	public void setCf1(HBaseColumnFamily cf1) {
+	public void setCf1(ColFam cf1) {
 		this.cf1 = cf1;
+	}
+
+	public ColFam2 getCf2() {
+		return cf2;
+	}
+
+	public void setCf2(ColFam2 cf2) {
+		this.cf2 = cf2;
 	}
 
 	/**
@@ -136,6 +146,10 @@ public class TestTable extends HBaseTable {
 			private static final int LEN = 10;
 			private String s;
 
+			public String toString() {
+				return "TestQualifier1 [s=" + s + "]";
+			}
+			
 			public TestQualifier1() {
 				super();
 			}
@@ -169,6 +183,10 @@ public class TestTable extends HBaseTable {
 		public class TestValue1 implements HBaseValue {
 			private BigDecimal v;
 
+			public String toString() {
+				return "TestValue1 [v=" + v + "]";
+			}
+			
 			public TestValue1() {
 				super();
 			}
@@ -180,7 +198,7 @@ public class TestTable extends HBaseTable {
 
 			public TestValue1(byte[] vArr) {
 				super();
-				this.v = Bytes.toBigDecimal(vArr);
+				fromBytes(vArr);
 			}
 
 			public BigDecimal getV() {
@@ -192,7 +210,129 @@ public class TestTable extends HBaseTable {
 				return Bytes.toBytes(v);
 			}
 
+			@Override
+			public HBaseValue fromBytes(byte[] bytes) {
+				this.v = Bytes.toBigDecimal(bytes);
+				return this;
+			}
+
 		}
 	}
 
+	/**
+	 * Column family.
+	 * 
+	 * @author thank.hsiehpinghan
+	 *
+	 */
+	public class ColFam2 extends HBaseColumnFamily {
+		// private Map<TestQualifier1, Map<Date, TestValue1>> map;
+
+		public void add(String s, Date d, BigDecimal v) {
+			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> map = getValueMap();
+			if (map == null) {
+				map = new HashMap<HBaseColumnQualifier, Map<Date, HBaseValue>>();
+				setValueMap(map);
+			}
+			Map<Date, HBaseValue> innerM = map.get(s);
+			if (innerM == null) {
+				innerM = new HashMap<Date, HBaseValue>();
+			}
+			TestQualifier1 qual = new TestQualifier1(s);
+			TestValue1 val = new TestValue1(v);
+			innerM.put(d, val);
+			map.put(qual, innerM);
+		}
+
+		/**
+		 * Qualifier.
+		 * 
+		 * @author thank.hsiehpinghan
+		 *
+		 */
+		public class TestQualifier1 implements HBaseColumnQualifier {
+			private static final int LEN = 10;
+			private String s;
+
+			@Override
+			public String toString() {
+				return "TestQualifier1 [s=" + s + "]";
+			}
+
+			public TestQualifier1() {
+				super();
+			}
+
+			public TestQualifier1(String s) {
+				super();
+				this.s = s;
+			}
+
+			public TestQualifier1(byte[] sArr) {
+				super();
+				this.s = Bytes.toString(sArr);
+			}
+
+			public String getS() {
+				return s;
+			}
+
+			@Override
+			public byte[] toBytes() {
+				return Bytes.toBytes(StringUtils.leftPad(s, LEN));
+			}
+		}
+
+		/**
+		 * Value.
+		 * 
+		 * @author thank.hsiehpinghan
+		 *
+		 */
+		public class TestValue1 implements HBaseValue {
+			private BigDecimal v;
+
+			@Override
+			public String toString() {
+				return "TestValue1 [v=" + v + "]";
+			}
+
+			public TestValue1() {
+				super();
+			}
+
+			public TestValue1(BigDecimal v) {
+				super();
+				this.v = v;
+			}
+
+			public TestValue1(byte[] vArr) {
+				super();
+				fromBytes(vArr);
+			}
+
+			public BigDecimal getV() {
+				return v;
+			}
+
+			@Override
+			public byte[] toBytes() {
+				return Bytes.toBytes(v);
+			}
+
+			@Override
+			public HBaseValue fromBytes(byte[] bytes) {
+				this.v = Bytes.toBigDecimal(bytes);
+				return this;
+			}
+
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "TestTable [cf1=" + cf1 + ", cf2=" + cf2 + "]";
+	}
+	
+	
 }

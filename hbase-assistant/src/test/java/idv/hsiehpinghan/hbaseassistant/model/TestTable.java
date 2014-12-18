@@ -2,13 +2,14 @@ package idv.hsiehpinghan.hbaseassistant.model;
 
 import idv.hsiehpinghan.datatypeutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.IntegerUtility;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.annotation.HBaseTable;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnFamily;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseQualifier;
+import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,13 +118,23 @@ public class TestTable {
 	 * @author thank.hsiehpinghan
 	 *
 	 */
-	public class ColFam implements HBaseColumnFamily {
-		private Map<TestQualifier1, TestValue1> map = new HashMap<TestQualifier1, TestValue1>();
-
-		public void add(String s, BigDecimal v) {
-			TestQualifier1 q = new TestQualifier1(s);
+	public class ColFam extends HBaseColumnFamily {
+//		private Map<TestQualifier1, Map<Date, TestValue1>> map;
+		
+		public void add(String s, Date d, BigDecimal v) {
+			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> map = getValueMap();
+			if(map == null) {
+				map = new HashMap<HBaseColumnQualifier, Map<Date, HBaseValue>>();
+				setValueMap(map);
+			}
+			Map<Date, HBaseValue> innerM = map.get(s);
+			if(innerM == null) {
+				innerM = new HashMap<Date, HBaseValue>();
+			}
+			TestQualifier1 qual = new TestQualifier1(s);
 			TestValue1 val = new TestValue1(v);
-			map.put(q, val);
+			innerM.put(d, val);
+			map.put(qual, innerM);
 		}
 
 		/**
@@ -132,7 +143,7 @@ public class TestTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public class TestQualifier1 implements HBaseQualifier {
+		public class TestQualifier1 implements HBaseColumnQualifier {
 			private static final int LEN = 10;
 			private String s;
 

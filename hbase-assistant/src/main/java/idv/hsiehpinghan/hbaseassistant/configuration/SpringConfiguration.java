@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.configuration;
 
+import idv.hsiehpinghan.hbaseassistant.extension.HbaseTemplateExtension;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.hadoop.hbase.HbaseTemplate;
 
 @Configuration("hbaseAssistantSpringConfiguration")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.hbaseassistant.utility" })
@@ -24,9 +25,9 @@ public class SpringConfiguration {
 	private org.apache.hadoop.conf.Configuration hbaseConfiguration;
 	
 	@Bean
-	public HbaseTemplate hbaseTemplate() throws IOException {
-		HbaseTemplate hbaseTemplate = new HbaseTemplate(hbaseConfiguration);
-		return hbaseTemplate;
+	public HbaseTemplateExtension hbaseTemplate() throws IOException {
+		HbaseTemplateExtension hbaseTemplateExtension = new HbaseTemplateExtension(hbaseConfiguration);
+		return hbaseTemplateExtension;
 	}
 
 	@Bean

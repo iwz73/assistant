@@ -1,5 +1,5 @@
 package idv.hsiehpinghan.hbaseassistant.interfaces;
 
-public interface HBaseQualifier {
+public interface HBaseColumnQualifier {
 	byte[] toBytes();
 }

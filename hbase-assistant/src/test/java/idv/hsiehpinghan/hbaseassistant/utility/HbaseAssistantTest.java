@@ -1,14 +1,14 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam;
-import idv.hsiehpinghan.hbaseassistant.model.TestTable.Key;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 import junit.framework.Assert;
 
@@ -26,7 +26,7 @@ public class HbaseAssistantTest {
 	@BeforeClass
 	public void beforeClass() throws IOException {
 		setObjects();
-		dropTables();
+//		dropTables();
 	}
 
 //	@Test
@@ -41,7 +41,7 @@ public class HbaseAssistantTest {
 		Assert.assertFalse(hbaseAssistant.isTableExists(tableName));
 	}
 
-	@Test
+//	@Test
 	public void scanAndCreateTable() throws ClassNotFoundException, IOException {
 		Assert.assertFalse(hbaseAssistant.isTableExists(tableName2));
 		hbaseAssistant.scanAndCreateTable(packageName, TableOperation.ADD_NONEXISTS);
@@ -50,7 +50,8 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
 	}
 	
-	@Test(dependsOnMethods = { "scanAndCreateTable" })
+//	@Test(dependsOnMethods = { "scanAndCreateTable" })
+//	@Test
 	public void put() throws IllegalAccessException, IOException {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
@@ -60,7 +61,8 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
 	}
 	
-	@Test(dependsOnMethods = { "put" })
+//	@Test(dependsOnMethods = { "put" })
+	@Test
 	public void get() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
@@ -74,8 +76,9 @@ public class HbaseAssistantTest {
 	
 	private ColFam createColFam(TestTable table) {
 		ColFam colFam = table.new ColFam();
-		colFam.add("aa11", new BigDecimal("111"));
-		colFam.add("bb222", new BigDecimal("222"));
+		Date dt = Calendar.getInstance().getTime();
+		colFam.add("qual_1", dt, new BigDecimal("111"));
+		colFam.add("qual_2", dt, new BigDecimal("222"));
 		return colFam;
 	}
 	

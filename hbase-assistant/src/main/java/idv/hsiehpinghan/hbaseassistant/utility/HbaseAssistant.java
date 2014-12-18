@@ -1,10 +1,11 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
 import idv.hsiehpinghan.classutility.utility.ClassUtility;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.annotation.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnFamily;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseQualifier;
+import idv.hsiehpinghan.hbaseassistant.extension.HbaseTemplateExtension;
+import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
 import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
@@ -12,6 +13,7 @@ import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -27,7 +29,6 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.data.hadoop.hbase.RowMapper;
 import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,7 @@ public class HbaseAssistant {
 	@Autowired
 	private HBaseAdmin admin;
 	@Autowired
-	private HbaseTemplate hbaseTemplate;
+	private HbaseTemplateExtension hbaseTemplate;
 
 	/**
 	 * Scan package and create table.
@@ -76,7 +77,7 @@ public class HbaseAssistant {
 	}
 
 	/**
-	 * Add records.
+	 * Add a row.
 	 * 
 	 * @param entity
 	 * @throws IllegalAccessException
@@ -98,13 +99,17 @@ public class HbaseAssistant {
 			// Get qualifier and value
 			for (Field qvField : qualAndValFields) {
 				@SuppressWarnings("unchecked")
-				Map<HBaseQualifier, HBaseValue> qvMap = (Map<HBaseQualifier, HBaseValue>) ObjectUtility
+				Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qvMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
 						.readField(colFamObj, qvField.getName());
-				for (Map.Entry<HBaseQualifier, HBaseValue> entry : qvMap
+				for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> entry : qvMap
 						.entrySet()) {
 					byte[] qualifier = entry.getKey().toBytes();
-					byte[] value = entry.getValue().toBytes();
-					put.add(columnFamily, qualifier, value);
+					Map<Date, HBaseValue> tsVal = entry.getValue();
+					for (Map.Entry<Date, HBaseValue> ent : tsVal.entrySet()) {
+						long version = ent.getKey().getTime();
+						byte[] value = ent.getValue().toBytes();
+						put.add(columnFamily, qualifier, version, value);
+					}
 				}
 			}
 		}
@@ -117,32 +122,65 @@ public class HbaseAssistant {
 		});
 	}
 
+	/**
+	 * Get a row.
+	 * @param rowKey
+	 * @return
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public Object get(HBaseRowKey rowKey) throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 		Object tableObj = ObjectUtility.getOuterObject(rowKey);
 		Class<?> tableCls = tableObj.getClass();
 		String tableName = getTableName(tableCls);
 		String rowName = new String(rowKey.toBytes());
-		final String[] colFamArr = getColumnFamilyNames(tableCls);
-		return hbaseTemplate.get(tableName, rowName, new RowMapper<Object>() {
+//		final String[] colFamArr = getColumnFamilyNames(tableCls);
+
+		return hbaseTemplate.getAllVersion(tableName, rowName, new RowMapper<Object>() {
 			@Override
 			public Object mapRow(Result result, int rowNum) throws Exception {
-				for (String colFamNm : colFamArr) {
-					NavigableMap<byte[], byte[]> map = result
-							.getFamilyMap(Bytes.toBytes(colFamNm));
-					for (Map.Entry<byte[], byte[]> entry : map.entrySet()) {
+				
+				NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> map = result.getMap();
+				for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> entry : map.entrySet()) {
+					byte[] familyArr = entry.getKey();
+					
+					System.err.println("familyArr : " + familyArr);
+					
+					NavigableMap<byte[], NavigableMap<Long, byte[]>> qualTsValMap = entry.getValue();
+					for (Map.Entry<byte[], NavigableMap<Long, byte[]>> entry2 : qualTsValMap.entrySet()) {
+						byte[] qualArr = entry2.getKey();
 						
+						System.err.println("qualArr : " + qualArr);
 						
+						NavigableMap<Long, byte[]> tsValMap = entry2.getValue();
 						
-						System.out.println(new String(entry.getKey()) + "/"
-								+ new String(entry.getValue()));
+						System.err.println("size : " + tsValMap.size());
 						
-						
+						for (Map.Entry<Long, byte[]> entry3 : tsValMap.entrySet()) {
+							Long version = entry3.getKey();
+							byte[] value = entry3.getValue();
+							
+							System.err.println(version);
+						}
 					}
-					
-					System.err.println("finish");
-					
 				}
+				
+//				for (String colFamNm : colFamArr) {
+//					NavigableMap<byte[], byte[]> map = result
+//							.getFamilyMap(Bytes.toBytes(colFamNm));
+//					for (Map.Entry<byte[], byte[]> entry : map.entrySet()) {
+//
+//						System.out.println(new String(entry.getKey()) + "/"
+//								+ new String(entry.getValue()));
+//
+//					}
+//
+//					System.err.println("finish");
+//
+//				}
 				return null;
 			}
 

@@ -3,4 +3,8 @@
 		<name>hbase.zookeeper.quorum</name>
 		<value>hm,dn1,dn2</value>
 	</property>
+	<property>
+		<name>hbase.column.max.version</name>
+		<value>10</value>
+	</property>
 </configuration>

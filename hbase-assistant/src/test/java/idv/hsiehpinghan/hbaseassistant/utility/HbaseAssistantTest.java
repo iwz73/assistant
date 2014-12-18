@@ -1,11 +1,13 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable;
 import idv.hsiehpinghan.hbaseassistant.model.TestTable.ColFam;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +22,7 @@ public class HbaseAssistantTest {
 	private final String tableName = "TEST_TABLE";
 	private final String[] colFamilies = { "COLFAM_1", "COLFAM_2" };
 	private final String packageName = "idv.hsiehpinghan.hbaseassistant.model";
-	private final String tableName2 = "TestTable";
+	private final String tableName2 = TestTable.class.getSimpleName();
 	private HbaseAssistant hbaseAssistant;
 
 	@BeforeClass
@@ -43,6 +45,9 @@ public class HbaseAssistantTest {
 
 //	@Test
 	public void scanAndCreateTable() throws ClassNotFoundException, IOException {
+		
+		System.err.println(tableName2);
+		
 		Assert.assertFalse(hbaseAssistant.isTableExists(tableName2));
 		hbaseAssistant.scanAndCreateTable(packageName, TableOperation.ADD_NONEXISTS);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
@@ -55,7 +60,7 @@ public class HbaseAssistantTest {
 	public void put() throws IllegalAccessException, IOException {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
-		ColFam colFam = createColFam(table);
+		HBaseColumnFamily colFam = createColFam(table);
 		TestTable entity = new TestTable(rowKey, colFam);
 		hbaseAssistant.put(entity);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
@@ -63,7 +68,7 @@ public class HbaseAssistantTest {
 	
 //	@Test(dependsOnMethods = { "put" })
 	@Test
-	public void get() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public void get() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
 		hbaseAssistant.get(rowKey);
@@ -74,7 +79,7 @@ public class HbaseAssistantTest {
 		return rowKey;
 	}
 	
-	private ColFam createColFam(TestTable table) {
+	private HBaseColumnFamily createColFam(TestTable table) {
 		ColFam colFam = table.new ColFam();
 		Date dt = Calendar.getInstance().getTime();
 		colFam.add("qual_1", dt, new BigDecimal("111"));

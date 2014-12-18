@@ -3,7 +3,7 @@ package idv.hsiehpinghan.hbaseassistant.model;
 import idv.hsiehpinghan.datatypeutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.IntegerUtility;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
-import idv.hsiehpinghan.hbaseassistant.annotation.HBaseTable;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
@@ -23,35 +23,24 @@ import org.apache.hadoop.hbase.util.Bytes;
  * @author thank.hsiehpinghan
  *
  */
-@HBaseTable("TestTable")
-public class TestTable {
-	private Key rowKey;
-	private ColFam colFam;
+public class TestTable extends HBaseTable {
+	private HBaseColumnFamily cf1;
 
 	public TestTable() {
 		super();
 	}
 
-	public TestTable(Key rowKey, ColFam colFam) {
-		super();
-		this.rowKey = rowKey;
-		this.colFam = colFam;
+	public TestTable(Key rowKey, HBaseColumnFamily cf1) {
+		super(rowKey);
+		this.cf1 = cf1;
 	}
 
-	public Key getRowKey() {
-		return rowKey;
+	public HBaseColumnFamily getCf1() {
+		return cf1;
 	}
 
-	public void setRowKey(Key rowKey) {
-		this.rowKey = rowKey;
-	}
-
-	public ColFam getColFam() {
-		return colFam;
-	}
-
-	public void setColFam(ColFam colFam) {
-		this.colFam = colFam;
+	public void setCf1(HBaseColumnFamily cf1) {
+		this.cf1 = cf1;
 	}
 
 	/**
@@ -119,16 +108,16 @@ public class TestTable {
 	 *
 	 */
 	public class ColFam extends HBaseColumnFamily {
-//		private Map<TestQualifier1, Map<Date, TestValue1>> map;
-		
+		// private Map<TestQualifier1, Map<Date, TestValue1>> map;
+
 		public void add(String s, Date d, BigDecimal v) {
 			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> map = getValueMap();
-			if(map == null) {
+			if (map == null) {
 				map = new HashMap<HBaseColumnQualifier, Map<Date, HBaseValue>>();
 				setValueMap(map);
 			}
 			Map<Date, HBaseValue> innerM = map.get(s);
-			if(innerM == null) {
+			if (innerM == null) {
 				innerM = new HashMap<Date, HBaseValue>();
 			}
 			TestQualifier1 qual = new TestQualifier1(s);

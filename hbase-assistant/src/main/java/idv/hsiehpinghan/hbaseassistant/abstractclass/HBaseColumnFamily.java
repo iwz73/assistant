@@ -1,10 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnQualifier;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
-
 import java.util.Date;
-import java.util.Map;
+import java.util.NavigableMap;
 
 /**
  * HBase column family base class.
@@ -12,26 +9,29 @@ import java.util.Map;
  * @author thank.hsiehpinghan
  *
  */
-public abstract class HBaseColumnFamily {
-	private Map<HBaseColumnQualifier, Map<Date, HBaseValue>> valueMap;
+public abstract class HBaseColumnFamily extends HBaseBase {
+	private NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap;
+
+	public abstract void fromMap(
+			NavigableMap<byte[], NavigableMap<Long, byte[]>> valueMap);
 
 	public HBaseColumnFamily() {
 		super();
 	}
 
 	public HBaseColumnFamily(
-			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> valueMap) {
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap) {
 		super();
-		this.valueMap = valueMap;
+		this.qualifierVersionValueMap = qualifierVersionValueMap;
 	}
 
-	public Map<HBaseColumnQualifier, Map<Date, HBaseValue>> getValueMap() {
-		return valueMap;
+	public NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
+		return qualifierVersionValueMap;
 	}
 
-	public void setValueMap(
-			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> valueMap) {
-		this.valueMap = valueMap;
+	public void setQualifierVersionValueMap(
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap) {
+		this.qualifierVersionValueMap = qualifierVersionValueMap;
 	}
 
 }

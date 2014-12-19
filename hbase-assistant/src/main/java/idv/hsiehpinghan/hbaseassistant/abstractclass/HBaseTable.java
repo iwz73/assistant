@@ -1,8 +1,6 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
-
-public abstract class HBaseTable {
+public abstract class HBaseTable extends HBaseBase {
 
 	private HBaseRowKey rowKey;
 

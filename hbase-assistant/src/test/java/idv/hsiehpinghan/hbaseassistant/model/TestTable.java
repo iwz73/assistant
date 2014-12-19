@@ -3,18 +3,20 @@ package idv.hsiehpinghan.hbaseassistant.model;
 import idv.hsiehpinghan.datatypeutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.IntegerUtility;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseColumnQualifier;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseRowKey;
-import idv.hsiehpinghan.hbaseassistant.interfaces.HBaseValue;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.hadoop.hbase.util.Bytes;
 
 /**
@@ -24,14 +26,14 @@ import org.apache.hadoop.hbase.util.Bytes;
  *
  */
 public class TestTable extends HBaseTable {
-	private ColFam cf1;
+	private ColFam1 cf1;
 	private ColFam2 cf2;
 
 	public TestTable() {
 		super();
 	}
 
-	public TestTable(Key rowKey, ColFam cf1, ColFam2 cf2) {
+	public TestTable(Key rowKey, ColFam1 cf1, ColFam2 cf2) {
 		super(rowKey);
 		this.cf1 = cf1;
 		this.cf2 = cf2;
@@ -41,7 +43,7 @@ public class TestTable extends HBaseTable {
 		return cf1;
 	}
 
-	public void setCf1(ColFam cf1) {
+	public void setCf1(ColFam1 cf1) {
 		this.cf1 = cf1;
 	}
 
@@ -59,7 +61,7 @@ public class TestTable extends HBaseTable {
 	 * @author thank.hsiehpinghan
 	 *
 	 */
-	public class Key implements HBaseRowKey {
+	public class Key extends HBaseRowKey {
 		private static final int ID_LENGTH = 10;
 		private static final int ID_BEGIN = 0;
 		private static final int ID_END = 10;
@@ -80,10 +82,7 @@ public class TestTable extends HBaseTable {
 
 		public Key(byte[] rowKey) {
 			super();
-			this.id = Bytes.toString(ArrayUtils.subarray(rowKey, ID_BEGIN,
-					ID_END));
-			this.order = Bytes.toInt(ArrayUtils.subarray(rowKey, ORDER_BEGIN,
-					ORDER_END));
+			fromBytes(rowKey);
 		}
 
 		public String getId() {
@@ -109,6 +108,15 @@ public class TestTable extends HBaseTable {
 			byte[] all = ArrayUtility.addAll(idArr, orderArr);
 			return all;
 		}
+
+		@Override
+		public void fromBytes(byte[] bytes) {
+			this.id = Bytes.toString(ArrayUtils.subarray(bytes, ID_BEGIN,
+					ID_END));
+			this.order = Bytes.toInt(ArrayUtils.subarray(bytes, ORDER_BEGIN,
+					ORDER_END));
+
+		}
 	}
 
 	/**
@@ -117,23 +125,44 @@ public class TestTable extends HBaseTable {
 	 * @author thank.hsiehpinghan
 	 *
 	 */
-	public class ColFam extends HBaseColumnFamily {
+	public class ColFam1 extends HBaseColumnFamily {
 		// private Map<TestQualifier1, Map<Date, TestValue1>> map;
 
 		public void add(String s, Date d, BigDecimal v) {
-			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> map = getValueMap();
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> map = getQualifierVersionValueMap();
 			if (map == null) {
-				map = new HashMap<HBaseColumnQualifier, Map<Date, HBaseValue>>();
-				setValueMap(map);
+				map = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+				setQualifierVersionValueMap(map);
 			}
-			Map<Date, HBaseValue> innerM = map.get(s);
+			HBaseColumnQualifier qu = this.new TestQualifier1(s);
+			NavigableMap<Date, HBaseValue> innerM = map.get(qu);
 			if (innerM == null) {
-				innerM = new HashMap<Date, HBaseValue>();
+				innerM = new TreeMap<Date, HBaseValue>();
 			}
 			TestQualifier1 qual = new TestQualifier1(s);
 			TestValue1 val = new TestValue1(v);
 			innerM.put(d, val);
 			map.put(qual, innerM);
+		}
+
+		@Override
+		public void fromMap(
+				NavigableMap<byte[], NavigableMap<Long, byte[]>> valueMap) {
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+			for (Map.Entry<byte[], NavigableMap<Long, byte[]>> qtvEnt : valueMap
+					.entrySet()) {
+				ColFam1.TestQualifier1 q = new ColFam1.TestQualifier1(qtvEnt.getKey());
+				NavigableMap<Long, byte[]> tvMap = qtvEnt.getValue();
+				NavigableMap<Date, HBaseValue> versionValueMap = new TreeMap<Date, HBaseValue>();
+				for (Map.Entry<Long, byte[]> tvEnt : tvMap.entrySet()) {
+					Date t = new Date(tvEnt.getKey());
+					ColFam1.TestValue1 v = new ColFam1.TestValue1(tvEnt.getValue());
+					versionValueMap.put(t, v);
+				}
+				qualifierVersionValueMap.put(q, versionValueMap);
+			}
+			setQualifierVersionValueMap(qualifierVersionValueMap);
+
 		}
 
 		/**
@@ -142,14 +171,10 @@ public class TestTable extends HBaseTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public class TestQualifier1 implements HBaseColumnQualifier {
+		public class TestQualifier1 extends HBaseColumnQualifier {
 			private static final int LEN = 10;
 			private String s;
 
-			public String toString() {
-				return "TestQualifier1 [s=" + s + "]";
-			}
-			
 			public TestQualifier1() {
 				super();
 			}
@@ -161,7 +186,7 @@ public class TestTable extends HBaseTable {
 
 			public TestQualifier1(byte[] sArr) {
 				super();
-				this.s = Bytes.toString(sArr);
+				fromBytes(sArr);
 			}
 
 			public String getS() {
@@ -172,6 +197,17 @@ public class TestTable extends HBaseTable {
 			public byte[] toBytes() {
 				return Bytes.toBytes(StringUtils.leftPad(s, LEN));
 			}
+
+			@Override
+			public void fromBytes(byte[] bytes) {
+				this.s = Bytes.toString(bytes).trim();
+			}
+
+			@Override
+			public int compareTo(HBaseColumnQualifier o) {
+				return this.getS().compareTo(((TestQualifier1)o).getS());
+			}
+
 		}
 
 		/**
@@ -180,13 +216,9 @@ public class TestTable extends HBaseTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public class TestValue1 implements HBaseValue {
+		public class TestValue1 extends HBaseValue {
 			private BigDecimal v;
 
-			public String toString() {
-				return "TestValue1 [v=" + v + "]";
-			}
-			
 			public TestValue1() {
 				super();
 			}
@@ -211,9 +243,8 @@ public class TestTable extends HBaseTable {
 			}
 
 			@Override
-			public HBaseValue fromBytes(byte[] bytes) {
+			public void fromBytes(byte[] bytes) {
 				this.v = Bytes.toBigDecimal(bytes);
-				return this;
 			}
 
 		}
@@ -229,14 +260,15 @@ public class TestTable extends HBaseTable {
 		// private Map<TestQualifier1, Map<Date, TestValue1>> map;
 
 		public void add(String s, Date d, BigDecimal v) {
-			Map<HBaseColumnQualifier, Map<Date, HBaseValue>> map = getValueMap();
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> map = getQualifierVersionValueMap();
 			if (map == null) {
-				map = new HashMap<HBaseColumnQualifier, Map<Date, HBaseValue>>();
-				setValueMap(map);
+				map = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+				setQualifierVersionValueMap(map);
 			}
-			Map<Date, HBaseValue> innerM = map.get(s);
+			HBaseColumnQualifier qu = this.new TestQualifier1(s);
+			NavigableMap<Date, HBaseValue> innerM = map.get(qu);
 			if (innerM == null) {
-				innerM = new HashMap<Date, HBaseValue>();
+				innerM = new TreeMap<Date, HBaseValue>();
 			}
 			TestQualifier1 qual = new TestQualifier1(s);
 			TestValue1 val = new TestValue1(v);
@@ -244,20 +276,35 @@ public class TestTable extends HBaseTable {
 			map.put(qual, innerM);
 		}
 
+		@Override
+		public void fromMap(
+				NavigableMap<byte[], NavigableMap<Long, byte[]>> valueMap) {
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+			for (Map.Entry<byte[], NavigableMap<Long, byte[]>> qtvEnt : valueMap
+					.entrySet()) {
+				ColFam2.TestQualifier1 q = new ColFam2.TestQualifier1(qtvEnt.getKey());
+				NavigableMap<Long, byte[]> tvMap = qtvEnt.getValue();
+				NavigableMap<Date, HBaseValue> versionValueMap = new TreeMap<Date, HBaseValue>();
+				for (Map.Entry<Long, byte[]> tvEnt : tvMap.entrySet()) {
+					Date t = new Date(tvEnt.getKey());
+					ColFam2.TestValue1 v = new ColFam2.TestValue1(tvEnt.getValue());
+					versionValueMap.put(t, v);
+				}
+				qualifierVersionValueMap.put(q, versionValueMap);
+			}
+			setQualifierVersionValueMap(qualifierVersionValueMap);
+
+		}
+		
 		/**
 		 * Qualifier.
 		 * 
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public class TestQualifier1 implements HBaseColumnQualifier {
+		public class TestQualifier1 extends HBaseColumnQualifier {
 			private static final int LEN = 10;
 			private String s;
-
-			@Override
-			public String toString() {
-				return "TestQualifier1 [s=" + s + "]";
-			}
 
 			public TestQualifier1() {
 				super();
@@ -270,7 +317,7 @@ public class TestTable extends HBaseTable {
 
 			public TestQualifier1(byte[] sArr) {
 				super();
-				this.s = Bytes.toString(sArr);
+				fromBytes(sArr);
 			}
 
 			public String getS() {
@@ -281,6 +328,17 @@ public class TestTable extends HBaseTable {
 			public byte[] toBytes() {
 				return Bytes.toBytes(StringUtils.leftPad(s, LEN));
 			}
+
+			@Override
+			public void fromBytes(byte[] bytes) {
+				this.s = Bytes.toString(bytes).trim();
+			}
+
+			@Override
+			public int compareTo(HBaseColumnQualifier o) {
+				return this.getS().compareTo(((TestQualifier1)o).getS());
+			}
+
 		}
 
 		/**
@@ -289,13 +347,8 @@ public class TestTable extends HBaseTable {
 		 * @author thank.hsiehpinghan
 		 *
 		 */
-		public class TestValue1 implements HBaseValue {
+		public class TestValue1 extends HBaseValue {
 			private BigDecimal v;
-
-			@Override
-			public String toString() {
-				return "TestValue1 [v=" + v + "]";
-			}
 
 			public TestValue1() {
 				super();
@@ -321,18 +374,17 @@ public class TestTable extends HBaseTable {
 			}
 
 			@Override
-			public HBaseValue fromBytes(byte[] bytes) {
+			public void fromBytes(byte[] bytes) {
 				this.v = Bytes.toBigDecimal(bytes);
-				return this;
 			}
 
 		}
+
 	}
 
 	@Override
 	public String toString() {
-		return "TestTable [cf1=" + cf1 + ", cf2=" + cf2 + "]";
+		return ToStringBuilder.reflectionToString(this);
 	}
-	
-	
+
 }

@@ -161,7 +161,8 @@ public class HbaseAssistant {
 			IllegalAccessException, NoSuchMethodException,
 			InvocationTargetException, InstantiationException {
 		// Get Table.
-		final HBaseTable tableObj = (HBaseTable)ObjectUtility.getOuterObject(rowKey);
+		final HBaseTable tableObj = (HBaseTable) ObjectUtility
+				.getOuterObject(rowKey);
 		tableObj.setRowKey(rowKey);
 		final Class<?> tableCls = tableObj.getClass();
 		String tableName = tableCls.getSimpleName();
@@ -197,18 +198,6 @@ public class HbaseAssistant {
 					}
 				});
 	}
-
-	// public List<User> findAll() {
-	// return hbaseTemplate.find(tableName, "cfInfo", new RowMapper<User>() {
-	// @Override
-	// public User mapRow(Result result, int rowNum) throws Exception {
-	// return new User(Bytes.toString(result.getValue(CF_INFO, qUser)),
-	// Bytes.toString(result.getValue(CF_INFO, qEmail)),
-	// Bytes.toString(result.getValue(CF_INFO, qPassword)));
-	// }
-	// });
-	//
-	// }
 
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
@@ -250,11 +239,4 @@ public class HbaseAssistant {
 		return colFamNms.toArray(new String[colFamNms.size()]);
 	}
 
-	// private String getTableName(Class<?> cls) {
-	// HBaseTable table = cls.getAnnotation(HBaseTable.class);
-	// if (table == null) {
-	// throw new RuntimeException("Not a table entity !!!");
-	// }
-	// return table.value();
-	// }
 }

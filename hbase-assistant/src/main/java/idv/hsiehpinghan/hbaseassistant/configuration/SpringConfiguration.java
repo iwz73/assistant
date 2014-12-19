@@ -48,7 +48,7 @@ public class SpringConfiguration {
 
 	@Bean
 	public HBaseAdmin hBaseAdmin() throws Exception {
-		return new HBaseAdmin(hbaseConfiguration());
+		return new HBaseAdmin(hbaseConfiguration);
 	}
 
 	private void addConfiguration(org.apache.hadoop.conf.Configuration config)

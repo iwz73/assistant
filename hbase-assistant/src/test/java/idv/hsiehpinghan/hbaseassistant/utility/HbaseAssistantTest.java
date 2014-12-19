@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 
 import junit.framework.Assert;
 
@@ -68,10 +67,6 @@ public class HbaseAssistantTest {
 		TestTable table = new TestTable();
 		TestTable.Key rowKey = createRowKey(table);
 		HBaseTable hBaseTable = hbaseAssistant.get(rowKey);
-		
-		System.err.println(hBaseTable);
-		System.err.println(testTable);
-		
 		Assert.assertTrue(EqualsBuilder.reflectionEquals(hBaseTable, testTable));
 	}
 	

@@ -4,7 +4,7 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting" />
-			<class name="idv.hsiehpinghan.xbrlassistant.utility.XbrlAssistantTest" />
+			<class name="idv.hsiehpinghan.xbrlassistant.assistant.XbrlAssistantTest" />
 		</classes>
 	</test>
 </suite>

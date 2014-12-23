@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.xbrlassistant.handler;
 
-import idv.hsiehpinghan.xbrlassistant.assistant.SaxParserBreakException;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
+import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;

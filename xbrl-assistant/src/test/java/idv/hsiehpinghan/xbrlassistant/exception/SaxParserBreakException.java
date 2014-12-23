@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.xbrlassistant.assistant;
+package idv.hsiehpinghan.xbrlassistant.exception;
 
 import org.xml.sax.SAXException;
 

@@ -1,0 +1,3791 @@
+{  
+   "ifrs_StatementOfComprehensiveIncomeAbstract":{  
+      "chinese_label":"綜合損益表",
+      "english_label":"Statement of comprehensive income",
+      "order":0.0,
+      "tifrs-bsci-ci_OperatingRevenueAbstract":{  
+         "tifrs-bsci-ci_OperatingRevenueAbstract":{  
+            "chinese_label":"營業收入",
+            "english_label":"Operating revenue",
+            "order":1.0,
+            "tifrs-bsci-ci_NetSalesRevenueAbstract":{  
+               "tifrs-bsci-ci_NetSalesRevenueAbstract":{  
+                  "chinese_label":"銷貨收入淨額",
+                  "english_label":"Net sales revenue",
+                  "order":1.0,
+                  "tifrs-bsci-ci_SalesRevenueAbstract":{  
+                     "tifrs-bsci-ci_SalesRevenueAbstract":{  
+                        "chinese_label":"銷貨收入",
+                        "english_label":"Sales revenue",
+                        "order":1.0,
+                        "tifrs-bsci-ci_SalesRevenue-SalesRevenue":{  
+                           "tifrs-bsci-ci_SalesRevenue-SalesRevenue":{  
+                              "chinese_label":"銷貨收入",
+                              "english_label":"Sales revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_NaturalGasSalesForNaturalGasIndustry":{  
+                           "tifrs-bsci-ci_NaturalGasSalesForNaturalGasIndustry":{  
+                              "chinese_label":"天然氣銷貨收入（天然氣業）",
+                              "english_label":"Natural gas sales (for natural gas industry)",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_SalesRevenue":{  
+                           "tifrs-bsci-ci_SalesRevenue":{  
+                              "chinese_label":"銷貨收入",
+                              "english_label":"Sales revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_TenantCounterSalesForDepartmentStores":{  
+                     "tifrs-bsci-ci_TenantCounterSalesForDepartmentStores":{  
+                        "chinese_label":"專櫃銷貨收入（百貨業適用）",
+                        "english_label":"Tenant-counter sales (for department stores)",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InstallmentSales":{  
+                     "tifrs-bsci-ci_InstallmentSales":{  
+                        "chinese_label":"分期付款銷貨收入",
+                        "english_label":"Installment sales",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_SalesReturns":{  
+                     "tifrs-bsci-ci_SalesReturns":{  
+                        "chinese_label":"銷貨退回",
+                        "english_label":"Sales returns",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_SalesDiscountsAndAllowances":{  
+                     "tifrs-bsci-ci_SalesDiscountsAndAllowances":{  
+                        "chinese_label":"銷貨折讓",
+                        "english_label":"Sales discounts and allowances",
+                        "order":5.0
+                     }
+                  },
+                  "ifrs_RevenueFromSaleOfGoods":{  
+                     "ifrs_RevenueFromSaleOfGoods":{  
+                        "chinese_label":"銷貨收入淨額",
+                        "english_label":"Net sales revenue",
+                        "order":6.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_InvestmentRevenueForInvestmentBusinessAbstract":{  
+               "tifrs-bsci-ci_InvestmentRevenueForInvestmentBusinessAbstract":{  
+                  "chinese_label":"投資收入（投資公司適用）",
+                  "english_label":"Investment revenue (for investment business)",
+                  "order":2.0,
+                  "tifrs-bsci-ci_GainsOnDisposalsOfFinancialAssetsLiabilities":{  
+                     "tifrs-bsci-ci_GainsOnDisposalsOfFinancialAssetsLiabilities":{  
+                        "chinese_label":"金融資產（負債）出售淨利益",
+                        "english_label":"Gains on disposals of financial assets (liabilities)",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InvestmentRevenueAbstract":{  
+                     "tifrs-bsci-ci_InvestmentRevenueAbstract":{  
+                        "chinese_label":"投資收入",
+                        "english_label":"Investment revenue",
+                        "order":2.0,
+                        "tifrs-bsci-ci_DividendRevenue":{  
+                           "tifrs-bsci-ci_DividendRevenue":{  
+                              "chinese_label":"股利收入",
+                              "english_label":"Dividend revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ShareOfProfitOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-InvestmentRevenue":{  
+                           "tifrs-bsci-ci_ShareOfProfitOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-InvestmentRevenue":{  
+                              "chinese_label":"採用權益法之關聯企業及合資利益之份額",
+                              "english_label":"Share of profit of associates and joint ventures accounted for using equity method",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_GainsOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-InvestmentRevenue":{  
+                           "tifrs-bsci-ci_GainsOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-InvestmentRevenue":{  
+                              "chinese_label":"透過損益按公允價值衡量之金融資產（負債）利益",
+                              "english_label":"Gains on financial assets (liabilities) at fair value through profit or loss",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InvestmentRevenue":{  
+                           "tifrs-bsci-ci_InvestmentRevenue":{  
+                              "chinese_label":"投資收入",
+                              "english_label":"Investment revenue",
+                              "order":4.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_BondInterestRevenue":{  
+                     "tifrs-bsci-ci_BondInterestRevenue":{  
+                        "chinese_label":"債息收入",
+                        "english_label":"Bond interest revenue",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InterestRevenue":{  
+                     "tifrs-bsci-ci_InterestRevenue":{  
+                        "chinese_label":"利息收入",
+                        "english_label":"Interest revenue",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_BoardServiceRevenueFromInvestees":{  
+                     "tifrs-bsci-ci_BoardServiceRevenueFromInvestees":{  
+                        "chinese_label":"酬勞收入",
+                        "english_label":"Board-service revenue from investees",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RevenueFromSaleOfRealEstateForDevelopmentBusiness":{  
+                     "tifrs-bsci-ci_RevenueFromSaleOfRealEstateForDevelopmentBusiness":{  
+                        "chinese_label":"地產出售收入（開發投資公司適用）",
+                        "english_label":"Revenue from sale of real estate (for development business)",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InvestmentRevenueForInvestmentBusiness":{  
+                     "tifrs-bsci-ci_InvestmentRevenueForInvestmentBusiness":{  
+                        "chinese_label":"投資收入（投資公司適用）",
+                        "english_label":"Investment revenue (for investment business)",
+                        "order":7.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_RentalRevenueAbstract":{  
+               "tifrs-bsci-ci_RentalRevenueAbstract":{  
+                  "chinese_label":"租賃收入",
+                  "english_label":"Rental revenue",
+                  "order":3.0,
+                  "tifrs-bsci-ci_RentalRevenue-RentalRevenue":{  
+                     "tifrs-bsci-ci_RentalRevenue-RentalRevenue":{  
+                        "chinese_label":"租賃收入",
+                        "english_label":"Rental revenue",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_WarehousingRevenue":{  
+                     "tifrs-bsci-ci_WarehousingRevenue":{  
+                        "chinese_label":"倉儲收入",
+                        "english_label":"Warehousing revenue",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RentalRevenue":{  
+                     "tifrs-bsci-ci_RentalRevenue":{  
+                        "chinese_label":"租賃收入",
+                        "english_label":"Rental revenue",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_TravelServiceRevenueAbstract":{  
+               "tifrs-bsci-ci_TravelServiceRevenueAbstract":{  
+                  "chinese_label":"旅遊服務收入",
+                  "english_label":"Travel service revenue",
+                  "order":4.0,
+                  "tifrs-bsci-ci_HospitalityServiceRevenueAbstract":{  
+                     "tifrs-bsci-ci_HospitalityServiceRevenueAbstract":{  
+                        "chinese_label":"餐旅服務收入",
+                        "english_label":"Hospitality service revenue",
+                        "order":1.0,
+                        "tifrs-bsci-ci_GuestRoomRevenue":{  
+                           "tifrs-bsci-ci_GuestRoomRevenue":{  
+                              "chinese_label":"客房收入",
+                              "english_label":"Guest room revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FoodServiceRevenue":{  
+                           "tifrs-bsci-ci_FoodServiceRevenue":{  
+                              "chinese_label":"餐飲收入",
+                              "english_label":"Food service revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_PhoneAndCableServiceRevenue":{  
+                           "tifrs-bsci-ci_PhoneAndCableServiceRevenue":{  
+                              "chinese_label":"電話及電報收入",
+                              "english_label":"Phone and cable service revenue",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OtherHospitalityServiceRevenue":{  
+                           "tifrs-bsci-ci_OtherHospitalityServiceRevenue":{  
+                              "chinese_label":"其他餐旅服務收入",
+                              "english_label":"Other hospitality service revenue",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnHospitalityServiceRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnHospitalityServiceRevenue":{  
+                              "chinese_label":"餐旅服務收入折讓",
+                              "english_label":"Discount and allowance on hospitality service revenue",
+                              "order":5.0
+                           }
+                        },
+                        "tifrs-bsci-ci_HospitalityServiceRevenue":{  
+                           "tifrs-bsci-ci_HospitalityServiceRevenue":{  
+                              "chinese_label":"餐旅服務收入",
+                              "english_label":"Hospitality service revenue",
+                              "order":6.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_EntertainmentRevenueAbstract":{  
+                     "tifrs-bsci-ci_EntertainmentRevenueAbstract":{  
+                        "chinese_label":"育樂收入",
+                        "english_label":"Entertainment revenue",
+                        "order":2.0,
+                        "tifrs-bsci-ci_TicketRevenue":{  
+                           "tifrs-bsci-ci_TicketRevenue":{  
+                              "chinese_label":"門票收入",
+                              "english_label":"Ticket revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_SouvenirMerchandiseRevenue":{  
+                           "tifrs-bsci-ci_SouvenirMerchandiseRevenue":{  
+                              "chinese_label":"商品收入",
+                              "english_label":"Souvenir (merchandise) revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_RideRevenue":{  
+                           "tifrs-bsci-ci_RideRevenue":{  
+                              "chinese_label":"遊樂收入",
+                              "english_label":"Ride revenue",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnEntertainmentRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnEntertainmentRevenue":{  
+                              "chinese_label":"育樂收入折讓",
+                              "english_label":"Discount and allowance on entertainment revenue",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_EntertainmentRevenue":{  
+                           "tifrs-bsci-ci_EntertainmentRevenue":{  
+                              "chinese_label":"育樂收入",
+                              "english_label":"Entertainment revenue",
+                              "order":5.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_TravelServiceRevenue":{  
+                     "tifrs-bsci-ci_TravelServiceRevenue":{  
+                        "chinese_label":"旅遊服務收入",
+                        "english_label":"Travel service revenue",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ConstructionAndEngineeringRevenueAbstract":{  
+               "tifrs-bsci-ci_ConstructionAndEngineeringRevenueAbstract":{  
+                  "chinese_label":"營建工程收入",
+                  "english_label":"Construction and engineering revenue",
+                  "order":5.0,
+                  "tifrs-bsci-ci_ConstructionRevenueForConstructionBusinessAbstract":{  
+                     "tifrs-bsci-ci_ConstructionRevenueForConstructionBusinessAbstract":{  
+                        "chinese_label":"營建收入（營建業適用）",
+                        "english_label":"Construction revenue (for construction business)",
+                        "order":1.0,
+                        "tifrs-bsci-ci_ConstructionRevenue":{  
+                           "tifrs-bsci-ci_ConstructionRevenue":{  
+                              "chinese_label":"營建收入",
+                              "english_label":"Construction revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ReturnAndAllowanceForConstructionRevenue":{ 
+                           "tifrs-bsci-ci_ReturnAndAllowanceForConstructionRevenue":{  
+                              "chinese_label":"營建收入退回及折讓",
+                              "english_label":"Return and allowance for construction revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ConstructionRevenueForConstructionBusiness":{  
+                           "tifrs-bsci-ci_ConstructionRevenueForConstructionBusiness":{  
+                              "chinese_label":"營建收入（營建業適用）",
+                              "english_label":"Construction revenue (for construction business)",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_EngineeringServiceRevenueAbstract":{  
+                     "tifrs-bsci-ci_EngineeringServiceRevenueAbstract":{  
+                        "chinese_label":"工程收入",
+                        "english_label":"Engineering service revenue",
+                        "order":2.0,
+                        "tifrs-bsci-ci_EngineeringServiceRevenue-EngineeringServiceRevenue":{  
+                           "tifrs-bsci-ci_EngineeringServiceRevenue-EngineeringServiceRevenue":{  
+                              "chinese_label":"工程收入",
+                              "english_label":"Engineering service revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ReturnAndAllowanceForEngineeringRevenue":{  
+                           "tifrs-bsci-ci_ReturnAndAllowanceForEngineeringRevenue":{  
+                              "chinese_label":"工程收入退回及折讓",
+                              "english_label":"Return and allowance for engineering revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_EngineeringServiceRevenue":{  
+                           "tifrs-bsci-ci_EngineeringServiceRevenue":{  
+                              "chinese_label":"工程收入",
+                              "english_label":"Engineering service revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_ConstructionAndEngineeringRevenue":{  
+                     "tifrs-bsci-ci_ConstructionAndEngineeringRevenue":{  
+                        "chinese_label":"營建工程收入",
+                        "english_label":"Construction and engineering revenue",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ServiceRevenueAbstract":{  
+               "tifrs-bsci-ci_ServiceRevenueAbstract":{  
+                  "chinese_label":"勞務收入",
+                  "english_label":"Service revenue",
+                  "order":6.0,
+                  "tifrs-bsci-ci_ServiceRevenue-ServiceRevenueAbstract":{  
+                     "tifrs-bsci-ci_ServiceRevenue-ServiceRevenueAbstract":{  
+                        "chinese_label":"勞務收入",
+                        "english_label":"Service revenue",
+                        "order":1.0,
+                        "tifrs-bsci-ci_ServiceRevenue-ServiceRevenue-ServiceRevenue":{  
+                           "tifrs-bsci-ci_ServiceRevenue-ServiceRevenue-ServiceRevenue":{  
+                              "chinese_label":"勞務收入",
+                              "english_label":"Service revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ContainerFittingServiceRevenueForSeaLandShippingBusiness":{  
+                           "tifrs-bsci-ci_ContainerFittingServiceRevenueForSeaLandShippingBusiness":{  
+                              "chinese_label":"拆併櫃收入（海陸運輸業適用）",
+                              "english_label":"Container-fitting service revenue (for sea/land shipping business)",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_AgencyServiceRevenueForSeaLandShippingBusiness":{  
+                           "tifrs-bsci-ci_AgencyServiceRevenueForSeaLandShippingBusiness":{  
+                              "chinese_label":"代理業收入（海陸運輸業適用）",
+                              "english_label":"Agency service revenue (for sea/land shipping business)",
+                              "order":3.0
+                           }
+                        },
+                        "ifrs_RevenueFromCommissions":{  
+                           "ifrs_RevenueFromCommissions":{  
+                              "chinese_label":"佣金收入",
+                              "english_label":"Commissions revenue",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ManagemenFeesRevenueForSecuritiesInvestmentAndTrustBusiness":{  
+                           "tifrs-bsci-ci_ManagemenFeesRevenueForSecuritiesInvestmentAndTrustBusiness":{  
+                              "chinese_label":"管理費收入（證券投資信託業適用）",
+                              "english_label":"Management fees revenue (for securities investment and trust business)",
+                              "order":5.0
+                           }
+                        },
+                        "tifrs-bsci-ci_UnderwritingFeesRevenueForSecuritiesInvestmentAndTrustBusiness":{  
+                           "tifrs-bsci-ci_UnderwritingFeesRevenueForSecuritiesInvestmentAndTrustBusiness":{  
+                              "chinese_label":"銷售費收入（證券投資信託業適用）",
+                              "english_label":"Underwriting fees revenue (for securities investment and trust business)",
+                              "order":6.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ContainerYardServiceRevenue":{  
+                           "tifrs-bsci-ci_ContainerYardServiceRevenue":{  
+                              "chinese_label":"貨櫃場作業收入",
+                              "english_label":"Container yard service revenue",
+                              "order":7.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DesignFeesRevenue":{  
+                           "tifrs-bsci-ci_DesignFeesRevenue":{  
+                              "chinese_label":"設計收入",
+                              "english_label":"Design fees revenue",
+                              "order":8.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnServiceRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnServiceRevenue":{  
+                              "chinese_label":"勞務收入折讓",
+                              "english_label":"Discount and allowance on service revenue",
+                              "order":9.0
+                           }
+                        },
+                        "ifrs_RevenueFromRenderingOfServices":{  
+                           "ifrs_RevenueFromRenderingOfServices":{  
+                              "chinese_label":"勞務收入",
+                              "english_label":"Service revenue",
+                              "order":10.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_TransportationRevenueAbstract":{  
+                     "tifrs-bsci-ci_TransportationRevenueAbstract":{  
+                        "chinese_label":"運輸收入",
+                        "english_label":"Transportation revenue",
+                        "order":2.0,
+                        "tifrs-bsci-ci_MarineFreightRevenueForSeaLandShippingBusiness":{  
+                           "tifrs-bsci-ci_MarineFreightRevenueForSeaLandShippingBusiness":{  
+                              "chinese_label":"海運收入（海陸運輸業適用）",
+                              "english_label":"Marine freight revenue (for sea/land shipping business)",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_LandFreightRevenueForSeaLandShippingBusiness":{  
+                           "tifrs-bsci-ci_LandFreightRevenueForSeaLandShippingBusiness":{  
+                              "chinese_label":"陸運收入（海陸運輸業適用）",
+                              "english_label":"Land freight revenue (for sea/land shipping business)",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_AirFreightRevenueForAirShippingBusiness":{  
+                           "tifrs-bsci-ci_AirFreightRevenueForAirShippingBusiness":{  
+                              "chinese_label":"空運收入（航空業適用）",
+                              "english_label":"Air freight revenue (for air shipping business)",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnTransportationRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnTransportationRevenue":{  
+                              "chinese_label":"運輸收入折讓",
+                              "english_label":"Discount and allowance on transportation revenue",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_TransportationRevenue":{  
+                           "tifrs-bsci-ci_TransportationRevenue":{  
+                              "chinese_label":"運輸收入",
+                              "english_label":"Transportation revenue",
+                              "order":5.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_InFlightOperatingRevenue":{  
+                     "tifrs-bsci-ci_InFlightOperatingRevenue":{  
+                        "chinese_label":"空中營業收入",
+                        "english_label":"In flight operating revenue",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InstallationRevenueAbstract":{  
+                     "tifrs-bsci-ci_InstallationRevenueAbstract":{  
+                        "chinese_label":"裝置收入",
+                        "english_label":"Installation revenue",
+                        "order":4.0,
+                        "tifrs-bsci-ci_InstallationRevenue-InstallationRevenue":{  
+                           "tifrs-bsci-ci_InstallationRevenue-InstallationRevenue":{  
+                              "chinese_label":"裝置收入",
+                              "english_label":"Installation revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnInstallationRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnInstallationRevenue":{  
+                              "chinese_label":"裝置收入折讓",
+                              "english_label":"Discount and allowance on installation revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InstallationRevenue":{  
+                           "tifrs-bsci-ci_InstallationRevenue":{  
+                              "chinese_label":"裝置收入",
+                              "english_label":"Installation revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_TechnicalServiceRevenueAbstract":{  
+                     "tifrs-bsci-ci_TechnicalServiceRevenueAbstract":{  
+                        "chinese_label":"技術服務收入",
+                        "english_label":"Technical service revenue",
+                        "order":5.0,
+                        "tifrs-bsci-ci_TechnicalServiceRevenue-TechnicalServiceRevenue":{  
+                           "tifrs-bsci-ci_TechnicalServiceRevenue-TechnicalServiceRevenue":{  
+                              "chinese_label":"技術服務收入",
+                              "english_label":"Technical service revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnTechnicalServiceRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnTechnicalServiceRevenue":{  
+                              "chinese_label":"技術服務收入折讓",
+                              "english_label":"Discount and allowance on technical service revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_TechnicalServiceRevenue":{  
+                           "tifrs-bsci-ci_TechnicalServiceRevenue":{  
+                              "chinese_label":"技術服務收入",
+                              "english_label":"Technical service revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_ProcessingFeesRevenueAbstract":{  
+                     "tifrs-bsci-ci_ProcessingFeesRevenueAbstract":{  
+                        "chinese_label":"加工收入",
+                        "english_label":"Processing fees revenue",
+                        "order":6.0,
+                        "tifrs-bsci-ci_ProcessingFeesRevenue-ProcessingFeesRevenue":{  
+                           "tifrs-bsci-ci_ProcessingFeesRevenue-ProcessingFeesRevenue":{  
+                              "chinese_label":"加工收入",
+                              "english_label":"Processing fees revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnProcessingFeesRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnProcessingFeesRevenue":{  
+                              "chinese_label":"加工收入折讓",
+                              "english_label":"Discount and allowance on processing fees revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ProcessingFeesRevenue":{  
+                           "tifrs-bsci-ci_ProcessingFeesRevenue":{  
+                              "chinese_label":"加工收入",
+                              "english_label":"Processing fees revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_RepairsAndMaintenanceRevenueAbstract":{  
+                     "tifrs-bsci-ci_RepairsAndMaintenanceRevenueAbstract":{  
+                        "chinese_label":"維修收入",
+                        "english_label":"Repairs and maintenance revenue",
+                        "order":7.0,
+                        "tifrs-bsci-ci_RepairsAndMaintenanceRevenue-RepairsAndMaintenanceRevenue":{  
+                           "tifrs-bsci-ci_RepairsAndMaintenanceRevenue-RepairsAndMaintenanceRevenue":{  
+                              "chinese_label":"維修收入",
+                              "english_label":"Repairs and maintenance revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnRepairsAndMaintenanceRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnRepairsAndMaintenanceRevenue":{  
+                              "chinese_label":"維修收入折讓",
+                              "english_label":"Discount and allowance on repairs and maintenance revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_RepairsAndMaintenanceRevenue":{  
+                           "tifrs-bsci-ci_RepairsAndMaintenanceRevenue":{  
+                              "chinese_label":"維修收入",
+                              "english_label":"Repairs and maintenance revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherServiceRevenueAbstract":{  
+                     "tifrs-bsci-ci_OtherServiceRevenueAbstract":{  
+                        "chinese_label":"其他勞務收入",
+                        "english_label":"Other service revenue",
+                        "order":8.0,
+                        "tifrs-bsci-ci_OtherServiceRevenue-OtherServiceRevenue":{  
+                           "tifrs-bsci-ci_OtherServiceRevenue-OtherServiceRevenue":{  
+                              "chinese_label":"其他勞務收入",
+                              "english_label":"Other service revenue",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DiscountAndAllowanceOnOtherServiceRevenue":{  
+                           "tifrs-bsci-ci_DiscountAndAllowanceOnOtherServiceRevenue":{  
+                              "chinese_label":"其他勞務收入折讓",
+                              "english_label":"Discount and allowance on other service revenue",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OtherServiceRevenue":{  
+                           "tifrs-bsci-ci_OtherServiceRevenue":{  
+                              "chinese_label":"其他勞務收入",
+                              "english_label":"Other service revenue",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_ServiceRevenue":{  
+                     "tifrs-bsci-ci_ServiceRevenue":{  
+                        "chinese_label":"勞務收入",
+                        "english_label":"Service revenue",
+                        "order":9.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_OtherOperatingRevenueAbstract":{  
+               "tifrs-bsci-ci_OtherOperatingRevenueAbstract":{  
+                  "chinese_label":"其他營業收入",
+                  "english_label":"Other operating revenue",
+                  "order":7.0,
+                  "tifrs-bsci-ci_OtherOperatingRevenue-OtherOperatingRevenue":{  
+                     "tifrs-bsci-ci_OtherOperatingRevenue-OtherOperatingRevenue":{ 
+                        "chinese_label":"其他營業收入",
+                        "english_label":"Other operating revenue",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_DiscountAndAllowanceOnOtherOperatingRevenue":{  
+                     "tifrs-bsci-ci_DiscountAndAllowanceOnOtherOperatingRevenue":{ 
+                        "chinese_label":"其他營業收入折讓",
+                        "english_label":"Discount and allowance on other operating revenue",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherOperatingRevenue":{  
+                     "tifrs-bsci-ci_OtherOperatingRevenue":{  
+                        "chinese_label":"其他營業收入",
+                        "english_label":"Other operating revenue",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_OperatingRevenue":{  
+               "tifrs-bsci-ci_OperatingRevenue":{  
+                  "chinese_label":"營業收入",
+                  "english_label":"Operating revenue",
+                  "order":8.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"24114047000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"25288765000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_OperatingCostsAbstract":{  
+         "tifrs-bsci-ci_OperatingCostsAbstract":{  
+            "chinese_label":"營業成本",
+            "english_label":"Operating costs",
+            "order":2.0,
+            "tifrs-bsci-ci_CostOfSalesAbstract":{  
+               "tifrs-bsci-ci_CostOfSalesAbstract":{  
+                  "chinese_label":"銷貨成本",
+                  "english_label":"Cost of sales",
+                  "order":1.0,
+                  "tifrs-bsci-ci_CostOfSales-CostOfSales":{  
+                     "tifrs-bsci-ci_CostOfSales-CostOfSales":{  
+                        "chinese_label":"銷貨成本",
+                        "english_label":"Cost of sales",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfNaturalGasSalesForNaturalGasBusiness":{  
+                     "tifrs-bsci-ci_CostOfNaturalGasSalesForNaturalGasBusiness":{  
+                        "chinese_label":"天然氣銷貨成本（天然氣業）",
+                        "english_label":"Cost of natural gas sales (for natural gas business)",
+                        "order":2.0
+                     }
+                  },
+                  "ifrs_CostOfSales":{  
+                     "ifrs_CostOfSales":{  
+                        "chinese_label":"銷貨成本",
+                        "english_label":"Cost of sales",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_CostOfTenantCounterSalesForDepartmentStores":{  
+               "tifrs-bsci-ci_CostOfTenantCounterSalesForDepartmentStores":{  
+                  "chinese_label":"專櫃銷貨成本（百貨業適用）",
+                  "english_label":"Cost of tenant-counter sales (for department stores)",
+                  "order":2.0
+               }
+            },
+            "tifrs-bsci-ci_InvestmentCostsForInvestmentBusinessAbstract":{  
+               "tifrs-bsci-ci_InvestmentCostsForInvestmentBusinessAbstract":{  
+                  "chinese_label":"投資支出（投資公司適用）",
+                  "english_label":"Investment costs (for investment business)",
+                  "order":3.0,
+                  "tifrs-bsci-ci_LossesOnDisposalsOfFinancialAssetsLiabilities":{  
+                     "tifrs-bsci-ci_LossesOnDisposalsOfFinancialAssetsLiabilities":{  
+                        "chinese_label":"金融資產（負債）出售淨損失",
+                        "english_label":"Losses on disposals of financial assets (liabilities)",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InvestmentLossesAbstract":{  
+                     "tifrs-bsci-ci_InvestmentLossesAbstract":{  
+                        "chinese_label":"投資損失",
+                        "english_label":"Investment losses",
+                        "order":2.0,
+                        "tifrs-bsci-ci_InvestmentLosses-InvestmentLosses":{  
+                           "tifrs-bsci-ci_InvestmentLosses-InvestmentLosses":{  
+                              "chinese_label":"投資損失",
+                              "english_label":"Investment losses",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ShareOfLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-InvestmentLosses":{  
+                           "tifrs-bsci-ci_ShareOfLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-InvestmentLosses":{  
+                              "chinese_label":"採用權益法之關聯企業及合資損失之份額",
+                              "english_label":"Share of loss of associates and joint ventures accounted for using equity method",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_LossesOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-InvestmentLosses":{  
+                           "tifrs-bsci-ci_LossesOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-InvestmentLosses":{  
+                              "chinese_label":"透過損益按公允價值衡量之金融資產（負債）損失",
+                              "english_label":"Losses on financial assets (liabilities) at fair value through profit or loss",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InvestmentLosses":{  
+                           "tifrs-bsci-ci_InvestmentLosses":{  
+                              "chinese_label":"投資損失",
+                              "english_label":"Investment losses",
+                              "order":4.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_InterestExpense-InvestmentCostsForInvestmentBusiness":{  
+                     "tifrs-bsci-ci_InterestExpense-InvestmentCostsForInvestmentBusiness":{  
+                        "chinese_label":"利息費用",
+                        "english_label":"Interest expense",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfSaleOfRealEstate":{  
+                     "tifrs-bsci-ci_CostOfSaleOfRealEstate":{  
+                        "chinese_label":"地產出售成本",
+                        "english_label":"Cost of sale of real estate",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InvestmentCostsForInvestmentBusiness":{  
+                     "tifrs-bsci-ci_InvestmentCostsForInvestmentBusiness":{  
+                        "chinese_label":"投資支出（投資公司適用）",
+                        "english_label":"Investment costs (for investment business)",
+                        "order":5.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_CostOfRentalSalesAbstract":{  
+               "tifrs-bsci-ci_CostOfRentalSalesAbstract":{  
+                  "chinese_label":"租賃成本",
+                  "english_label":"Cost of rental sales",
+                  "order":4.0,
+                  "tifrs-bsci-ci_CostOfRentalSales-CostOfRentalSlales":{  
+                     "tifrs-bsci-ci_CostOfRentalSales-CostOfRentalSlales":{  
+                        "chinese_label":"租賃成本",
+                        "english_label":"Cost of rental sales",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfWarehousingSales":{  
+                     "tifrs-bsci-ci_CostOfWarehousingSales":{  
+                        "chinese_label":"倉儲成本",
+                        "english_label":"Cost of warehousing sales",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfTelecommunicationServicesSalesForTelecommunicationNetworkBusiness":{  
+                     "tifrs-bsci-ci_CostOfTelecommunicationServicesSalesForTelecommunicationNetworkBusiness":{  
+                        "chinese_label":"電信成本（電訊網路業）",
+                        "english_label":"Cost of telecommunication services sales (for telecommunication/network business)",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfRentalSales":{  
+                     "tifrs-bsci-ci_CostOfRentalSales":{  
+                        "chinese_label":"租賃成本",
+                        "english_label":"Cost of rental sales",
+                        "order":4.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_CostOfTravelServicesForHotelBusinessAbstract":{  
+               "tifrs-bsci-ci_CostOfTravelServicesForHotelBusinessAbstract":{  
+                  "chinese_label":"旅遊服務成本（觀光飯店業適用）",
+                  "english_label":"Cost of travel services (for hotel business)",
+                  "order":5.0,
+                  "tifrs-bsci-ci_CostOfHospitalityServicesAbstract":{  
+                     "tifrs-bsci-ci_CostOfHospitalityServicesAbstract":{  
+                        "chinese_label":"餐旅服務成本",
+                        "english_label":"Cost of hospitality services",
+                        "order":1.0,
+                        "tifrs-bsci-ci_GuestRoomCosts":{  
+                           "tifrs-bsci-ci_GuestRoomCosts":{  
+                              "chinese_label":"客房成本",
+                              "english_label":"Guest room costs",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FoodServiceCosts":{  
+                           "tifrs-bsci-ci_FoodServiceCosts":{  
+                              "chinese_label":"餐飲成本",
+                              "english_label":"Food service costs",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfPhoneAndCableServices":{  
+                           "tifrs-bsci-ci_CostOfPhoneAndCableServices":{  
+                              "chinese_label":"電話及電報成本",
+                              "english_label":"Cost of phone and cable services",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfOtherHospitalityServices":{  
+                           "tifrs-bsci-ci_CostOfOtherHospitalityServices":{  
+                              "chinese_label":"其他餐旅服務成本",
+                              "english_label":"Cost of other hospitality services",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfHospitalityServices":{  
+                           "tifrs-bsci-ci_CostOfHospitalityServices":{  
+                              "chinese_label":"餐旅服務成本",
+                              "english_label":"Cost of hospitality services",
+                              "order":5.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_EntertainmentCostsAbstract":{  
+                     "tifrs-bsci-ci_EntertainmentCostsAbstract":{  
+                        "chinese_label":"育樂成本",
+                        "english_label":"Entertainment costs",
+                        "order":2.0,
+                        "tifrs-bsci-ci_CostOfTicketSales":{  
+                           "tifrs-bsci-ci_CostOfTicketSales":{  
+                              "chinese_label":"出售門票成本",
+                              "english_label":"Cost of ticket sales",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfSouvenirMerchandiseSales":{  
+                           "tifrs-bsci-ci_CostOfSouvenirMerchandiseSales":{  
+                              "chinese_label":"商品成本",
+                              "english_label":"Cost of souvenir (merchandise) sales",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfRideSales":{  
+                           "tifrs-bsci-ci_CostOfRideSales":{  
+                              "chinese_label":"遊樂成本",
+                              "english_label":"Cost of ride sales",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_EntertainmentCosts":{  
+                           "tifrs-bsci-ci_EntertainmentCosts":{  
+                              "chinese_label":"育樂成本",
+                              "english_label":"Entertainment costs",
+                              "order":4.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfTravelServicesForHotelBusiness":{  
+                     "tifrs-bsci-ci_CostOfTravelServicesForHotelBusiness":{  
+                        "chinese_label":"旅遊服務成本（觀光飯店業適用）",
+                        "english_label":"Cost of travel services (for hotel business)",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_CostOfConstructionAndEngineeringServiceSalesAbstract":{ 
+               "tifrs-bsci-ci_CostOfConstructionAndEngineeringServiceSalesAbstract":{  
+                  "chinese_label":"營建工程成本",
+                  "english_label":"Cost of construction and engineering service sales",
+                  "order":6.0,
+                  "tifrs-bsci-ci_CostOfConstructionSales":{  
+                     "tifrs-bsci-ci_CostOfConstructionSales":{  
+                        "chinese_label":"營建成本",
+                        "english_label":"Cost of construction sales",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfEngineeringSales":{  
+                     "tifrs-bsci-ci_CostOfEngineeringSales":{  
+                        "chinese_label":"工程成本",
+                        "english_label":"Cost of engineering sales",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfConstructionAndEngineeringServiceSales":{  
+                     "tifrs-bsci-ci_CostOfConstructionAndEngineeringServiceSales":{  
+                        "chinese_label":"營建工程成本",
+                        "english_label":"Cost of construction and engineering service sales",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_CostOfServicesAbstract":{  
+               "tifrs-bsci-ci_CostOfServicesAbstract":{  
+                  "chinese_label":"勞務成本",
+                  "english_label":"Cost of services",
+                  "order":7.0,
+                  "tifrs-bsci-ci_CostOfServices-CostOfServicesAbstract":{  
+                     "tifrs-bsci-ci_CostOfServices-CostOfServicesAbstract":{  
+                        "chinese_label":"勞務成本",
+                        "english_label":"Cost of services",
+                        "order":1.0,
+                        "tifrs-bsci-ci_CostOfServices-CostOfServices-CostOfServices":{  
+                           "tifrs-bsci-ci_CostOfServices-CostOfServices-CostOfServices":{  
+                              "chinese_label":"勞務成本",
+                              "english_label":"Cost of services",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfDesignServices":{  
+                           "tifrs-bsci-ci_CostOfDesignServices":{  
+                              "chinese_label":"設計成本",
+                              "english_label":"Cost of design services",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfServices-CostOfServices":{  
+                           "tifrs-bsci-ci_CostOfServices-CostOfServices":{  
+                              "chinese_label":"勞務成本",
+                              "english_label":"Cost of services",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfTransportationSalesForSeaLandAirShippingBusinessAbstract":{  
+                     "tifrs-bsci-ci_CostOfTransportationSalesForSeaLandAirShippingBusinessAbstract":{  
+                        "chinese_label":"運輸成本（海陸運輸業、航空業適用）",
+                        "english_label":"Cost of transportation sales (for sea/land/air shipping business)",
+                        "order":2.0,
+                        "tifrs-bsci-ci_CostOfMarineFreightServices":{  
+                           "tifrs-bsci-ci_CostOfMarineFreightServices":{  
+                              "chinese_label":"海運成本",
+                              "english_label":"Cost of marine freight services",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfLandFreightServices":{  
+                           "tifrs-bsci-ci_CostOfLandFreightServices":{  
+                              "chinese_label":"陸運成本",
+                              "english_label":"Cost of land freight services",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfAirFreightServices":{  
+                           "tifrs-bsci-ci_CostOfAirFreightServices":{  
+                              "chinese_label":"空運成本",
+                              "english_label":"Cost of air freight services",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_AirportOperatingCosts":{  
+                           "tifrs-bsci-ci_AirportOperatingCosts":{  
+                              "chinese_label":"場站及運務成本",
+                              "english_label":"Airport operating costs",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_TravelerServiceCosts":{  
+                           "tifrs-bsci-ci_TravelerServiceCosts":{  
+                              "chinese_label":"旅客服務成本",
+                              "english_label":"Traveler service costs",
+                              "order":5.0
+                           }
+                        },
+                        "tifrs-bsci-ci_CostOfTransportationSalesForSeaLandAirShippingBusiness":{  
+                           "tifrs-bsci-ci_CostOfTransportationSalesForSeaLandAirShippingBusiness":{  
+                              "chinese_label":"運輸成本（海陸運輸業、航空業適用）",
+                              "english_label":"Cost of transportation sales (for sea/land/air shipping business)",
+                              "order":6.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_InFlightOperatingCosts":{  
+                     "tifrs-bsci-ci_InFlightOperatingCosts":{  
+                        "chinese_label":"空中營業成本",
+                        "english_label":"In-flight operating costs",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InstallationCosts":{  
+                     "tifrs-bsci-ci_InstallationCosts":{  
+                        "chinese_label":"裝置成本",
+                        "english_label":"Installation costs",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostsToProvideTechnicalServices":{  
+                     "tifrs-bsci-ci_CostsToProvideTechnicalServices":{  
+                        "chinese_label":"技術服務費用",
+                        "english_label":"Costs to provide technical services",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ProcessingCosts":{  
+                     "tifrs-bsci-ci_ProcessingCosts":{  
+                        "chinese_label":"加工成本",
+                        "english_label":"Processing costs",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_MaintenanceCosts":{  
+                     "tifrs-bsci-ci_MaintenanceCosts":{  
+                        "chinese_label":"維修成本",
+                        "english_label":"Maintenance costs",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherServiceCosts":{  
+                     "tifrs-bsci-ci_OtherServiceCosts":{  
+                        "chinese_label":"其他勞務成本",
+                        "english_label":"Other service costs",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CostOfServices":{  
+                     "tifrs-bsci-ci_CostOfServices":{  
+                        "chinese_label":"勞務成本",
+                        "english_label":"Cost of services",
+                        "order":9.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_StandardCostVariancesAbstract":{  
+               "tifrs-bsci-ci_StandardCostVariancesAbstract":{  
+                  "chinese_label":"標準成本差異",
+                  "english_label":"Standard cost variances",
+                  "order":8.0,
+                  "tifrs-bsci-ci_DirectMaterialVariancesAbstract":{  
+                     "tifrs-bsci-ci_DirectMaterialVariancesAbstract":{  
+                        "chinese_label":"直接原料差異",
+                        "english_label":"Direct material variances",
+                        "order":1.0,
+                        "tifrs-bsci-ci_DirectMaterialPriceVariance":{  
+                           "tifrs-bsci-ci_DirectMaterialPriceVariance":{  
+                              "chinese_label":"直接原料價格差異",
+                              "english_label":"Direct material price variance",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DirectMaterialQuantityVariance":{  
+                           "tifrs-bsci-ci_DirectMaterialQuantityVariance":{  
+                              "chinese_label":"直接原料數量差異",
+                              "english_label":"Direct material quantity variance",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DirectMaterialVariances":{  
+                           "tifrs-bsci-ci_DirectMaterialVariances":{  
+                              "chinese_label":"直接原料差異",
+                              "english_label":"Direct material variances",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_DirectLaborVariancesAbstract":{  
+                     "tifrs-bsci-ci_DirectLaborVariancesAbstract":{  
+                        "chinese_label":"直接人工差異",
+                        "english_label":"Direct labor variances",
+                        "order":2.0,
+                        "tifrs-bsci-ci_DirectLaborRateVariance":{  
+                           "tifrs-bsci-ci_DirectLaborRateVariance":{  
+                              "chinese_label":"直接人工費率差異",
+                              "english_label":"Direct labor rate variance",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DirectLaborEfficiencyVariance":{  
+                           "tifrs-bsci-ci_DirectLaborEfficiencyVariance":{  
+                              "chinese_label":"直接人工效率差異",
+                              "english_label":"Direct labor efficiency variance",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_DirectLaborVariances":{  
+                           "tifrs-bsci-ci_DirectLaborVariances":{  
+                              "chinese_label":"直接人工差異",
+                              "english_label":"Direct labor variances",
+                              "order":3.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_OverheadVariancesAbstract":{  
+                     "tifrs-bsci-ci_OverheadVariancesAbstract":{  
+                        "chinese_label":"製造費用差異",
+                        "english_label":"Overhead variances",
+                        "order":3.0,
+                        "tifrs-bsci-ci_OverheadSpendingVariance":{  
+                           "tifrs-bsci-ci_OverheadSpendingVariance":{  
+                              "chinese_label":"製造費用用款差異",
+                              "english_label":"Overhead spending variance",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OverheadEfficiencyVariance":{  
+                           "tifrs-bsci-ci_OverheadEfficiencyVariance":{  
+                              "chinese_label":"製造費用效率差異",
+                              "english_label":"Overhead efficiency variance",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OverheadVolumeVariance":{  
+                           "tifrs-bsci-ci_OverheadVolumeVariance":{  
+                              "chinese_label":"製造費用數量差異",
+                              "english_label":"Overhead volume variance",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OverheadVariances":{  
+                           "tifrs-bsci-ci_OverheadVariances":{  
+                              "chinese_label":"製造費用差異",
+                              "english_label":"Overhead variances",
+                              "order":4.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_StandardCostVariances":{  
+                     "tifrs-bsci-ci_StandardCostVariances":{  
+                        "chinese_label":"標準成本差異",
+                        "english_label":"Standard cost variances",
+                        "order":4.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_OtherOperatingCosts":{  
+               "tifrs-bsci-ci_OtherOperatingCosts":{  
+                  "chinese_label":"其他營業成本",
+                  "english_label":"Other operating costs",
+                  "order":9.0
+               }
+            },
+            "tifrs-bsci-ci_OperatingCosts":{  
+               "tifrs-bsci-ci_OperatingCosts":{  
+                  "chinese_label":"營業成本",
+                  "english_label":"Operating costs",
+                  "order":10.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"20990175000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"21859006000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_GrossProfitLossFromOperations":{  
+         "tifrs-bsci-ci_GrossProfitLossFromOperations":{  
+            "chinese_label":"營業毛利（毛損）",
+            "english_label":"Gross profit (loss) from operations",
+            "order":3.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"3123872000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"3429759000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_UnrealizedProfitLossFromSales":{  
+         "tifrs-bsci-ci_UnrealizedProfitLossFromSales":{  
+            "chinese_label":"未實現銷貨（損）益",
+            "english_label":"Unrealized profit (loss) from sales",
+            "order":3.1
+         }
+      },
+      "tifrs-bsci-ci_RealizedProfitLossOnFromSales":{  
+         "tifrs-bsci-ci_RealizedProfitLossOnFromSales":{  
+            "chinese_label":"已實現銷貨（損）益",
+            "english_label":"Realized profit (loss) on from sales",
+            "order":3.2
+         }
+      },
+      "tifrs-bsci-ci_GrossProfitLossFromOperationsNet":{  
+         "tifrs-bsci-ci_GrossProfitLossFromOperationsNet":{  
+            "chinese_label":"營業毛利（毛損）淨額",
+            "english_label":"Gross profit (loss) from operations",
+            "order":3.3,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"3123872000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"3429759000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_OperatingExpensesAbstract":{  
+         "tifrs-bsci-ci_OperatingExpensesAbstract":{  
+            "chinese_label":"營業費用",
+            "english_label":"Operating expenses",
+            "order":4.0,
+            "tifrs-bsci-ci_SellingExpensesAbstract":{  
+               "tifrs-bsci-ci_SellingExpensesAbstract":{  
+                  "chinese_label":"推銷費用",
+                  "english_label":"Selling expenses",
+                  "order":1.0,
+                  "tifrs-bsci-ci_WagesAndSalaries-SellingExpenses":{  
+                     "tifrs-bsci-ci_WagesAndSalaries-SellingExpenses":{  
+                        "chinese_label":"薪資支出",
+                        "english_label":"Wages and salaries",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RentExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_RentExpense-SellingExpenses":{  
+                        "chinese_label":"租金支出",
+                        "english_label":"Rent expense",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_StationerySupplies-SellingExpenses":{  
+                     "tifrs-bsci-ci_StationerySupplies-SellingExpenses":{  
+                        "chinese_label":"文具用品",
+                        "english_label":"Stationery supplies",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TravelingExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_TravelingExpense-SellingExpenses":{  
+                        "chinese_label":"旅費",
+                        "english_label":"Traveling Expense",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Freight-SellingExpenses":{  
+                     "tifrs-bsci-ci_Freight-SellingExpenses":{  
+                        "chinese_label":"運費",
+                        "english_label":"Freight",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_PostageExpenses-SellingExpenses":{  
+                     "tifrs-bsci-ci_PostageExpenses-SellingExpenses":{  
+                        "chinese_label":"郵電費",
+                        "english_label":"Postage expenses",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RepairsAndMaintenanceExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_RepairsAndMaintenanceExpense-SellingExpenses":{  
+                        "chinese_label":"修繕費",
+                        "english_label":"Repairs and maintenance expense",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_AdvertisementExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_AdvertisementExpense-SellingExpenses":{  
+                        "chinese_label":"廣告費",
+                        "english_label":"Advertisement expense",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_UtilitiesExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_UtilitiesExpense-SellingExpenses":{  
+                        "chinese_label":"水電瓦斯費",
+                        "english_label":"Utilities expense",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InsuranceExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_InsuranceExpense-SellingExpenses":{  
+                        "chinese_label":"保險費",
+                        "english_label":"Insurance expense",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EntertainmentExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_EntertainmentExpense-SellingExpenses":{  
+                        "chinese_label":"交際費",
+                        "english_label":"Entertainment expense",
+                        "order":11.0
+                     }
+                  },
+                  "tifrs-bsci-ci_DonationExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_DonationExpense-SellingExpenses":{  
+                        "chinese_label":"捐贈",
+                        "english_label":"Donation expense",
+                        "order":12.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Taxes-SellingExpenses":{  
+                     "tifrs-bsci-ci_Taxes-SellingExpenses":{  
+                        "chinese_label":"稅捐",
+                        "english_label":"Taxes",
+                        "order":13.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Depreciations-SellingExpenses":{  
+                     "tifrs-bsci-ci_Depreciations-SellingExpenses":{  
+                        "chinese_label":"折舊",
+                        "english_label":"Depreciations",
+                        "order":14.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Amortizations-SellingExpenses":{  
+                     "tifrs-bsci-ci_Amortizations-SellingExpenses":{  
+                        "chinese_label":"各項攤提",
+                        "english_label":"Amortizations",
+                        "order":15.0
+                     }
+                  },
+                  "tifrs-bsci-ci_MealExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_MealExpense-SellingExpenses":{  
+                        "chinese_label":"伙食費",
+                        "english_label":"Meal expense",
+                        "order":16.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EmployeeBenefitsWelfare-SellingExpenses":{  
+                     "tifrs-bsci-ci_EmployeeBenefitsWelfare-SellingExpenses":{  
+                        "chinese_label":"職工福利",
+                        "english_label":"Employee benefits/welfare",
+                        "order":17.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CommissionsExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_CommissionsExpense-SellingExpenses":{  
+                        "chinese_label":"佣金支出",
+                        "english_label":"Commissions expense",
+                        "order":18.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TrainingExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_TrainingExpense-SellingExpenses":{  
+                        "chinese_label":"訓練費",
+                        "english_label":"Training expense",
+                        "order":19.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ImportExportCustomsExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_ImportExportCustomsExpense-SellingExpenses":{  
+                        "chinese_label":"進出口費用",
+                        "english_label":"Import/export (customs) expense",
+                        "order":20.0
+                     }
+                  },
+                  "tifrs-bsci-ci_FishingOperationsExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_FishingOperationsExpense-SellingExpenses":{  
+                        "chinese_label":"漁業作業費用",
+                        "english_label":"Fishing operations expense",
+                        "order":22.0
+                     }
+                  },
+                  "tifrs-bsci-ci_FishingMarketingExpense-SellingExpenses":{  
+                     "tifrs-bsci-ci_FishingMarketingExpense-SellingExpenses":{  
+                        "chinese_label":"漁貨銷售費用",
+                        "english_label":"Fishing marketing expense",
+                        "order":23.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherExpenses-SellingExpenses":{  
+                     "tifrs-bsci-ci_OtherExpenses-SellingExpenses":{  
+                        "chinese_label":"其他費用",
+                        "english_label":"Other expenses",
+                        "order":24.0
+                     }
+                  },
+                  "tifrs-bsci-ci_SellingExpenses":{  
+                     "tifrs-bsci-ci_SellingExpenses":{  
+                        "chinese_label":"推銷費用",
+                        "english_label":"Selling expenses",
+                        "order":25.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"221917000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"270498000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_AdministrativeExpensesAbstract":{  
+               "tifrs-bsci-ci_AdministrativeExpensesAbstract":{  
+                  "chinese_label":"管理費用",
+                  "english_label":"Administrative expenses",
+                  "order":2.0,
+                  "tifrs-bsci-ci_WagesAndSalaries-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_WagesAndSalaries-AdministrativeExpenses":{  
+                        "chinese_label":"薪資支出",
+                        "english_label":"Wages and salaries",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RentExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_RentExpense-AdministrativeExpenses":{  
+                        "chinese_label":"租金支出",
+                        "english_label":"Rent expense",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_StationerySupplies-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_StationerySupplies-AdministrativeExpenses":{  
+                        "chinese_label":"文具用品",
+                        "english_label":"Stationery supplies",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TravelingExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_TravelingExpense-AdministrativeExpenses":{  
+                        "chinese_label":"旅費",
+                        "english_label":"Traveling expense",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Freight-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_Freight-AdministrativeExpenses":{  
+                        "chinese_label":"運費",
+                        "english_label":"Freight",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_PostageExpenses-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_PostageExpenses-AdministrativeExpenses":{  
+                        "chinese_label":"郵電費",
+                        "english_label":"Postage expenses",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RepairsAndMaintenanceExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_RepairsAndMaintenanceExpense-AdministrativeExpenses":{  
+                        "chinese_label":"修繕費",
+                        "english_label":"Repairs and maintenance expense",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_AdvertisementExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_AdvertisementExpense-AdministrativeExpenses":{ 
+                        "chinese_label":"廣告費",
+                        "english_label":"Advertisement expense",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_UtilitiesExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_UtilitiesExpense-AdministrativeExpenses":{  
+                        "chinese_label":"水電瓦斯費",
+                        "english_label":"Utilities expense",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InsuranceExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_InsuranceExpense-AdministrativeExpenses":{  
+                        "chinese_label":"保險費",
+                        "english_label":"Insurance expense",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EntertainmentExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_EntertainmentExpense-AdministrativeExpenses":{ 
+                        "chinese_label":"交際費",
+                        "english_label":"Entertainment expense",
+                        "order":11.0
+                     }
+                  },
+                  "tifrs-bsci-ci_DonationExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_DonationExpense-AdministrativeExpenses":{  
+                        "chinese_label":"捐贈",
+                        "english_label":"Donation expense",
+                        "order":12.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Taxes-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_Taxes-AdministrativeExpenses":{  
+                        "chinese_label":"稅捐",
+                        "english_label":"Taxes",
+                        "order":13.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnDoubtfulDebts-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_LossesOnDoubtfulDebts-AdministrativeExpenses":{  
+                        "chinese_label":"呆帳損失",
+                        "english_label":"Losses on doubtful debts",
+                        "order":14.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Depreciations-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_Depreciations-AdministrativeExpenses":{  
+                        "chinese_label":"折舊",
+                        "english_label":"Depreciations",
+                        "order":15.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Amortizations-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_Amortizations-AdministrativeExpenses":{  
+                        "chinese_label":"各項攤提",
+                        "english_label":"Amortizations",
+                        "order":16.0
+                     }
+                  },
+                  "tifrs-bsci-ci_MealExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_MealExpense-AdministrativeExpenses":{  
+                        "chinese_label":"伙食費",
+                        "english_label":"Meal expense",
+                        "order":17.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EmployeeBenefitsWelfare-AdministrativeExpenses":{ 
+                     "tifrs-bsci-ci_EmployeeBenefitsWelfare-AdministrativeExpenses":{  
+                        "chinese_label":"職工福利",
+                        "english_label":"Employee benefits/welfare",
+                        "order":18.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CommissionsExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_CommissionsExpense-AdministrativeExpenses":{  
+                        "chinese_label":"研究發展費用",
+                        "english_label":"Commissions expense",
+                        "order":19.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TrainingExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_TrainingExpense-AdministrativeExpenses":{  
+                        "chinese_label":"訓練費",
+                        "english_label":"Training expense",
+                        "order":20.0
+                     }
+                  },
+                  "tifrs-bsci-ci_NetworkServiceExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_NetworkServiceExpense-AdministrativeExpenses":{  
+                        "chinese_label":"網路服務費",
+                        "english_label":"Network service expense",
+                        "order":21.0
+                     }
+                  },
+                  "tifrs-bsci-ci_SecurityExpense-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_SecurityExpense-AdministrativeExpenses":{  
+                        "chinese_label":"保全費",
+                        "english_label":"Security expense",
+                        "order":22.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherExpenses-AdministrativeExpenses":{  
+                     "tifrs-bsci-ci_OtherExpenses-AdministrativeExpenses":{  
+                        "chinese_label":"其他費用",
+                        "english_label":"Other expenses",
+                        "order":23.0
+                     }
+                  },
+                  "ifrs_AdministrativeExpense":{  
+                     "ifrs_AdministrativeExpense":{  
+                        "chinese_label":"管理費用",
+                        "english_label":"Administrative expenses",
+                        "order":24.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"863958000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"863516000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ResearchAndDevelopmentExpensesAbstract":{  
+               "tifrs-bsci-ci_ResearchAndDevelopmentExpensesAbstract":{  
+                  "chinese_label":"研究發展費用",
+                  "english_label":"Research and development expenses",
+                  "order":3.0,
+                  "tifrs-bsci-ci_WagesAndSalaries-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_WagesAndSalaries-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"薪資支出",
+                        "english_label":"Wages and salaries",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RentExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_RentExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"租金支出",
+                        "english_label":"Rent expense",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_StationerySupplies-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_StationerySupplies-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"文具用品",
+                        "english_label":"Stationery supplies",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TravelingExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_TravelingExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"旅費",
+                        "english_label":"Traveling expense",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Freight-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_Freight-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"運費",
+                        "english_label":"Freight",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_PostageExpenses-ResearchAndDevelopmentExpenses":{ 
+                     "tifrs-bsci-ci_PostageExpenses-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"郵電費",
+                        "english_label":"Postage expenses",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_RepairsAndMaintenanceExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_RepairsAndMaintenanceExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"修繕費",
+                        "english_label":"Repairs and maintenance expense",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_UtilitiesExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_UtilitiesExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"水電瓦斯費",
+                        "english_label":"Utilities expense",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_InsuranceExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_InsuranceExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"保險費",
+                        "english_label":"Insurance expense",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EntertainmentExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_EntertainmentExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"交際費",
+                        "english_label":"Entertainment expense",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_DonationExpense-ResearchAndDevelopmentExpenses":{ 
+                     "tifrs-bsci-ci_DonationExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"捐贈",
+                        "english_label":"Donation expense",
+                        "order":11.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Taxes-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_Taxes-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"稅捐",
+                        "english_label":"Taxes",
+                        "order":12.0
+                     }
+                  },
+                  "tifrs-bsci-ci_DepreciationAndDepletion-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_DepreciationAndDepletion-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"折舊及折耗",
+                        "english_label":"Depreciation and depletion",
+                        "order":13.0
+                     }
+                  },
+                  "tifrs-bsci-ci_Amortizations-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_Amortizations-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"各項攤提",
+                        "english_label":"Amortizations",
+                        "order":14.0
+                     }
+                  },
+                  "tifrs-bsci-ci_MealExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_MealExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"伙食費",
+                        "english_label":"Meal expense",
+                        "order":15.0
+                     }
+                  },
+                  "tifrs-bsci-ci_EmployeeBenefitsWelfare-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_EmployeeBenefitsWelfare-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"職工福利",
+                        "english_label":"Employee benefits/welfare",
+                        "order":16.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ContractedResearchExpense-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_ContractedResearchExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"委託研究費",
+                        "english_label":"Contracted research expense",
+                        "order":17.0
+                     }
+                  },
+                  "tifrs-bsci-ci_TrainingExpense-ResearchAndDevelopmentExpenses":{ 
+                     "tifrs-bsci-ci_TrainingExpense-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"訓練費",
+                        "english_label":"Training expense",
+                        "order":18.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherExpenses-ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_OtherExpenses-ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"其他費用",
+                        "english_label":"Other expenses",
+                        "order":19.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ResearchAndDevelopmentExpenses":{  
+                     "tifrs-bsci-ci_ResearchAndDevelopmentExpenses":{  
+                        "chinese_label":"研究發展費用",
+                        "english_label":"Research and development expenses",
+                        "order":20.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"11268000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"8942000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "ifrs_OtherExpenseByFunction":{  
+               "ifrs_OtherExpenseByFunction":{  
+                  "chinese_label":"其他費用",
+                  "english_label":"Other expenses",
+                  "order":4.0
+               }
+            },
+            "tifrs-bsci-ci_OperatingExpenses":{  
+               "tifrs-bsci-ci_OperatingExpenses":{  
+                  "chinese_label":"營業費用",
+                  "english_label":"Operating expenses",
+                  "order":5.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1097143000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"1142956000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_NetOtherIncomeExpensesAbstract":{  
+         "tifrs-bsci-ci_NetOtherIncomeExpensesAbstract":{  
+            "chinese_label":"其他收益及費損淨額",
+            "english_label":"Net other income (expenses)",
+            "order":5.0,
+            "ifrs_OtherIncome":{  
+               "ifrs_OtherIncome":{  
+                  "chinese_label":"其他收益",
+                  "english_label":"Other income",
+                  "order":1.0
+               }
+            },
+            "tifrs-bsci-ci_OtherExpenses":{  
+               "tifrs-bsci-ci_OtherExpenses":{  
+                  "chinese_label":"其他費損",
+                  "english_label":"Other expenses",
+                  "order":2.0
+               }
+            },
+            "tifrs-bsci-ci_NetOtherIncomeExpenses":{  
+               "tifrs-bsci-ci_NetOtherIncomeExpenses":{  
+                  "chinese_label":"其他收益及費損淨額",
+                  "english_label":"Net other income (expenses)",
+                  "order":3.0
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_NetOperatingIncomeLoss":{  
+         "tifrs-bsci-ci_NetOperatingIncomeLoss":{  
+            "chinese_label":"營業利益（損失）",
+            "english_label":"Net operating income (loss)",
+            "order":6.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"2026729000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"2286803000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_NonoperatingIncomeAndExpensesAbstract":{  
+         "tifrs-bsci-ci_NonoperatingIncomeAndExpensesAbstract":{  
+            "chinese_label":"營業外收入及支出",
+            "english_label":"Non-operating income and expenses",
+            "order":7.0,
+            "tifrs-bsci-ci_OtherIncomeAbstract":{  
+               "tifrs-bsci-ci_OtherIncomeAbstract":{  
+                  "chinese_label":"其他收入",
+                  "english_label":"Other income",
+                  "order":1.0,
+                  "tifrs-bsci-ci_InterestIncomeAbstract":{  
+                     "tifrs-bsci-ci_InterestIncomeAbstract":{  
+                        "chinese_label":"利息收入",
+                        "english_label":"Interest income",
+                        "order":1.0,
+                        "tifrs-bsci-ci_InterestIncomeFromBankDeposits":{  
+                           "tifrs-bsci-ci_InterestIncomeFromBankDeposits":{  
+                              "chinese_label":"銀行存款利息",
+                              "english_label":"Interest income from bank deposits",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InterestIncomeFormFinancialAssetsMeasuredAtAmortisedCost":{  
+                           "tifrs-bsci-ci_InterestIncomeFormFinancialAssetsMeasuredAtAmortisedCost":{  
+                              "chinese_label":"按攤銷後成本衡量之金融資產利息收入",
+                              "english_label":"Interest income form financial assets measured at amortised cost",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InterestIncomeFormBondInvestmentWithoutActiveMarket":{  
+                           "tifrs-bsci-ci_InterestIncomeFormBondInvestmentWithoutActiveMarket":{  
+                              "chinese_label":"無活絡市場債券投資利息收入",
+                              "english_label":"Interest income form bond investment without active market",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_InterestIncomeFormHeldToMaturityFinancialAssets":{  
+                           "tifrs-bsci-ci_InterestIncomeFormHeldToMaturityFinancialAssets":{  
+                              "chinese_label":"持有至到期日金融資產利息收入",
+                              "english_label":"Interest income form held-to-maturity financial assets",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OtherInterestIncome":{  
+                           "tifrs-bsci-ci_OtherInterestIncome":{  
+                              "chinese_label":"其他利息收入",
+                              "english_label":"Other interest income",
+                              "order":5.0
+                           }
+                        },
+                        "ifrs_RevenueFromInterest":{  
+                           "ifrs_RevenueFromInterest":{  
+                              "chinese_label":"利息收入",
+                              "english_label":"Interest income",
+                              "order":6.0,
+                              "values":{  
+                                 "From20130101To20130331":{  
+                                    "value":"49859000",
+                                    "unit":"TWD",
+                                    "periodType":"duration",
+                                    "startDate":"20130101",
+                                    "endDate":"20130331"
+                                 },
+                                 "From20120101To20120331":{  
+                                    "value":"46293000",
+                                    "unit":"TWD",
+                                    "periodType":"duration",
+                                    "startDate":"20120101",
+                                    "endDate":"20120331"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_RentIncome":{  
+                     "tifrs-bsci-ci_RentIncome":{  
+                        "chinese_label":"租金收入",
+                        "english_label":"Rent income",
+                        "order":2.0
+                     }
+                  },
+                  "ifrs_RevenueFromRoyalties":{  
+                     "ifrs_RevenueFromRoyalties":{  
+                        "chinese_label":"權利金收入",
+                        "english_label":"Royalty income",
+                        "order":3.0
+                     }
+                  },
+                  "ifrs_RevenueFromDividends":{  
+                     "ifrs_RevenueFromDividends":{  
+                        "chinese_label":"股利收入",
+                        "english_label":"Dividend income",
+                        "order":4.0
+                     }
+                  },
+                  "ifrs_GainRecognisedInBargainPurchaseTransaction":{  
+                     "ifrs_GainRecognisedInBargainPurchaseTransaction":{  
+                        "chinese_label":"廉價購買利益",
+                        "english_label":"Gain recognised in bargain purchase transaction",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_FeeIncomeAbstract":{  
+                     "tifrs-bsci-ci_FeeIncomeAbstract":{  
+                        "chinese_label":"手續費收入",
+                        "english_label":"Fee income",
+                        "order":6.0,
+                        "ifrs_FeeIncomeArisingFromFinancialAssetsMeasuredAtAmortisedCost":{  
+                           "ifrs_FeeIncomeArisingFromFinancialAssetsMeasuredAtAmortisedCost":{  
+                              "chinese_label":"由按攤銷後成本衡量之金融資產產生之手續費收益",
+                              "english_label":"Fee income arising from financial assets measured at amortised cost",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeIncomeArisingFromFinancialLiabilitiesNotAtFairValueThroughProfitOrLoss":{  
+                           "tifrs-bsci-ci_FeeIncomeArisingFromFinancialLiabilitiesNotAtFairValueThroughProfitOrLoss":{  
+                              "chinese_label":"非以透過損益按公允價值衡量之金融負債所產生之手續費收益",
+                              "english_label":"Fee income arising from financial liabilities not at fair value through profit or loss",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeIncomeArisingFromTrustAndFiduciaryActivities":{  
+                           "tifrs-bsci-ci_FeeIncomeArisingFromTrustAndFiduciaryActivities":{  
+                              "chinese_label":"由信託及受託活動產生之手續費收益",
+                              "english_label":"Fee income arising from trust and fiduciary activities",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OtherFeeIncome":{  
+                           "tifrs-bsci-ci_OtherFeeIncome":{  
+                              "chinese_label":"其他手續費收入",
+                              "english_label":"Other fee income",
+                              "order":4.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeIncome":{  
+                           "tifrs-bsci-ci_FeeIncome":{  
+                              "chinese_label":"手續費收入",
+                              "english_label":"Fee income",
+                              "order":5.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_IncomeFromCounterPartyDefault":{  
+                     "tifrs-bsci-ci_IncomeFromCounterPartyDefault":{  
+                        "chinese_label":"違約金收入",
+                        "english_label":"Income from counter-party default",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ReimbursementIncome":{  
+                     "tifrs-bsci-ci_ReimbursementIncome":{  
+                        "chinese_label":"歸墊收入",
+                        "english_label":"Reimbursement income",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnDoubtfulDebtRecoveries":{  
+                     "tifrs-bsci-ci_GainsOnDoubtfulDebtRecoveries":{  
+                        "chinese_label":"壞帳轉回利益",
+                        "english_label":"Gains on doubtful debt recoveries",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnWriteOffOfPastDuePayable":{  
+                     "tifrs-bsci-ci_GainsOnWriteOffOfPastDuePayable":{  
+                        "chinese_label":"沖銷逾期應付款利益",
+                        "english_label":"Gains on write-off of past due payable",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OtherIncomeOthers":{  
+                     "tifrs-bsci-ci_OtherIncomeOthers":{  
+                        "chinese_label":"其他收入－其他",
+                        "english_label":"Other income, others",
+                        "order":11.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"285151000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"525813000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  },
+                  "ifrs_OtherRevenue":{  
+                     "ifrs_OtherRevenue":{  
+                        "chinese_label":"其他收入",
+                        "english_label":"Other income",
+                        "order":12.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"335010000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"572106000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_OtherGainsAndLossesAbstract":{  
+               "tifrs-bsci-ci_OtherGainsAndLossesAbstract":{  
+                  "chinese_label":"其他利益及損失",
+                  "english_label":"Other gains and losses",
+                  "order":2.0,
+                  "tifrs-bsci-ci_GainsOnDisposalsOfPropertyPlantAndEquipment":{  
+                     "tifrs-bsci-ci_GainsOnDisposalsOfPropertyPlantAndEquipment":{ 
+                        "chinese_label":"處分不動產、廠房及設備利益",
+                        "english_label":"Gains on disposals of property, plant and equipment",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnDisposalsOfInvestmentProperty":{  
+                     "tifrs-bsci-ci_GainsOnDisposalsOfInvestmentProperty":{  
+                        "chinese_label":"處分投資性不動產利益",
+                        "english_label":"Gains on disposals of investment property",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnDisposalsOfIntangibleAssets":{  
+                     "tifrs-bsci-ci_GainsOnDisposalsOfIntangibleAssets":{  
+                        "chinese_label":"處分無形資產利益",
+                        "english_label":"Gains on disposals of intangible assets",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnDisposalsOfInvestments":{  
+                     "tifrs-bsci-ci_GainsOnDisposalsOfInvestments":{  
+                        "chinese_label":"處分投資利益",
+                        "english_label":"Gains on disposals of investments",
+                        "order":4.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"430158000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"286694000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_ForeignExchangeGains":{  
+                     "tifrs-bsci-ci_ForeignExchangeGains":{  
+                        "chinese_label":"外幣兌換利益",
+                        "english_label":"Foreign exchange gains",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-NonoperatingIncomeAndExpenses":{  
+                     "tifrs-bsci-ci_GainsOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-NonoperatingIncomeAndExpenses":{  
+                        "chinese_label":"透過損益按公允價值衡量之金融資產（負債）利益",
+                        "english_label":"Gains on financial assets (liabilities) at fair value through profit or loss",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnFinancialLiabilitiesAtAmortisedCost":{  
+                     "tifrs-bsci-ci_GainsOnFinancialLiabilitiesAtAmortisedCost":{  
+                        "chinese_label":"按攤銷後成本衡量之金融負債利益",
+                        "english_label":"Gains on financial liabilities at amortised cost",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnInitialRecognitionOfBiologicalAssetsForCurrentPeriod":{  
+                     "tifrs-bsci-ci_GainsOnInitialRecognitionOfBiologicalAssetsForCurrentPeriod":{  
+                        "chinese_label":"當期原始認列生物資產之利益",
+                        "english_label":"Gains on initial recognition of biological assets for current period",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnChangesInFairValueLessCostsToSellOfBiologicalAssetsForCurrentPeriod":{  
+                     "tifrs-bsci-ci_GainsOnChangesInFairValueLessCostsToSellOfBiologicalAssetsForCurrentPeriod":{  
+                        "chinese_label":"生物資產當期公允價值減出售成本之變動之利益",
+                        "english_label":"Gains on changes in fair value less costs to sell of biological assets for current period",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnFairValueAdjustmentInvestmentProperty":{  
+                     "tifrs-bsci-ci_GainsOnFairValueAdjustmentInvestmentProperty":{  
+                        "chinese_label":"公允價值調整利益－投資性不動產",
+                        "english_label":"Gains on fair value adjustment, investment property",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnRevaluationOfPropertyPlanAndEquipment":{  
+                     "tifrs-bsci-ci_GainsOnRevaluationOfPropertyPlanAndEquipment":{  
+                        "chinese_label":"不動產、廠房及設備重估價利益",
+                        "english_label":"Gains on revaluation of property, plan and equipment",
+                        "order":11.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnRevaluationOfIntangibleAssetsOtherThanGoodwill":{  
+                     "tifrs-bsci-ci_GainsOnRevaluationOfIntangibleAssetsOtherThanGoodwill":{  
+                        "chinese_label":"無形資產重估價利益",
+                        "english_label":"Gains on revaluation of intangible assets other than goodwill",
+                        "order":12.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossAbstract":{  
+                     "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossAbstract":{  
+                        "chinese_label":"減損迴轉利益",
+                        "english_label":"Reversal of impairment loss recognised in profit or loss",
+                        "order":13.0,
+                        "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossFinancialAssets":{  
+                           "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossFinancialAssets":{  
+                              "chinese_label":"金融資產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, financial assets",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossNoncurrentAssetHeldForSale":{  
+                           "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossNoncurrentAssetHeldForSale":{  
+                              "chinese_label":"待出售非流動資產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, non-current asset held for sale",
+                              "order":2.0
+                           }
+                        },
+                        "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossPropertyPlantAndEquipment":{  
+                           "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossPropertyPlantAndEquipment":{  
+                              "chinese_label":"不動產、廠房及設備減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, property, plant and equipment",
+                              "order":3.0
+                           }
+                        },
+                        "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossInvestmentProperty":{  
+                           "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossInvestmentProperty":{  
+                              "chinese_label":"投資性不動產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, investment property",
+                              "order":4.0
+                           }
+                        },
+                        "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill":{  
+                           "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill":{  
+                              "chinese_label":"無形資產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, intangible assets other than goodwill",
+                              "order":5.0
+                           }
+                        },
+                        "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossBiologicalAssets":{  
+                           "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLossBiologicalAssets":{  
+                              "chinese_label":"生物資產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, biological assets",
+                              "order":6.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossExplorationAndEvaluationAssets":{  
+                           "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossExplorationAndEvaluationAssets":{  
+                              "chinese_label":"探勘及評估資產減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, exploration and evaluation assets",
+                              "order":7.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossOthers":{  
+                           "tifrs-bsci-ci_ReversalOfImpairmentLossRecognisedInProfitOrLossOthers":{  
+                              "chinese_label":"其他減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss, others",
+                              "order":8.0
+                           }
+                        },
+                        "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLoss":{  
+                           "ifrs_ReversalOfImpairmentLossRecognisedInProfitOrLoss":{  
+                              "chinese_label":"減損迴轉利益",
+                              "english_label":"Reversal of impairment loss recognised in profit or loss",
+                              "order":9.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_FeeExpenseAbstract":{  
+                     "tifrs-bsci-ci_FeeExpenseAbstract":{  
+                        "chinese_label":"手續費支出",
+                        "english_label":"Fee expense",
+                        "order":14.0,
+                        "ifrs_FeeExpenseArisingFromFinancialLiabilitiesNotAtFairValueThroughProfitOrLoss":{  
+                           "ifrs_FeeExpenseArisingFromFinancialLiabilitiesNotAtFairValueThroughProfitOrLoss":{  
+                              "chinese_label":"非以透過損益按公允價值衡量之金融負債所產生之手續費費損",
+                              "english_label":"Fee expense arising from financial liabilities not at fair value through profit or loss",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeExpenseArisingFromFinancialAssetsMeasuredAtAmortisedCost":{  
+                           "tifrs-bsci-ci_FeeExpenseArisingFromFinancialAssetsMeasuredAtAmortisedCost":{  
+                              "chinese_label":"由攤銷後成本衡量之金融資產產生之手續費費損",
+                              "english_label":"Fee expense arising from financial assets measured at amortised cost",
+                              "order":2.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeExpenseArisingFromTrustAndFiduciaryActivities":{  
+                           "tifrs-bsci-ci_FeeExpenseArisingFromTrustAndFiduciaryActivities":{  
+                              "chinese_label":"由信託及受託活動產生之手續費費損",
+                              "english_label":"Fee expense arising from trust and fiduciary activities",
+                              "order":3.0
+                           }
+                        },
+                        "tifrs-bsci-ci_FeeExpense":{  
+                           "tifrs-bsci-ci_FeeExpense":{  
+                              "chinese_label":"手續費支出",
+                              "english_label":"Fee expense",
+                              "order":4.0
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnWorkStoppages":{  
+                     "tifrs-bsci-ci_LossesOnWorkStoppages":{  
+                        "chinese_label":"停工損失",
+                        "english_label":"Losses on work stoppages",
+                        "order":15.0
+                     }
+                  },
+                  "tifrs-bsci-ci_OnerousContractsLosses":{  
+                     "tifrs-bsci-ci_OnerousContractsLosses":{  
+                        "chinese_label":"虧損性合約損失",
+                        "english_label":"Onerous contracts losses",
+                        "order":16.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GuaranteeContractsLosses":{  
+                     "tifrs-bsci-ci_GuaranteeContractsLosses":{  
+                        "chinese_label":"保證合約損失",
+                        "english_label":"Guarantee contracts losses",
+                        "order":17.0
+                     }
+                  },
+                  "tifrs-bsci-ci_CompensationLosses":{  
+                     "tifrs-bsci-ci_CompensationLosses":{  
+                        "chinese_label":"賠償損失",
+                        "english_label":"Compensation losses",
+                        "order":18.0
+                     }
+                  },
+                  "tifrs-bsci-ci_MiscellaneousDisbursements":{  
+                     "tifrs-bsci-ci_MiscellaneousDisbursements":{  
+                        "chinese_label":"什項支出",
+                        "english_label":"Miscellaneous disbursements",
+                        "order":19.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"74753000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"78151000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnDisposalsOfPropertyPlantAndEquipment":{  
+                     "tifrs-bsci-ci_LossesOnDisposalsOfPropertyPlantAndEquipment":{  
+                        "chinese_label":"處分不動產、廠房及設備損失",
+                        "english_label":"Losses on disposals of property, plant and equipment",
+                        "order":20.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnDisposalsOfInvestmentProperty":{  
+                     "tifrs-bsci-ci_LossesOnDisposalsOfInvestmentProperty":{  
+                        "chinese_label":"處分投資性不動產損失",
+                        "english_label":"Losses on disposals of investment property",
+                        "order":21.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnDisposalsOfIntangibleAssetsOtherThanGoodwill":{  
+                     "tifrs-bsci-ci_LossesOnDisposalsOfIntangibleAssetsOtherThanGoodwill":{  
+                        "chinese_label":"處分無形資產損失",
+                        "english_label":"Losses on disposals of intangible assets other than goodwill",
+                        "order":22.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnDisposalsOfInvestments":{  
+                     "tifrs-bsci-ci_LossesOnDisposalsOfInvestments":{  
+                        "chinese_label":"處分投資損失",
+                        "english_label":"Losses on disposals of investments",
+                        "order":23.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ForeignExchangeLosses":{  
+                     "tifrs-bsci-ci_ForeignExchangeLosses":{  
+                        "chinese_label":"外幣兌換損失",
+                        "english_label":"Foreign exchange losses",
+                        "order":24.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-NonoperatingIncomeAndExpenses":{  
+                     "tifrs-bsci-ci_LossesOnFinancialAssetsLiabilitiesAtFairValueThroughProfitOrLoss-NonoperatingIncomeAndExpenses":{  
+                        "chinese_label":"透過損益按公允價值衡量之金融資產（負債）損失",
+                        "english_label":"Losses on financial assets (liabilities) at fair value through profit or loss",
+                        "order":25.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnFinancialLiabilitiesAtAmortisedCost":{  
+                     "tifrs-bsci-ci_LossesOnFinancialLiabilitiesAtAmortisedCost":{ 
+                        "chinese_label":"按攤銷後成本衡量之金融負債損失",
+                        "english_label":"Losses on financial liabilities at amortised cost",
+                        "order":26.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnInitialRecognitionOfBiologicalAssetsForCurrentPeriod":{  
+                     "tifrs-bsci-ci_LossesOnInitialRecognitionOfBiologicalAssetsForCurrentPeriod":{  
+                        "chinese_label":"當期原始認列生物資產之損失",
+                        "english_label":"Losses on initial recognition of biological assets for current period",
+                        "order":27.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnChangesInFairValueLessCostsToSellOfBiologicalAssetsForCurrentPeriod":{  
+                     "tifrs-bsci-ci_LossesOnChangesInFairValueLessCostsToSellOfBiologicalAssetsForCurrentPeriod":{  
+                        "chinese_label":"生物資產當期公允價值減出售成本之變動之損失",
+                        "english_label":"Losses on changes in fair value less costs to sell of biological assets for current period",
+                        "order":28.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnFairValueAdjustmentInvestmentProperty":{  
+                     "tifrs-bsci-ci_LossesOnFairValueAdjustmentInvestmentProperty":{  
+                        "chinese_label":"公允價值調整損失－投資性不動產",
+                        "english_label":"Losses on fair value adjustment, investment property",
+                        "order":29.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnRevaluationOfPropertyPlantAndEquipment":{ 
+                     "tifrs-bsci-ci_LossesOnRevaluationOfPropertyPlantAndEquipment":{  
+                        "chinese_label":"不動產、廠房及設備重估價損失",
+                        "english_label":"Losses on revaluation of property, plant and equipment",
+                        "order":30.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnRevaluationOfIntangibleAssetsOtherThanGoodwill":{  
+                     "tifrs-bsci-ci_LossesOnRevaluationOfIntangibleAssetsOtherThanGoodwill":{  
+                        "chinese_label":"無形資產重估價損失",
+                        "english_label":"Losses on revaluation of intangible assets other than goodwill",
+                        "order":31.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ImpairmentLossAbstract":{  
+                     "tifrs-bsci-ci_ImpairmentLossAbstract":{  
+                        "chinese_label":"減損損失",
+                        "english_label":"Impairment loss",
+                        "order":32.0,
+                        "ifrs_ImpairmentLossOnFinancialAssets":{  
+                           "ifrs_ImpairmentLossOnFinancialAssets":{  
+                              "chinese_label":"金融資產減損損失",
+                              "english_label":"Impairment loss on financial assets",
+                              "order":1.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ImpairmentLossRecognisedInProfitOrLossNoncurrentAssetHeldForSale":{  
+                           "tifrs-bsci-ci_ImpairmentLossRecognisedInProfitOrLossNoncurrentAssetHeldForSale":{  
+                              "chinese_label":"待出售非流動資產減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, non-current asset held for sale",
+                              "order":2.0
+                           }
+                        },
+                        "ifrs_ImpairmentLossRecognisedInProfitOrLossPropertyPlantAndEquipment":{  
+                           "ifrs_ImpairmentLossRecognisedInProfitOrLossPropertyPlantAndEquipment":{  
+                              "chinese_label":"不動產、廠房及設備減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, property, plant and equipment",
+                              "order":3.0
+                           }
+                        },
+                        "ifrs_ImpairmentLossRecognisedInProfitOrLossInvestmentProperty":{  
+                           "ifrs_ImpairmentLossRecognisedInProfitOrLossInvestmentProperty":{  
+                              "chinese_label":"投資性不動產減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, investment property",
+                              "order":4.0
+                           }
+                        },
+                        "ifrs_ImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill":{  
+                           "ifrs_ImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill":{  
+                              "chinese_label":"無形資產減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, intangible assets other than goodwill",
+                              "order":5.0
+                           }
+                        },
+                        "ifrs_ImpairmentLossRecognisedInProfitOrLossBiologicalAssets":{  
+                           "ifrs_ImpairmentLossRecognisedInProfitOrLossBiologicalAssets":{  
+                              "chinese_label":"生物資產減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, biological assets",
+                              "order":6.0
+                           }
+                        },
+                        "tifrs-bsci-ci_ImpairmentLossRecognisedInProfitOrLossExplorationAndEvaluationAssets":{  
+                           "tifrs-bsci-ci_ImpairmentLossRecognisedInProfitOrLossExplorationAndEvaluationAssets":{  
+                              "chinese_label":"探勘及評估資產減損損失",
+                              "english_label":"Impairment loss recognised in profit or loss, exploration and evaluation assets",
+                              "order":7.0
+                           }
+                        },
+                        "tifrs-bsci-ci_OtherImpairmentLoss":{  
+                           "tifrs-bsci-ci_OtherImpairmentLoss":{  
+                              "chinese_label":"其他減損損失",
+                              "english_label":"Other impairment loss",
+                              "order":8.0
+                           }
+                        },
+                        "ifrs_ImpairmentLoss":{  
+                           "ifrs_ImpairmentLoss":{  
+                              "chinese_label":"減損損失",
+                              "english_label":"Impairment loss",
+                              "order":9.0
+                           }
+                        }
+                     }
+                  },
+                  "ifrs_OtherGainsLosses":{  
+                     "ifrs_OtherGainsLosses":{  
+                        "chinese_label":"其他利益及損失",
+                        "english_label":"Other gains and losses",
+                        "order":33.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"355405000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"208543000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_GainsLossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCostAbstract":{  
+               "tifrs-bsci-ci_GainsLossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCostAbstract":{  
+                  "chinese_label":"除列按攤銷後成本衡量金融資產淨損益",
+                  "english_label":"Gains (losses) arising from derecognition of financial assets measured at amortised cost",
+                  "order":3.0,
+                  "ifrs_GainsArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                     "ifrs_GainsArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                        "chinese_label":"除列按攤銷後成本衡量之金融資產之利益",
+                        "english_label":"Gains arising from derecognition of financial assets measured at amortised cost",
+                        "order":1.0
+                     }
+                  },
+                  "ifrs_LossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                     "ifrs_LossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                        "chinese_label":"除列按攤銷後成本衡量之金融資產之損失",
+                        "english_label":"Losses arising from derecognition of financial assets measured at amortised cost",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsLossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                     "tifrs-bsci-ci_GainsLossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
+                        "chinese_label":"除列按攤銷後成本衡量金融資產淨損益",
+                        "english_label":"Gains (losses) arising from derecognition of financial assets measured at amortised cost",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_GainsLossesOnReclassificationOfFinancialAssetsAbstract":{  
+               "tifrs-bsci-ci_GainsLossesOnReclassificationOfFinancialAssetsAbstract":{  
+                  "chinese_label":"金融資產重分類淨損益",
+                  "english_label":"Gains (losses) on reclassification of financial assets",
+                  "order":4.0,
+                  "tifrs-bsci-ci_GainsOnReclassificationOfFinancialAssets":{  
+                     "tifrs-bsci-ci_GainsOnReclassificationOfFinancialAssets":{  
+                        "chinese_label":"金融資產重分類利益",
+                        "english_label":"Gains on reclassification of financial assets",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnReclassificationOfFinancialAssets":{  
+                     "tifrs-bsci-ci_LossesOnReclassificationOfFinancialAssets":{  
+                        "chinese_label":"金融資產重分類損失",
+                        "english_label":"Losses on reclassification of financial assets",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsLossesOnReclassificationOfFinancialAssets":{ 
+                     "tifrs-bsci-ci_GainsLossesOnReclassificationOfFinancialAssets":{  
+                        "chinese_label":"金融資產重分類淨損益",
+                        "english_label":"Gains (losses) on reclassification of financial assets",
+                        "order":3.0
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_FinanceCostsAbstract":{  
+               "tifrs-bsci-ci_FinanceCostsAbstract":{  
+                  "chinese_label":"財務成本",
+                  "english_label":"Finance costs",
+                  "order":5.0,
+                  "tifrs-bsci-ci_GainsOnHedgingInstrumentFairValueHedges":{  
+                     "tifrs-bsci-ci_GainsOnHedgingInstrumentFairValueHedges":{  
+                        "chinese_label":"避險工具之利益－公允價值避險",
+                        "english_label":"Gains on hedging instrument, fair value hedges",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnHedgedItemAttributableToHedgedRiskFairValueHedges":{  
+                     "tifrs-bsci-ci_GainsOnHedgedItemAttributableToHedgedRiskFairValueHedges":{  
+                        "chinese_label":"歸因於所規避風險之被避險項目之利益－公允價值避險",
+                        "english_label":"Gains on hedged item attributable to hedged risk, fair value hedges",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnIneffectivenessOfCashFlowHedgesRecognisedInProfitOrLoss":{  
+                     "tifrs-bsci-ci_GainsOnIneffectivenessOfCashFlowHedgesRecognisedInProfitOrLoss":{  
+                        "chinese_label":"現金流量避險無效而認列於損益之利益",
+                        "english_label":"Gains on ineffectiveness of cash flow hedges recognised in profit or loss",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnEffectiveCashFlowHedgesReclassifiedFromEquityToProfitOrLoss":{  
+                     "tifrs-bsci-ci_GainsOnEffectiveCashFlowHedgesReclassifiedFromEquityToProfitOrLoss":{  
+                        "chinese_label":"現金流量避險有效而自權益轉列之利益",
+                        "english_label":"Gains on effective cash flow hedges reclassified from equity to profit or loss",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_GainsOnIneffectivenessOfHedgesOfNetInvestmentsInForeignOperations":{  
+                     "tifrs-bsci-ci_GainsOnIneffectivenessOfHedgesOfNetInvestmentsInForeignOperations":{  
+                        "chinese_label":"國外營運機構淨投資避險無效而認列於損益之利益",
+                        "english_label":"Gains on ineffectiveness of hedges of net investments in foreign operations",
+                        "order":5.0
+                     }
+                  },
+                  "ifrs_InterestExpense":{  
+                     "ifrs_InterestExpense":{  
+                        "chinese_label":"利息費用",
+                        "english_label":"Interest expense",
+                        "order":6.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"528260000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"735520000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  },
+                  "tifrs-bsci-ci_DividendsOnPreferenceShareLiabilities":{  
+                     "tifrs-bsci-ci_DividendsOnPreferenceShareLiabilities":{  
+                        "chinese_label":"負債性特別股股息",
+                        "english_label":"Dividends on preference share liabilities",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnHedgingInstrumentFairValueHedges":{  
+                     "tifrs-bsci-ci_LossesOnHedgingInstrumentFairValueHedges":{  
+                        "chinese_label":"避險工具之損失－公允價值避險",
+                        "english_label":"Losses on hedging instrument, fair value hedges",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnHedgedItemAttributableToHedgedRiskFairValueHedges":{  
+                     "tifrs-bsci-ci_LossesOnHedgedItemAttributableToHedgedRiskFairValueHedges":{  
+                        "chinese_label":"歸因於所規避風險之被避險項目之損失－公允價值避險",
+                        "english_label":"Losses on hedged item attributable to hedged risk, fair value hedges",
+                        "order":9.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnIneffectivenessOfCashFlowHedgesRecognisedInProfitOrLoss":{  
+                     "tifrs-bsci-ci_LossesOnIneffectivenessOfCashFlowHedgesRecognisedInProfitOrLoss":{  
+                        "chinese_label":"現金流量避險無效而認列於損益之損失",
+                        "english_label":"Losses on ineffectiveness of cash flow hedges recognised in profit or loss",
+                        "order":10.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnEffectiveCashFlowHedgesReclassifiedFromEquityToProfitOrLoss":{  
+                     "tifrs-bsci-ci_LossesOnEffectiveCashFlowHedgesReclassifiedFromEquityToProfitOrLoss":{  
+                        "chinese_label":"現金流量避險有效自權益轉列之損失",
+                        "english_label":"Losses on effective cash flow hedges reclassified from equity to profit or loss",
+                        "order":11.0
+                     }
+                  },
+                  "tifrs-bsci-ci_LossesOnIneffectivenessOfHedgesOfNetInvestmentsInForeignOperations":{  
+                     "tifrs-bsci-ci_LossesOnIneffectivenessOfHedgesOfNetInvestmentsInForeignOperations":{  
+                        "chinese_label":"國外營運機構淨投資避險無效而認列於損益之損失",
+                        "english_label":"Losses on ineffectiveness of hedges of net investments in foreign operations",
+                        "order":12.0
+                     }
+                  },
+                  "ifrs_FinanceCosts":{  
+                     "ifrs_FinanceCosts":{  
+                        "chinese_label":"財務成本",
+                        "english_label":"Finance costs",
+                        "order":13.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"528260000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"735520000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethodAbstract":{  
+               "tifrs-bsci-ci_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethodAbstract":{  
+                  "chinese_label":"採用權益法之關聯企業及合資損益之份額",
+                  "english_label":"Share of profit (loss) of associates and joint ventures accounted for using equity method",
+                  "order":6.0,
+                  "tifrs-bsci-ci_ShareOfProfitOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-NonoperatingIncomeAndExpenses":{  
+                     "tifrs-bsci-ci_ShareOfProfitOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-NonoperatingIncomeAndExpenses":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資利益之份額",
+                        "english_label":"Share of profit of associates and joint ventures accounted for using equity method",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-NonoperatingIncomeAndExpenses":{  
+                     "tifrs-bsci-ci_ShareOfLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod-NonoperatingIncomeAndExpenses":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資損失之份額",
+                        "english_label":"Share of loss of associates and joint ventures accounted for using equity method",
+                        "order":2.0
+                     }
+                  },
+                  "ifrs_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
+                     "ifrs_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資損益之份額",
+                        "english_label":"Share of profit (loss) of associates and joint ventures accounted for using equity method",
+                        "order":3.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"151905000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"247136000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_NonoperatingIncomeAndExpenses":{  
+               "tifrs-bsci-ci_NonoperatingIncomeAndExpenses":{  
+                  "chinese_label":"營業外收入及支出",
+                  "english_label":"Non-operating income and expenses",
+                  "order":7.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"314060000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"292265000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_ProfitLossBeforeTax":{  
+         "ifrs_ProfitLossBeforeTax":{  
+            "chinese_label":"繼續營業單位稅前淨利（淨損）",
+            "english_label":"Profit (loss) from continuing operations before tax",
+            "order":8.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"2340789000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"2579068000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_TaxExpenseIncomeAbstract":{  
+         "tifrs-bsci-ci_TaxExpenseIncomeAbstract":{  
+            "chinese_label":"所得稅費用（利益）",
+            "english_label":"Tax expense (income)",
+            "order":9.0,
+            "ifrs_CurrentTaxExpenseIncome":{  
+               "ifrs_CurrentTaxExpenseIncome":{  
+                  "chinese_label":"當期所得稅費用（利益）",
+                  "english_label":"Current tax expense (income)",
+                  "order":1.0
+               }
+            },
+            "ifrs_DeferredTaxExpenseIncome":{  
+               "ifrs_DeferredTaxExpenseIncome":{  
+                  "chinese_label":"遞延所得稅費用（利益）",
+                  "english_label":"Deferred tax expense (income)",
+                  "order":2.0
+               }
+            },
+            "ifrs_IncomeTaxExpenseContinuingOperations":{  
+               "ifrs_IncomeTaxExpenseContinuingOperations":{  
+                  "chinese_label":"所得稅費用（利益）",
+                  "english_label":"Tax expense (income)",
+                  "order":3.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"341165000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"463243000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_ProfitLossFromContinuingOperations":{  
+         "ifrs_ProfitLossFromContinuingOperations":{  
+            "chinese_label":"繼續營業單位本期淨利（淨損）",
+            "english_label":"Profit (loss) from continuing operations",
+            "order":10.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"1999624000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"2115825000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "tifrs-bsci-ci_ProfitLossFromDiscontinuedOperationsAbstract":{  
+         "tifrs-bsci-ci_ProfitLossFromDiscontinuedOperationsAbstract":{  
+            "chinese_label":"停業單位損益",
+            "english_label":"Profit (loss) from discontinued operations",
+            "order":11.0,
+            "tifrs-bsci-ci_ProfitLossFromDiscontinuedOperationsNetOfTax":{  
+               "tifrs-bsci-ci_ProfitLossFromDiscontinuedOperationsNetOfTax":{  
+                  "chinese_label":"停業單位稅後損益",
+                  "english_label":"Profit (loss) from discontinued operations, net of tax",
+                  "order":1.0
+               }
+            },
+            "tifrs-bsci-ci_GainLossOnDisposalOfAssetsOrDisposalGroupsConstitutingDiscontinuedOperationNetOfTax":{  
+               "tifrs-bsci-ci_GainLossOnDisposalOfAssetsOrDisposalGroupsConstitutingDiscontinuedOperationNetOfTax":{  
+                  "chinese_label":"停業單位資產或處分群組處分損益（稅後）",
+                  "english_label":"Gain (loss) on disposal of assets or disposal groups constituting discontinued operation, net of tax",
+                  "order":2.0
+               }
+            },
+            "tifrs-bsci-ci_GainLossRecognisedOnMeasurementToFairValueLessCostsToSellOfAssetsOrDisposalGroupsConstitutingDiscontinuedOperationNetOfTax":{  
+               "tifrs-bsci-ci_GainLossRecognisedOnMeasurementToFairValueLessCostsToSellOfAssetsOrDisposalGroupsConstitutingDiscontinuedOperationNetOfTax":{  
+                  "chinese_label":"停業單位資產或處分群組按公允價值減出售成本衡量損益（稅後）",
+                  "english_label":"Gain (loss) recognised on measurement to fair value less costs to sell of assets or disposal groups constituting discontinued operation, net of tax",
+                  "order":3.0
+               }
+            },
+            "ifrs_ProfitLossFromDiscontinuedOperations":{  
+               "ifrs_ProfitLossFromDiscontinuedOperations":{  
+                  "chinese_label":"停業單位損益",
+                  "english_label":"Profit (loss) from discontinued operations",
+                  "order":4.0
+               }
+            }
+         }
+      },
+      "ifrs_ProfitLoss":{  
+         "ifrs_ProfitLoss":{  
+            "chinese_label":"本期淨利（淨損）",
+            "english_label":"Profit (loss)",
+            "order":12.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"1999624000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"2115825000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20130101To20130331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
+                  "value":"1413035000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalRetainedEarningsMember":{  
+                  "value":"1413035000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
+                  "value":"1413035000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_NonControllingInterestsMember":{  
+                  "value":"586589000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalEquityMember":{  
+                  "value":"1999624000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
+                  "value":"1534342000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalRetainedEarningsMember":{  
+                  "value":"1534342000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
+                  "value":"1534342000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_NonControllingInterestsMember":{  
+                  "value":"581483000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalEquityMember":{  
+                  "value":"2115825000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "ifrs_OtherComprehensiveIncomeAbstract":{  
+         "ifrs_OtherComprehensiveIncomeAbstract":{  
+            "chinese_label":"其他綜合損益(淨額)",
+            "english_label":"Other comprehensive income",
+            "order":13.0,
+            "ifrs_OtherComprehensiveIncomeBeforeTaxExchangeDifferencesOnTranslation":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxExchangeDifferencesOnTranslation":{  
+                  "chinese_label":"國外營運機構財務報表換算之兌換差額",
+                  "english_label":"Exchange differences on translation",
+                  "order":1.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1544517000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"-886384000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxGainsLossesFromInvestmentsInEquityInstruments":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxGainsLossesFromInvestmentsInEquityInstruments":{  
+                  "chinese_label":"權益工具投資之利益（損失）",
+                  "english_label":"Gains (losses) from investments in equity instruments",
+                  "order":2.0
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxAvailableforsaleFinancialAssets":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxAvailableforsaleFinancialAssets":{  
+                  "chinese_label":"備供出售金融資產未實現評價損益",
+                  "english_label":"Unrealised gains (losses) on valuation of available-for-sale financial assets",
+                  "order":3.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"-489218000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"1294953000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxCashFlowHedges":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxCashFlowHedges":{  
+                  "chinese_label":"現金流量避險",
+                  "english_label":"Cash flow hedges",
+                  "order":4.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"23654000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"-10189000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxHedgesOfNetInvestmentsInForeignOperations":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxHedgesOfNetInvestmentsInForeignOperations":{  
+                  "chinese_label":"國外營運機構淨投資避險",
+                  "english_label":"Hedges of net investments in foreign operations",
+                  "order":5.0
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxGainsLossesOnRevaluation":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxGainsLossesOnRevaluation":{  
+                  "chinese_label":"重估價之利益（損失）",
+                  "english_label":"Gains (losses) on revaluation",
+                  "order":6.0
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTaxActuarialGainsLossesOnDefinedBenefitPlans":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTaxActuarialGainsLossesOnDefinedBenefitPlans":{  
+                  "chinese_label":"確定福利計畫精算利益（損失）",
+                  "english_label":"Actuarial gains (losses) on defined benefit plans",
+                  "order":7.0
+               }
+            },
+            "tifrs-bsci-ci_EquityRelatedToNoncurrentAssetsClassifiedAsHeldForSale-CI":{  
+               "tifrs-bsci-ci_EquityRelatedToNoncurrentAssetsClassifiedAsHeldForSale-CI":{  
+                  "chinese_label":"與待出售非流動資產直接相關之權益",
+                  "english_label":"Equity related to non-current assets classified as held for sale",
+                  "order":7.1
+               }
+            },
+            "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodAbstract":{  
+               "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodAbstract":{  
+                  "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額",
+                  "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method",
+                  "order":8.0,
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodExchangeDifferencesOnTranslation":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodExchangeDifferencesOnTranslation":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－國外營運機構財務報表換算之兌換差額",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, exchange differences on translation",
+                        "order":1.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesFromInvestmentsInEquityInstrumentsMeasuredAtFairValueThroughOtherComprehensiveIncome":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesFromInvestmentsInEquityInstrumentsMeasuredAtFairValueThroughOtherComprehensiveIncome":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－透過其他綜合損益按公允價值衡量之權益工具投資利益（損失）",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, gains (losses) from investments in equity instruments measured at fair value through other comprehensive income",
+                        "order":2.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodUnrealizedGainsLossesOnAvailableForSaleFinancialAssets":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodUnrealizedGainsLossesOnAvailableForSaleFinancialAssets":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－備供出售金融商品未實現損益",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, unrealized gains (losses) on available-for-sale financial assets",
+                        "order":3.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesOnEffectivePortionOfCashFlowHedges":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesOnEffectivePortionOfCashFlowHedges":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－現金流量避險中屬有效避險部分之避險工具利益（損失）",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, gains (losses) on effective portion of cash flow hedges",
+                        "order":4.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesOnEffectivePortionOfHedgesOfNetInvestmentsInForeignOperations":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodGainsLossesOnEffectivePortionOfHedgesOfNetInvestmentsInForeignOperations":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－國外營運機構淨投資避險中屬有效避險部分之避險工具利益（損失）",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, gains (losses) on effective portion of hedges of net investments in foreign operations",
+                        "order":5.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodRevaluationSurplus":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodRevaluationSurplus":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－重估增值",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, revaluation surplus",
+                        "order":6.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodEquityRelatedToNoncurrentAssetsClassifiedAsHeldForSale":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodEquityRelatedToNoncurrentAssetsClassifiedAsHeldForSale":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－與待出售非流動資產直接相關之權益",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, equity related to non-current assets classified as held for sale",
+                        "order":7.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodActuarialGainsLossesOnDefinedBenefitPlans":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodActuarialGainsLossesOnDefinedBenefitPlans":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－確定福利計畫精算利益（損失）",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, actuarial gains (losses) on defined benefit plans",
+                        "order":8.0
+                     }
+                  },
+                  "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodOthers":{  
+                     "tifrs-bsci-ci_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethodOthers":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額－其他",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method, others",
+                        "order":9.0
+                     }
+                  },
+                  "ifrs_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
+                     "ifrs_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
+                        "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額",
+                        "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method",
+                        "order":10.0,
+                        "values":{  
+                           "From20130101To20130331":{  
+                              "value":"205492000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20130101",
+                              "endDate":"20130331"
+                           },
+                           "From20120101To20120331":{  
+                              "value":"-144320000",
+                              "unit":"TWD",
+                              "periodType":"duration",
+                              "startDate":"20120101",
+                              "endDate":"20120331"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "ifrs_OtherComprehensiveIncomeBeforeTax":{  
+               "ifrs_OtherComprehensiveIncomeBeforeTax":{  
+                  "chinese_label":"其他綜合損益",
+                  "english_label":"Other comprehensive income",
+                  "order":9.0
+               }
+            },
+            "ifrs_IncomeTaxRelatingToComponentsOfOtherComprehensiveIncome":{  
+               "ifrs_IncomeTaxRelatingToComponentsOfOtherComprehensiveIncome":{  
+                  "chinese_label":"與其他綜合損益組成部分相關之所得稅",
+                  "english_label":"Income tax related to components of other comprehensive income",
+                  "order":10.0
+               }
+            },
+            "ifrs_OtherComprehensiveIncome":{  
+               "ifrs_OtherComprehensiveIncome":{  
+                  "chinese_label":"本期其他綜合損益",
+                  "english_label":"Other comprehensive income",
+                  "order":11.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1284445000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"254060000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20130101To20130331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
+                        "value":"989097000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
+                        "value":"-505214000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
+                        "value":"14192000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_TotalOtherEquityInterestMember":{  
+                        "value":"498075000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
+                        "value":"498075000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_NonControllingInterestsMember":{  
+                        "value":"786370000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20130101To20130331_TotalEquityMember":{  
+                        "value":"1284445000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
+                        "value":"-549660000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
+                        "value":"1251423000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
+                        "value":"-5354000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_TotalOtherEquityInterestMember":{  
+                        "value":"696409000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
+                        "value":"696409000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_NonControllingInterestsMember":{  
+                        "value":"-442349000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     },
+                     "From20120101To20120331_TotalEquityMember":{  
+                        "value":"254060000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_ComprehensiveIncome":{  
+         "ifrs_ComprehensiveIncome":{  
+            "chinese_label":"本期綜合損益總額",
+            "english_label":"Total comprehensive income",
+            "order":14.0,
+            "values":{  
+               "From20130101To20130331":{  
+                  "value":"3284069000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331":{  
+                  "value":"2369885000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20130101To20130331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
+                  "value":"1413035000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalRetainedEarningsMember":{  
+                  "value":"1413035000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
+                  "value":"989097000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
+                  "value":"-505214000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
+                  "value":"14192000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalOtherEquityInterestMember":{  
+                  "value":"498075000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
+                  "value":"1911110000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_NonControllingInterestsMember":{  
+                  "value":"1372959000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20130101To20130331_TotalEquityMember":{  
+                  "value":"3284069000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20130101",
+                  "endDate":"20130331"
+               },
+               "From20120101To20120331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
+                  "value":"1534342000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalRetainedEarningsMember":{  
+                  "value":"1534342000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
+                  "value":"-549660000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
+                  "value":"1251423000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
+                  "value":"-5354000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalOtherEquityInterestMember":{  
+                  "value":"696409000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
+                  "value":"2230751000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_NonControllingInterestsMember":{  
+                  "value":"139134000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               },
+               "From20120101To20120331_TotalEquityMember":{  
+                  "value":"2369885000",
+                  "unit":"TWD",
+                  "periodType":"duration",
+                  "startDate":"20120101",
+                  "endDate":"20120331"
+               }
+            }
+         }
+      },
+      "ifrs_ProfitLossAttributableToAbstract":{  
+         "ifrs_ProfitLossAttributableToAbstract":{  
+            "chinese_label":"淨利（損）歸屬於：",
+            "english_label":"Profit (loss), attributable to:",
+            "order":15.0,
+            "ifrs_ProfitLossAttributableToOwnersOfParent":{  
+               "ifrs_ProfitLossAttributableToOwnersOfParent":{  
+                  "chinese_label":"母公司業主（淨利／損）",
+                  "english_label":"Profit (loss), attributable to owners of parent",
+                  "order":1.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1413035000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"1534342000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ProfitLossAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
+               "tifrs-bsci-ci_ProfitLossAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
+                  "chinese_label":"共同控制下前手權益（淨利／損）",
+                  "english_label":"Profit (loss), attributable to former owner of business combination under common control ",
+                  "order":1.1
+               }
+            },
+            "ifrs_ProfitLossAttributableToNoncontrollingInterests":{  
+               "ifrs_ProfitLossAttributableToNoncontrollingInterests":{  
+                  "chinese_label":"非控制權益（淨利／損）",
+                  "english_label":"Profit (loss), attributable to non-controlling interests",
+                  "order":2.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"586589000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"581483000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_ComprehensiveIncomeAttributableToAbstract":{  
+         "ifrs_ComprehensiveIncomeAttributableToAbstract":{  
+            "chinese_label":"綜合損益總額歸屬於：",
+            "english_label":"Comprehensive income attributable to:",
+            "order":16.0,
+            "ifrs_ComprehensiveIncomeAttributableToOwnersOfParent":{  
+               "ifrs_ComprehensiveIncomeAttributableToOwnersOfParent":{  
+                  "chinese_label":"母公司業主（綜合損益）",
+                  "english_label":"Comprehensive income, attributable to owners of parent",
+                  "order":1.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1911110000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"2230751000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "tifrs-bsci-ci_ComprehensiveIncomeAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
+               "tifrs-bsci-ci_ComprehensiveIncomeAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
+                  "chinese_label":"共同控制下前手權益（綜合損益）",
+                  "english_label":"Comprehensive income, attributable to former owner of business combination under common control",
+                  "order":1.1
+               }
+            },
+            "ifrs_ComprehensiveIncomeAttributableToNoncontrollingInterests":{  
+               "ifrs_ComprehensiveIncomeAttributableToNoncontrollingInterests":{  
+                  "chinese_label":"非控制權益（綜合損益）",
+                  "english_label":"Comprehensive income, attributable to non-controlling interests",
+                  "order":2.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"1372959000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"139134000",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_BasicEarningsPerShareAbstract":{  
+         "ifrs_BasicEarningsPerShareAbstract":{  
+            "chinese_label":"基本每股盈餘",
+            "english_label":"Basic earnings per share",
+            "order":17.0,
+            "ifrs_BasicEarningsLossPerShareFromContinuingOperations":{  
+               "ifrs_BasicEarningsLossPerShareFromContinuingOperations":{  
+                  "chinese_label":"繼續營業單位淨利（淨損）",
+                  "english_label":"Basic earnings (loss) per share from continuing operations",
+                  "order":1.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"0.38",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"0.42",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "ifrs_BasicEarningsLossPerShareFromDiscontinuedOperations":{  
+               "ifrs_BasicEarningsLossPerShareFromDiscontinuedOperations":{  
+                  "chinese_label":"停業單位淨利（淨損）",
+                  "english_label":"Basic earnings (loss) per share from discontinued operations",
+                  "order":2.0
+               }
+            },
+            "ifrs_BasicEarningsLossPerShare":{  
+               "ifrs_BasicEarningsLossPerShare":{  
+                  "chinese_label":"基本每股盈餘",
+                  "english_label":"Basic earnings per share",
+                  "order":3.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"0.38",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"0.42",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "ifrs_DilutedEarningsPerShareAbstract":{  
+         "ifrs_DilutedEarningsPerShareAbstract":{  
+            "chinese_label":"稀釋每股盈餘",
+            "english_label":"Diluted earnings per share",
+            "order":18.0,
+            "ifrs_DilutedEarningsLossPerShareFromContinuingOperations":{  
+               "ifrs_DilutedEarningsLossPerShareFromContinuingOperations":{  
+                  "chinese_label":"繼續營業單位淨利（淨損）",
+                  "english_label":"Diluted earnings (loss) per share from continuing operations",
+                  "order":1.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"0.38",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"0.42",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            },
+            "ifrs_DilutedEarningsLossPerShareFromDiscontinuedOperations":{  
+               "ifrs_DilutedEarningsLossPerShareFromDiscontinuedOperations":{  
+                  "chinese_label":"停業單位淨利（淨損）",
+                  "english_label":"Diluted earnings (loss) per share from discontinued operations",
+                  "order":2.0
+               }
+            },
+            "ifrs_DilutedEarningsLossPerShare":{  
+               "ifrs_DilutedEarningsLossPerShare":{  
+                  "chinese_label":"稀釋每股盈餘",
+                  "english_label":"Diluted earnings per share",
+                  "order":3.0,
+                  "values":{  
+                     "From20130101To20130331":{  
+                        "value":"0.38",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20130101",
+                        "endDate":"20130331"
+                     },
+                     "From20120101To20120331":{  
+                        "value":"0.42",
+                        "unit":"TWD",
+                        "periodType":"duration",
+                        "startDate":"20120101",
+                        "endDate":"20120331"
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

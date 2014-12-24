@@ -3,21 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>idv.hsiehpinghan</groupId>
-	<artifactId>selenium-assistant</artifactId>
+	<artifactId>nanohttpd-assistant</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>selenium-assistant</name>
+	<name>nanohttpd-assistant</name>
 	<url>http://maven.apache.org</url>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<log4j.version>1.2.17</log4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<selenium-java.version>2.44.0</selenium-java.version>
+		<nanohttpd.version>2.0.5</nanohttpd.version>
+		<commons-io.version>2.4</commons-io.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
-		<!-- <commons-io.version>2.4</commons-io.version> -->
 	</properties>
 
 	<dependencies>
@@ -43,11 +44,18 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- selenium-java -->
+		<!-- nanohttpd -->
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>${selenium-java.version}</version>
+			<groupId>org.kevoree.corelibrary.javase</groupId>
+			<artifactId>org.kevoree.library.javase.nanohttp</artifactId>
+			<version>${nanohttpd.version}</version>
+		</dependency>
+
+		<!-- commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
 		</dependency>
 
 		<!-- resource-utility -->
@@ -65,12 +73,5 @@
 			<version>${package-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- commons-io -->
-		<!-- <dependency> -->
-		<!-- <groupId>commons-io</groupId> -->
-		<!-- <artifactId>commons-io</artifactId> -->
-		<!-- <version>${commons-io.version}</version> -->
-		<!-- </dependency> -->
 	</dependencies>
 </project>

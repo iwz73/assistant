@@ -4,7 +4,7 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting" />
-			<class name="idv.hsiehpinghan.seleniumassistant.utility.ResourceUtilityTest" />
+			<class name="idv.hsiehpinghan.seleniumassistant.browser.implement.HtmlUnitBrowserTest" />
 		</classes>
 	</test>
 </suite>

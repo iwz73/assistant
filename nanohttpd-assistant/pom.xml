@@ -17,6 +17,7 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<nanohttpd.version>2.0.5</nanohttpd.version>
 		<commons-io.version>2.4</commons-io.version>
+		<selenium-java.version>2.44.0</selenium-java.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
 	</properties>
@@ -58,6 +59,14 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 
+		<!-- selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium-java.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<!-- resource-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>

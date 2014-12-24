@@ -17,6 +17,7 @@
 		<selenium-java.version>2.44.0</selenium-java.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
+		<nanohttpd-assistant.version>1.0.0</nanohttpd-assistant.version>
 		<!-- <commons-io.version>2.4</commons-io.version> -->
 	</properties>
 
@@ -63,6 +64,14 @@
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>package-utility</artifactId>
 			<version>${package-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- nanohttpd-assistant -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>nanohttpd-assistant</artifactId>
+			<version>${nanohttpd-assistant.version}</version>
 			<scope>test</scope>
 		</dependency>
 

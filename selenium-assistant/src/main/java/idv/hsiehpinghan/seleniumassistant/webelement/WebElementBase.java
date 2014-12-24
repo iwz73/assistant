@@ -2,6 +2,7 @@ package idv.hsiehpinghan.seleniumassistant.webelement;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public abstract class WebElementBase {
     private WebDriver webDriver;
@@ -13,6 +14,22 @@ public abstract class WebElementBase {
         this.by = by;
     }
 
+    public String getText() {
+    	return getSeleniumWebElement().getText();
+    }
+    
+    public void click() {
+    	getSeleniumWebElement().click();
+    }
+    
+    public String getAttribute(String attributeName) {
+    	return getSeleniumWebElement().getAttribute(attributeName);
+    }
+    
+    protected WebElement getSeleniumWebElement() {
+        return webDriver.findElement(by);
+    }
+    
     protected WebDriver getWebDriver() {
         return webDriver;
     }

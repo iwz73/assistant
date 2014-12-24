@@ -4,7 +4,11 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting" />
-			<class name="idv.hsiehpinghan.seleniumassistant.browser.implement.HtmlUnitBrowserTest" />
+<!-- 			<class -->
+<!-- 				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" /> -->
+			<class
+				name="idv.hsiehpinghan.seleniumassistant.browser.FireFoxBrowserTest" />
+<!-- 			<class name="idv.hsiehpinghan.seleniumassistant.webelement.SelectTest" /> -->
 		</classes>
 	</test>
 </suite>

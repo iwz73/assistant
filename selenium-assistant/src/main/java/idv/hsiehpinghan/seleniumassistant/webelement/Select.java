@@ -5,16 +5,18 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class Select extends WebElementBase {
     public Select(WebDriver webDriver, By by) {
     	super(webDriver, by);
     }
     
+    /**
+     * Get content options.
+     * @return
+     */
     public List<Option> getOptions() {
-        List<WebElement> options = getSeleniumSelect().getOptions();
-        int size = options.size();
+        int size = getSeleniumSelect().getOptions().size();
         List<Option> result = new ArrayList<Option>(size);
         for(int i = 0; i < size; ++i) {
             Option option = new Option(this, i);
@@ -24,11 +26,7 @@ public class Select extends WebElementBase {
     }
     
     private org.openqa.selenium.support.ui.Select getSeleniumSelect() {
-        WebDriver webDriver = getWebDriver();
-        By by = getBy();
-        WebElement webElement = webDriver.findElement(by);
-        org.openqa.selenium.support.ui.Select select = new org.openqa.selenium.support.ui.Select(webElement);
-        return select;
+        return new org.openqa.selenium.support.ui.Select(getSeleniumWebElement());
     }
 
     public class Option {
@@ -39,5 +37,7 @@ public class Select extends WebElementBase {
     		this.select = select;
     		this.index = index;
     	}
+    	
+    	
     }
 }

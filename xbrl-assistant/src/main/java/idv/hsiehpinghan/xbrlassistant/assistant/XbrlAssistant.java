@@ -1,20 +1,12 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
-import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
-import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
-import idv.hsiehpinghan.xbrlassistant.handler.SchemaReferenceHandler;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import jcx.xbrl.data.XbrlDocument;
 import jcx.xbrl.data.XbrlElement;
@@ -24,8 +16,8 @@ import jcx.xbrl.taxonomy.XbrlPresentationTree;
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -35,9 +27,11 @@ public class XbrlAssistant {
 	public static final String EN = "en";
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 	@Autowired
+	private ApplicationContext applicationContext;
+	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
-	private XbrlTaxonomy tifrsCiCr20130331;
+	private TaxonomyAssistant taxonomyAssistant;
 
 	/**
 	 * Get presentation report as json format. (PresentIds can reference Presentation.Id....) 
@@ -48,8 +42,8 @@ public class XbrlAssistant {
 	 */
 	public ObjectNode getPresentationJson(File instanceFile,
 			List<String> presentIds) throws Exception {
-		XbrlTaxonomy taxonomy = getXbrlTaxonomy(instanceFile);
-		XbrlDocument document = loadXbrlDocument(instanceFile);
+		XbrlTaxonomy taxonomy = taxonomyAssistant.getXbrlTaxonomy(instanceFile);
+		XbrlDocument document = loadXbrlDocument(instanceFile, taxonomy);
 
 		@SuppressWarnings("unchecked")
 		Vector<String> presents = taxonomy.getPresentationList();
@@ -77,38 +71,13 @@ public class XbrlAssistant {
 		return objNode;
 	}
 
-	XbrlTaxonomy getXbrlTaxonomy(File instanceFile)
-			throws ParserConfigurationException, SAXException, IOException {
-		XbrlTaxonomyVersion version = getXbrlTaxonomyVersion(instanceFile);
-		switch (version) {
-		case TIFRS_CI_CR_2013_03_31:
-			return tifrsCiCr20130331;
-		}
-		throw new RuntimeException("XbrlTaxonomy version undefined");
-	}
-
-	XbrlDocument loadXbrlDocument(File instanceFile) throws Exception {
+	XbrlDocument loadXbrlDocument(File instanceFile, XbrlTaxonomy taxonomy) throws Exception {
 		XbrlDocument xDoc = new XbrlDocument();
-		xDoc.load(getXbrlTaxonomy(instanceFile), new FileInputStream(
+		xDoc.load(taxonomy, new FileInputStream(
 				instanceFile));
 		return xDoc;
 	}
 
-	XbrlTaxonomyVersion getXbrlTaxonomyVersion(File instanceFile)
-			throws ParserConfigurationException, SAXException, IOException {
-		SAXParser saxParser;
-
-		saxParser = SAXParserFactory.newInstance().newSAXParser();
-		SchemaReferenceHandler handler = null;
-		try {
-			handler = new SchemaReferenceHandler();
-			saxParser.parse(instanceFile, handler);
-		} catch (SaxParserBreakException e) {
-			return handler.getXbrlTaxonomyVersion();
-		}
-		throw new RuntimeException("Xbrl taxonomy version not found !!!");
-	}
-	
 	private void generateJsonObjectContent(ObjectNode parentObjNode,
 			XbrlTreeNode treeNode, XbrlTaxonomy taxonomy, XbrlDocument document)
 			throws Exception {

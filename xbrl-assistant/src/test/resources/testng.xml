@@ -4,6 +4,10 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting" />
+			<class
+				name="idv.hsiehpinghan.xbrlassistant.assistant.InstanceAssistantTest" />
+			<class
+				name="idv.hsiehpinghan.xbrlassistant.assistant.TaxonomyAssistantTest" />
 			<class name="idv.hsiehpinghan.xbrlassistant.assistant.XbrlAssistantTest" />
 		</classes>
 	</test>

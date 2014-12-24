@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>idv.hsiehpinghan</groupId>
+	<artifactId>selenium-assistant</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>selenium-assistant</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<log4j.version>1.2.17</log4j.version>
+		<testng.version>6.1.1</testng.version>
+		<spring.version>4.1.2.RELEASE</spring.version>
+		<selenium-java.version>2.44.0</selenium-java.version>
+		<package-utility.version>1.0.0</package-utility.version>
+		<!-- <commons-io.version>2.4</commons-io.version> -->
+	</properties>
+
+	<dependencies>
+		<!-- log4j (for spring logging) -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium-java.version}</version>
+		</dependency>
+
+		<!-- package-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>package-utility</artifactId>
+			<version>${package-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- commons-io -->
+		<!-- <dependency> -->
+		<!-- <groupId>commons-io</groupId> -->
+		<!-- <artifactId>commons-io</artifactId> -->
+		<!-- <version>${commons-io.version}</version> -->
+		<!-- </dependency> -->
+	</dependencies>
+</project>

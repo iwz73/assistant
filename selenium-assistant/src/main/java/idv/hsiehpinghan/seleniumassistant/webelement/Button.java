@@ -3,8 +3,8 @@ package idv.hsiehpinghan.seleniumassistant.webelement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Div extends WebElementWithBy {
-	public Div(WebDriver webDriver, By by) {
+public class Button extends WebElementWithBy {
+	public Button(WebDriver webDriver, By by) {
 		super(webDriver, by);
 	}
 

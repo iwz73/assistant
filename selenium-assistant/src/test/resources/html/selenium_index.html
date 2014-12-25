@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Index page</title>
+<script type="text/javascript">
+function button_test_1() {
+	document.getElementById("button_1").value = "change_1";
+}
+function button_test_2() {
+	document.getElementById("button_2").innerHTML = "change_2";
+}
+</script>
 </head>
 <body>
 	<select id="selectId">
@@ -10,5 +18,42 @@
 		<option value="optionValue_2">optionText_2</option>
 		<option value="optionValue_3">optionText_3</option>
 	</select>
+	<select id="selectId_2">
+		<option value="optionValue_1">optionText_1</option>
+		<option value="optionValue_2">optionText_2</option>
+	</select>
+	<select id="selectId_3">
+		<option value="optionValue_1">optionText_1</option>
+		<option value="optionValue_2">optionText_2</option>
+		<option value="optionValue_3">optionText_3</option>
+	</select>
+
+	<table id="tableId" border="1">
+		<tr>
+			<th>tr / th</th>
+			<td>tr / td</td>
+		</tr>
+		<thead>
+			<tr>
+				<th>thead / tr / th</th>
+				<td>thead / tr / td</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>tbody / tr / th</th>
+				<td>tbody / tr / td</td>
+				<td><input id="button_1" type="button"
+					onclick="button_test_1()" value="b_value_1"></td>
+				<td><button id="button_2" onclick="button_test_2()">b_value_2</button></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>tfoot / tr / th</th>
+				<td>tfoot / tr / td</td>
+			</tr>
+		</tfoot>
+	</table>
 </body>
 </html>

@@ -34,11 +34,7 @@ public class MockHtmlServer extends NanoHTTPD {
 		logger.debug("files : " + files);
 		String html = null;
 		try {
-			if(uri != null) {
-				System.err.println("uri : " + uri);
-				
-				html = FileUtils.readFileToString(getMockFile(uri));				
-			}
+			html = FileUtils.readFileToString(getMockFile(uri));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

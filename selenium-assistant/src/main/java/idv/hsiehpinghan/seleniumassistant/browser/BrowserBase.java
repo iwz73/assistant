@@ -2,6 +2,7 @@ package idv.hsiehpinghan.seleniumassistant.browser;
 
 import idv.hsiehpinghan.seleniumassistant.webelement.Button;
 import idv.hsiehpinghan.seleniumassistant.webelement.Div;
+import idv.hsiehpinghan.seleniumassistant.webelement.Font;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
 
@@ -52,6 +53,16 @@ public abstract class BrowserBase {
 	}
 
 	/**
+	 * Get font.
+	 * 
+	 * @param by
+	 * @return
+	 */
+	public Font getFont(By by) {
+		return new Font(getWebDriver(), by);
+	}
+
+	/**
 	 * Get button.
 	 * 
 	 * @param by
@@ -67,7 +78,7 @@ public abstract class BrowserBase {
 	public void back() {
 		getWebDriver().navigate().back();
 	}
-	
+
 	/**
 	 * Get download page content to filePath.
 	 * 
@@ -81,5 +92,22 @@ public abstract class BrowserBase {
 	 * 
 	 * @return
 	 */
-	protected abstract WebDriver getWebDriver();
+	public abstract WebDriver getWebDriver();
+
+	/**
+	 * Get file name by response's Content-disposition.
+	 * 
+	 * @return
+	 */
+	public abstract String getDownloadFileName();
+
+	/**
+	 * Cache current page for ajax page backward.
+	 */
+	public abstract void cacheCurrentPage();
+
+	/**
+	 * Restore cacheCurrentPage's page.
+	 */
+	public abstract void restorePage();
 }

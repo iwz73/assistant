@@ -32,39 +32,24 @@ public class HtmlUnitBrowser extends BrowserBase {
 		return f;
 	}
 
-	/**
-	 * Get file name by response's Content-disposition.
-	 * 
-	 * @return
-	 */
+	@Override
 	public String getDownloadFileName() {
 		return webDriver.getFileName();
 	}
 
-	/**
-	 * Cache current page for ajax page backward.
-	 */
+	@Override
 	public void cacheCurrentPage() {
 		this.page = webDriver.getPage();
 	}
 
-	/**
-	 * Restore cacheCurrentPage's page.
-	 */
+	@Override
 	public void restorePage() {
 		webDriver.setPage(page);
 	}
 
 	@Override
-	protected WebDriver getWebDriver() {
+	public WebDriver getWebDriver() {
 		return webDriver;
 	}
 
-	// public HtmlUnitDriverExtension testGet() {
-	// return webDriver;
-	// }
-	//
-	// public void testSet(HtmlUnitDriverExtension wd) {
-	// webDriver = wd;
-	// }
 }

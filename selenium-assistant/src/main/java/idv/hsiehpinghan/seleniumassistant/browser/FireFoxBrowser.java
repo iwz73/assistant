@@ -29,7 +29,22 @@ public class FireFoxBrowser extends BrowserBase {
 	}
 
 	@Override
-	protected WebDriver getWebDriver() {
+	public WebDriver getWebDriver() {
 		return webDriver;
+	}
+
+	@Override
+	public String getDownloadFileName() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
+	@Override
+	public void cacheCurrentPage() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
+	@Override
+	public void restorePage() {
+		throw new RuntimeException("Not implement !!!");
 	}
 }

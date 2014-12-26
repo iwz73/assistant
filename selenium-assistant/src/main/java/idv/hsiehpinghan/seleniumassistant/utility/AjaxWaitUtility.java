@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.utility;
 
+import idv.hsiehpinghan.seleniumassistant.webelement.Font;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select.Option;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
@@ -62,6 +63,25 @@ public class AjaxWaitUtility {
 				try {
 					List<String> txts = table.getRowAsStringList(rowIndex);
 					return ListUtils.isEqualList(txts, comparedList);
+				} catch (Exception e) {
+					return false;
+				}
+			}
+		});
+	}
+	
+	
+	public static boolean waitUntilFontTextEqual(final Font font,
+			final String text) {
+		// Object parameter is not used.
+		FluentWait<Object> fluentWait = new FluentWait<Object>(new Object());
+		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
+		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+		return fluentWait.until(new Function<Object, Boolean>() {
+			@Override
+			public Boolean apply(Object obj) {
+				try {
+					return text.equals(font.getText());
 				} catch (Exception e) {
 					return false;
 				}

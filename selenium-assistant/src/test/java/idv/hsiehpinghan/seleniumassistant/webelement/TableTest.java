@@ -33,16 +33,16 @@ public class TableTest {
 	}
 
 	@Test
-	public void clickButtonCell() {
+	public void clickButtonOfCell() {
 		int rowInd_1 = 2;
 		int colInd_1 = 2;
-		table.clickButtonCell(rowInd_1, colInd_1);
+		table.clickButtonOfCell(rowInd_1, colInd_1);
 		Assert.assertEquals("change_1",
 				table.getButtonValueOrText(rowInd_1, colInd_1));
 
 		int rowInd_2 = 2;
 		int colInd_2 = 3;
-		table.clickButtonCell(rowInd_2, colInd_2);
+		table.clickButtonOfCell(rowInd_2, colInd_2);
 		Assert.assertEquals("change_2",
 				table.getButtonValueOrText(rowInd_2, colInd_2));
 	}

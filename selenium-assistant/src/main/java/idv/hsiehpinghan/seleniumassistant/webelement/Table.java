@@ -36,10 +36,14 @@ public class Table extends WebElementWithBy {
 		return getRows().size();
 	}
 
-	public void clickButtonCell(int rowIndex, int columnIndex) {
+	public void clickButtonOfCell(int rowIndex, int columnIndex) {
 		getButton(rowIndex, columnIndex).click();
 	}
 
+	public String getButtonAttributeOfCell(int rowIndex, int columnIndex, String attributeName) {
+		return getButton(rowIndex, columnIndex).getAttribute(attributeName);
+	}
+	
 	public String getButtonValueOrText(int rowIndex, int columnIndex) {
 		WebElement button = getButton(rowIndex, columnIndex);
 		String value = button.getAttribute("value");

@@ -32,7 +32,7 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		if (page == null) {
 			return null;
 		}
-		logger.debug(page.getWebResponse().getResponseHeaders());
+		logger.debug("Response headers : " + page.getWebResponse().getResponseHeaders());
 		// ie. attachment; filename="2013-01-otc-02-C.zip"
 		String contDisp = page.getWebResponse().getResponseHeaderValue(
 				CONTENT_DISPOSITION);

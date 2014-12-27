@@ -38,7 +38,7 @@ public class AjaxWaitUtility {
 					List<Option> options = select.getOptions();
 					return CompareUtility.isEquals(options, comparedOption) == false;
 				} catch (Exception e) {
-					logger.debug("Exception : ", e);
+					logger.trace("Exception : ", e);
 					return false;
 				}
 			}
@@ -66,14 +66,19 @@ public class AjaxWaitUtility {
 					List<String> txts = table.getRowAsStringList(rowIndex);
 					return ListUtils.isEqualList(txts, comparedList);
 				} catch (Exception e) {
-					logger.debug("Exception : ", e);
+					logger.trace("Exception : ", e);
 					return false;
 				}
 			}
 		});
 	}
 	
-	
+	/**
+	 * Wait until font text equal.
+	 * @param font
+	 * @param text
+	 * @return
+	 */
 	public static boolean waitUntilFontTextEqual(final Font font,
 			final String text) {
 		// Object parameter is not used.
@@ -86,7 +91,7 @@ public class AjaxWaitUtility {
 				try {
 					return text.equals(font.getText());
 				} catch (Exception e) {
-					logger.debug("Exception : ", e);
+					logger.trace("Exception : ", e);
 					return false;
 				}
 			}

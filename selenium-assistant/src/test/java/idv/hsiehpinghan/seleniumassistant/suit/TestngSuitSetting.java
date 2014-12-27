@@ -2,7 +2,7 @@ package idv.hsiehpinghan.seleniumassistant.suit;
 
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.packageutility.utility.PackageUtility;
-import idv.hsiehpinghan.seleniumassistant.browser.FireFoxBrowser;
+import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 
 import java.io.IOException;
@@ -15,10 +15,10 @@ import org.testng.annotations.BeforeSuite;
 public class TestngSuitSetting {
 	public static final String URL_BASE = "http://127.0.0.1:8080/";
 
-	private static ApplicationContext applicationContext;
+	private static AnnotationConfigApplicationContext applicationContext;
 	private static MockHtmlServer htmlServer;
 	private static HtmlUnitBrowser htmlUnitBrowser;
-	private static FireFoxBrowser fireFoxBrowser;
+	private static FirefoxBrowser firefoxBrowser;
 
 	@BeforeSuite()
 	public void beforeSuite() throws IOException {
@@ -26,7 +26,7 @@ public class TestngSuitSetting {
 		applicationContext = new AnnotationConfigApplicationContext(pkgs);
 		htmlServer = applicationContext.getBean(MockHtmlServer.class);
 		htmlUnitBrowser = applicationContext.getBean(HtmlUnitBrowser.class);
-		fireFoxBrowser = applicationContext.getBean(FireFoxBrowser.class);
+		firefoxBrowser = applicationContext.getBean(FirefoxBrowser.class);
 	}
 
 	public static ApplicationContext getApplicationContext() {
@@ -41,8 +41,8 @@ public class TestngSuitSetting {
 		return htmlUnitBrowser;
 	}
 
-	public static FireFoxBrowser getFireFoxBrowser() {
-		return fireFoxBrowser;
+	public static FirefoxBrowser getFirefoxBrowser() {
+		return firefoxBrowser;
 	}
 
 	@AfterSuite

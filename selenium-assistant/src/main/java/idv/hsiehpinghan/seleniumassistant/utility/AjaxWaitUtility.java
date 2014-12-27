@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import com.google.common.base.Function;
@@ -16,7 +17,7 @@ import com.google.common.base.Function;
 public class AjaxWaitUtility {
 	private static final int POLLING_MILLISECONDS = 1000;
 	private static final int TIMEOUT_MILLISECONDS = 10000;
-
+	private static Logger logger = Logger.getLogger(AjaxWaitUtility.class.getName());
 	/**
 	 * Wait until select's options differ from comparedOption.
 	 * 
@@ -37,6 +38,7 @@ public class AjaxWaitUtility {
 					List<Option> options = select.getOptions();
 					return CompareUtility.isEquals(options, comparedOption) == false;
 				} catch (Exception e) {
+					logger.debug("Exception : ", e);
 					return false;
 				}
 			}
@@ -64,6 +66,7 @@ public class AjaxWaitUtility {
 					List<String> txts = table.getRowAsStringList(rowIndex);
 					return ListUtils.isEqualList(txts, comparedList);
 				} catch (Exception e) {
+					logger.debug("Exception : ", e);
 					return false;
 				}
 			}
@@ -83,6 +86,7 @@ public class AjaxWaitUtility {
 				try {
 					return text.equals(font.getText());
 				} catch (Exception e) {
+					logger.debug("Exception : ", e);
 					return false;
 				}
 			}

@@ -7,7 +7,7 @@
 			<!-- name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" 
 				/> -->
 			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.seleniumassistant.browser.FireFoxBrowserTest" 
+			<!-- name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" 
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.seleniumassistant.webelement.SelectTest" 
 				/> -->

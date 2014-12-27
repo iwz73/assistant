@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.webelement;
 
-import idv.hsiehpinghan.seleniumassistant.browser.FireFoxBrowser;
+import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class TableTest {
 		// ApplicationContext applicationContext = TestngSuitSetting
 		// .getApplicationContext();
 		// HtmlUnitBrowser browser = TestngSuitSetting.getHtmlUnitBrowser();
-		FireFoxBrowser browser = TestngSuitSetting.getFireFoxBrowser();
+		FirefoxBrowser browser = TestngSuitSetting.getFirefoxBrowser();
 		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
 		table = browser.getTable(By.cssSelector("#tableId"));
 	}

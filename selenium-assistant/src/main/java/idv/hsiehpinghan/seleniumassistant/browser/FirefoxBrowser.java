@@ -9,10 +9,12 @@ import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FireFoxBrowser extends BrowserBase {
+@Profile("firefox")
+public class FirefoxBrowser extends BrowserBase {
 	@Autowired
 	private FirefoxDriverExtension webDriver;
 

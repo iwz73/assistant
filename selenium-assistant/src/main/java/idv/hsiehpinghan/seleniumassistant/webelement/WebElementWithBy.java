@@ -7,6 +7,10 @@ import org.openqa.selenium.WebElement;
 public abstract class WebElementWithBy extends WebElementBase {
     private By by;
 
+    public By getBy() {
+        return by;
+    }
+    
     protected WebElementWithBy(WebDriver webDriver, By by) {
     	super(webDriver);
         this.by = by;
@@ -15,8 +19,5 @@ public abstract class WebElementWithBy extends WebElementBase {
     protected WebElement getSeleniumWebElement() {
     	return getWebDriver().findElement(by);
     }
-    
-    protected By getBy() {
-        return by;
-    }
+
 }

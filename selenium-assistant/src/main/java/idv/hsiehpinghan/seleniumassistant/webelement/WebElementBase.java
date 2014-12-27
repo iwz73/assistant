@@ -23,9 +23,9 @@ public abstract class WebElementBase {
 		return getSeleniumWebElement().getAttribute(attributeName);
 	}
 
-	protected abstract WebElement getSeleniumWebElement();
-
-	protected WebDriver getWebDriver() {
+	public WebDriver getWebDriver() {
 		return webDriver;
 	}
+
+	protected abstract WebElement getSeleniumWebElement();
 }

@@ -62,11 +62,11 @@ public class TestTable extends HBaseTable {
 	 *
 	 */
 	public class Key extends HBaseRowKey {
-		private static final int ID_LENGTH = 10;
-		private static final int ID_BEGIN = 0;
-		private static final int ID_END = 10;
-		private static final int ORDER_BEGIN = 10;
-		private static final int ORDER_END = 10 + IntegerUtility.INT_BYTE_AMOUNT;
+		private final int ID_LENGTH = 10;
+		private final int ID_BEGIN = 0;
+		private final int ID_END = 10;
+		private final int ORDER_BEGIN = 10;
+		private final int ORDER_END = 10 + IntegerUtility.INT_BYTE_AMOUNT;
 		private String id;
 		private int order;
 
@@ -172,7 +172,7 @@ public class TestTable extends HBaseTable {
 		 *
 		 */
 		public class TestQualifier1 extends HBaseColumnQualifier {
-			private static final int LEN = 10;
+			private final int LEN = 10;
 			private String s;
 
 			public TestQualifier1() {
@@ -303,7 +303,7 @@ public class TestTable extends HBaseTable {
 		 *
 		 */
 		public class TestQualifier1 extends HBaseColumnQualifier {
-			private static final int LEN = 10;
+			private final int LEN = 10;
 			private String s;
 
 			public TestQualifier1() {

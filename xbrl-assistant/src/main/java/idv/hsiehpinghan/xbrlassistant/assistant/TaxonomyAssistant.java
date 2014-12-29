@@ -1,18 +1,16 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
+import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
+import idv.hsiehpinghan.xbrlassistant.cache.TaxonomyCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 
 import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 @Component
 public class TaxonomyAssistant {
@@ -21,87 +19,81 @@ public class TaxonomyAssistant {
 	private ApplicationContext applicationContext;
 	@Autowired
 	private InstanceAssistant instanceAssistant;
+	@Autowired
+	private TaxonomyCache cache;
 
 	/**
 	 * Get xbrl taxonomy.
 	 * 
 	 * @param instanceFile
 	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public XbrlTaxonomy getXbrlTaxonomy(File instanceFile)
-			throws ParserConfigurationException, SAXException, IOException {
+	public XbrlTaxonomy getXbrlTaxonomy(File instanceFile) throws Exception {
 		XbrlTaxonomyVersion version = instanceAssistant
 				.getXbrlTaxonomyVersion(instanceFile);
+
+		if (version != cache.getVersion()) {
+			cacheTaxonomy(version, getTaxonomyPath(version));
+		}
+		return cache.getTaxonomy();
+	}
+
+	private void cacheTaxonomy(XbrlTaxonomyVersion version, String taxonomyPath)
+			throws Exception {
+		File taxonomy = ResourceUtility.getFileResource(taxonomyPath);
+		cache.setTaxonomy(new XbrlTaxonomy(taxonomy.getParent(), taxonomy
+				.getName()));
+		cache.setVersion(version);
+	}
+
+	private String getTaxonomyPath(XbrlTaxonomyVersion version) {
 		switch (version) {
 		case TIFRS_BASI_CR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBasiCr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BASI/CR/tifrs-basi-cr-2013-03-31.xsd";
 		case TIFRS_BASI_IR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBasiIr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BASI/IR/tifrs-basi-ir-2013-03-31.xsd";
 		case TIFRS_BD_CR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdCr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/CR/tifrs-bd-cr-2013-03-31.xsd";
 		case TIFRS_BD_ER_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdEr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2013-03-31.xsd";
 		case TIFRS_BD_IR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdIr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2013-03-31.xsd";
 		case TIFRS_CI_CR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsCiCr20130331");
+			return"xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2013-03-31.xsd";
 		case TIFRS_CI_IR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsCiIr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2013-03-31.xsd";
 		case TIFRS_FH_2013_03_31:
-			return (XbrlTaxonomy) applicationContext.getBean("tifrsFh20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/FH/tifrs-fh-2013-03-31.xsd";
 		case TIFRS_INS_CR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsInsCr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/INS/CR/tifrs-ins-cr-2013-03-31.xsd";
 		case TIFRS_INS_IR_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsInsIr20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/INS/IR/tifrs-ins-ir-2013-03-31.xsd";
 		case TIFRS_MIM_2013_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsMim20130331");
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/MIM/tifrs-mim-2013-03-31.xsd";
 		case TIFRS_BASI_CR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBasiCr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BASI/CR/tifrs-basi-cr-2014-03-31.xsd";
 		case TIFRS_BASI_IR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBasiIr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BASI/IR/tifrs-basi-ir-2014-03-31.xsd";
 		case TIFRS_BD_CR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdCr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/CR/tifrs-bd-cr-2014-03-31.xsd";
 		case TIFRS_BD_ER_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdEr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2014-03-31.xsd";
 		case TIFRS_BD_IR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsBdIr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2014-03-31.xsd";
 		case TIFRS_CI_CR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsCiCr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2014-03-31.xsd";
 		case TIFRS_CI_IR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsCiIr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2014-03-31.xsd";
 		case TIFRS_FH_2014_03_31:
-			return (XbrlTaxonomy) applicationContext.getBean("tifrsFh20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/FH/tifrs-fh-2014-03-31.xsd";
 		case TIFRS_INS_CR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsInsCr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/INS/CR/tifrs-ins-cr-2014-03-31.xsd";
 		case TIFRS_INS_IR_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsInsIr20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/INS/IR/tifrs-ins-ir-2014-03-31.xsd";
 		case TIFRS_MIM_2014_03_31:
-			return (XbrlTaxonomy) applicationContext
-					.getBean("tifrsMim20140331");
+			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/MIM/tifrs-mim-2014-03-31.xsd";
 		}
 		throw new RuntimeException("XbrlTaxonomy version undefined");
 	}
-
 }

@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
+import idv.hsiehpinghan.xbrlassistant.cache.InstanceCache;
+import idv.hsiehpinghan.xbrlassistant.xbrl.Calculation;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
@@ -11,8 +13,10 @@ import java.util.Vector;
 import jcx.xbrl.data.XbrlDocument;
 import jcx.xbrl.data.XbrlElement;
 import jcx.xbrl.data.XbrlPeriod;
-import jcx.xbrl.data.XbrlTreeNode;
+import jcx.xbrl.taxonomy.XbrlCalculationTree;
+import jcx.xbrl.taxonomy.XbrlCalculationTreeNode;
 import jcx.xbrl.taxonomy.XbrlPresentationTree;
+import jcx.xbrl.taxonomy.XbrlPresentationTreeNode;
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +36,13 @@ public class XbrlAssistant {
 	private ObjectMapper objectMapper;
 	@Autowired
 	private TaxonomyAssistant taxonomyAssistant;
-
+	@Autowired
+	private InstanceCache instanceCache;
+	
 	/**
-	 * Get presentation report as json format. (PresentIds can reference Presentation.Id....) 
+	 * Get presentation report as json format. (PresentIds can reference
+	 * Presentation.Id....)
+	 * 
 	 * @param instanceFile
 	 * @param presentIds
 	 * @return
@@ -62,8 +70,9 @@ public class XbrlAssistant {
 			for (XbrlPresentationTree tree : presentTrees) {
 				// Get root node. (ex :
 				// ifrs_StatementOfComprehensiveIncomeAbstract)
-				XbrlTreeNode rootNode = tree.getRootNode();
-				generateJsonObjectContent(presentNod, rootNode, taxonomy,
+				XbrlPresentationTreeNode rootNode = (XbrlPresentationTreeNode) tree
+						.getRootNode();
+				generatePresentationJsonObjectContent(presentNod, rootNode, taxonomy,
 						document);
 			}
 		}
@@ -71,16 +80,53 @@ public class XbrlAssistant {
 		return objNode;
 	}
 
-	XbrlDocument loadXbrlDocument(File instanceFile, XbrlTaxonomy taxonomy) throws Exception {
+	public ObjectNode getCalculationJson(File instanceFile,
+			List<String> calIds) throws Exception {
+		XbrlTaxonomy taxonomy = taxonomyAssistant.getXbrlTaxonomy(instanceFile);
+		XbrlDocument document = loadXbrlDocument(instanceFile, taxonomy);
+
+		@SuppressWarnings("unchecked")
+		Vector<String> cals = taxonomy.getCalculationList();
+		ObjectNode objNode = objectMapper.createObjectNode();
+		for (int i = 0, size = cals.size(); i < size; ++i) {
+			// Get presentation node roleURI. (ex :
+			// http://www.xbrl.org/tifrs/fr/role/BalanceSheet)
+			String calId = cals.get(i);
+			if (calIds.contains(calId) == false) {
+				continue;
+			}
+			ObjectNode calNod = objectMapper.createObjectNode();
+			objNode.set(calId, calNod);
+			XbrlCalculationTree[] calTrees = taxonomy
+					.getCalculationTree(calId);
+			for (XbrlCalculationTree tree : calTrees) {
+				// Get root node. (ex : ifrs_Liabilitiest)
+				XbrlCalculationTreeNode rootNode = (XbrlCalculationTreeNode) tree
+						.getRootNode();
+				generateCalculationJsonObjectContent(calNod, rootNode, taxonomy,
+						document);
+			}
+		}
+
+		return objNode;
+	}
+	
+	XbrlDocument loadXbrlDocument(File instanceFile, XbrlTaxonomy taxonomy)
+			throws Exception {
+		String filePath = instanceFile.getAbsolutePath();
+		if(filePath.equals(instanceCache.getFilePath())) {
+			return instanceCache.getXbrlDocument();
+		}
 		XbrlDocument xDoc = new XbrlDocument();
-		xDoc.load(taxonomy, new FileInputStream(
-				instanceFile));
-		return xDoc;
+		xDoc.load(taxonomy, new FileInputStream(instanceFile));
+		instanceCache.setXbrlDocument(xDoc);
+		instanceCache.setFilePath(filePath);
+		return instanceCache.getXbrlDocument();
 	}
 
-	private void generateJsonObjectContent(ObjectNode parentObjNode,
-			XbrlTreeNode treeNode, XbrlTaxonomy taxonomy, XbrlDocument document)
-			throws Exception {
+	private void generatePresentationJsonObjectContent(ObjectNode parentObjNode,
+			XbrlPresentationTreeNode treeNode, XbrlTaxonomy taxonomy,
+			XbrlDocument document) throws Exception {
 		String elementId = treeNode.getID();
 		ObjectNode objNode = objectMapper.createObjectNode();
 		parentObjNode.set(elementId, objNode);
@@ -89,21 +135,46 @@ public class XbrlAssistant {
 		objNode.put(Presentation.Attribute.ENGLISH_LABEL,
 				taxonomy.getLabelByID(elementId, EN));
 		objNode.put(Presentation.Attribute.ORDER, treeNode.getOrder());
-		generateJsonValueContent(document, elementId, objNode);
+		generatePresentationJsonValueContent(document, elementId, objNode);
 		if (treeNode.hasChild()) {
-			XbrlTreeNode childTreeNode = treeNode.getFirstChild();
+			XbrlPresentationTreeNode childTreeNode = (XbrlPresentationTreeNode) treeNode
+					.getFirstChild();
 			do {
-				ObjectNode childObjNode = objectMapper.createObjectNode();
-				String childElementId = childTreeNode.getID();
-				objNode.set(childElementId, childObjNode);
-				generateJsonObjectContent(childObjNode, childTreeNode,
+//				ObjectNode childObjNode = objectMapper.createObjectNode();
+//				String childElementId = childTreeNode.getID();
+//				objNode.set(childElementId, childObjNode);
+				generatePresentationJsonObjectContent(objNode, childTreeNode,
 						taxonomy, document);
-				childTreeNode = childTreeNode.getNextSibling();
+				childTreeNode = (XbrlPresentationTreeNode) childTreeNode
+						.getNextSibling();
 			} while (childTreeNode != null);
 		}
 	}
 
-	private void generateJsonValueContent(XbrlDocument document,
+	private void generateCalculationJsonObjectContent(ObjectNode parentObjNode,
+			XbrlCalculationTreeNode treeNode, XbrlTaxonomy taxonomy,
+			XbrlDocument document) throws Exception {
+		String elementId = treeNode.getID();
+		ObjectNode objNode = objectMapper.createObjectNode();
+		parentObjNode.set(elementId, objNode);
+		objNode.put(Calculation.Attribute.WEIGHT,
+				treeNode.getWeight());
+		if (treeNode.hasChild()) {
+			XbrlCalculationTreeNode childTreeNode = (XbrlCalculationTreeNode) treeNode
+					.getFirstChild();
+			do {
+//				ObjectNode childObjNode = objectMapper.createObjectNode();
+//				String childElementId = childTreeNode.getID();
+//				objNode.set(childElementId, childObjNode);
+				generateCalculationJsonObjectContent(objNode, childTreeNode,
+						taxonomy, document);
+				childTreeNode = (XbrlCalculationTreeNode) childTreeNode
+						.getNextSibling();
+			} while (childTreeNode != null);
+		}
+	}
+	
+	private void generatePresentationJsonValueContent(XbrlDocument document,
 			String elementId, ObjectNode objNode) {
 		ObjectNode valuesObjNode = objectMapper.createObjectNode();
 		XbrlElement[] eles = document.getAllItems(elementId);

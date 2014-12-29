@@ -2,6 +2,7 @@ package idv.hsiehpinghan.xbrlassistant.assistant;
 
 import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.xbrlassistant.xbrl.Calculation;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
@@ -21,7 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class XbrlAssistantTest {
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
+	private TaxonomyAssistant taxonomyAssistant;
 	private XbrlAssistant xbrlAssistant;
 	private File tifrs_fr0_m1_ci_cr_1101_2013Q1File;
 	private ObjectMapper objectMapper;
@@ -29,6 +31,8 @@ public class XbrlAssistantTest {
 	@BeforeClass
 	public void beforeClass() {
 		applicationContext = TestngSuitSetting.getApplicationContext();
+		taxonomyAssistant = applicationContext.getBean(TaxonomyAssistant.class);		
+		
 		xbrlAssistant = applicationContext.getBean(XbrlAssistant.class);
 		objectMapper = applicationContext.getBean(ObjectMapper.class);
 	}
@@ -38,8 +42,7 @@ public class XbrlAssistantTest {
 		String tifrs_fr0_m1_ci_cr_1101_2013Q1 = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
 		tifrs_fr0_m1_ci_cr_1101_2013Q1File = ResourceUtility
 				.getFileResource(tifrs_fr0_m1_ci_cr_1101_2013Q1);
-		XbrlTaxonomy tifrsCiCr20130331Taxonomy = (XbrlTaxonomy) applicationContext
-				.getBean("tifrsCiCr20130331");
+		XbrlTaxonomy tifrsCiCr20130331Taxonomy = taxonomyAssistant.getXbrlTaxonomy(tifrs_fr0_m1_ci_cr_1101_2013Q1File);
 		XbrlDocument tifrs_fr0_m1_ci_cr_1101_2013Q1Document = xbrlAssistant
 				.loadXbrlDocument(tifrs_fr0_m1_ci_cr_1101_2013Q1File,
 						tifrsCiCr20130331Taxonomy);
@@ -60,29 +63,43 @@ public class XbrlAssistantTest {
 		JsonNode balanceSheetNode = objNode.get(Presentation.Id.BalanceSheet);
 		JsonNode blanceSheetSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/tifrs-fr0-m1-ci-cr-1101-2013Q1_BalanceSheet.json"));
+						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_BalanceSheet.json"));
 		Assert.assertEquals(balanceSheetNode, blanceSheetSample);
+
 		// Statement of comprehensive income test
 		JsonNode incomeNode = objNode
 				.get(Presentation.Id.StatementOfComprehensiveIncome);
 		JsonNode incomeSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfComprehensiveIncome.json"));
+						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfComprehensiveIncome.json"));
 		Assert.assertEquals(incomeNode, incomeSample);
+
 		// Statement of cash flows test
 		JsonNode cashFlowNode = objNode
 				.get(Presentation.Id.StatementOfCashFlows);
 		JsonNode cashFlowSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfCashFlows.json"));
+						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfCashFlows.json"));
 		Assert.assertEquals(cashFlowNode, cashFlowSample);
+		
 		// Statement of changes in equity test
 		JsonNode equityChangeNode = objNode
 				.get(Presentation.Id.StatementOfChangesInEquity);
 		JsonNode equityChangeSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfChangesInEquity.json"));
+						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfChangesInEquity.json"));
 		Assert.assertEquals(equityChangeNode, equityChangeSample);
 	}
 
+//	@Test(dependsOnMethods = {"loadXbrlDocument"})
+	public void getCalculationJson() throws Exception {
+		List<String> calIds = new ArrayList<String>(4);
+		calIds.add(Calculation.Id.BalanceSheet);
+		calIds.add(Calculation.Id.StatementOfComprehensiveIncome);
+		calIds.add(Calculation.Id.StatementOfCashFlows);
+		calIds.add(Calculation.Id.StatementOfChangesInEquity);
+		ObjectNode objNode = xbrlAssistant.getCalculationJson(tifrs_fr0_m1_ci_cr_1101_2013Q1File, calIds);
+	
+		System.err.println(objNode);
+	}
 }

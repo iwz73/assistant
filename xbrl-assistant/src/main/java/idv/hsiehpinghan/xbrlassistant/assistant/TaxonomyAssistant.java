@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
-import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.cache.TaxonomyCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 
@@ -32,19 +31,7 @@ public class TaxonomyAssistant {
 	public XbrlTaxonomy getXbrlTaxonomy(File instanceFile) throws Exception {
 		XbrlTaxonomyVersion version = instanceAssistant
 				.getXbrlTaxonomyVersion(instanceFile);
-
-		if (version != cache.getVersion()) {
-			cacheTaxonomy(version, getTaxonomyPath(version));
-		}
-		return cache.getTaxonomy();
-	}
-
-	private void cacheTaxonomy(XbrlTaxonomyVersion version, String taxonomyPath)
-			throws Exception {
-		File taxonomy = ResourceUtility.getFileResource(taxonomyPath);
-		cache.setTaxonomy(new XbrlTaxonomy(taxonomy.getParent(), taxonomy
-				.getName()));
-		cache.setVersion(version);
+		return cache.getTaxonomy(version, getTaxonomyPath(version));
 	}
 
 	private String getTaxonomyPath(XbrlTaxonomyVersion version) {
@@ -60,7 +47,7 @@ public class TaxonomyAssistant {
 		case TIFRS_BD_IR_2013_03_31:
 			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2013-03-31.xsd";
 		case TIFRS_CI_CR_2013_03_31:
-			return"xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2013-03-31.xsd";
+			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2013-03-31.xsd";
 		case TIFRS_CI_IR_2013_03_31:
 			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2013-03-31.xsd";
 		case TIFRS_FH_2013_03_31:

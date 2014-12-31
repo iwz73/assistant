@@ -8,14 +8,11 @@ import java.io.File;
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TaxonomyAssistant {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
-	@Autowired
-	private ApplicationContext applicationContext;
 	@Autowired
 	private InstanceAssistant instanceAssistant;
 	@Autowired

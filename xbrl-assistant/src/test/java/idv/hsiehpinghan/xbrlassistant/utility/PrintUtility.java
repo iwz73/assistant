@@ -7,6 +7,12 @@ import java.util.Vector;
 import jcx.xbrl.data.XbrlElement;
 
 public class PrintUtility {
+	public static void print(String[] strArr) {
+		for(String s : strArr) {
+			System.err.println(s);
+		}
+	}
+	
 	public static void print(Vector<?> vec) {
 		for (int i = 0, size = vec.size(); i < size; ++i) {
 			System.err.println(vec.get(i));

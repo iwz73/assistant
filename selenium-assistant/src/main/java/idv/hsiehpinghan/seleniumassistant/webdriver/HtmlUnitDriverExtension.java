@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	public HtmlUnitDriverExtension() {
-		super(true);
+		super(DesiredCapabilities.firefox());
 	}
 
 	/**

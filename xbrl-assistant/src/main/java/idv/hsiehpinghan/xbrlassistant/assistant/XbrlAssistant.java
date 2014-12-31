@@ -6,6 +6,7 @@ import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,6 +38,40 @@ public class XbrlAssistant {
 	private TaxonomyAssistant taxonomyAssistant;
 	@Autowired
 	private InstanceCache cache;
+
+	/**
+	 * Get json format presentation report. (PresentId can
+	 * reference Presentation.Id....)
+	 * 
+	 * @param instanceFile
+	 * @param presentId
+	 * @return
+	 * @throws Exception
+	 */
+	public ObjectNode getPresentationJson(File instanceFile, String presentId)
+			throws Exception {
+		List<String> presentIds = new ArrayList<String>(1);
+		presentIds.add(presentId);
+		ObjectNode objNode = getPresentationJson(instanceFile, presentIds);
+		return (ObjectNode) objNode.get(presentId);
+	}
+
+	/**
+	 * Get json format calculation report. (calId can reference
+	 * Calculation.Id....)
+	 * 
+	 * @param instanceFile
+	 * @param calId
+	 * @return
+	 * @throws Exception
+	 */
+	public ObjectNode getCalculationJson(File instanceFile, String calId)
+			throws Exception {
+		List<String> calIds = new ArrayList<String>(1);
+		calIds.add(calId);
+		ObjectNode objNode = getCalculationJson(instanceFile, calIds);
+		return (ObjectNode) objNode.get(calId);
+	}
 
 	/**
 	 * Get presentation report as json format. (PresentIds can reference
@@ -82,6 +117,7 @@ public class XbrlAssistant {
 	/**
 	 * Get calculation report as json format. (calIds can reference
 	 * Calculation.Id....)
+	 * 
 	 * @param instanceFile
 	 * @param calIds
 	 * @return

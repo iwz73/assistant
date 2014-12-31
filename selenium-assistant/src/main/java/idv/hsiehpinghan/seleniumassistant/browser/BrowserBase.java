@@ -3,6 +3,7 @@ package idv.hsiehpinghan.seleniumassistant.browser;
 import idv.hsiehpinghan.seleniumassistant.webelement.Button;
 import idv.hsiehpinghan.seleniumassistant.webelement.Div;
 import idv.hsiehpinghan.seleniumassistant.webelement.Font;
+import idv.hsiehpinghan.seleniumassistant.webelement.Radio;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
 
@@ -72,6 +73,10 @@ public abstract class BrowserBase {
 		return new Button(getWebDriver(), by);
 	}
 
+	public Radio getRadio(By by) {
+		return new Radio(getWebDriver(), by);
+	}
+	
 	/**
 	 * Back to pre-page.
 	 */

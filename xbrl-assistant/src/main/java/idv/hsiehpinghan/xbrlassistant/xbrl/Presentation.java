@@ -24,5 +24,17 @@ public class Presentation {
 		public static final String ORDER = "order";
 		public static final String CHINESE_LABEL = "chinese_label";
 		public static final String ENGLISH_LABEL = "english_label";
+		public static final String VALUES = "values";
+		public static final String VALUE = "value";
+		public static final String UNIT = "unit";
+		public static final String PERIOD_TYPE = "periodType";
+		public static final String INSTANT = "instant";
+		public static final String START_DATE = "startDate";
+		public static final String END_DATE = "endDate";
+	}
+	
+	public static class Unit {
+		public static final String TWD = "TWD";
+		public static final String SHARES = "Shares";
 	}
 }

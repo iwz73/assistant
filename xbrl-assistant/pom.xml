@@ -17,6 +17,7 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<jackson.version>2.4.4</jackson.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
+		<xbrl.version>1.0.0</xbrl.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
 	</properties>
@@ -56,6 +57,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<!-- xbrl -->
+		<dependency>
+			<groupId>jcx</groupId>
+			<artifactId>xbrl</artifactId>
+			<version>${xbrl.version}</version>
 		</dependency>
 		
 		<!-- resource-utility -->

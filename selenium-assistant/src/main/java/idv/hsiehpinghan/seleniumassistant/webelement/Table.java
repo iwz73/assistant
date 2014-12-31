@@ -53,6 +53,10 @@ public class Table extends WebElementWithBy {
 		return value;
 	}
 	
+	public String getTextOfCell(int rowIndex, int columnIndex) {
+		return getCell(rowIndex, columnIndex).getText();
+	}
+	
 	private WebElement getButton(int rowIndex, int columnIndex) {
 		WebElement cell = getCell(rowIndex, columnIndex);
 		return cell.findElement(By.cssSelector("button,input[type='button']"));

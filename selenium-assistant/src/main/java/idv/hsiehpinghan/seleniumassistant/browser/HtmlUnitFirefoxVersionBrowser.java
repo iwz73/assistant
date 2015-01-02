@@ -1,16 +1,17 @@
 package idv.hsiehpinghan.seleniumassistant.browser;
 
 import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtension;
+import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverWithFirefoxVersionExtension;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("htmlUnit")
-public class HtmlUnitBrowser extends HtmlUnitBrowserBase {
+@Profile("htmlUnit-with-firefox-version")
+public class HtmlUnitFirefoxVersionBrowser extends HtmlUnitBrowserBase {
 	@Autowired
-	private HtmlUnitDriverExtension webDriver;
+	private HtmlUnitDriverWithFirefoxVersionExtension webDriver;
 
 	@Override
 	public HtmlUnitDriverExtension getWebDriver() {

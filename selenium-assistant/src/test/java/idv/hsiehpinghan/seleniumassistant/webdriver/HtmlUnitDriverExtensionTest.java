@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.openqa.selenium.By;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

@@ -6,10 +6,10 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.Page;
 
 @Component
@@ -18,9 +18,17 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		IWebDriverExtension {
 	private static final String CONTENT_DISPOSITION = "Content-disposition";
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	
+
 	public HtmlUnitDriverExtension() {
-		super(DesiredCapabilities.firefox());
+		super();
+	}
+
+	public HtmlUnitDriverExtension(boolean enableJavascript) {
+		super(enableJavascript);
+	}
+
+	public HtmlUnitDriverExtension(BrowserVersion version) {
+		super(version);
 	}
 
 	/**
@@ -33,7 +41,8 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		if (page == null) {
 			return null;
 		}
-		logger.debug("Response headers : " + page.getWebResponse().getResponseHeaders());
+		logger.debug("Response headers : "
+				+ page.getWebResponse().getResponseHeaders());
 		// ie. attachment; filename="2013-01-otc-02-C.zip"
 		String contDisp = page.getWebResponse().getResponseHeaderValue(
 				CONTENT_DISPOSITION);
@@ -59,29 +68,29 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		}
 		return is;
 	}
-	
+
 	/**
 	 * Set webdrive's page.
+	 * 
 	 * @param page
 	 */
 	public void setPage(Page page) {
 		getCurrentWindow().setEnclosedPage(page);
 	}
-	
+
 	/**
 	 * Get webdriver's page.
+	 * 
 	 * @return
 	 */
 	public Page getPage() {
 		return lastPage();
 	}
 
-	
 	String getFileName(String str) {
 		int idxBegin = str.indexOf("\"") + 1;
 		int idxEnd = str.lastIndexOf("\"");
 		return str.substring(idxBegin, idxEnd);
 	}
-
 
 }

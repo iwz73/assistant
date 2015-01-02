@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.webelement;
 
-import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
+import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select.Option;
 
@@ -19,9 +19,12 @@ public class SelectTest {
 	public void beforeClass() throws IOException {
 		// ApplicationContext applicationContext = TestngSuitSetting
 		// .getApplicationContext();
-		HtmlUnitBrowser browser = TestngSuitSetting.getHtmlUnitBrowser();
-		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
-		select = browser.getSelect(By.cssSelector("#selectId"));
+		HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser = TestngSuitSetting
+				.getHtmlUnitWithJavascriptBrowser();
+		htmlUnitWithJavascriptBrowser.browse(TestngSuitSetting.URL_BASE
+				+ "html/selenium_index.html");
+		select = htmlUnitWithJavascriptBrowser.getSelect(By
+				.cssSelector("#selectId"));
 	}
 
 	@Test

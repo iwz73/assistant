@@ -3,7 +3,7 @@ package idv.hsiehpinghan.seleniumassistant.suit;
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.packageutility.utility.PackageUtility;
 import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
-import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
+import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class TestngSuitSetting {
 
 	private static AnnotationConfigApplicationContext applicationContext;
 	private static MockHtmlServer htmlServer;
-	private static HtmlUnitBrowser htmlUnitBrowser;
+	private static HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser;
 	private static FirefoxBrowser firefoxBrowser;
 
 	@BeforeSuite()
@@ -25,7 +25,8 @@ public class TestngSuitSetting {
 		String[] pkgs = PackageUtility.getSpringConfigurationPackages();
 		applicationContext = new AnnotationConfigApplicationContext(pkgs);
 		htmlServer = applicationContext.getBean(MockHtmlServer.class);
-		htmlUnitBrowser = applicationContext.getBean(HtmlUnitBrowser.class);
+		htmlUnitWithJavascriptBrowser = applicationContext
+				.getBean(HtmlUnitWithJavascriptBrowser.class);
 		firefoxBrowser = applicationContext.getBean(FirefoxBrowser.class);
 	}
 
@@ -37,8 +38,8 @@ public class TestngSuitSetting {
 		return htmlServer;
 	}
 
-	public static HtmlUnitBrowser getHtmlUnitBrowser() {
-		return htmlUnitBrowser;
+	public static HtmlUnitWithJavascriptBrowser getHtmlUnitWithJavascriptBrowser() {
+		return htmlUnitWithJavascriptBrowser;
 	}
 
 	public static FirefoxBrowser getFirefoxBrowser() {

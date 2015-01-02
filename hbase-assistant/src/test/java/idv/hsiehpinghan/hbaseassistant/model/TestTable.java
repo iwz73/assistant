@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.hbaseassistant.model;
 
-import idv.hsiehpinghan.datatypeutility.utility.ArrayUtility;
+import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.IntegerUtility;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
@@ -151,12 +151,14 @@ public class TestTable extends HBaseTable {
 			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
 			for (Map.Entry<byte[], NavigableMap<Long, byte[]>> qtvEnt : valueMap
 					.entrySet()) {
-				ColFam1.TestQualifier1 q = new ColFam1.TestQualifier1(qtvEnt.getKey());
+				ColFam1.TestQualifier1 q = new ColFam1.TestQualifier1(
+						qtvEnt.getKey());
 				NavigableMap<Long, byte[]> tvMap = qtvEnt.getValue();
 				NavigableMap<Date, HBaseValue> versionValueMap = new TreeMap<Date, HBaseValue>();
 				for (Map.Entry<Long, byte[]> tvEnt : tvMap.entrySet()) {
 					Date t = new Date(tvEnt.getKey());
-					ColFam1.TestValue1 v = new ColFam1.TestValue1(tvEnt.getValue());
+					ColFam1.TestValue1 v = new ColFam1.TestValue1(
+							tvEnt.getValue());
 					versionValueMap.put(t, v);
 				}
 				qualifierVersionValueMap.put(q, versionValueMap);
@@ -205,7 +207,7 @@ public class TestTable extends HBaseTable {
 
 			@Override
 			public int compareTo(HBaseColumnQualifier o) {
-				return this.getS().compareTo(((TestQualifier1)o).getS());
+				return this.getS().compareTo(((TestQualifier1) o).getS());
 			}
 
 		}
@@ -282,12 +284,14 @@ public class TestTable extends HBaseTable {
 			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
 			for (Map.Entry<byte[], NavigableMap<Long, byte[]>> qtvEnt : valueMap
 					.entrySet()) {
-				ColFam2.TestQualifier1 q = new ColFam2.TestQualifier1(qtvEnt.getKey());
+				ColFam2.TestQualifier1 q = new ColFam2.TestQualifier1(
+						qtvEnt.getKey());
 				NavigableMap<Long, byte[]> tvMap = qtvEnt.getValue();
 				NavigableMap<Date, HBaseValue> versionValueMap = new TreeMap<Date, HBaseValue>();
 				for (Map.Entry<Long, byte[]> tvEnt : tvMap.entrySet()) {
 					Date t = new Date(tvEnt.getKey());
-					ColFam2.TestValue1 v = new ColFam2.TestValue1(tvEnt.getValue());
+					ColFam2.TestValue1 v = new ColFam2.TestValue1(
+							tvEnt.getValue());
 					versionValueMap.put(t, v);
 				}
 				qualifierVersionValueMap.put(q, versionValueMap);
@@ -295,7 +299,7 @@ public class TestTable extends HBaseTable {
 			setQualifierVersionValueMap(qualifierVersionValueMap);
 
 		}
-		
+
 		/**
 		 * Qualifier.
 		 * 
@@ -336,7 +340,7 @@ public class TestTable extends HBaseTable {
 
 			@Override
 			public int compareTo(HBaseColumnQualifier o) {
-				return this.getS().compareTo(((TestQualifier1)o).getS());
+				return this.getS().compareTo(((TestQualifier1) o).getS());
 			}
 
 		}

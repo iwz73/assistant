@@ -18,9 +18,6 @@ public class TableTest {
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		// ApplicationContext applicationContext = TestngSuitSetting
-		// .getApplicationContext();
-		// HtmlUnitBrowser browser = TestngSuitSetting.getHtmlUnitBrowser();
 		FirefoxBrowser browser = TestngSuitSetting.getFirefoxBrowser();
 		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
 		table = browser.getTable(By.cssSelector("#tableId"));

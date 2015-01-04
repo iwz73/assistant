@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>idv.hsiehpinghan</groupId>
+	<artifactId>hdfs-assistant</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>hdfs-assistant</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<log4j.version>1.2.17</log4j.version>
+		<testng.version>6.1.1</testng.version>
+		<spring.version>4.1.2.RELEASE</spring.version>
+		<hadoop.version>2.6.0</hadoop.version>
+		<resource-utility.version>1.0.0</resource-utility.version>
+		<package-utility.version>1.0.0</package-utility.version>
+	</properties>
+
+	<dependencies>
+		<!-- log4j (for spring logging) -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- hadoop -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+		<!-- resource-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>resource-utility</artifactId>
+			<version>${resource-utility.version}</version>
+		</dependency>
+
+		<!-- package-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>package-utility</artifactId>
+			<version>${package-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+</project>

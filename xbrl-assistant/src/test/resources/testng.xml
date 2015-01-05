@@ -6,9 +6,8 @@
 			<class name="idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting" />
 			<class
 				name="idv.hsiehpinghan.xbrlassistant.assistant.InstanceAssistantTest" />
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.xbrlassistant.assistant.TaxonomyAssistantTest" /> -->
-<!-- 			<class name="idv.hsiehpinghan.xbrlassistant.assistant.XbrlAssistantTest" /> -->
+			<class
+				name="idv.hsiehpinghan.xbrlassistant.assistant.TaxonomyAssistantTest" />
 		</classes>
 	</test>
 </suite>

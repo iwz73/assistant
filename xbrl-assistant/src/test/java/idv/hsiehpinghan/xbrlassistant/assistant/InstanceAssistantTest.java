@@ -38,7 +38,7 @@ public class InstanceAssistantTest {
 		objectMapper = applicationContext.getBean(ObjectMapper.class);
 	}
 
-	// @Test
+	 @Test
 	public void getInstanceJson() throws Exception {
 		List<String> ids = new ArrayList<String>(4);
 		ids.add(Presentation.Id.BalanceSheet);

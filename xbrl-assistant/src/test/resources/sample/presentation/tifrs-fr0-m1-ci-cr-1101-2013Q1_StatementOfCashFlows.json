@@ -10,23 +10,7 @@
          "ifrs_ProfitLossBeforeTax":{  
             "chinese_label":"繼續營業單位稅前淨利（淨損）",
             "english_label":"Profit (loss) from continuing operations before tax",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"2340789000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"2579068000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "tifrs-SCF_ProfitLossFromDiscontinuedOperationsBeforeTax":{  
             "chinese_label":"停業單位稅前淨利（淨損）",
@@ -36,23 +20,7 @@
          "tifrs-SCF_ProfitLossBeforeTax":{  
             "chinese_label":"本期稅前淨利（淨損）",
             "english_label":"Profit (loss) before tax",
-            "order":3.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"2340789000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"2579068000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":3.0
          },
          "tifrs-SCF_AdjustmentsAbstract":{  
             "chinese_label":"調整項目",
@@ -65,44 +33,12 @@
                "tifrs-SCF_DepreciationExpense":{  
                   "chinese_label":"折舊費用",
                   "english_label":"Depreciation expense",
-                  "order":1.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"1571884000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"1489383000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":1.0
                },
                "tifrs-SCF_AmortizationExpense":{  
                   "chinese_label":"攤銷費用",
                   "english_label":"Amortization expense",
-                  "order":2.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"88802000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"90539000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":2.0
                },
                "tifrs-SCF_ProvisionReversalOfProvisionForBadDebtExpense":{  
                   "chinese_label":"呆帳費用提列（轉列收入）數",
@@ -112,44 +48,12 @@
                "tifrs-SCF_NetLossGainOnFinancialAssetsOrLiabilitiesAtFairValueThroughProfitOrLoss":{  
                   "chinese_label":"透過損益按公允價值衡量金融資產及負債之淨損失（利益）",
                   "english_label":"Net loss (gain) on financial assets or liabilities at fair value through profit or loss",
-                  "order":4.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-1929000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"4122000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":4.0
                },
                "tifrs-SCF_InterestExpense":{  
                   "chinese_label":"利息費用",
                   "english_label":"Interest expense",
-                  "order":5.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"528260000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"735520000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":5.0
                },
                "tifrs-SCF_NetLossGainArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost":{  
                   "chinese_label":"除列按攤銷後成本衡量金融資產淨損失（利益）",
@@ -164,23 +68,7 @@
                "tifrs-SCF_InterestIncome":{  
                   "chinese_label":"利息收入",
                   "english_label":"Interest income",
-                  "order":6.1,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-49859000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"-46293000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":6.1
                },
                "tifrs-SCF_DividendIncome":{  
                   "chinese_label":"股利收入",
@@ -200,44 +88,12 @@
                "tifrs-SCF_ShareOfLossProfitOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
                   "chinese_label":"採用權益法認列之關聯企業及合資損失（利益）之份額",
                   "english_label":"Share of loss (profit) of associates and joint ventures accounted for using equity method",
-                  "order":10.1,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-151905000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"-247136000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":10.1
                },
                "tifrs-SCF_LossGainOnDisposalOfPropertyPlanAndEquipment":{  
                   "chinese_label":"處分及報廢不動產、廠房及設備損失（利益）",
                   "english_label":"Loss (gain) on disposal of property, plan and equipment",
-                  "order":12.1,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-29636000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"13767000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":12.1
                },
                "tifrs-SCF_PropertyPlanAndEquipmentTransferredToExpenses":{  
                   "chinese_label":"不動產、廠房及設備轉列費用數",
@@ -267,23 +123,7 @@
                "tifrs-SCF_LossGainOnDisposalOfInvestments":{  
                   "chinese_label":"處分投資損失（利益）",
                   "english_label":"Loss (gain) on disposal of investments",
-                  "order":14.3,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-430158000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"-286694000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":14.3
                },
                "tifrs-SCF_LossGainOnDisposalOfInvestmentsAccountedForUsingEquityMethod":{  
                   "chinese_label":"處分採用權益法之投資損失（利益）",
@@ -303,23 +143,7 @@
                "tifrs-SCF_ImpairmentLossOnNonfinancialAssets":{  
                   "chinese_label":"非金融資產減損損失",
                   "english_label":"Impairment loss on non-financial assets",
-                  "order":19.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"34273000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"-57467000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":19.0
                },
                "tifrs-SCF_ReversalOfImpairmentLossOnNonfinancialAssets":{  
                   "chinese_label":"非金融資產減損迴轉利益",
@@ -339,23 +163,7 @@
                "tifrs-SCF_UnrealizedForeignExchangeLossGain":{  
                   "chinese_label":"未實現外幣兌換損失（利益）",
                   "english_label":"Unrealized foreign exchange loss (gain)",
-                  "order":21.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-152961000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"11189000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":21.0
                },
                "tifrs-SCF_LossGainOnBondRedemption":{  
                   "chinese_label":"買回應付公司債損失（利益）",
@@ -367,47 +175,20 @@
                   "english_label":"Other revenue, overdue dividends and compensation of board and directors",
                   "order":23.0
                },
+               "tifrs-SCF_LossGainOnFairValueAdjustmentOfInvestmentProperty":{  
+                  "chinese_label":"投資性不動產公允價值調整損失(利益)",
+                  "english_label":"Loss (gain) on fair value adjustment of investment property",
+                  "order":24.0
+               },
                "ifrs_OtherAdjustmentsToReconcileProfitLoss":{  
                   "chinese_label":"其他項目",
                   "english_label":"Other adjustments to reconcile profit (loss)",
-                  "order":24.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"43313000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"41266000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":25.0
                },
                "tifrs-SCF_AdjustmentsToReconcileProfitLoss":{  
                   "chinese_label":"不影響現金流量之收益費損項目",
                   "english_label":"Adjustments to reconcile profit (loss)",
-                  "order":25.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"1450084000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"1748196000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":26.0
                }
             },
             "tifrs-SCF_ChangesInOperatingAssetsAndLiabilitiesAbstract":{  
@@ -421,23 +202,7 @@
                   "tifrs-SCF_DecreaseIncreaseInFinancialAssetsHeldForTrading":{  
                      "chinese_label":"持有供交易之金融資產（增加）減少",
                      "english_label":"Decrease (increase) in financial assets held for trading",
-                     "order":1.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-120107000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"753800000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":1.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInDerivativeFinancialAssetsForHedging":{  
                      "chinese_label":"避險之衍生金融資產（增加）減少",
@@ -447,23 +212,7 @@
                   "tifrs-SCF_DecreaseIncreaseInNotesReceivable":{  
                      "chinese_label":"應收票據（增加）減少",
                      "english_label":"Decrease (increase) in notes receivable",
-                     "order":3.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"1720608000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"2980166000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":3.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInNotesReceivableDueFromRelatedParties":{  
                      "chinese_label":"應收票據－關係人（增加）減少",
@@ -473,44 +222,12 @@
                   "tifrs-SCF_DecreaseIncreaseInAccountsReceivable":{  
                      "chinese_label":"應收帳款（增加）減少",
                      "english_label":"Decrease (increase) in accounts receivable",
-                     "order":5.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-510125000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"-2673861000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":5.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInAccountsReceivableDueFromRelatedParties":{  
                      "chinese_label":"應收帳款－關係人（增加）減少",
                      "english_label":"Decrease (increase) in accounts receivable due from related parties",
-                     "order":6.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"46524000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"54983000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":6.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInConstructionContractsReceivable":{  
                      "chinese_label":"應收建造合約款（增加）減少",
@@ -525,44 +242,12 @@
                   "tifrs-SCF_DecreaseIncreaseInOtherReceivableDueFromRelatedParties":{  
                      "chinese_label":"其他應收款－關係人（增加）減少",
                      "english_label":"Decrease (increase) in other receivable due from related parties",
-                     "order":9.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"248702000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"-413703000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":9.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInInventories":{  
                      "chinese_label":"存貨（增加）減少",
                      "english_label":"Decrease (increase) in inventories",
-                     "order":10.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-859829000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"552208000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":10.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInBiologicalAssets":{  
                      "chinese_label":"生物資產（增加）減少",
@@ -577,65 +262,17 @@
                   "tifrs-SCF_DecreaseIncreaseInPrepayments":{  
                      "chinese_label":"預付款項（增加）減少",
                      "english_label":"Decrease (increase) in prepayments",
-                     "order":13.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-341187000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"214360000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":13.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInOtherCurrentAssets":{  
                      "chinese_label":"其他流動資產（增加）減少",
                      "english_label":"Decrease (increase) in other current assets",
-                     "order":14.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-649257000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"-145836000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":14.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInOtherFinancialAssets":{  
                      "chinese_label":"其他金融資產（增加）減少",
                      "english_label":"Decrease (increase) in other financial assets",
-                     "order":15.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-710561000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"-462447000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":15.0
                   },
                   "tifrs-SCF_DecreaseIncreaseInDeferredDebits":{  
                      "chinese_label":"遞延借項（增加）減少",
@@ -650,23 +287,7 @@
                   "tifrs-SCF_ChangesInOperatingAssets":{  
                      "chinese_label":"與營業活動相關之資產之淨變動",
                      "english_label":"Changes in operating assets",
-                     "order":26.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-1175232000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"859670000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":26.0
                   }
                },
                "tifrs-SCF_ChangesInOperatingLiabilitiesAbstract":{  
@@ -696,70 +317,22 @@
                   "tifrs-SCF_IncreaseDecreaseInAccountsPayable":{  
                      "chinese_label":"應付帳款增加（減少）",
                      "english_label":"Increase (decrease) in accounts payable",
-                     "order":5.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"746944000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"584463000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":5.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInAccountsPayableToRelatedParties":{  
                      "chinese_label":"應付帳款－關係人增加（減少）",
                      "english_label":"Increase (decrease) in accounts payable to related parties",
-                     "order":6.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"1670000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"-69687000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":6.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInConstructionContractsReceivable":{  
-                     "chinese_label":"應付建造合約款（增加）減少",
+                     "chinese_label":"應付建造合約款增加（減少）",
                      "english_label":"Increase (decrease) in construction contracts receivable",
                      "order":7.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInOtherPayables":{  
                      "chinese_label":"其他應付款增加（減少）",
                      "english_label":"Increase (decrease) in other payable",
-                     "order":8.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-1261195000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"905053000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":8.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInOtherPayableToRelatedParties":{  
                      "chinese_label":"其他應付款－關係人增加（減少）",
@@ -784,44 +357,12 @@
                   "tifrs-SCF_IncreaseDecreaseInOtherCurrentLiabilities":{  
                      "chinese_label":"其他流動負債增加（減少）",
                      "english_label":"Increase (decrease) in other current liabilities",
-                     "order":13.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"403477000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"702303000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":13.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInAccruedPensionLiabilities":{  
                      "chinese_label":"應計退休金負債增加（減少）",
                      "english_label":"Increase (decrease) in accrued pension liabilities",
-                     "order":14.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-16144000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"24762000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":14.0
                   },
                   "tifrs-SCF_IncreaseDecreaseInDeferredCredits":{  
                      "chinese_label":"遞延貸項增加（減少）",
@@ -841,89 +382,25 @@
                   "tifrs-SCF_ChangesInOperatingLiabilities":{  
                      "chinese_label":"與營業活動相關之負債之淨變動",
                      "english_label":"Changes in operating liabilities",
-                     "order":26.0,
-                     "values":{  
-                        "From20130101To20130331":{  
-                           "value":"-125248000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20130101",
-                           "endDate":"20130331"
-                        },
-                        "From20120101To20120331":{  
-                           "value":"2146894000",
-                           "unit":"TWD",
-                           "periodType":"duration",
-                           "startDate":"20120101",
-                           "endDate":"20120331"
-                        }
-                     }
+                     "order":26.0
                   }
                },
                "tifrs-SCF_ChangesInOperatingAssetsAndLiabilities":{  
                   "chinese_label":"與營業活動相關之資產／負債變動數",
                   "english_label":"Changes in operating assets and liabilities",
-                  "order":3.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"-1300480000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"3006564000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":3.0
                }
             },
             "tifrs-SCF_Adjustments":{  
                "chinese_label":"調整項目",
                "english_label":"Adjustments",
-               "order":3.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"149604000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"4754760000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":3.0
             }
          },
          "tifrs-SCF_CashInflowOutflowGeneratedFromOperations":{  
             "chinese_label":"營運產生之現金流入（流出）",
             "english_label":"Cash inflow (outflow) generated from operations",
-            "order":5.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"2490393000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"7333828000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":5.0
          },
          "ifrs_InterestReceivedClassifiedAsOperatingActivities":{  
             "chinese_label":"收取之利息",
@@ -948,23 +425,7 @@
          "ifrs_IncomeTaxesPaidRefundClassifiedAsOperatingActivities":{  
             "chinese_label":"退還（支付）之所得稅",
             "english_label":"Income taxes refund (paid)",
-            "order":10.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-216340000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-371407000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":10.0
          }
       },
       "tifrs-SCF_CashFlowsFromUsedInOperatingActivitiesDirectMethodAbstract":{  
@@ -1080,23 +541,7 @@
       "ifrs_CashFlowsFromUsedInOperatingActivities":{  
          "chinese_label":"營業活動之淨現金流入（流出）",
          "english_label":"Net cash flows from (used in) operating activities",
-         "order":3.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"2274053000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"6962421000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":3.0
       },
       "ifrs_CashFlowsFromUsedInInvestingActivitiesAbstract":{  
          "chinese_label":"投資活動之現金流量",
@@ -1145,44 +590,12 @@
          "tifrs-SCF_AcquisitionOfAvailableForSaleFinancialAssets":{  
             "chinese_label":"取得備供出售金融資產",
             "english_label":"Acquisition of available-for-sale financial assets",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-19990000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-22000000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "tifrs-SCF_ProceedsFromDisposalOfAvailableForSaleFinancialAssets":{  
             "chinese_label":"處分備供出售金融資產",
             "english_label":"Proceeds from disposal of available-for-sale financial assets",
-            "order":2.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"5450000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":2.0
          },
          "tifrs-SCF_ProceedsFromCapitalReductionOfAvailableForSaleFinancialAssets":{  
             "chinese_label":"備供出售金融資產減資退回股款",
@@ -1252,65 +665,17 @@
          "tifrs-SCF_AcquisitionOfInvestmentsAccountedForUsingEquityMethod":{  
             "chinese_label":"取得採用權益法之投資",
             "english_label":"Acquisition of investments accounted for using equity method",
-            "order":13.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-82376000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":13.0
          },
          "tifrs-SCF_ProceedsFromDisposalOfInvestmentsAccountedForUsingEquityMethod":{  
             "chinese_label":"處分採用權益法之投資",
             "english_label":"Proceeds from disposal of investments accounted for using equity method",
-            "order":14.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1547076000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"235494000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":14.0
          },
          "tifrs-SCF_IncreaseInPrepaymentsForInvestments":{  
             "chinese_label":"預付投資款增加",
             "english_label":"Increase in prepayments for investments",
-            "order":15.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-76040000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-4669719000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":15.0
          },
          "tifrs-SCF_DecreaseInPrepaymentsForInvestments":{  
             "chinese_label":"預付投資款減少",
@@ -1320,23 +685,7 @@
          "tifrs-SCF_NetCashFlowFromAcquisitionOfSubsidiaries":{  
             "chinese_label":"對子公司之收購（扣除所取得之現金）",
             "english_label":"Net cash flow from acquisition of subsidiaries",
-            "order":17.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-498963000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-117605000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":17.0
          },
          "tifrs-SCF_ProceedsFromDisposalOfSubsidiaries":{  
             "chinese_label":"處分子公司",
@@ -1361,44 +710,12 @@
          "tifrs-SCF_AcquisitionOfPropertyPlantAndEquipment":{  
             "chinese_label":"取得不動產、廠房及設備",
             "english_label":"Acquisition of property, plant and equipment",
-            "order":19.3,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-211456000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-3449544000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":19.3
          },
          "tifrs-SCF_ProceedsFromDisposalOfPropertyPlantAndEquipment":{  
             "chinese_label":"處分不動產、廠房及設備",
             "english_label":"Proceeds from disposal of property, plant and equipment",
-            "order":19.4,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"61021000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"474847000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":19.4
          },
          "tifrs-SCF_IncreaseInReceiptsInAdvanceDueToDisposalOfAssets":{  
             "chinese_label":"預收款項增加－處分資產",
@@ -1443,23 +760,7 @@
          "tifrs-SCF_AcquisitionOfIntangibleAssets":{  
             "chinese_label":"取得無形資產",
             "english_label":"Acquisition of intangible assets",
-            "order":28.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-9927000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":28.0
          },
          "tifrs-SCF_ProceedsFromDisposalOfIntangibleAssets":{  
             "chinese_label":"處分無形資產",
@@ -1489,23 +790,7 @@
          "tifrs-SCF_ProceedsFromDisposalOfInvestmentProperties":{  
             "chinese_label":"處分投資性不動產",
             "english_label":"Proceeds from disposal of investment properties",
-            "order":34.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"13834000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":34.0
          },
          "tifrs-SCF_IncreaseInReceivables":{  
             "chinese_label":"應收款項增加",
@@ -1520,23 +805,7 @@
          "tifrs-SCF_IncreaseInLongTermLeaseAndInstallmentReceivables":{  
             "chinese_label":"長期應收租賃款增加",
             "english_label":"Increase in long-term lease and installment receivables",
-            "order":34.3,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"50055000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"330795000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":34.3
          },
          "tifrs-SCF_DecreaseInLongTermLeaseAndInstallmentReceivables":{  
             "chinese_label":"長期應收租賃款減少",
@@ -1546,23 +815,7 @@
          "tifrs-SCF_IncreaseInOtherFinancialAssets":{  
             "chinese_label":"其他金融資產增加",
             "english_label":"Increase in other financial assets",
-            "order":37.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-102446000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"32105000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":37.0
          },
          "tifrs-SCF_DecreaseInOtherFinancialAssets":{  
             "chinese_label":"其他金融資產減少",
@@ -1572,23 +825,7 @@
          "tifrs-SCF_IncreaseInOtherAssets":{  
             "chinese_label":"其他資產增加",
             "english_label":"Increase in other assets",
-            "order":38.1,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"471220000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-836305000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":38.1
          },
          "tifrs-SCF_DecreaseInOtherAssets":{  
             "chinese_label":"其他資產減少",
@@ -1608,23 +845,7 @@
          "tifrs-SCF_IncreaseInOtherPrepayments":{  
             "chinese_label":"其他預付款項增加",
             "english_label":"Increase in other prepayments",
-            "order":38.5,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-49817000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-30462000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":38.5
          },
          "tifrs-SCF_DecreaseInOtherPrepayments":{  
             "chinese_label":"其他預付款項減少",
@@ -1634,44 +855,12 @@
          "ifrs_InterestReceivedClassifiedAsInvestingActivities":{  
             "chinese_label":"收取之利息",
             "english_label":"Interest received",
-            "order":39.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"50029000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"46300000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":39.0
          },
          "ifrs_DividendsReceivedClassifiedAsInvestingActivities":{  
             "chinese_label":"收取之股利",
             "english_label":"Dividends received",
-            "order":40.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"80703000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":40.0
          },
          "ifrs_IncomeTaxesPaidRefundClassifiedAsInvestingActivities":{  
             "chinese_label":"退還（支付）之所得稅",
@@ -1686,23 +875,7 @@
          "tifrs-SCF_NetCashFlowsFromUsedInInvestingActivities":{  
             "chinese_label":"投資活動之淨現金流入（流出）",
             "english_label":"Net cash flows from (used in) investing activities",
-            "order":43.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1306842000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-8084563000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":43.0
          }
       },
       "ifrs_CashFlowsFromUsedInFinancingActivitiesAbstract":{  
@@ -1717,23 +890,7 @@
          "tifrs-SCF_DecreaseInShortTermLoans":{  
             "chinese_label":"短期借款減少",
             "english_label":"Decrease in short-term loans",
-            "order":2.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-2535538000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-1075394000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":2.0
          },
          "tifrs-SCF_IncreaseInShortTermNotesAndBillsPayable":{  
             "chinese_label":"應付短期票券增加",
@@ -1778,23 +935,7 @@
          "tifrs-SCF_RepaymentsOfLongTermDebt":{  
             "chinese_label":"償還長期借款",
             "english_label":"Repayments of long-term debt",
-            "order":4.2,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-6812426000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-153913000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":4.2
          },
          "tifrs-SCF_IncreaseInOtherBorrowings":{  
             "chinese_label":"其他借款增加",
@@ -1814,23 +955,7 @@
          "tifrs-SCF_DecreaseInNotesAndBondsIssuedUnderRepurchaseAgreement":{  
             "chinese_label":"附買回票券及債券負債減少",
             "english_label":"Decrease in notes and bonds issued under repurchase agreement",
-            "order":4.6,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-782840000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-907237000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":4.6
          },
          "tifrs-SCF_IncreaseInFinancialLiabilitiesAtFairValueThroughProfitOrLossDesignatedAsUponInitialRecognition":{  
             "chinese_label":"原始認列時指定為透過損益按公允價值衡量之金融負債增加",
@@ -1935,23 +1060,7 @@
          "tifrs-SCF_DecreaseInOtherLiabilities":{  
             "chinese_label":"其他非流動負債減少",
             "english_label":"Decrease in other non-current liabilities",
-            "order":15.2,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-28549000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-60003000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":15.2
          },
          "tifrs-SCF_CashDividendsPaid":{  
             "chinese_label":"發放現金股利",
@@ -2011,23 +1120,7 @@
          "ifrs_InterestPaidClassifiedAsFinancingActivities":{  
             "chinese_label":"支付之利息",
             "english_label":"Interest paid",
-            "order":26.1,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-431281000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-684852000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":26.1
          },
          "ifrs_IncomeTaxesPaidRefundClassifiedAsFinancingActivities":{  
             "chinese_label":"退還（支付）之所得稅",
@@ -2037,23 +1130,7 @@
          "tifrs-SCF_ChangeInNoncontrollingInterests":{  
             "chinese_label":"非控制權益變動",
             "english_label":"Change in non-controlling interests",
-            "order":28.1,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-23953000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-8698000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":28.1
          },
          "tifrs-SCF_OtherFinancingActivities":{  
             "chinese_label":"其他籌資活動",
@@ -2063,134 +1140,32 @@
          "tifrs-SCF_CashFlowsFromUsedInFinancingActivities":{  
             "chinese_label":"籌資活動之淨現金流入（流出）",
             "english_label":"Net cash flows from (used in) financing activities",
-            "order":30.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-10614587000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-2890097000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":30.0
          }
       },
       "ifrs_EffectOfExchangeRateChangesOnCashAndCashEquivalents":{  
          "chinese_label":"匯率變動對現金及約當現金之影響",
          "english_label":"Effect of exchange rate changes on cash and cash equivalents",
-         "order":6.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"417270000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"41947000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":6.0
       },
       "ifrs_IncreaseDecreaseInCashAndCashEquivalents":{  
          "chinese_label":"本期現金及約當現金增加（減少）數",
          "english_label":"Net increase (decrease) in cash and cash equivalents",
-         "order":7.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"-6616422000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"-3970292000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":7.0
       },
       "tifrs-SCF_CashAndCashEquivalentsAtBeginningOfPeriod":{  
          "chinese_label":"期初現金及約當現金餘額",
          "english_label":"Cash and cash equivalents at beginning of period ",
-         "order":8.0,
-         "values":{  
-            "AsOf20130331":{  
-               "value":"25611406000",
-               "unit":"TWD",
-               "periodType":"instant",
-               "instant":"20130331"
-            },
-            "AsOf20120331":{  
-               "value":"22140268000",
-               "unit":"TWD",
-               "periodType":"instant",
-               "instant":"20120331"
-            }
-         }
+         "order":8.0
       },
       "tifrs-SCF_CashAndCashEquivalentsAtEndOfPeriod":{  
          "chinese_label":"期末現金及約當現金餘額",
          "english_label":"Cash and cash equivalents at end of period",
          "order":9.0,
-         "values":{  
-            "AsOf20130331":{  
-               "value":"18994984000",
-               "unit":"TWD",
-               "periodType":"instant",
-               "instant":"20130331"
-            },
-            "AsOf20120331":{  
-               "value":"18169976000",
-               "unit":"TWD",
-               "periodType":"instant",
-               "instant":"20120331"
-            }
-         },
          "ifrs_CashAndCashEquivalents":{  
             "chinese_label":"現金及約當現金",
             "english_label":"Cash and cash equivalents",
-            "order":1.0,
-            "values":{  
-               "AsOf20130331":{  
-                  "value":"18994984000",
-                  "unit":"TWD",
-                  "periodType":"instant",
-                  "instant":"20130331"
-               },
-               "AsOf20121231":{  
-                  "value":"25611406000",
-                  "unit":"TWD",
-                  "periodType":"instant",
-                  "instant":"20121231"
-               },
-               "AsOf20120331":{  
-                  "value":"18169976000",
-                  "unit":"TWD",
-                  "periodType":"instant",
-                  "instant":"20120331"
-               },
-               "AsOf20120101":{  
-                  "value":"22140268000",
-                  "unit":"TWD",
-                  "periodType":"instant",
-                  "instant":"20120101"
-               }
-            }
+            "order":1.0
          },
          "tifrs-SCF_OtherItemsQualifyingForCashAndCashEquivalentsUnderTheDefinitionOfIas7":{  
             "chinese_label":"其他符合國際會計準則第七號現金及約當現金定義之項目",

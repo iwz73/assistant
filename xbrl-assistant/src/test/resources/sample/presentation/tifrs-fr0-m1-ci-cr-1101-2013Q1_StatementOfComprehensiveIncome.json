@@ -485,23 +485,7 @@
          "tifrs-bsci-ci_OperatingRevenue":{  
             "chinese_label":"營業收入",
             "english_label":"Operating revenue",
-            "order":8.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"24114047000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"25288765000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":8.0
          }
       },
       "tifrs-bsci-ci_OperatingCostsAbstract":{  
@@ -871,45 +855,13 @@
          "tifrs-bsci-ci_OperatingCosts":{  
             "chinese_label":"營業成本",
             "english_label":"Operating costs",
-            "order":10.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"20990175000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"21859006000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":10.0
          }
       },
       "tifrs-bsci-ci_GrossProfitLossFromOperations":{  
          "chinese_label":"營業毛利（毛損）",
          "english_label":"Gross profit (loss) from operations",
-         "order":3.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"3123872000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"3429759000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":3.0
       },
       "tifrs-bsci-ci_UnrealizedProfitLossFromSales":{  
          "chinese_label":"未實現銷貨（損）益",
@@ -924,23 +876,7 @@
       "tifrs-bsci-ci_GrossProfitLossFromOperationsNet":{  
          "chinese_label":"營業毛利（毛損）淨額",
          "english_label":"Gross profit (loss) from operations",
-         "order":3.3,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"3123872000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"3429759000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":3.3
       },
       "tifrs-bsci-ci_OperatingExpensesAbstract":{  
          "chinese_label":"營業費用",
@@ -1068,23 +1004,7 @@
             "tifrs-bsci-ci_SellingExpenses":{  
                "chinese_label":"推銷費用",
                "english_label":"Selling expenses",
-               "order":25.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"221917000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"270498000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":25.0
             }
          },
          "tifrs-bsci-ci_AdministrativeExpensesAbstract":{  
@@ -1209,23 +1129,7 @@
             "ifrs_AdministrativeExpense":{  
                "chinese_label":"管理費用",
                "english_label":"Administrative expenses",
-               "order":24.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"863958000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"863516000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":24.0
             }
          },
          "tifrs-bsci-ci_ResearchAndDevelopmentExpensesAbstract":{  
@@ -1330,23 +1234,7 @@
             "tifrs-bsci-ci_ResearchAndDevelopmentExpenses":{  
                "chinese_label":"研究發展費用",
                "english_label":"Research and development expenses",
-               "order":20.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"11268000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"8942000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":20.0
             }
          },
          "ifrs_OtherExpenseByFunction":{  
@@ -1357,23 +1245,7 @@
          "tifrs-bsci-ci_OperatingExpenses":{  
             "chinese_label":"營業費用",
             "english_label":"Operating expenses",
-            "order":5.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1097143000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"1142956000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":5.0
          }
       },
       "tifrs-bsci-ci_NetOtherIncomeExpensesAbstract":{  
@@ -1399,23 +1271,7 @@
       "tifrs-bsci-ci_NetOperatingIncomeLoss":{  
          "chinese_label":"營業利益（損失）",
          "english_label":"Net operating income (loss)",
-         "order":6.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"2026729000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"2286803000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":6.0
       },
       "tifrs-bsci-ci_NonoperatingIncomeAndExpensesAbstract":{  
          "chinese_label":"營業外收入及支出",
@@ -1457,23 +1313,7 @@
                "ifrs_RevenueFromInterest":{  
                   "chinese_label":"利息收入",
                   "english_label":"Interest income",
-                  "order":6.0,
-                  "values":{  
-                     "From20130101To20130331":{  
-                        "value":"49859000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20130101",
-                        "endDate":"20130331"
-                     },
-                     "From20120101To20120331":{  
-                        "value":"46293000",
-                        "unit":"TWD",
-                        "periodType":"duration",
-                        "startDate":"20120101",
-                        "endDate":"20120331"
-                     }
-                  }
+                  "order":6.0
                }
             },
             "tifrs-bsci-ci_RentIncome":{  
@@ -1549,44 +1389,12 @@
             "tifrs-bsci-ci_OtherIncomeOthers":{  
                "chinese_label":"其他收入－其他",
                "english_label":"Other income, others",
-               "order":11.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"285151000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"525813000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":11.0
             },
             "ifrs_OtherRevenue":{  
                "chinese_label":"其他收入",
                "english_label":"Other income",
-               "order":12.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"335010000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"572106000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":12.0
             }
          },
          "tifrs-bsci-ci_OtherGainsAndLossesAbstract":{  
@@ -1611,23 +1419,7 @@
             "tifrs-bsci-ci_GainsOnDisposalsOfInvestments":{  
                "chinese_label":"處分投資利益",
                "english_label":"Gains on disposals of investments",
-               "order":4.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"430158000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"286694000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":4.0
             },
             "tifrs-bsci-ci_ForeignExchangeGains":{  
                "chinese_label":"外幣兌換利益",
@@ -1767,23 +1559,7 @@
             "tifrs-bsci-ci_MiscellaneousDisbursements":{  
                "chinese_label":"什項支出",
                "english_label":"Miscellaneous disbursements",
-               "order":19.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"74753000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"78151000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":19.0
             },
             "tifrs-bsci-ci_LossesOnDisposalsOfPropertyPlantAndEquipment":{  
                "chinese_label":"處分不動產、廠房及設備損失",
@@ -1898,23 +1674,7 @@
             "ifrs_OtherGainsLosses":{  
                "chinese_label":"其他利益及損失",
                "english_label":"Other gains and losses",
-               "order":33.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"355405000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"208543000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":33.0
             }
          },
          "tifrs-bsci-ci_GainsLossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCostAbstract":{  
@@ -1989,23 +1749,7 @@
             "ifrs_InterestExpense":{  
                "chinese_label":"利息費用",
                "english_label":"Interest expense",
-               "order":6.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"528260000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"735520000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":6.0
             },
             "tifrs-bsci-ci_DividendsOnPreferenceShareLiabilities":{  
                "chinese_label":"負債性特別股股息",
@@ -2040,23 +1784,7 @@
             "ifrs_FinanceCosts":{  
                "chinese_label":"財務成本",
                "english_label":"Finance costs",
-               "order":13.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"528260000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"735520000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":13.0
             }
          },
          "tifrs-bsci-ci_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethodAbstract":{ 
@@ -2076,67 +1804,19 @@
             "ifrs_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{  
                "chinese_label":"採用權益法認列之關聯企業及合資損益之份額",
                "english_label":"Share of profit (loss) of associates and joint ventures accounted for using equity method",
-               "order":3.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"151905000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"247136000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":3.0
             }
          },
          "tifrs-bsci-ci_NonoperatingIncomeAndExpenses":{  
             "chinese_label":"營業外收入及支出",
             "english_label":"Non-operating income and expenses",
-            "order":7.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"314060000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"292265000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":7.0
          }
       },
       "ifrs_ProfitLossBeforeTax":{  
          "chinese_label":"繼續營業單位稅前淨利（淨損）",
          "english_label":"Profit (loss) from continuing operations before tax",
-         "order":8.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"2340789000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"2579068000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":8.0
       },
       "tifrs-bsci-ci_TaxExpenseIncomeAbstract":{  
          "chinese_label":"所得稅費用（利益）",
@@ -2155,45 +1835,13 @@
          "ifrs_IncomeTaxExpenseContinuingOperations":{  
             "chinese_label":"所得稅費用（利益）",
             "english_label":"Tax expense (income)",
-            "order":3.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"341165000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"463243000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":3.0
          }
       },
       "ifrs_ProfitLossFromContinuingOperations":{  
          "chinese_label":"繼續營業單位本期淨利（淨損）",
          "english_label":"Profit (loss) from continuing operations",
-         "order":10.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"1999624000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"2115825000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":10.0
       },
       "tifrs-bsci-ci_ProfitLossFromDiscontinuedOperationsAbstract":{  
          "chinese_label":"停業單位損益",
@@ -2223,93 +1871,7 @@
       "ifrs_ProfitLoss":{  
          "chinese_label":"本期淨利（淨損）",
          "english_label":"Profit (loss)",
-         "order":12.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"1999624000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"2115825000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20130101To20130331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
-               "value":"1413035000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalRetainedEarningsMember":{  
-               "value":"1413035000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
-               "value":"1413035000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_NonControllingInterestsMember":{  
-               "value":"586589000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalEquityMember":{  
-               "value":"1999624000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
-               "value":"1534342000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalRetainedEarningsMember":{  
-               "value":"1534342000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
-               "value":"1534342000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_NonControllingInterestsMember":{  
-               "value":"581483000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalEquityMember":{  
-               "value":"2115825000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":12.0
       },
       "ifrs_OtherComprehensiveIncomeAbstract":{  
          "chinese_label":"其他綜合損益(淨額)",
@@ -2318,23 +1880,7 @@
          "ifrs_OtherComprehensiveIncomeBeforeTaxExchangeDifferencesOnTranslation":{  
             "chinese_label":"國外營運機構財務報表換算之兌換差額",
             "english_label":"Exchange differences on translation",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1544517000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-886384000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "ifrs_OtherComprehensiveIncomeBeforeTaxGainsLossesFromInvestmentsInEquityInstruments":{  
             "chinese_label":"權益工具投資之利益（損失）",
@@ -2344,44 +1890,12 @@
          "ifrs_OtherComprehensiveIncomeBeforeTaxAvailableforsaleFinancialAssets":{  
             "chinese_label":"備供出售金融資產未實現評價損益",
             "english_label":"Unrealised gains (losses) on valuation of available-for-sale financial assets",
-            "order":3.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"-489218000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"1294953000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":3.0
          },
          "ifrs_OtherComprehensiveIncomeBeforeTaxCashFlowHedges":{  
             "chinese_label":"現金流量避險",
             "english_label":"Cash flow hedges",
-            "order":4.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"23654000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"-10189000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":4.0
          },
          "ifrs_OtherComprehensiveIncomeBeforeTaxHedgesOfNetInvestmentsInForeignOperations":{  
             "chinese_label":"國外營運機構淨投資避險",
@@ -2455,23 +1969,7 @@
             "ifrs_ShareOfOtherComprehensiveIncomeOfAssociatesAndJointVenturesAccountedForUsingEquityMethod":{ 
                "chinese_label":"採用權益法認列之關聯企業及合資之其他綜合損益之份額",
                "english_label":"Share of other comprehensive income of associates and joint ventures accounted for using equity method",
-               "order":10.0,
-               "values":{  
-                  "From20130101To20130331":{  
-                     "value":"205492000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20130101",
-                     "endDate":"20130331"
-                  },
-                  "From20120101To20120331":{  
-                     "value":"-144320000",
-                     "unit":"TWD",
-                     "periodType":"duration",
-                     "startDate":"20120101",
-                     "endDate":"20120331"
-                  }
-               }
+               "order":10.0
             }
          },
          "ifrs_OtherComprehensiveIncomeBeforeTax":{  
@@ -2487,269 +1985,13 @@
          "ifrs_OtherComprehensiveIncome":{  
             "chinese_label":"本期其他綜合損益",
             "english_label":"Other comprehensive income",
-            "order":11.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1284445000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"254060000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20130101To20130331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
-                  "value":"989097000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
-                  "value":"-505214000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
-                  "value":"14192000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_TotalOtherEquityInterestMember":{  
-                  "value":"498075000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
-                  "value":"498075000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_NonControllingInterestsMember":{  
-                  "value":"786370000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20130101To20130331_TotalEquityMember":{  
-                  "value":"1284445000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
-                  "value":"-549660000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
-                  "value":"1251423000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
-                  "value":"-5354000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_TotalOtherEquityInterestMember":{  
-                  "value":"696409000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
-                  "value":"696409000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_NonControllingInterestsMember":{  
-                  "value":"-442349000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               },
-               "From20120101To20120331_TotalEquityMember":{  
-                  "value":"254060000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":11.0
          }
       },
       "ifrs_ComprehensiveIncome":{  
          "chinese_label":"本期綜合損益總額",
          "english_label":"Total comprehensive income",
-         "order":14.0,
-         "values":{  
-            "From20130101To20130331":{  
-               "value":"3284069000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331":{  
-               "value":"2369885000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20130101To20130331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
-               "value":"1413035000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalRetainedEarningsMember":{  
-               "value":"1413035000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
-               "value":"989097000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
-               "value":"-505214000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
-               "value":"14192000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalOtherEquityInterestMember":{  
-               "value":"498075000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalEquityAttributableToOwnersOfParentMember":{  
-               "value":"1911110000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_NonControllingInterestsMember":{  
-               "value":"1372959000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20130101To20130331_TotalEquityMember":{  
-               "value":"3284069000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20130101",
-               "endDate":"20130331"
-            },
-            "From20120101To20120331_UnappropriatedRetainedEarningsAccumulatedDeficitMember":{  
-               "value":"1534342000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalRetainedEarningsMember":{  
-               "value":"1534342000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_ExchangeDifferencesOnTranslationOfForeignFinancialStatementsMember":{  
-               "value":"-549660000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_UnrealizedGainsLossesOnAvailable-For-SaleFinancialAssetsMember":{  
-               "value":"1251423000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_GainsLossesOnEffectivePortionOfCashFlowHedgesMember":{  
-               "value":"-5354000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalOtherEquityInterestMember":{  
-               "value":"696409000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalEquityAttributableToOwnersOfParentMember":{  
-               "value":"2230751000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_NonControllingInterestsMember":{  
-               "value":"139134000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            },
-            "From20120101To20120331_TotalEquityMember":{  
-               "value":"2369885000",
-               "unit":"TWD",
-               "periodType":"duration",
-               "startDate":"20120101",
-               "endDate":"20120331"
-            }
-         }
+         "order":14.0
       },
       "ifrs_ProfitLossAttributableToAbstract":{  
          "chinese_label":"淨利（損）歸屬於：",
@@ -2758,23 +2000,7 @@
          "ifrs_ProfitLossAttributableToOwnersOfParent":{  
             "chinese_label":"母公司業主（淨利／損）",
             "english_label":"Profit (loss), attributable to owners of parent",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1413035000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"1534342000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "tifrs-bsci-ci_ProfitLossAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
             "chinese_label":"共同控制下前手權益（淨利／損）",
@@ -2784,23 +2010,7 @@
          "ifrs_ProfitLossAttributableToNoncontrollingInterests":{  
             "chinese_label":"非控制權益（淨利／損）",
             "english_label":"Profit (loss), attributable to non-controlling interests",
-            "order":2.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"586589000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"581483000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":2.0
          }
       },
       "ifrs_ComprehensiveIncomeAttributableToAbstract":{  
@@ -2810,23 +2020,7 @@
          "ifrs_ComprehensiveIncomeAttributableToOwnersOfParent":{  
             "chinese_label":"母公司業主（綜合損益）",
             "english_label":"Comprehensive income, attributable to owners of parent",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1911110000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"2230751000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "tifrs-bsci-ci_ComprehensiveIncomeAttributableToFormerOwnerOfBusinessCombinationUnderCommonControl":{  
             "chinese_label":"共同控制下前手權益（綜合損益）",
@@ -2836,23 +2030,7 @@
          "ifrs_ComprehensiveIncomeAttributableToNoncontrollingInterests":{  
             "chinese_label":"非控制權益（綜合損益）",
             "english_label":"Comprehensive income, attributable to non-controlling interests",
-            "order":2.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"1372959000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"139134000",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":2.0
          }
       },
       "ifrs_BasicEarningsPerShareAbstract":{  
@@ -2862,23 +2040,7 @@
          "ifrs_BasicEarningsLossPerShareFromContinuingOperations":{  
             "chinese_label":"繼續營業單位淨利（淨損）",
             "english_label":"Basic earnings (loss) per share from continuing operations",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0.38",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0.42",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "ifrs_BasicEarningsLossPerShareFromDiscontinuedOperations":{  
             "chinese_label":"停業單位淨利（淨損）",
@@ -2888,23 +2050,7 @@
          "ifrs_BasicEarningsLossPerShare":{  
             "chinese_label":"基本每股盈餘",
             "english_label":"Basic earnings per share",
-            "order":3.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0.38",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0.42",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":3.0
          }
       },
       "ifrs_DilutedEarningsPerShareAbstract":{  
@@ -2914,23 +2060,7 @@
          "ifrs_DilutedEarningsLossPerShareFromContinuingOperations":{  
             "chinese_label":"繼續營業單位淨利（淨損）",
             "english_label":"Diluted earnings (loss) per share from continuing operations",
-            "order":1.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0.38",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0.42",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":1.0
          },
          "ifrs_DilutedEarningsLossPerShareFromDiscontinuedOperations":{  
             "chinese_label":"停業單位淨利（淨損）",
@@ -2940,23 +2070,7 @@
          "ifrs_DilutedEarningsLossPerShare":{  
             "chinese_label":"稀釋每股盈餘",
             "english_label":"Diluted earnings per share",
-            "order":3.0,
-            "values":{  
-               "From20130101To20130331":{  
-                  "value":"0.38",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20130101",
-                  "endDate":"20130331"
-               },
-               "From20120101To20120331":{  
-                  "value":"0.42",
-                  "unit":"TWD",
-                  "periodType":"duration",
-                  "startDate":"20120101",
-                  "endDate":"20120331"
-               }
-            }
+            "order":3.0
          }
       }
    }

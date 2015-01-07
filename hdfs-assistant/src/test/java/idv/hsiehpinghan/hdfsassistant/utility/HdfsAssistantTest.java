@@ -2,14 +2,10 @@ package idv.hsiehpinghan.hdfsassistant.utility;
 
 import idv.hsiehpinghan.hdfsassistant.suit.TestngSuitSetting;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.fs.FileStatus;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -21,64 +17,68 @@ public class HdfsAssistantTest {
 	private File file_1;
 	private String hdfsDirectoryPath;
 	private File folder_1;
+	private File tmp;
+	private File testFile;
+	private File testDir;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
-		String userName = TestngSuitSetting.getUserName();
 		hdfsAssistant = applicationContext.getBean(HdfsAssistant.class);
+		setTestData(applicationContext);
+	}
+
+	@Test
+	public void copyFromLocal() throws IOException {
+		// File test.
+		Assert.assertFalse(hdfsAssistant.exists(hdfsFilePath));
+		hdfsAssistant.copyFromLocal(file_1, hdfsFilePath);
+		Assert.assertTrue(hdfsAssistant.exists(hdfsFilePath));
+
+		// Directory test.
+		Assert.assertFalse(hdfsAssistant.exists(hdfsDirectoryPath));
+		hdfsAssistant.copyFromLocal(folder_1, hdfsDirectoryPath);
+		Assert.assertTrue(hdfsAssistant.exists(hdfsDirectoryPath));
+	}
+
+	@Test(dependsOnMethods = { "copyFromLocal" })
+	public void copyToLocal() throws IOException {
+		// File test.
+		Assert.assertFalse(testFile.exists());
+		hdfsAssistant.copyToLocal(hdfsFilePath, tmp);
+		Assert.assertTrue(testFile.exists());
+
+		// Directory test.
+		Assert.assertFalse(testDir.exists());
+		hdfsAssistant.copyToLocal(hdfsDirectoryPath, tmp);
+		Assert.assertTrue(testDir.exists());
+	}
+
+	private void setTestData(ApplicationContext applicationContext)
+			throws IOException {
+		String hdfsPath = applicationContext.getEnvironment().getProperty(
+				"hdfs-assistant.hdfs_path");
+		String userName = TestngSuitSetting.getUserName();
 		file_1 = ResourceUtility.getFileResource("sample/file_1");
-		hdfsFilePath = "hdfs://localhost/user/" + userName
-				+ "/test/hdfs/file_1";
+		hdfsFilePath = hdfsPath + "/" + userName + "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {
 			hdfsAssistant.delete(hdfsFilePath);
 		}
 		folder_1 = ResourceUtility.getFileResource("sample/folder_1");
-		hdfsDirectoryPath = "hdfs://localhost/user/" + userName
-				+ "/test/hdfs/folder_1";
+		hdfsDirectoryPath = hdfsPath + "/" + userName + "/test/hdfs/folder_1";
 		if (hdfsAssistant.exists(hdfsDirectoryPath)) {
 			hdfsAssistant.delete(hdfsDirectoryPath);
 		}
-	}
 
-	@Test
-	public void writeHdfsFile() throws IllegalArgumentException, IOException {
-		Assert.assertFalse(hdfsAssistant.exists(hdfsFilePath));
-		hdfsAssistant.writeHdfsFile(hdfsFilePath, file_1);
-		Assert.assertTrue(hdfsAssistant.exists(hdfsFilePath));
-	}
-
-	@Test(dependsOnMethods = { "writeHdfsFile" })
-	public void copyHdfsFile() throws IllegalArgumentException, IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		hdfsAssistant.copyHdfsFile(hdfsFilePath, out);
-		String actual = new String(out.toByteArray());
-		String expected = FileUtils.readFileToString(file_1);
-		Assert.assertEquals(actual, expected);
-	}
-
-	@Test
-	public void writeHdfsDirectory() throws IOException {
-		Assert.assertFalse(hdfsAssistant.exists(hdfsDirectoryPath));
-		hdfsAssistant.writeHdfsDirectory(hdfsDirectoryPath, folder_1);
-		FileStatus[] fss = hdfsAssistant.getFileStatuses(hdfsDirectoryPath);
-		Assert.assertEquals(convertToSet(fss), convertToSet(folder_1.list()));
-	}
-
-	private Set<String> convertToSet(FileStatus[] fss) {
-		Set<String> set = new HashSet<String>(fss.length);
-		for (FileStatus fs : fss) {
-			set.add(fs.getPath().getName());
+		tmp = FileUtils.getTempDirectory();
+		testFile = new File(tmp, "file_1");
+		if (testFile.exists()) {
+			testFile.delete();
 		}
-		return set;
-	}
-
-	private Set<String> convertToSet(String[] ss) {
-		Set<String> set = new HashSet<String>(ss.length);
-		for (String s : ss) {
-			set.add(s);
+		testDir = new File(tmp, "folder_1");
+		if (testDir.exists()) {
+			FileUtils.deleteDirectory(testDir);
 		}
-		return set;
 	}
 }

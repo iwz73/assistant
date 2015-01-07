@@ -1,17 +1,12 @@
 package idv.hsiehpinghan.hdfsassistant.utility;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,63 +14,57 @@ public class HdfsAssistant {
 	private Configuration conf = new Configuration();
 
 	/**
-	 * Write localFile to hdfs file.
+	 * Copy local file to hdfs.
+	 * 
+	 * @param localFile
+	 * @param hdfsFilePath
+	 * @throws IOException
+	 */
+	public void copyFromLocal(File localFile, String hdfsFilePath)
+			throws IOException {
+		copyFromLocal(localFile.getAbsolutePath(), hdfsFilePath);
+	}
+
+	/**
+	 * Copy local file to hdfs.
+	 * 
+	 * @param localFilePath
+	 * @param hdfsFilePath
+	 * @throws IOException
+	 */
+	public void copyFromLocal(String localFilePath, String hdfsFilePath)
+			throws IOException {
+		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
+		Path src = new Path(localFilePath);
+		Path dst = new Path(hdfsFilePath);
+		fs.copyFromLocalFile(src, dst);
+	}
+
+	/**
+	 * Copy hdfs file to local.
 	 * 
 	 * @param hdfsFilePath
 	 * @param localFile
-	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 */
-	public void writeHdfsFile(String hdfsFilePath, File localFile)
-			throws IllegalArgumentException, IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
-		FileInputStream in = null;
-		OutputStream out = null;
-		try {
-			in = new FileInputStream(localFile);
-			out = fs.create(new Path(hdfsFilePath));
-			IOUtils.copyBytes(in, out, conf);
-		} finally {
-			IOUtils.closeStream(out);
-			IOUtils.closeStream(in);
-		}
-	}
-
-	/**
-	 * Write local directory to hdfs directory.
-	 * 
-	 * @param hdfsDirectoryPath
-	 * @param localDirectory
-	 * @throws IOException
-	 */
-	public void writeHdfsDirectory(String hdfsDirectoryPath, File localDirectory)
+	public void copyToLocal(String hdfsFilePath, File localFile)
 			throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsDirectoryPath), conf);
-		fs.mkdirs(new Path(hdfsDirectoryPath));
-		File[] files = localDirectory.listFiles();
-		for (File f : files) {
-			writeHdfsFile(hdfsDirectoryPath + "/" + f.getName(), f);
-		}
+		copyToLocal(hdfsFilePath, localFile.getAbsolutePath());
 	}
 
 	/**
-	 * Copy hdfs file to outputStream.
+	 * Copy hdfs file to local.
 	 * 
 	 * @param hdfsFilePath
-	 * @param outputStream
-	 * @throws IllegalArgumentException
+	 * @param localFilePath
 	 * @throws IOException
 	 */
-	public void copyHdfsFile(String hdfsFilePath, OutputStream outputStream)
-			throws IllegalArgumentException, IOException {
+	public void copyToLocal(String hdfsFilePath, String localFilePath)
+			throws IOException {
 		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
-		InputStream in = null;
-		try {
-			in = fs.open(new Path(hdfsFilePath));
-			IOUtils.copyBytes(in, outputStream, conf);
-		} finally {
-			IOUtils.closeStream(in);
-		}
+		Path src = new Path(hdfsFilePath);
+		Path dst = new Path(localFilePath);
+		fs.copyToLocalFile(src, dst);
 	}
 
 	/**
@@ -102,15 +91,4 @@ public class HdfsAssistant {
 		return fs.delete(new Path(hdfsFilePath), true);
 	}
 
-	/**
-	 * Get hdfsPath fileStatuses.
-	 * 
-	 * @param hdfsPath
-	 * @return
-	 * @throws IOException
-	 */
-	public FileStatus[] getFileStatuses(String hdfsPath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
-		return fs.listStatus(new Path(hdfsPath));
-	}
 }

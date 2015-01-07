@@ -7,22 +7,39 @@ import java.net.URI;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HdfsAssistant {
+public class HdfsAssistant implements InitializingBean {
 	private Configuration conf = new Configuration();
+	private String hdfsPath;
+
+	@Autowired
+	private Environment environment;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		String pStr = "hdfs-assistant.hdfs_path";
+		hdfsPath = environment.getProperty(pStr);
+		if (hdfsPath == null) {
+			throw new RuntimeException(pStr + " not set !!!");
+		}
+	}
 
 	/**
 	 * Copy local file to hdfs.
 	 * 
 	 * @param localFile
 	 * @param hdfsFilePath
+	 * @return
 	 * @throws IOException
 	 */
-	public void copyFromLocal(File localFile, String hdfsFilePath)
+	public String copyFromLocal(File localFile, String hdfsFilePath)
 			throws IOException {
-		copyFromLocal(localFile.getAbsolutePath(), hdfsFilePath);
+		return copyFromLocal(localFile.getAbsolutePath(), hdfsFilePath);
 	}
 
 	/**
@@ -30,14 +47,17 @@ public class HdfsAssistant {
 	 * 
 	 * @param localFilePath
 	 * @param hdfsFilePath
+	 * @return
 	 * @throws IOException
 	 */
-	public void copyFromLocal(String localFilePath, String hdfsFilePath)
+	public String copyFromLocal(String localFilePath, String hdfsFilePath)
 			throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
 		Path src = new Path(localFilePath);
-		Path dst = new Path(hdfsFilePath);
+		String path = hdfsPath + hdfsFilePath;
+		Path dst = new Path(path);
 		fs.copyFromLocalFile(src, dst);
+		return path;
 	}
 
 	/**
@@ -61,8 +81,8 @@ public class HdfsAssistant {
 	 */
 	public void copyToLocal(String hdfsFilePath, String localFilePath)
 			throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
-		Path src = new Path(hdfsFilePath);
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		Path src = new Path(hdfsPath + hdfsFilePath);
 		Path dst = new Path(localFilePath);
 		fs.copyToLocalFile(src, dst);
 	}
@@ -75,8 +95,8 @@ public class HdfsAssistant {
 	 * @throws IOException
 	 */
 	public boolean exists(String hdfsFilePath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
-		return fs.exists(new Path(hdfsFilePath));
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		return fs.exists(new Path(hdfsPath + hdfsFilePath));
 	}
 
 	/**
@@ -87,8 +107,8 @@ public class HdfsAssistant {
 	 * @throws IOException
 	 */
 	public boolean delete(String hdfsFilePath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsFilePath), conf);
-		return fs.delete(new Path(hdfsFilePath), true);
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		return fs.delete(new Path(hdfsPath + hdfsFilePath), true);
 	}
 
 }

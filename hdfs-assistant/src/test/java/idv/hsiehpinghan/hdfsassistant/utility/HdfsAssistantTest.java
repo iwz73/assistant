@@ -57,16 +57,14 @@ public class HdfsAssistantTest {
 
 	private void setTestData(ApplicationContext applicationContext)
 			throws IOException {
-		String hdfsPath = applicationContext.getEnvironment().getProperty(
-				"hdfs-assistant.hdfs_path");
 		String userName = TestngSuitSetting.getUserName();
 		file_1 = ResourceUtility.getFileResource("sample/file_1");
-		hdfsFilePath = hdfsPath + "/" + userName + "/test/hdfs/file_1";
+		hdfsFilePath = "/user/" + userName + "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {
 			hdfsAssistant.delete(hdfsFilePath);
 		}
 		folder_1 = ResourceUtility.getFileResource("sample/folder_1");
-		hdfsDirectoryPath = hdfsPath + "/" + userName + "/test/hdfs/folder_1";
+		hdfsDirectoryPath = "/user/" + userName + "/test/hdfs/folder_1";
 		if (hdfsAssistant.exists(hdfsDirectoryPath)) {
 			hdfsAssistant.delete(hdfsDirectoryPath);
 		}

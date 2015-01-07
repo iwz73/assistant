@@ -1,8 +1,8 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
-import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.xbrlassistant.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class TaxonomyAssistantTest {
 		objectMapper = applicationContext.getBean(ObjectMapper.class);
 	}
 
-	@Test
+//	@Test
 	public void getPresentationJson() throws Exception {
 		List<String> ids = new ArrayList<String>(4);
 		ids.add(Presentation.Id.BalanceSheet);
@@ -80,15 +80,15 @@ public class TaxonomyAssistantTest {
 				equityChangeSample.toString());
 	}
 
-	@Test
-	public void getXbrlTaxonomy() throws Exception {
+//	@Test
+	public void getTaxonomy() throws Exception {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
 		File instanceFile = ResourceUtility.getFileResource(instancePath);
-		XbrlTaxonomy taxonomy = taxonomyAssistant.getXbrlTaxonomy(instanceFile);
+		XbrlTaxonomy taxonomy = taxonomyAssistant.getTaxonomy(instanceFile);
 		Assert.assertNotNull(taxonomy);
 	}
 
-	@Test
+//	@Test
 	public void getXbrlTaxonomyVersion() throws ParserConfigurationException,
 			SAXException, IOException {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
@@ -97,15 +97,21 @@ public class TaxonomyAssistantTest {
 				.getXbrlTaxonomyVersion(instanceFile);
 		Assert.assertEquals(XbrlTaxonomyVersion.TIFRS_CI_CR_2013_03_31, version);
 	}
-	
-	@Test
+
+//	@Test
 	public void getPresentationElementIds() throws Exception {
 		List<String> ids = new ArrayList<String>(4);
 		ids.add(Presentation.Id.BalanceSheet);
 		ids.add(Presentation.Id.StatementOfComprehensiveIncome);
 		ids.add(Presentation.Id.StatementOfCashFlows);
 		ids.add(Presentation.Id.StatementOfChangesInEquity);
-		Set<String> actual = taxonomyAssistant.getPresentationElementIds(XbrlTaxonomyVersion.TIFRS_CI_CR_2014_03_31, ids);
+		Set<String> actual = taxonomyAssistant.getPresentationElementIds(
+				XbrlTaxonomyVersion.TIFRS_CI_CR_2014_03_31, ids);
 		Assert.assertEquals(1488, actual.size());
+	}
+	
+	@Test
+	public void exportTaxonomys() throws IOException {
+		taxonomyAssistant.exportTaxonomys();
 	}
 }

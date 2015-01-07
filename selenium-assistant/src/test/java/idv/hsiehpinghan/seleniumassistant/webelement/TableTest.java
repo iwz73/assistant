@@ -29,7 +29,7 @@ public class TableTest {
 		Assert.assertEquals(strs, getRowTexts());
 	}
 
-	@Test
+	@Test(dependsOnMethods={"getRowAsStringList"})
 	public void clickButtonOfCell() {
 		int rowInd_1 = 2;
 		int colInd_1 = 2;

@@ -21,7 +21,7 @@ public abstract class BrowserTest {
 		Assert.assertEquals("Index page", browser.getWebDriver().getTitle());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "browse" })
 	public void getSelect() {
 		Select select = browser.getSelect(By.cssSelector("#selectId"));
 		Assert.assertNotNull(select);

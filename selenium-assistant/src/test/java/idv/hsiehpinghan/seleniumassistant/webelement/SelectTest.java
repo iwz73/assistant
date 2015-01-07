@@ -17,8 +17,6 @@ public class SelectTest {
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		// ApplicationContext applicationContext = TestngSuitSetting
-		// .getApplicationContext();
 		HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser = TestngSuitSetting
 				.getHtmlUnitWithJavascriptBrowser();
 		htmlUnitWithJavascriptBrowser.browse(TestngSuitSetting.URL_BASE

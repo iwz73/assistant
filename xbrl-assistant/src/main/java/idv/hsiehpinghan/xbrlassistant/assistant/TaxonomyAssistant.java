@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
+import idv.hsiehpinghan.compressutility.utility.CompressUtility;
+import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.cache.TaxonomyCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
@@ -8,6 +10,7 @@ import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +24,12 @@ import jcx.xbrl.taxonomy.XbrlPresentationTree;
 import jcx.xbrl.taxonomy.XbrlPresentationTreeNode;
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -29,15 +37,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
-public class TaxonomyAssistant {
+public class TaxonomyAssistant implements InitializingBean {
 	private final String EN = "en";
-	// private Logger logger = Logger.getLogger(this.getClass().getName());
+	private Logger logger = Logger.getLogger(this.getClass().getName());
+
+	private File taxonomyDir;
+
 	@Autowired
 	private InstanceAssistant instanceAssistant;
 	@Autowired
 	private TaxonomyCache cache;
 	@Autowired
 	private ObjectMapper objectMapper;
+	@Autowired
+	private Environment environment;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		String dStr = "xbrl-assistant.taxonomy_dir";
+		String dProp = environment.getProperty(dStr);
+		if (dProp == null) {
+			throw new RuntimeException(dStr + " not set !!!");
+		}
+		taxonomyDir = new File(dProp);
+		exportTaxonomys();
+	}
 
 	/**
 	 * Get all element id of presentIds.
@@ -75,20 +99,6 @@ public class TaxonomyAssistant {
 		}
 
 		return resultSet;
-	}
-
-	private void addChildNodeId(XbrlPresentationTreeNode presentationNode,
-			Set<String> resultSet) {
-		if (presentationNode.hasChild()) {
-			XbrlPresentationTreeNode childPresentNode = (XbrlPresentationTreeNode) presentationNode
-					.getFirstChild();
-			do {
-				resultSet.add(childPresentNode.getID());
-				addChildNodeId(childPresentNode, resultSet);
-				childPresentNode = (XbrlPresentationTreeNode) childPresentNode
-						.getNextSibling();
-			} while (childPresentNode != null);
-		}
 	}
 
 	/**
@@ -155,9 +165,14 @@ public class TaxonomyAssistant {
 		throw new RuntimeException("Xbrl taxonomy version not found !!!");
 	}
 
-	XbrlTaxonomy getXbrlTaxonomy(File instanceFile) throws Exception {
+	XbrlTaxonomy getTaxonomy(File instanceFile) throws Exception {
 		XbrlTaxonomyVersion version = getXbrlTaxonomyVersion(instanceFile);
-		return cache.getTaxonomy(version, getTaxonomyPath(version));
+		return cache.getTaxonomy(taxonomyDir, version);
+	}
+
+	void exportTaxonomys() {
+		exportTaxonomy("xbrl-taxonomy/tifrs-20130331.zip");
+		exportTaxonomy("xbrl-taxonomy/tifrs-20140331.zip");
 	}
 
 	private void generatePresentationJsonObjectContent(ObjectNode resultNode,
@@ -186,59 +201,51 @@ public class TaxonomyAssistant {
 		}
 	}
 
-	private XbrlTaxonomy getTaxonomy(XbrlTaxonomyVersion taxonomyVersion)
+	private XbrlTaxonomy getTaxonomy(XbrlTaxonomyVersion version)
 			throws Exception {
-		return cache.getTaxonomy(taxonomyVersion,
-				getTaxonomyPath(taxonomyVersion));
+		return cache.getTaxonomy(taxonomyDir, version);
 	}
 
-	private String getTaxonomyPath(XbrlTaxonomyVersion version) {
-		switch (version) {
-		case TIFRS_BASI_CR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BASI/CR/tifrs-basi-cr-2013-03-31.xsd";
-		case TIFRS_BASI_IR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BASI/IR/tifrs-basi-ir-2013-03-31.xsd";
-		case TIFRS_BD_CR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/CR/tifrs-bd-cr-2013-03-31.xsd";
-		case TIFRS_BD_ER_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2013-03-31.xsd";
-		case TIFRS_BD_IR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2013-03-31.xsd";
-		case TIFRS_CI_CR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2013-03-31.xsd";
-		case TIFRS_CI_IR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2013-03-31.xsd";
-		case TIFRS_FH_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/FH/tifrs-fh-2013-03-31.xsd";
-		case TIFRS_INS_CR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/INS/CR/tifrs-ins-cr-2013-03-31.xsd";
-		case TIFRS_INS_IR_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/INS/IR/tifrs-ins-ir-2013-03-31.xsd";
-		case TIFRS_MIM_2013_03_31:
-			return "xbrl-taxonomy/tifrs-20130331/XBRL_TW_Entry_Points/MIM/tifrs-mim-2013-03-31.xsd";
-		case TIFRS_BASI_CR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BASI/CR/tifrs-basi-cr-2014-03-31.xsd";
-		case TIFRS_BASI_IR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BASI/IR/tifrs-basi-ir-2014-03-31.xsd";
-		case TIFRS_BD_CR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/CR/tifrs-bd-cr-2014-03-31.xsd";
-		case TIFRS_BD_ER_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2014-03-31.xsd";
-		case TIFRS_BD_IR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2014-03-31.xsd";
-		case TIFRS_CI_CR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2014-03-31.xsd";
-		case TIFRS_CI_IR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2014-03-31.xsd";
-		case TIFRS_FH_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/FH/tifrs-fh-2014-03-31.xsd";
-		case TIFRS_INS_CR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/INS/CR/tifrs-ins-cr-2014-03-31.xsd";
-		case TIFRS_INS_IR_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/INS/IR/tifrs-ins-ir-2014-03-31.xsd";
-		case TIFRS_MIM_2014_03_31:
-			return "xbrl-taxonomy/tifrs-20140331/XBRL_TW_Entry_Points/MIM/tifrs-mim-2014-03-31.xsd";
+	private void exportTaxonomy(String resourcePath) {
+		InputStream in = null;
+		File zip = null;
+		File dir = null;
+		try {
+			in = ResourceUtility.getResourceAsStream(resourcePath);
+			String resName = getResourceName(resourcePath);
+			zip = new File(FileUtils.getTempDirectory(), resName);
+			if (zip.exists() == false) {
+				FileUtils.copyInputStreamToFile(in, zip);
+			}
+			dir = CompressUtility.unzip(zip, taxonomyDir, false);
+			logger.info("Taxonomy(" + resName + ") export to "
+					+ dir.getAbsolutePath() + " success.");
+		} catch (Exception e) {
+			FileUtils.deleteQuietly(dir);
+			FileUtils.deleteQuietly(zip);
+			throw new RuntimeException(e);
+		} finally {
+			IOUtils.closeQuietly(in);
 		}
-		throw new RuntimeException("XbrlTaxonomy version undefined");
 	}
+
+	private String getResourceName(String resourcePath) {
+		int idx = resourcePath.lastIndexOf("/");
+		return resourcePath.substring(idx + 1);
+	}
+
+	private void addChildNodeId(XbrlPresentationTreeNode presentationNode,
+			Set<String> resultSet) {
+		if (presentationNode.hasChild()) {
+			XbrlPresentationTreeNode childPresentNode = (XbrlPresentationTreeNode) presentationNode
+					.getFirstChild();
+			do {
+				resultSet.add(childPresentNode.getID());
+				addChildNodeId(childPresentNode, resultSet);
+				childPresentNode = (XbrlPresentationTreeNode) childPresentNode
+						.getNextSibling();
+			} while (childPresentNode != null);
+		}
+	}
+
 }

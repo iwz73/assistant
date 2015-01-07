@@ -113,7 +113,7 @@ public class InstanceAssistant {
 	}
 
 	XbrlDocument loadXbrlDocument(File instanceFile) throws Exception {
-		XbrlTaxonomy taxonomy = taxonomyAssistant.getXbrlTaxonomy(instanceFile);
+		XbrlTaxonomy taxonomy = taxonomyAssistant.getTaxonomy(instanceFile);
 		return cache.getXbrlDocument(instanceFile, taxonomy);
 	}
 

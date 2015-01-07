@@ -2,13 +2,11 @@ package idv.hsiehpinghan.seleniumassistant.utility;
 
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.seleniumassistant.browser.BrowserBase;
-import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
-import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -21,11 +19,8 @@ public class AjaxWaitUtilityTest {
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		htmlServer = applicationContext.getBean(MockHtmlServer.class);
-		browser = applicationContext
-				.getBean(HtmlUnitWithJavascriptBrowser.class);
+		htmlServer = TestngSuitSetting.getHtmlServer();
+		browser = TestngSuitSetting.getHtmlUnitWithJavascriptBrowser();
 	}
 
 	@Test

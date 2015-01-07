@@ -1,7 +1,6 @@
 package idv.hsiehpinghan.hdfsassistant.utility;
 
 import idv.hsiehpinghan.hdfsassistant.suit.TestngSuitSetting;
-import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -18,21 +17,26 @@ import org.testng.annotations.Test;
 
 public class HdfsAssistantTest {
 	private HdfsAssistant hdfsAssistant;
-	private String hdfsFilePath = "hdfs://localhost/user/hsiehpinghan/test/hdfs/file_1";
+	private String hdfsFilePath;
 	private File file_1;
-	private String hdfsDirectoryPath = "hdfs://localhost/user/hsiehpinghan/test/hdfs/folder_1";
+	private String hdfsDirectoryPath;
 	private File folder_1;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
+		String userName = TestngSuitSetting.getUserName();
 		hdfsAssistant = applicationContext.getBean(HdfsAssistant.class);
 		file_1 = ResourceUtility.getFileResource("sample/file_1");
+		hdfsFilePath = "hdfs://localhost/user/" + userName
+				+ "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {
 			hdfsAssistant.delete(hdfsFilePath);
 		}
 		folder_1 = ResourceUtility.getFileResource("sample/folder_1");
+		hdfsDirectoryPath = "hdfs://localhost/user/" + userName
+				+ "/test/hdfs/folder_1";
 		if (hdfsAssistant.exists(hdfsDirectoryPath)) {
 			hdfsAssistant.delete(hdfsDirectoryPath);
 		}

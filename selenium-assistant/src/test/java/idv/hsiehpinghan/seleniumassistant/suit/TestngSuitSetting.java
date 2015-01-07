@@ -4,9 +4,11 @@ import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.packageutility.utility.PackageUtility;
 import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
+import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtension;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.testng.annotations.AfterSuite;
@@ -17,14 +19,18 @@ public class TestngSuitSetting {
 
 	private static AnnotationConfigApplicationContext applicationContext;
 	private static MockHtmlServer htmlServer;
+	private static HtmlUnitDriverExtension htmlUnitDriverExtension;
 	private static HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser;
 	private static FirefoxBrowser firefoxBrowser;
 
 	@BeforeSuite()
 	public void beforeSuite() throws IOException {
 		String[] pkgs = PackageUtility.getSpringConfigurationPackages();
-		applicationContext = new AnnotationConfigApplicationContext(pkgs);
+		String[] testPkgs = addTestComponentScanBasePackages(pkgs);
+		applicationContext = new AnnotationConfigApplicationContext(testPkgs);
 		htmlServer = applicationContext.getBean(MockHtmlServer.class);
+		htmlUnitDriverExtension = applicationContext.getBean(
+				"htmlUnitDriverExtension", HtmlUnitDriverExtension.class);
 		htmlUnitWithJavascriptBrowser = applicationContext
 				.getBean(HtmlUnitWithJavascriptBrowser.class);
 		firefoxBrowser = applicationContext.getBean(FirefoxBrowser.class);
@@ -46,8 +52,20 @@ public class TestngSuitSetting {
 		return firefoxBrowser;
 	}
 
+	public static HtmlUnitDriverExtension getHtmlUnitDriverExtension() {
+		return htmlUnitDriverExtension;
+	}
+
 	@AfterSuite
 	public void afterClass() {
 		htmlServer.stop();
+	}
+
+	private String[] addTestComponentScanBasePackages(String[] pkgs) {
+		String nanohttpdassistant = "idv.hsiehpinghan.nanohttpdassistant.configuration";
+		if (ArrayUtils.contains(pkgs, nanohttpdassistant) == false) {
+			return ArrayUtils.add(pkgs, nanohttpdassistant);
+		}
+		return pkgs;
 	}
 }

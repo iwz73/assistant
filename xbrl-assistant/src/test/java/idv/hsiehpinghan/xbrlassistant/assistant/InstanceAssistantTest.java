@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
-import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.xbrlassistant.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 

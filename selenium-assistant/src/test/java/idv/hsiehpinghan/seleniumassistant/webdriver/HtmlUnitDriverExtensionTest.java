@@ -6,18 +6,15 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class HtmlUnitDriverExtensionTest {
 	private HtmlUnitDriverExtension htmlUnitDriver;
-	
+
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		 ApplicationContext applicationContext = TestngSuitSetting
-		 .getApplicationContext();
-		 htmlUnitDriver = applicationContext.getBean(HtmlUnitDriverExtension.class);
+		htmlUnitDriver = TestngSuitSetting.getHtmlUnitDriverExtension();
 	}
 
 	@Test

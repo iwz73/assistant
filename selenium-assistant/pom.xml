@@ -17,6 +17,7 @@
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<selenium-java.version>2.44.0</selenium-java.version>
+		<xml-apis.version>1.4.01</xml-apis.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
 		<nanohttpd-assistant.version>1.0.0</nanohttpd-assistant.version>
@@ -51,6 +52,13 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium-java.version}</version>
+		</dependency>
+
+		<!-- xml-apis (for solving selenium problem) -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>${xml-apis.version}</version>
 		</dependency>
 
 		<!-- resource-utility -->

@@ -4,15 +4,17 @@
 		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting" />
 			<class
-				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" />
+				name="idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtensionTest" />
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" />
+			<class
+				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" />
+			<class
+				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitFirefoxVersionBrowserTest" />
 			<class name="idv.hsiehpinghan.seleniumassistant.webelement.SelectTest" />
 			<class name="idv.hsiehpinghan.seleniumassistant.webelement.TableTest" />
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.utility.AjaxWaitUtilityTest" />
-			<class
-				name="idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtensionTest" />
 		</classes>
 	</test>
 </suite>

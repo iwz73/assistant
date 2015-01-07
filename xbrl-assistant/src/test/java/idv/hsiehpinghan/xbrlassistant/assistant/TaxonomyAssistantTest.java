@@ -37,7 +37,7 @@ public class TaxonomyAssistantTest {
 		objectMapper = applicationContext.getBean(ObjectMapper.class);
 	}
 
-//	@Test
+	@Test
 	public void getPresentationJson() throws Exception {
 		List<String> ids = new ArrayList<String>(4);
 		ids.add(Presentation.Id.BalanceSheet);
@@ -80,7 +80,7 @@ public class TaxonomyAssistantTest {
 				equityChangeSample.toString());
 	}
 
-//	@Test
+	@Test
 	public void getTaxonomy() throws Exception {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
 		File instanceFile = ResourceUtility.getFileResource(instancePath);
@@ -88,7 +88,7 @@ public class TaxonomyAssistantTest {
 		Assert.assertNotNull(taxonomy);
 	}
 
-//	@Test
+	@Test
 	public void getXbrlTaxonomyVersion() throws ParserConfigurationException,
 			SAXException, IOException {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
@@ -98,7 +98,7 @@ public class TaxonomyAssistantTest {
 		Assert.assertEquals(XbrlTaxonomyVersion.TIFRS_CI_CR_2013_03_31, version);
 	}
 
-//	@Test
+	@Test
 	public void getPresentationElementIds() throws Exception {
 		List<String> ids = new ArrayList<String>(4);
 		ids.add(Presentation.Id.BalanceSheet);

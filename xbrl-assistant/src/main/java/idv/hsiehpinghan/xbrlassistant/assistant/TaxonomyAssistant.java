@@ -6,6 +6,7 @@ import idv.hsiehpinghan.xbrlassistant.cache.TaxonomyCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
 import idv.hsiehpinghan.xbrlassistant.handler.SchemaReferenceHandler;
+import idv.hsiehpinghan.xbrlassistant.property.XbrlAssistantProperty;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
@@ -29,7 +30,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -40,7 +40,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class TaxonomyAssistant implements InitializingBean {
 	private final String EN = "en";
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-
 	private File taxonomyDir;
 
 	@Autowired
@@ -50,16 +49,11 @@ public class TaxonomyAssistant implements InitializingBean {
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
-	private Environment environment;
+	private XbrlAssistantProperty xbrlAssistantProperty;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String dStr = "xbrl-assistant.taxonomy_dir";
-		String dProp = environment.getProperty(dStr);
-		if (dProp == null) {
-			throw new RuntimeException(dStr + " not set !!!");
-		}
-		taxonomyDir = new File(dProp);
+		taxonomyDir = new File(xbrlAssistantProperty.getTaxonomyDir());
 		exportTaxonomys();
 	}
 

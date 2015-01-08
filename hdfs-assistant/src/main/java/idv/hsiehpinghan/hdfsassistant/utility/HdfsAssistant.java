@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.hdfsassistant.utility;
 
+import idv.hsiehpinghan.hdfsassistant.property.HdfsAssistantProperty;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -9,7 +11,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,15 +19,11 @@ public class HdfsAssistant implements InitializingBean {
 	private String hdfsPath;
 
 	@Autowired
-	private Environment environment;
+	private HdfsAssistantProperty hdfsAssistantProperty;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String pStr = "hdfs-assistant.hdfs_path";
-		hdfsPath = environment.getProperty(pStr);
-		if (hdfsPath == null) {
-			throw new RuntimeException(pStr + " not set !!!");
-		}
+		hdfsPath = hdfsAssistantProperty.getHdfsPath();
 	}
 
 	/**

@@ -8,7 +8,9 @@ import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.extension.HbaseTemplateExtension;
+import idv.hsiehpinghan.hbaseassistant.property.HbaseAssistantProperty;
 import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
+import idv.hsiehpinghan.packageutility.utility.PackageUtility;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -31,6 +34,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.hadoop.hbase.RowMapper;
@@ -38,7 +42,7 @@ import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HbaseAssistant {
+public class HbaseAssistant implements InitializingBean {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Autowired
@@ -48,6 +52,36 @@ public class HbaseAssistant {
 	private HBaseAdmin admin;
 	@Autowired
 	private HbaseTemplateExtension hbaseTemplate;
+	@Autowired
+	private HbaseAssistantProperty hbaseAssistantProperty;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		TableOperation operation = TableOperation
+				.valueOf(hbaseAssistantProperty.getTableOperation());
+		if (TableOperation.NONE.equals(operation)) {
+			return;
+		}
+		String[] pkgs = PackageUtility.getHbaseEntityPackages();
+		logger.info("Hbase scan entity package : " + ArrayUtils.toString(pkgs));
+		scanAndCreateTable(pkgs, operation);
+	}
+
+	/**
+	 * Scan packages and create table.
+	 * 
+	 * @param packageNames
+	 * @param operation
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public void scanAndCreateTable(String[] packageNames,
+			TableOperation operation) throws ClassNotFoundException,
+			IOException {
+		for (String packageName : packageNames) {
+			scanAndCreateTable(packageName, operation);
+		}
+	}
 
 	/**
 	 * Scan package and create table.
@@ -58,6 +92,9 @@ public class HbaseAssistant {
 	 */
 	public void scanAndCreateTable(String packageName, TableOperation operation)
 			throws ClassNotFoundException, IOException {
+		if (TableOperation.NONE.equals(operation)) {
+			return;
+		}
 		List<Class<?>> classes = ClassUtility.getClasses(packageName);
 		for (Class<?> cls : classes) {
 			if (HBaseTable.class.isAssignableFrom(cls) == false) {
@@ -208,6 +245,7 @@ public class HbaseAssistant {
 			tDesc.addFamily(cDesc);
 		}
 		admin.createTable(tDesc);
+		logger.info(tableName + " created.");
 	}
 
 	void dropTable(String tableName) throws IOException {

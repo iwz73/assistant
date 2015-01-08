@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.hbaseassistant.model;
+package idv.hsiehpinghan.hbaseassistant.entity;
 
 import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.IntegerUtility;
@@ -128,21 +128,17 @@ public class TestTable extends HBaseTable {
 	public class ColFam1 extends HBaseColumnFamily {
 		// private Map<TestQualifier1, Map<Date, TestValue1>> map;
 
-		public void add(String s, Date d, BigDecimal v) {
-			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> map = getQualifierVersionValueMap();
-			if (map == null) {
-				map = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
-				setQualifierVersionValueMap(map);
-			}
-			HBaseColumnQualifier qu = this.new TestQualifier1(s);
-			NavigableMap<Date, HBaseValue> innerM = map.get(qu);
+		public void add(String q, Date d, BigDecimal v) {
+			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qvMap = getQualifierVersionValueMap();
+			HBaseColumnQualifier qu = this.new TestQualifier1(q);
+			NavigableMap<Date, HBaseValue> innerM = qvMap.get(qu);
 			if (innerM == null) {
 				innerM = new TreeMap<Date, HBaseValue>();
 			}
-			TestQualifier1 qual = new TestQualifier1(s);
+			TestQualifier1 qual = new TestQualifier1(q);
 			TestValue1 val = new TestValue1(v);
 			innerM.put(d, val);
-			map.put(qual, innerM);
+			qvMap.put(qual, innerM);
 		}
 
 		@Override

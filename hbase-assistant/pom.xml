@@ -111,7 +111,6 @@
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>package-utility</artifactId>
 			<version>${package-utility.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

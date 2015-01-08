@@ -224,6 +224,9 @@ public class HbaseAssistant implements InitializingBean {
 							throws Exception {
 						NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> map = result
 								.getMap();
+						if (map == null) {
+							return null;
+						}
 						// Set column family.
 						for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> entry : map
 								.entrySet()) {

@@ -27,7 +27,7 @@ public class HbaseTemplateExtension extends HbaseTemplate {
 	}
 
 	/**
-	 * Get all version.
+	 * Get all versions.
 	 */
 	public <T> T getAllVersion(String tableName, final String rowName,
 			final String familyName, final String qualifier,

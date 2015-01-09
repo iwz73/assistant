@@ -111,9 +111,6 @@ public class TestTable extends HBaseTable {
 					ID_END));
 			this.order = Bytes.toInt(ArrayUtils.subarray(bytes, ORDER_BEGIN,
 					ORDER_END));
-
-			System.err.println("2 id : " + id + "; order : " + order);
-
 		}
 
 	}

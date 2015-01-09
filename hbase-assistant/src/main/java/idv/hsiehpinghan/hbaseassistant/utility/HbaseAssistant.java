@@ -140,8 +140,20 @@ public class HbaseAssistant implements InitializingBean {
 		Class<?> cls = entity.getClass();
 		String tableName = cls.getSimpleName();
 		// Get row key
-		Object rowKeyObj = ObjectUtility.readField(entity, "rowKey");
+		Object rowKeyObj = ObjectUtility.readField(entity, "rowKey");	
 		byte[] rowKey = ((HBaseRowKey) rowKeyObj).toBytes();
+		
+		
+	
+		
+		System.err.print("put : ");
+		for (byte b : rowKey) {
+			System.err.print(b);
+		}
+		System.err.println();
+		
+		
+		
 		final Put put = new Put(rowKey);
 		// Get column families
 		String[] colFamArr = getColumnFamilyNames(cls);
@@ -197,6 +209,16 @@ public class HbaseAssistant implements InitializingBean {
 		final HBaseTable tableObj = rowKey.getTable();
 		final Class<?> tableCls = tableObj.getClass();
 		String tableName = tableCls.getSimpleName();
+		
+		
+		
+		System.err.print("get : ");
+		for (byte b : rowKey.toBytes()) {
+			System.err.print(b);
+		}
+		System.err.println();
+		
+		
 		String rowKy = new String(rowKey.toBytes());
 
 		// Get Column families.

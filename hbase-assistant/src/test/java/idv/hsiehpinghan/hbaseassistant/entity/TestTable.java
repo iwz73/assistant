@@ -108,7 +108,7 @@ public class TestTable extends HBaseTable {
 		@Override
 		public void fromBytes(byte[] bytes) {
 			this.id = Bytes.toString(ArrayUtils.subarray(bytes, ID_BEGIN,
-					ID_END));
+					ID_END)).trim();
 			this.order = Bytes.toInt(ArrayUtils.subarray(bytes, ORDER_BEGIN,
 					ORDER_END));
 		}

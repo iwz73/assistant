@@ -50,7 +50,7 @@ public class TaxonomyAssistantTest {
 		JsonNode balanceSheetNode = objNode.get(Presentation.Id.BalanceSheet);
 		JsonNode blanceSheetSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_BalanceSheet.json"));
+						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_BalanceSheet.json"));
 		Assert.assertEquals(balanceSheetNode.toString(),
 				blanceSheetSample.toString());
 
@@ -59,7 +59,7 @@ public class TaxonomyAssistantTest {
 				.get(Presentation.Id.StatementOfComprehensiveIncome);
 		JsonNode incomeSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfComprehensiveIncome.json"));
+						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfComprehensiveIncome.json"));
 		Assert.assertEquals(incomeNode.toString(), incomeSample.toString());
 
 		// Statement of cash flows test
@@ -67,7 +67,7 @@ public class TaxonomyAssistantTest {
 				.get(Presentation.Id.StatementOfCashFlows);
 		JsonNode cashFlowSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfCashFlows.json"));
+						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfCashFlows.json"));
 		Assert.assertEquals(cashFlowNode.toString(), cashFlowSample.toString());
 
 		// Statement of changes in equity test
@@ -75,7 +75,7 @@ public class TaxonomyAssistantTest {
 				.get(Presentation.Id.StatementOfChangesInEquity);
 		JsonNode equityChangeSample = objectMapper
 				.readTree(ResourceUtility
-						.getFileResource("sample/presentation/tifrs-fr0-m1-ci-cr-1101-2013Q1_StatementOfChangesInEquity.json"));
+						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfChangesInEquity.json"));
 		Assert.assertEquals(equityChangeNode.toString(),
 				equityChangeSample.toString());
 	}

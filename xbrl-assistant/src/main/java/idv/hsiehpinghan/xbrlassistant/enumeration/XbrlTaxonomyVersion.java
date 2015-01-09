@@ -5,7 +5,7 @@ public enum XbrlTaxonomyVersion {
 			"/tifrs-20130331/XBRL_TW_Entry_Points/BASI/CR/tifrs-basi-cr-2013-03-31.xsd"), TIFRS_BASI_IR_2013_03_31(
 			"/tifrs-20130331/XBRL_TW_Entry_Points/BASI/IR/tifrs-basi-ir-2013-03-31.xsd"), TIFRS_BD_CR_2013_03_31(
 			"/tifrs-20130331/XBRL_TW_Entry_Points/BD/CR/tifrs-bd-cr-2013-03-31.xsd"), TIFRS_BD_ER_2013_03_31(
-			"tifrs-20130331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2013-03-31.xsd"), TIFRS_BD_IR_2013_03_31(
+			"/tifrs-20130331/XBRL_TW_Entry_Points/BD/ER/tifrs-bd-er-2013-03-31.xsd"), TIFRS_BD_IR_2013_03_31(
 			"/tifrs-20130331/XBRL_TW_Entry_Points/BD/IR/tifrs-bd-ir-2013-03-31.xsd"), TIFRS_CI_CR_2013_03_31(
 			"/tifrs-20130331/XBRL_TW_Entry_Points/CI/CR/tifrs-ci-cr-2013-03-31.xsd"), TIFRS_CI_IR_2013_03_31(
 			"/tifrs-20130331/XBRL_TW_Entry_Points/CI/IR/tifrs-ci-ir-2013-03-31.xsd"), TIFRS_FH_2013_03_31(

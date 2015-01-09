@@ -210,7 +210,6 @@ public class HbaseAssistant implements InitializingBean {
 			famMap.put(fld.getName(), columnFamily);
 			FieldUtils.writeField(tableObj, fld.getName(), columnFamily, true);
 		}
-
 		return hbaseTemplate.getAllVersion(tableName, rowKy,
 				new RowMapper<HBaseTable>() {
 					@Override

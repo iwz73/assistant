@@ -58,15 +58,15 @@ public class TaxonomyAssistant implements InitializingBean {
 	}
 
 	/**
-	 * Get all element id of presentIds.
+	 * Get all element id of presentationIds.
 	 * 
 	 * @param taxonomyVersion
-	 * @param presentIds
+	 * @param presentationIds
 	 * @return
 	 * @throws Exception
 	 */
 	public Set<String> getPresentationElementIds(
-			XbrlTaxonomyVersion taxonomyVersion, List<String> presentIds)
+			XbrlTaxonomyVersion taxonomyVersion, List<String> presentationIds)
 			throws Exception {
 		XbrlTaxonomy taxonomy = getTaxonomy(taxonomyVersion);
 
@@ -77,7 +77,7 @@ public class TaxonomyAssistant implements InitializingBean {
 			// Get presentation node roleURI. (ex :
 			// http://www.xbrl.org/tifrs/fr/role/BalanceSheet)
 			String presentId = presents.get(i);
-			if (presentIds.contains(presentId) == false) {
+			if (presentationIds.contains(presentId) == false) {
 				continue;
 			}
 			XbrlPresentationTree[] presentTrees = taxonomy
@@ -96,16 +96,16 @@ public class TaxonomyAssistant implements InitializingBean {
 	}
 
 	/**
-	 * Get json format presentation report. (PresentId can reference
+	 * Get json format presentation report. (presentationIds can reference
 	 * Presentation.Id....
 	 * 
 	 * @param taxonomyVersion
-	 * @param presentIds
+	 * @param presentationIds
 	 * @return
 	 * @throws Exception
 	 */
 	public ObjectNode getPresentationJson(XbrlTaxonomyVersion taxonomyVersion,
-			List<String> presentIds) throws Exception {
+			List<String> presentationIds) throws Exception {
 		XbrlTaxonomy taxonomy = getTaxonomy(taxonomyVersion);
 
 		@SuppressWarnings("unchecked")
@@ -115,7 +115,7 @@ public class TaxonomyAssistant implements InitializingBean {
 			// Get presentation node roleURI. (ex :
 			// http://www.xbrl.org/tifrs/fr/role/BalanceSheet)
 			String presentId = presents.get(i);
-			if (presentIds.contains(presentId) == false) {
+			if (presentationIds.contains(presentId) == false) {
 				continue;
 			}
 			ObjectNode rNode = objectMapper.createObjectNode();

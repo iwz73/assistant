@@ -75,7 +75,7 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName2));
 	}
 
-	@Test(dependsOnMethods = { "put" })
+	 @Test(dependsOnMethods = { "put" })
 	public void get() throws NoSuchFieldException, SecurityException,
 			IllegalArgumentException, IllegalAccessException,
 			NoSuchMethodException, InvocationTargetException,

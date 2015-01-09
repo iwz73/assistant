@@ -28,6 +28,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
@@ -238,7 +239,7 @@ public class HbaseAssistant implements InitializingBean {
 					}
 				});
 	}
-
+	
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
 		HTableDescriptor tDesc = new HTableDescriptor(
@@ -280,4 +281,13 @@ public class HbaseAssistant implements InitializingBean {
 		return colFamNms.toArray(new String[colFamNms.size()]);
 	}
 
+	private String getTableName(HBaseRowKey rowKey)
+			throws NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException {
+		final HBaseTable tableObj = (HBaseTable) ObjectUtility
+				.getOuterObject(rowKey);
+		tableObj.setRowKey(rowKey);
+		final Class<?> tableCls = tableObj.getClass();
+		return tableCls.getSimpleName();
+	}
 }

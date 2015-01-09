@@ -8,6 +8,10 @@ public abstract class HBaseTable extends HBaseBase {
 		super();
 	}
 
+	public String getTableName() {
+		return this.getClass().getSimpleName();
+	}
+	
 	public HBaseTable(HBaseRowKey rowKey) {
 		super();
 		this.rowKey = rowKey;

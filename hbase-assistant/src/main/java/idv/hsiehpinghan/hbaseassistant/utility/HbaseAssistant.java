@@ -28,7 +28,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
@@ -102,8 +101,6 @@ public class HbaseAssistant implements InitializingBean {
 				continue;
 			}
 			String tableNm = cls.getSimpleName();
-			String[] colFamArr = getColumnFamilyNames(cls);
-
 			if (isTableExists(tableNm)) {
 				switch (operation) {
 				case ADD_NONEXISTS:
@@ -111,12 +108,26 @@ public class HbaseAssistant implements InitializingBean {
 				case DROP_CREATE:
 					dropTable(tableNm);
 					break;
+				case NONE:
+					continue;
 				default:
 					throw new RuntimeException("Not implements !!!");
 				}
 			}
-			createTable(tableNm, colFamArr);
+			createTable(cls);
 		}
+	}
+
+	/**
+	 * Create table.
+	 * 
+	 * @param clazz
+	 * @throws IOException
+	 */
+	public void createTable(Class<?> clazz) throws IOException {
+		String tableNm = clazz.getSimpleName();
+		String[] colFamArr = getColumnFamilyNames(clazz);
+		createTable(tableNm, colFamArr);
 	}
 
 	/**
@@ -125,58 +136,42 @@ public class HbaseAssistant implements InitializingBean {
 	 * @param entity
 	 * @throws IllegalAccessException
 	 */
-	public void put(Object entity) throws IllegalAccessException {
+	public void put(HBaseTable entity) throws IllegalAccessException {
 		Class<?> cls = entity.getClass();
 		String tableName = cls.getSimpleName();
 		// Get row key
-		Object rowKyeObj = ObjectUtility.readField(entity, "rowKey");
-		byte[] rowKey = ((HBaseRowKey) rowKyeObj).toBytes();
+		Object rowKeyObj = ObjectUtility.readField(entity, "rowKey");
+		byte[] rowKey = ((HBaseRowKey) rowKeyObj).toBytes();
 		final Put put = new Put(rowKey);
 		// Get column families
 		String[] colFamArr = getColumnFamilyNames(cls);
-
-		logger.debug("colFamArr size : " + colFamArr.length);
-
 		for (String colFamNm : colFamArr) {
 			Object colFamObj = ObjectUtility.readField(entity, colFamNm);
 			List<Field> qualAndValFields = ObjectUtility
 					.getFieldsByAssignableType(colFamObj.getClass(), Map.class);
 			byte[] columnFamily = Bytes.toBytes(colFamNm);
-
-			logger.debug("qualAndValFields size : " + qualAndValFields.size());
-
 			// Get qualifier and value
 			for (Field qvField : qualAndValFields) {
 				@SuppressWarnings("unchecked")
 				Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qvMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
 						.readField(colFamObj, qvField.getName());
-
-				logger.debug("qvMap size : " + qvMap.size());
-
 				for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> entry : qvMap
 						.entrySet()) {
 					byte[] qualifier = entry.getKey().toBytes();
 					Map<Date, HBaseValue> tsVal = entry.getValue();
-
-					logger.debug("qvMap size : " + qvMap.size());
-
 					for (Map.Entry<Date, HBaseValue> ent : tsVal.entrySet()) {
 						long version = ent.getKey().getTime();
 						byte[] value = ent.getValue().toBytes();
-
-						logger.debug(columnFamily + " / " + qualifier + " / "
-								+ version + " / " + value);
-
 						put.add(columnFamily, qualifier, version, value);
 					}
 				}
 			}
 		}
-		hbaseTemplate.execute(tableName, new TableCallback<Boolean>() {
+		hbaseTemplate.execute(tableName, new TableCallback<Void>() {
 			@Override
-			public Boolean doInTable(HTableInterface tableItf) throws Throwable {
+			public Void doInTable(HTableInterface tableItf) throws Throwable {
 				tableItf.put(put);
-				return true;
+				return null;
 			}
 		});
 	}
@@ -199,9 +194,7 @@ public class HbaseAssistant implements InitializingBean {
 			IllegalAccessException, NoSuchMethodException,
 			InvocationTargetException, InstantiationException {
 		// Get Table.
-		final HBaseTable tableObj = (HBaseTable) ObjectUtility
-				.getOuterObject(rowKey);
-		tableObj.setRowKey(rowKey);
+		final HBaseTable tableObj = rowKey.getTable();
 		final Class<?> tableCls = tableObj.getClass();
 		String tableName = tableCls.getSimpleName();
 		String rowKy = new String(rowKey.toBytes());
@@ -239,7 +232,31 @@ public class HbaseAssistant implements InitializingBean {
 					}
 				});
 	}
-	
+
+	/**
+	 * Drop table.
+	 * 
+	 * @param tableName
+	 * @throws IOException
+	 */
+	public void dropTable(String tableName) throws IOException {
+		if (admin.isTableEnabled(tableName)) {
+			admin.disableTable(tableName);
+		}
+		admin.deleteTable(tableName);
+	}
+
+	/**
+	 * Check if table exists.
+	 * 
+	 * @param tableName
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean isTableExists(String tableName) throws IOException {
+		return admin.tableExists(tableName);
+	}
+
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
 		HTableDescriptor tDesc = new HTableDescriptor(
@@ -250,17 +267,6 @@ public class HbaseAssistant implements InitializingBean {
 		}
 		admin.createTable(tDesc);
 		logger.info(tableName + " created.");
-	}
-
-	void dropTable(String tableName) throws IOException {
-		if (admin.isTableEnabled(tableName)) {
-			admin.disableTable(tableName);
-		}
-		admin.deleteTable(tableName);
-	}
-
-	boolean isTableExists(String tableName) throws IOException {
-		return admin.tableExists(tableName);
 	}
 
 	private List<String> convertToFiledNames(List<Field> colFamFields) {
@@ -274,20 +280,7 @@ public class HbaseAssistant implements InitializingBean {
 	private String[] getColumnFamilyNames(Class<?> cls) {
 		List<Field> colFamFields = ObjectUtility.getFieldsByAssignableType(cls,
 				HBaseColumnFamily.class);
-
-		logger.debug("colFamFields size : " + colFamFields.size());
-
 		List<String> colFamNms = convertToFiledNames(colFamFields);
 		return colFamNms.toArray(new String[colFamNms.size()]);
-	}
-
-	private String getTableName(HBaseRowKey rowKey)
-			throws NoSuchFieldException, SecurityException,
-			IllegalArgumentException, IllegalAccessException {
-		final HBaseTable tableObj = (HBaseTable) ObjectUtility
-				.getOuterObject(rowKey);
-		tableObj.setRowKey(rowKey);
-		final Class<?> tableCls = tableObj.getClass();
-		return tableCls.getSimpleName();
 	}
 }

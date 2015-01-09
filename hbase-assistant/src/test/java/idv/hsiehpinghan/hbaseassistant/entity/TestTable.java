@@ -70,18 +70,14 @@ public class TestTable extends HBaseTable {
 		private String id;
 		private int order;
 
-		public Key() {
-			super();
-		}
-
-		public Key(String id, int order) {
-			super();
+		public Key(String id, int order, HBaseTable table) {
+			super(table);
 			this.id = id;
 			this.order = order;
 		}
 
-		public Key(byte[] rowKey) {
-			super();
+		public Key(byte[] rowKey, HBaseTable table) {
+			super(table);
 			fromBytes(rowKey);
 		}
 

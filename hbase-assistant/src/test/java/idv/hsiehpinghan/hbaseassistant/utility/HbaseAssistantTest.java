@@ -87,7 +87,7 @@ public class HbaseAssistantTest {
 	}
 
 	private TestTable.Key createRowKey(TestTable table) {
-		TestTable.Key rowKey = table.new Key("TestId", 3);
+		TestTable.Key rowKey = table.new Key("TestId", 3, table);
 		return rowKey;
 	}
 

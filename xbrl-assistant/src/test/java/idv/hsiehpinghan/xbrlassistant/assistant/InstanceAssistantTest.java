@@ -49,6 +49,9 @@ public class InstanceAssistantTest {
 		ObjectNode actual = instanceAssistant
 				.getInstanceJson(instanceFile, ids);
 		
+		
+		System.err.println(actual);
+		
 		JsonNode expected = objectMapper
 				.readTree(SystemResourceUtility
 						.getFileResource("sample/instance/tifrs-fr0-m1-ci-cr-1101-2013Q1_Instance.json"));

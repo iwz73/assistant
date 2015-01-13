@@ -28,7 +28,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Component
 public class InstanceAssistant {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
-
+	public static final String INFO = "info";
+	public static final String VERSION = "version";
+	public static final String INSTANCE = "instance";
+	
 	@Autowired
 	private InstanceCache cache;
 	@Autowired
@@ -52,6 +55,13 @@ public class InstanceAssistant {
 		Set<String> eleIds = taxonomyAssistant.getPresentationElementIds(
 				version, PresentationIds);
 		ObjectNode rsltNode = objectMapper.createObjectNode();
+		// Generate info node
+		ObjectNode infoNode = objectMapper.createObjectNode();
+		rsltNode.set(INFO, infoNode);
+		infoNode.put(VERSION, version.name());
+		// generate instance node.
+		ObjectNode instanceNode = objectMapper.createObjectNode();
+		rsltNode.set(INSTANCE, instanceNode);
 		for (String eleId : eleIds) {
 			XbrlElement[] eles = document.getAllItems(eleId);
 			if (eles.length <= 0) {
@@ -66,7 +76,7 @@ public class InstanceAssistant {
 				subRsltNode.put(Instance.Attribute.VALUE, ele.getValue());
 				subRsltArrNode.add(subRsltNode);
 			}
-			rsltNode.set(eleId, subRsltArrNode);
+			instanceNode.set(eleId, subRsltArrNode);
 		}
 		return rsltNode;
 	}

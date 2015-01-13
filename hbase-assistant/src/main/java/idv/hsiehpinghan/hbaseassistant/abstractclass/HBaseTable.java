@@ -4,17 +4,17 @@ public abstract class HBaseTable extends HBaseBase {
 
 	private HBaseRowKey rowKey;
 
-	public HBaseTable() {
+	protected HBaseTable() {
 		super();
 	}
 
-	public String getTableName() {
-		return this.getClass().getSimpleName();
-	}
-	
-	public HBaseTable(HBaseRowKey rowKey) {
+	protected HBaseTable(HBaseRowKey rowKey) {
 		super();
 		this.rowKey = rowKey;
+	}
+	
+	public String getTableName() {
+		return this.getClass().getSimpleName();
 	}
 
 	public HBaseRowKey getRowKey() {

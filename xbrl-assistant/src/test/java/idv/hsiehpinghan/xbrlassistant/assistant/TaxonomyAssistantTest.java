@@ -1,8 +1,8 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
+import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.suit.TestngSuitSetting;
-import idv.hsiehpinghan.xbrlassistant.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
@@ -49,7 +49,7 @@ public class TaxonomyAssistantTest {
 		// Balance sheet test
 		JsonNode balanceSheetNode = objNode.get(Presentation.Id.BalanceSheet);
 		JsonNode blanceSheetSample = objectMapper
-				.readTree(ResourceUtility
+				.readTree(SystemResourceUtility
 						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_BalanceSheet.json"));
 		Assert.assertEquals(balanceSheetNode.toString(),
 				blanceSheetSample.toString());
@@ -58,7 +58,7 @@ public class TaxonomyAssistantTest {
 		JsonNode incomeNode = objNode
 				.get(Presentation.Id.StatementOfComprehensiveIncome);
 		JsonNode incomeSample = objectMapper
-				.readTree(ResourceUtility
+				.readTree(SystemResourceUtility
 						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfComprehensiveIncome.json"));
 		Assert.assertEquals(incomeNode.toString(), incomeSample.toString());
 
@@ -66,7 +66,7 @@ public class TaxonomyAssistantTest {
 		JsonNode cashFlowNode = objNode
 				.get(Presentation.Id.StatementOfCashFlows);
 		JsonNode cashFlowSample = objectMapper
-				.readTree(ResourceUtility
+				.readTree(SystemResourceUtility
 						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfCashFlows.json"));
 		Assert.assertEquals(cashFlowNode.toString(), cashFlowSample.toString());
 
@@ -74,7 +74,7 @@ public class TaxonomyAssistantTest {
 		JsonNode equityChangeNode = objNode
 				.get(Presentation.Id.StatementOfChangesInEquity);
 		JsonNode equityChangeSample = objectMapper
-				.readTree(ResourceUtility
+				.readTree(SystemResourceUtility
 						.getFileResource("sample/presentation/TIFRS_CI_CR_2014_03_31_StatementOfChangesInEquity.json"));
 		Assert.assertEquals(equityChangeNode.toString(),
 				equityChangeSample.toString());
@@ -83,7 +83,7 @@ public class TaxonomyAssistantTest {
 	@Test
 	public void getTaxonomy() throws Exception {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
-		File instanceFile = ResourceUtility.getFileResource(instancePath);
+		File instanceFile = SystemResourceUtility.getFileResource(instancePath);
 		XbrlTaxonomy taxonomy = taxonomyAssistant.getTaxonomy(instanceFile);
 		Assert.assertNotNull(taxonomy);
 	}
@@ -92,7 +92,7 @@ public class TaxonomyAssistantTest {
 	public void getXbrlTaxonomyVersion() throws ParserConfigurationException,
 			SAXException, IOException {
 		String instancePath = "xbrl-instance/2013-01-sii-01-C/tifrs-fr0-m1-ci-cr-1101-2013Q1.xml";
-		File instanceFile = ResourceUtility.getFileResource(instancePath);
+		File instanceFile = SystemResourceUtility.getFileResource(instancePath);
 		XbrlTaxonomyVersion version = taxonomyAssistant
 				.getXbrlTaxonomyVersion(instanceFile);
 		Assert.assertEquals(XbrlTaxonomyVersion.TIFRS_CI_CR_2013_03_31, version);
@@ -109,7 +109,7 @@ public class TaxonomyAssistantTest {
 				XbrlTaxonomyVersion.TIFRS_CI_CR_2014_03_31, ids);
 		Assert.assertEquals(1488, actual.size());
 	}
-	
+
 	@Test
 	public void exportTaxonomys() throws IOException {
 		taxonomyAssistant.exportTaxonomys();

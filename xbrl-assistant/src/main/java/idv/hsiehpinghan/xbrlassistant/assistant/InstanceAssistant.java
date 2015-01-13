@@ -7,7 +7,6 @@ import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +32,7 @@ public class InstanceAssistant {
 	public static final String VERSION = "version";
 	public static final String CONTEXT = "context";
 	public static final String INSTANCE = "instance";
-	
+
 	@Autowired
 	private InstanceCache cache;
 	@Autowired
@@ -58,7 +57,8 @@ public class InstanceAssistant {
 				version, PresentationIds);
 		ObjectNode rsltNode = objectMapper.createObjectNode();
 		// Generate info node
-		ObjectNode infoNode = generateInfoContent(version, instanceFile, PresentationIds);
+		ObjectNode infoNode = generateInfoContent(version, instanceFile,
+				PresentationIds);
 		rsltNode.set(INFO, infoNode);
 		// generate instance node.
 		ObjectNode instanceNode = objectMapper.createObjectNode();
@@ -82,33 +82,37 @@ public class InstanceAssistant {
 		return rsltNode;
 	}
 
-	private ObjectNode generateInfoContent(XbrlTaxonomyVersion version, File instanceFile, List<String> PresentationIds) throws Exception {
+	private ObjectNode generateInfoContent(XbrlTaxonomyVersion version,
+			File instanceFile, List<String> PresentationIds) throws Exception {
 		ObjectNode infoNode = objectMapper.createObjectNode();
 		infoNode.put(VERSION, version.name());
 		ObjectNode contextNode = objectMapper.createObjectNode();
 		infoNode.set(CONTEXT, contextNode);
-		for(String presentId : PresentationIds) {
+		for (String presentId : PresentationIds) {
 			ObjectNode presentIdNode = objectMapper.createObjectNode();
 			contextNode.set(presentId, presentIdNode);
-			Map<String, Set<String>> contextMap = getContexts(instanceFile, presentId);
-			Set<Map.Entry<String, Set<String>>> contextEnt = contextMap.entrySet();
-			for(Map.Entry<String, Set<String>> ent : contextEnt) {
+			Map<String, Set<String>> contextMap = getContexts(instanceFile,
+					presentId);
+			Set<Map.Entry<String, Set<String>>> contextEnt = contextMap
+					.entrySet();
+			for (Map.Entry<String, Set<String>> ent : contextEnt) {
 				Set<String> contextSet = ent.getValue();
-				if(contextSet.size() <= 0) {
+				if (contextSet.size() <= 0) {
 					continue;
 				}
-//				ObjectNode periodTypeNode = objectMapper.createObjectNode();
-//				presentIdNode.set(Instance.Attribute.PERIOD_TYPE, periodTypeNode);
+				// ObjectNode periodTypeNode = objectMapper.createObjectNode();
+				// presentIdNode.set(Instance.Attribute.PERIOD_TYPE,
+				// periodTypeNode);
 				ArrayNode contextsArrNode = objectMapper.createArrayNode();
 				presentIdNode.set(ent.getKey(), contextsArrNode);
-				for(String context : contextSet) {
+				for (String context : contextSet) {
 					contextsArrNode.add(context);
 				}
 			}
 		}
 		return infoNode;
 	}
-	
+
 	public Map<String, Set<String>> getContexts(File instanceFile,
 			String PresentationId) throws Exception {
 		List<String> PresentationIds = new ArrayList<String>();
@@ -138,7 +142,8 @@ public class InstanceAssistant {
 				if (Instance.Attribute.INSTANT.equals(periodType)) {
 					instantSet.add(period.getInstantDateString());
 				} else if (Instance.Attribute.DURATION.equals(periodType)) {
-					durationSet.add(period.getStartDateString() + "~" + period.getEndDateString());
+					durationSet.add(period.getStartDateString() + "~"
+							+ period.getEndDateString());
 				} else {
 					throw new RuntimeException("PeriodType(" + periodType
 							+ ") not implement !!!");

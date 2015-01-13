@@ -154,6 +154,9 @@ public class HbaseAssistant implements InitializingBean {
 				@SuppressWarnings("unchecked")
 				Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qualMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
 						.readField(colFamObj, qualMapField.getName());
+				if(qualMap == null) {
+					continue;
+				}
 				for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> qualEntry : qualMap
 						.entrySet()) {
 					byte[] qualifier = qualEntry.getKey().toBytes();

@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.NavigableMap;
 
 public class TestTable extends HBaseTable {
-	private static final byte[] TAB = ByteUtility.SINGLE_TAB_BYTE_ARRAY;
+	private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY;
 	private TestFamily1 family1;
 	private TestFamily2 family2;
 
@@ -108,8 +108,8 @@ public class TestTable extends HBaseTable {
 					KEY_STRING_1_LENGTH);
 			byte[] keyInt1Bytes = ByteConvertUtility.toBytes(keyInt1,
 					KEY_INT_1_LENGTH);
-			return ArrayUtility.addAll(keyDate1Bytes, TAB, keyString1Bytes,
-					TAB, keyInt1Bytes);
+			return ArrayUtility.addAll(keyDate1Bytes, SPACE, keyString1Bytes,
+					SPACE, keyInt1Bytes);
 		}
 
 		@Override
@@ -262,8 +262,8 @@ public class TestTable extends HBaseTable {
 						valueString1, VALUE_STRING_1_LENGTH);
 				byte[] valueInt1Bytes = ByteConvertUtility.toBytes(valueInt1,
 						VALUE_INT_1_LENGTH);
-				return ArrayUtility.addAll(valueDate1Bytes, TAB,
-						valueString1Bytes, TAB, valueInt1Bytes);
+				return ArrayUtility.addAll(valueDate1Bytes, SPACE,
+						valueString1Bytes, SPACE, valueInt1Bytes);
 			}
 
 			@Override
@@ -418,8 +418,8 @@ public class TestTable extends HBaseTable {
 						valueString2, VALUE_STRING_2_LENGTH);
 				byte[] valueInt2Bytes = ByteConvertUtility.toBytes(valueInt2,
 						VALUE_INT_2_LENGTH);
-				return ArrayUtility.addAll(valueDate2Bytes, TAB,
-						valueString2Bytes, TAB, valueInt2Bytes);
+				return ArrayUtility.addAll(valueDate2Bytes, SPACE,
+						valueString2Bytes, SPACE, valueInt2Bytes);
 			}
 
 			@Override

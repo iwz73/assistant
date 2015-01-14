@@ -44,9 +44,10 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string, int byteLength) {
+		checkSize(string, byteLength);
 		return Bytes.toBytes(StringUtils.leftPad(string, byteLength));
 	}
-
+	
 	/**
 	 * Get string from bytes.
 	 * 
@@ -159,5 +160,12 @@ public class ByteConvertUtility {
 			return null;
 		}
 		return DateUtils.parseDate(str, datePattern);
+	}
+
+	private static void checkSize(String string, int byteLength) {
+		int length = string.length();
+		if(length > byteLength) {
+			throw new RuntimeException("String(" + string + ")'s size(" + length + ") bigger than " + byteLength + " !!!");
+		}
 	}
 }

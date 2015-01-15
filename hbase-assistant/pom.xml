@@ -26,7 +26,7 @@
 		<class-utility.version>1.0.0</class-utility.version>
 		<collection-utility.version>1.0.0</collection-utility.version>
 		<package-utility.version>1.0.0</package-utility.version>
-<!-- 		<test-utility.version>1.0.0</test-utility.version> -->
+		<!-- <test-utility.version>1.0.0</test-utility.version> -->
 	</properties>
 
 	<dependencies>
@@ -98,7 +98,7 @@
 			<artifactId>class-utility</artifactId>
 			<version>${class-utility.version}</version>
 		</dependency>
-
+		
 		<!-- collection-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
@@ -115,11 +115,11 @@
 		</dependency>
 
 		<!-- test-utility -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>idv.hsiehpinghan</groupId> -->
-<!-- 			<artifactId>test-utility</artifactId> -->
-<!-- 			<version>${test-utility.version}</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>idv.hsiehpinghan</groupId> -->
+		<!-- <artifactId>test-utility</artifactId> -->
+		<!-- <version>${test-utility.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
 	</dependencies>
 </project>

@@ -1,20 +1,20 @@
 package idv.hsiehpinghan.nanohttpdassistant.suit;
 
-import java.io.IOException;
-
-import idv.hsiehpinghan.packageutility.utility.PackageUtility;
+import idv.hsiehpinghan.classutility.utility.ClassUtility;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.testng.annotations.BeforeSuite;
 
 public class TestngSuitSetting {
 	private static ApplicationContext applicationContext;
 
 	@BeforeSuite()
-	public void beforeSuite() throws IOException {
-		String[] pkgs = PackageUtility.getSpringConfigurationPackages();
-		applicationContext = new AnnotationConfigApplicationContext(pkgs);
+	public void beforeSuite() throws Exception {
+		Class<?>[] clsArr = ClassUtility.getAnnotatedClasses(
+				"idv.hsiehpinghan", Configuration.class);
+		applicationContext = new AnnotationConfigApplicationContext(clsArr);
 	}
 
 	public static ApplicationContext getApplicationContext() {

@@ -21,7 +21,7 @@
 		<commons-io.version>2.4</commons-io.version>
 		<selenium-java.version>2.44.0</selenium-java.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
-		<package-utility.version>1.0.0</package-utility.version>
+		<class-utility.version>1.0.0</class-utility.version>
 	</properties>
 
 	<dependencies>
@@ -76,11 +76,11 @@
 			<version>${resource-utility.version}</version>
 		</dependency>
 
-		<!-- package-utility -->
+		<!-- class-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>package-utility</artifactId>
-			<version>${package-utility.version}</version>
+			<artifactId>class-utility</artifactId>
+			<version>${class-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

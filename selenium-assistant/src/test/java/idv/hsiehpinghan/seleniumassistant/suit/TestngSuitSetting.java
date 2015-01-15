@@ -1,17 +1,15 @@
 package idv.hsiehpinghan.seleniumassistant.suit;
 
+import idv.hsiehpinghan.classutility.utility.ClassUtility;
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
-import idv.hsiehpinghan.packageutility.utility.PackageUtility;
 import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitFirefoxVersionBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
 import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtension;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -25,11 +23,11 @@ public class TestngSuitSetting {
 	private static HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser;
 	private static FirefoxBrowser firefoxBrowser;
 
-	@BeforeSuite()
-	public void beforeSuite() throws IOException {
-		String[] pkgs = PackageUtility.getSpringConfigurationPackages();
-		String[] testPkgs = addTestComponentScanBasePackages(pkgs);
-		applicationContext = new AnnotationConfigApplicationContext(testPkgs);
+	@BeforeSuite
+	public void beforeSuite() throws Exception {
+		Class<?>[] clsArr = ClassUtility.getAnnotatedClasses(
+				"idv.hsiehpinghan", Configuration.class);
+		applicationContext = new AnnotationConfigApplicationContext(clsArr);
 		htmlServer = applicationContext.getBean(MockHtmlServer.class);
 		htmlUnitDriverExtension = applicationContext.getBean(
 				"htmlUnitDriverExtension", HtmlUnitDriverExtension.class);
@@ -69,11 +67,4 @@ public class TestngSuitSetting {
 		htmlServer.stop();
 	}
 
-	private String[] addTestComponentScanBasePackages(String[] pkgs) {
-		String nanohttpdassistant = "idv.hsiehpinghan.nanohttpdassistant.configuration";
-		if (ArrayUtils.contains(pkgs, nanohttpdassistant) == false) {
-			return ArrayUtils.add(pkgs, nanohttpdassistant);
-		}
-		return pkgs;
-	}
 }

@@ -2,7 +2,9 @@ package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -45,32 +47,27 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	}
 
 	/**
-	 * Get versionValueMap.(If not exists, create it and return.)
+	 * Get versionValueMap.(If not exists, return empty set.)
 	 * 
 	 * @param qualifier
 	 * @return
 	 */
-	public NavigableMap<Date, HBaseValue> getVersionValueMap(
+	public Set<Entry<Date, HBaseValue>> getVersionValueSet(
 			HBaseColumnQualifier qualifier) {
-		NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = getQualifierVersionValueMap();
-		NavigableMap<Date, HBaseValue> verMap = qualMap.get(qualifier);
-		if (verMap == null) {
-			verMap = new TreeMap<Date, HBaseValue>();
-			qualMap.put(qualifier, verMap);
-		}
-		return verMap;
+		return getVersionValueMap(qualifier).descendingMap().entrySet();
 	}
 
 	/**
-	 * Get qualifierVersionValueMap.(If not exists, create it and return.)
+	 * Get qualifierVersionValueSet.(If not exists, return empty set.)
 	 * 
 	 * @return
 	 */
-	public NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
-		if (qualifierVersionValueMap == null) {
-			qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
-		}
-		return qualifierVersionValueMap;
+	public Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> getQualifierVersionValueSet() {
+		return getQualifierVersionValueMap().entrySet();
+	}
+
+	public void add(HBaseColumnQualifier qualifier, Date date, HBaseValue value) {
+		getVersionValueMap(qualifier).put(date, value);
 	}
 
 	public void setQualifierVersionValueMap(
@@ -86,4 +83,21 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			byte[] qualifierBytes);
 
 	protected abstract HBaseValue generateValue(byte[] valueBytes);
+
+	private NavigableMap<Date, HBaseValue> getVersionValueMap(
+			HBaseColumnQualifier qualifier) {
+		NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = getQualifierVersionValueMap();
+		if (qualMap.containsKey(qualifier) == false) {
+			NavigableMap<Date, HBaseValue> verMap = new TreeMap<Date, HBaseValue>();
+			qualMap.put(qualifier, verMap);
+		}
+		return qualMap.get(qualifier);
+	}
+
+	private NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
+		if (qualifierVersionValueMap == null) {
+			qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+		}
+		return qualifierVersionValueMap;
+	}
 }

@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -132,11 +133,10 @@ public class HbaseAssistantTest {
 	}
 
 	private void testColumnFamily1(TestFamily1 family1) {
-		NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = family1
-				.getQualifierVersionValueMap();
-		Assert.assertEquals(1, qualMap.size());
-		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualMap
-				.entrySet()) {
+		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = family1
+				.getQualifierVersionValueSet();
+		Assert.assertEquals(1, qualSet.size());
+		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualSet) {
 			NavigableMap<Date, HBaseValue> verMap = qualEntry.getValue();
 			Assert.assertEquals(3, verMap.size());
 
@@ -167,11 +167,10 @@ public class HbaseAssistantTest {
 	}
 
 	private void testColumnFamily2(TestFamily2 family2) {
-		NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = family2
-				.getQualifierVersionValueMap();
-		Assert.assertEquals(3, qualMap.size());
-		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualMap
-				.entrySet()) {
+		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = family2
+				.getQualifierVersionValueSet();
+		Assert.assertEquals(3, qualSet.size());
+		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualSet) {
 			NavigableMap<Date, HBaseValue> verMap = qualEntry.getValue();
 			Assert.assertEquals(1, verMap.size());
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -308,7 +309,7 @@ public class HbaseAssistant implements InitializingBean {
 				entity.getClass(), HBaseColumnFamily.class);
 		boolean isAllFamNull = isAllColumnFamilyFieldNull(entity, colFamFields);
 		for (Field famField : colFamFields) {
-			String famName = famField.getName();
+			String famName = convertToFiledName(famField);
 			Object famObj = ObjectUtility.readField(entity, famName);
 			if (famObj == null) {
 				if (isAllFamNull == false) {
@@ -319,16 +320,15 @@ public class HbaseAssistant implements InitializingBean {
 				ObjectUtility.setField(entity, famField, famObj);
 			}
 			HBaseColumnFamily colFam = (HBaseColumnFamily) famObj;
-			String famNm = convertToFiledName(famField);
-			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = colFam
-					.getQualifierVersionValueMap();
-			if (qualMap.size() == 0) {
-				get.addFamily(Bytes.toBytes(famNm));
+			Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = colFam
+					.getQualifierVersionValueSet();
+			// If column family not set.
+			if (qualSet.size() == 0) {
+				get.addFamily(Bytes.toBytes(famName));
 				continue;
 			}
-			for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> entry : qualMap
-					.entrySet()) {
-				get.addColumn(Bytes.toBytes(famNm), entry.getKey().toBytes());
+			for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> entry : qualSet) {
+				get.addColumn(Bytes.toBytes(famName), entry.getKey().toBytes());
 			}
 		}
 		long minTimestamp = minDate == null ? 0 : minDate.getTime();

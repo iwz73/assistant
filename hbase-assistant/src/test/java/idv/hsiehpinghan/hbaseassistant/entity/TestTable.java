@@ -11,7 +11,6 @@ import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.NavigableMap;
 
 public class TestTable extends HBaseTable {
 	private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY;
@@ -135,10 +134,9 @@ public class TestTable extends HBaseTable {
 		public void add(String qual, Date date, Date valueDate1,
 				String valueString1, int valueInt1) {
 			HBaseColumnQualifier qualifier = this.new TestQualifier1(qual);
-			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qualifier);
 			TestValue1 val = this.new TestValue1(valueDate1, valueString1,
 					valueInt1);
-			verMap.put(date, val);
+			add(qualifier, date, val);
 		}
 
 		@Override
@@ -186,13 +184,6 @@ public class TestTable extends HBaseTable {
 			public void setQual(String qual) {
 				this.qual = qual;
 			}
-
-			@Override
-			public int compareTo(HBaseColumnQualifier o) {
-				String qual = this.getClass().cast(o).getQual();
-				return this.getQual().compareTo(qual);
-			}
-
 		}
 
 		public class TestValue1 extends HBaseValue {
@@ -292,10 +283,9 @@ public class TestTable extends HBaseTable {
 		public void add(String qual, Date date, Date valueDate2,
 				String valueString2, int valueInt2) {
 			HBaseColumnQualifier qualifier = this.new TestQualifier2(qual);
-			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qualifier);
 			TestValue2 val = this.new TestValue2(valueDate2, valueString2,
 					valueInt2);
-			verMap.put(date, val);
+			add(qualifier, date, val);
 		}
 
 		@Override
@@ -342,13 +332,6 @@ public class TestTable extends HBaseTable {
 			public void setQual(String qual) {
 				this.qual = qual;
 			}
-
-			@Override
-			public int compareTo(HBaseColumnQualifier o) {
-				String qual = this.getClass().cast(o).getQual();
-				return this.getQual().compareTo(qual);
-			}
-
 		}
 
 		public class TestValue2 extends HBaseValue {

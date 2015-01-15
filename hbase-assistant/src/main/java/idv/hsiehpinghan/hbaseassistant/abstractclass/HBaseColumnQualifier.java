@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 public abstract class HBaseColumnQualifier extends HBaseBase implements
 		Comparable<HBaseColumnQualifier> {
@@ -11,7 +12,8 @@ public abstract class HBaseColumnQualifier extends HBaseBase implements
 	 * Overwrite compare to get customerize order.
 	 */
 	@Override
-	public abstract int compareTo(HBaseColumnQualifier o);
-
+	public int compareTo(HBaseColumnQualifier o) {
+		return CompareToBuilder.reflectionCompare(this, o);
+	}
 
 }

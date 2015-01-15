@@ -21,11 +21,6 @@ public class TestTable extends HBaseTable {
 		super();
 	}
 
-	public TestTable(TestRowKey rowKey, TestFamily1 family1) {
-		super(rowKey);
-		this.family1 = family1;
-	}
-
 	public TestFamily1 getFamily1() {
 		if (family1 == null) {
 			family1 = this.new TestFamily1(this);

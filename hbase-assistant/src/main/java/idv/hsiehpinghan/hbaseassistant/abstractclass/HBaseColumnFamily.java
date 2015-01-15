@@ -52,7 +52,7 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	 * @param qualifier
 	 * @return
 	 */
-	public Set<Entry<Date, HBaseValue>> getVersionValueSet(
+	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(
 			HBaseColumnQualifier qualifier) {
 		return getVersionValueMap(qualifier).descendingMap().entrySet();
 	}

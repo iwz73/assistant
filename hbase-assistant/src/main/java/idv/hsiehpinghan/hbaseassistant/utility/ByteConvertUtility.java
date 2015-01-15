@@ -47,7 +47,7 @@ public class ByteConvertUtility {
 		checkSize(string, byteLength);
 		return Bytes.toBytes(StringUtils.leftPad(string, byteLength));
 	}
-	
+
 	/**
 	 * Get string from bytes.
 	 * 
@@ -89,6 +89,7 @@ public class ByteConvertUtility {
 
 	/**
 	 * Convert date to bytes.
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -109,6 +110,19 @@ public class ByteConvertUtility {
 			int endIndex) throws ParseException {
 		return getDateFromBytes(bytes, beginIndex, endIndex,
 				DEFAULT_DATE_PATTERN);
+	}
+
+	/**
+	 * Convert bigDecimal to bytes.
+	 * 
+	 * @param bigDecimal
+	 * @return
+	 */
+	public static byte[] toBytes(BigDecimal bigDecimal) {
+		if (bigDecimal == null) {
+			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING);
+		}
+		return Bytes.toBytes(bigDecimal.toString());
 	}
 
 	/**
@@ -143,7 +157,21 @@ public class ByteConvertUtility {
 		}
 		return new BigDecimal(str);
 	}
-	
+
+	/**
+	 * Get bigDecimal from bytes.
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static BigDecimal getBigDecimalFromBytes(byte[] bytes) {
+		String str = getStringFromBytes(bytes);
+		if (StringUtility.EMPTY_STRING.equals(str)) {
+			return null;
+		}
+		return new BigDecimal(str);
+	}
+
 	private static byte[] toBytes(Date date, int byteLength, String datePattern) {
 		if (date == null) {
 			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
@@ -152,7 +180,7 @@ public class ByteConvertUtility {
 		return ByteConvertUtility.toBytes(
 				DateFormatUtils.format(date, datePattern), byteLength);
 	}
-	
+
 	private static Date getDateFromBytes(byte[] bytes, int beginIndex,
 			int endIndex, String datePattern) throws ParseException {
 		String str = getStringFromBytes(bytes, beginIndex, endIndex);
@@ -164,8 +192,9 @@ public class ByteConvertUtility {
 
 	private static void checkSize(String string, int byteLength) {
 		int length = string.length();
-		if(length > byteLength) {
-			throw new RuntimeException("String(" + string + ")'s size(" + length + ") bigger than " + byteLength + " !!!");
+		if (length > byteLength) {
+			throw new RuntimeException("String(" + string + ")'s size("
+					+ length + ") bigger than " + byteLength + " !!!");
 		}
 	}
 }

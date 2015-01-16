@@ -30,6 +30,9 @@ import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
@@ -64,58 +67,6 @@ public class HbaseAssistant implements InitializingBean {
 				"idv.hsiehpinghan", HBaseTable.class);
 		createTables(entityClasses, operation);
 	}
-
-	// /**
-	// * Scan packages and create table.
-	// *
-	// * @param packageNames
-	// * @param operation
-	// * @throws ClassNotFoundException
-	// * @throws IOException
-	// */
-	// public void scanAndCreateTable(String[] packageNames,
-	// TableOperation operation) throws ClassNotFoundException,
-	// IOException {
-	// for (String packageName : packageNames) {
-	// scanAndCreateTable(packageName, operation);
-	// }
-	// }
-
-	// /**
-	// * Scan package and create table.
-	// *
-	// * @param packageName
-	// * @throws ClassNotFoundException
-	// * @throws IOException
-	// */
-	// public void scanAndCreateTable(String packageName, TableOperation
-	// operation)
-	// throws ClassNotFoundException, IOException {
-	// if (TableOperation.NONE.equals(operation)) {
-	// return;
-	// }
-	// List<Class<?>> classes = ClassUtility.getClasses(packageName);
-	// for (Class<?> cls : classes) {
-	// if (HBaseTable.class.isAssignableFrom(cls) == false) {
-	// continue;
-	// }
-	// String tableNm = cls.getSimpleName();
-	// if (isTableExists(tableNm)) {
-	// switch (operation) {
-	// case ADD_NONEXISTS:
-	// continue;
-	// case DROP_CREATE:
-	// dropTable(tableNm);
-	// break;
-	// case NONE:
-	// continue;
-	// default:
-	// throw new RuntimeException("Not implements !!!");
-	// }
-	// }
-	// createTable(cls);
-	// }
-	// }
 
 	/**
 	 * Add a row.
@@ -215,22 +166,84 @@ public class HbaseAssistant implements InitializingBean {
 		hbaseTemplate.execute(entity.getTableName(), new TableCallback<Void>() {
 			@Override
 			public Void doInTable(HTableInterface tableItf) throws Throwable {
-				NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> map = tableItf
-						.get(get).getMap();
-				if (map == null) {
-					return null;
-				}
-				// Set column family.
-				for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> entry : map
-						.entrySet()) {
-					String colFamNm = Bytes.toString(entry.getKey());
-					HBaseColumnFamily colFam = (HBaseColumnFamily) ObjectUtility
-							.readField(entity, colFamNm);
-					colFam.fromMap(entry.getValue());
-				}
+				Result result = tableItf.get(get);
+				generateColumFamilysContent(entity, result, false);
 				return null;
 			}
 		});
+	}
+
+	/**
+	 * Scan all records.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public List<HBaseTable> scan(final HBaseTable entity) {
+		return scan(entity, null);
+	}
+
+	/**
+	 * Scan all records.
+	 * 
+	 * @param entity
+	 * @param filter
+	 * @return
+	 */
+	public List<HBaseTable> scan(final HBaseTable entity, final Filter filter) {
+		String tableName = entity.getTableName();
+		return hbaseTemplate.execute(tableName,
+				new TableCallback<List<HBaseTable>>() {
+					@Override
+					public List<HBaseTable> doInTable(HTableInterface tableItf)
+							throws Throwable {
+						Scan scan = new Scan();
+						if (filter != null) {
+							scan.setFilter(filter);
+						}
+						ResultScanner scanner = tableItf.getScanner(scan);
+						List<HBaseTable> entities = new ArrayList<HBaseTable>();
+						for (Result rslt : scanner) {
+							Object entityObj = ObjectUtility
+									.createClassInstance(entity.getClass());
+							HBaseTable newEntity = (HBaseTable) entityObj;
+							generateRowKeyContent(newEntity, rslt, true);
+							generateColumFamilysContent(newEntity, rslt, true);
+							entities.add(newEntity);
+						}
+						return entities;
+					}
+				});
+	}
+
+	private void generateRowKey(HBaseTable entity)
+			throws NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		HBaseRowKey rowKey = entity.getRowKey();
+		if (rowKey != null) {
+			return;
+		}
+		Class<?> rowKeyClass = getRowKeyField(entity).getType();
+		ObjectUtility.createInnerClassInstance(entity, rowKeyClass, entity);
+	}
+
+	private void generateColumFamilys(HBaseTable entity)
+			throws IllegalAccessException, NoSuchMethodException,
+			SecurityException, InstantiationException,
+			IllegalArgumentException, InvocationTargetException {
+		List<Field> colFamFlds = getColumnFamilyFields(entity.getClass());
+		for (Field famFld : colFamFlds) {
+			String colFamNm = famFld.getName();
+			Object colFamObj = ObjectUtility.readField(entity, colFamNm);
+			if (colFamObj != null) {
+				continue;
+			}
+			Class<?> colFamClass = famFld.getType();
+			colFamObj = ObjectUtility.createInnerClassInstance(entity,
+					colFamClass, entity);
+			ObjectUtility.setField(entity, famFld, colFamObj);
+		}
 	}
 
 	/**
@@ -425,8 +438,7 @@ public class HbaseAssistant implements InitializingBean {
 				HBaseColumnFamily.class);
 	}
 
-	private HBaseRowKey getRowKey(HBaseTable entity)
-			throws IllegalAccessException {
+	private Field getRowKeyField(HBaseTable entity) {
 		List<Field> rowKeyFileds = ObjectUtility.getFieldsByAssignableType(
 				entity.getClass(), HBaseRowKey.class);
 		int size = rowKeyFileds.size();
@@ -437,8 +449,64 @@ public class HbaseAssistant implements InitializingBean {
 			throw new RuntimeException(entity.getTableName() + " set " + size
 					+ " row keys !!!");
 		}
-		Object rowKeyObj = ObjectUtility.readField(entity, rowKeyFileds.get(0)
-				.getName());
+		return rowKeyFileds.get(0);
+	}
+
+	private HBaseRowKey getRowKey(HBaseTable entity)
+			throws IllegalAccessException {
+		Field rowKeyField = getRowKeyField(entity);
+		Object rowKeyObj = ObjectUtility.readField(entity,
+				rowKeyField.getName());
 		return (HBaseRowKey) rowKeyObj;
 	}
+
+	private void generateRowKeyContent(final HBaseTable entity, Result result,
+			boolean ifNullCreateIt) throws NoSuchMethodException,
+			SecurityException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		if (ifNullCreateIt) {
+			generateRowKey(entity);
+		}
+		HBaseRowKey rowKey = entity.getRowKey();
+		rowKey.fromBytes(result.getRow());
+	}
+
+	private void generateColumFamilysContent(final HBaseTable entity,
+			Result result, boolean ifNullCreateIt)
+			throws IllegalAccessException, NoSuchMethodException,
+			SecurityException, InstantiationException,
+			IllegalArgumentException, InvocationTargetException {
+		if (ifNullCreateIt) {
+			generateColumFamilys(entity);
+		}
+		NavigableMap<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> map = result
+				.getMap();
+		if (map == null) {
+			return;
+		}
+		// Set column family.
+		for (Map.Entry<byte[], NavigableMap<byte[], NavigableMap<Long, byte[]>>> entry : map
+				.entrySet()) {
+			String colFamNm = Bytes.toString(entry.getKey());
+			HBaseColumnFamily colFam = (HBaseColumnFamily) ObjectUtility
+					.readField(entity, colFamNm);
+			if (colFam == null) {
+				continue;
+			}
+			NavigableMap<byte[], NavigableMap<Long, byte[]>> qualMap = entry
+					.getValue();
+			colFam.fromMap(qualMap);
+		}
+	}
+
+	// private String getTableName(HBaseRowKey beginRowKey, HBaseRowKey
+	// endRowKey) {
+	// HBaseTable beginTab = beginRowKey.getTable();
+	// HBaseTable endTab = endRowKey.getTable();
+	// if(beginTab != endTab) {
+	// throw new RuntimeException("BeginRowKey's table(" + beginTab +
+	// ") != endRowKey's table(" + endTab + ").");
+	// }
+	// return beginTab.getTableName();
+	// }
 }

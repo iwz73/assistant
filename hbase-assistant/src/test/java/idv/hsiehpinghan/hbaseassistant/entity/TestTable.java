@@ -14,11 +14,22 @@ import java.util.Date;
 
 public class TestTable extends HBaseTable {
 	private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY;
+	private TestRowKey rowKey;
 	private TestFamily1 family1;
 	private TestFamily2 family2;
 
 	public TestTable() {
 		super();
+	}
+
+	@Override
+	public HBaseRowKey getRowKey() {
+		return rowKey;
+	}
+
+	@Override
+	public void setRowKey(HBaseRowKey rowKey) {
+		this.rowKey = (TestRowKey) rowKey;
 	}
 
 	public TestFamily1 getFamily1() {

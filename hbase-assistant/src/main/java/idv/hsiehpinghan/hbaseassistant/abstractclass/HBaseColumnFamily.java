@@ -39,8 +39,12 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			NavigableMap<Long, byte[]> verBytesMap = qualBytesEntry.getValue();
 			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qual);
 			for (Map.Entry<Long, byte[]> verBytesEntry : verBytesMap.entrySet()) {
+				byte[] valBytes = verBytesEntry.getValue();
+				if(valBytes.length == 0) {
+					continue;
+				}
 				Date date = new Date(verBytesEntry.getKey());
-				HBaseValue val = this.generateValue(verBytesEntry.getValue());
+				HBaseValue val = this.generateValue(valBytes);
 				verMap.put(date, val);
 			}
 		}

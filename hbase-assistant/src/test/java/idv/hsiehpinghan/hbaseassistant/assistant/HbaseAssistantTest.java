@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.assistant;
 
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily1;
@@ -13,6 +14,7 @@ import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
@@ -22,6 +24,7 @@ import junit.framework.Assert;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -104,7 +107,6 @@ public class HbaseAssistantTest {
 		minDate = DateUtils.parseDate("2010/01/01", "yyyy/MM/dd");
 		maxDate = DateUtils.parseDate("2020/01/01", "yyyy/MM/dd");
 		filter = null;
-
 		testGetRowKey();
 		testGetColumnFamily1();
 		testGetColumnFamily2();
@@ -116,11 +118,29 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.exist(entity.getRowKey()));
 	}
 
+	@Test(dependsOnMethods = { "put" })
+	public void scan() throws Exception {
+		List<HBaseTable> entities = hbaseAssistant.scan(new TestTable());
+		TestTable entity = (TestTable) entities.get(0);
+		
+		System.err.println(entity);
+		
+		
+		Assert.assertEquals(1, entity.getFamily1()
+				.getQualifierVersionValueSet().size());
+		Assert.assertEquals(3, entity.getFamily2()
+				.getQualifierVersionValueSet().size());
+
+		List<HBaseTable> keyOnlyEntities = hbaseAssistant.scan(new TestTable(), new KeyOnlyFilter());
+		
+		System.err.println(keyOnlyEntities.get(0));
+		
+	}
+
 	private void testGetRowKey() throws Exception {
 		TestTable entity = new TestTable();
 		generateRowKey(entity);
 		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
-		testColumnFamily1(entity.getFamily1());
 	}
 
 	private void testGetColumnFamily1() throws Exception {

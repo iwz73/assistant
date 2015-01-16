@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.assistant;
 
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
-import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily1;
@@ -10,11 +10,11 @@ import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily2;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily2.TestValue2;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
@@ -23,10 +23,13 @@ import junit.framework.Assert;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.filter.BinaryComparator;
+import org.apache.hadoop.hbase.filter.CompareFilter;
+import org.apache.hadoop.hbase.filter.FamilyFilter;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
+import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.springframework.context.ApplicationContext;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.internal.junit.ArrayAsserts;
@@ -49,7 +52,7 @@ public class HbaseAssistantTest {
 		hbaseAssistant = applicationContext.getBean(HbaseAssistant.class);
 	}
 
-	@AfterClass
+	// @AfterClass
 	public void afterClass() throws Exception {
 		hbaseAssistant.dropTable(tableName);
 	}
@@ -120,21 +123,54 @@ public class HbaseAssistantTest {
 
 	@Test(dependsOnMethods = { "put" })
 	public void scan() throws Exception {
-		List<HBaseTable> entities = hbaseAssistant.scan(new TestTable());
-		TestTable entity = (TestTable) entities.get(0);
-		
-		System.err.println(entity);
-		
-		
+		TestTable entity;
+		// Test no filter.
+		entity = (TestTable) hbaseAssistant.scan(new TestTable()).get(0);
 		Assert.assertEquals(1, entity.getFamily1()
 				.getQualifierVersionValueSet().size());
 		Assert.assertEquals(3, entity.getFamily2()
 				.getQualifierVersionValueSet().size());
+		// Test keyOnlyFilter.
+		entity = (TestTable) hbaseAssistant.scan(new TestTable(),
+				new KeyOnlyFilter()).get(0);
+		valueEmptyTest(entity.getFamily1());
+		valueEmptyTest(entity.getFamily2());
+		// Test multipleColumnPrefixFilter.
+		byte[][] prefixes = new byte[][] { ByteConvertUtility.toBytes("qual1") };
+		entity = (TestTable) hbaseAssistant.scan(new TestTable(),
+				new MultipleColumnPrefixFilter(prefixes)).get(0);
+		Assert.assertEquals(1, entity.getFamily1()
+				.getQualifierVersionValueSet().size());
+		Assert.assertEquals(0, entity.getFamily2()
+				.getQualifierVersionValueSet().size());
+		// Test familyFilter.
+		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
+				new BinaryComparator(ByteConvertUtility.toBytes("family2")));
+		entity = (TestTable) hbaseAssistant.scan(new TestTable(), famFilter)
+				.get(0);
+		Assert.assertEquals(0, entity.getFamily1()
+				.getQualifierVersionValueSet().size());
+		Assert.assertEquals(3, entity.getFamily2()
+				.getQualifierVersionValueSet().size());
+		// Test rowFilter
+		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
+				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
+						createTestEntity().getRowKey().toBytes()));
+		entity = (TestTable) hbaseAssistant.scan(new TestTable(), rowFilter)
+				.get(0);
+		Assert.assertEquals(1, entity.getFamily1()
+				.getQualifierVersionValueSet().size());
+		Assert.assertEquals(3, entity.getFamily2()
+				.getQualifierVersionValueSet().size());
+	}
 
-		List<HBaseTable> keyOnlyEntities = hbaseAssistant.scan(new TestTable(), new KeyOnlyFilter());
-		
-		System.err.println(keyOnlyEntities.get(0));
-		
+	private void valueEmptyTest(HBaseColumnFamily family) {
+		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEnt : family
+				.getQualifierVersionValueSet()) {
+			for (Entry<Date, HBaseValue> verEnt : qualEnt.getValue().entrySet()) {
+				Assert.assertNull(verEnt.getValue());
+			}
+		}
 	}
 
 	private void testGetRowKey() throws Exception {

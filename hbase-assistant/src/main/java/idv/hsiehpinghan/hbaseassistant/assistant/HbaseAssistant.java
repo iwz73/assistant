@@ -10,7 +10,6 @@ import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.extension.HbaseTemplateExtension;
 import idv.hsiehpinghan.hbaseassistant.property.HbaseAssistantProperty;
 import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
-import idv.hsiehpinghan.packageutility.utility.PackageUtility;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -23,7 +22,6 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -62,73 +60,62 @@ public class HbaseAssistant implements InitializingBean {
 		if (TableOperation.NONE.equals(operation)) {
 			return;
 		}
-		String[] pkgs = PackageUtility.getHbaseEntityPackages();
-		logger.info("Hbase scan entity package : " + ArrayUtils.toString(pkgs));
-		scanAndCreateTable(pkgs, operation);
+		Class<?>[] entityClasses = ClassUtility.getAssignableClasses(
+				"idv.hsiehpinghan", HBaseTable.class);
+		createTables(entityClasses, operation);
 	}
 
-	/**
-	 * Scan packages and create table.
-	 * 
-	 * @param packageNames
-	 * @param operation
-	 * @throws ClassNotFoundException
-	 * @throws IOException
-	 */
-	public void scanAndCreateTable(String[] packageNames,
-			TableOperation operation) throws ClassNotFoundException,
-			IOException {
-		for (String packageName : packageNames) {
-			scanAndCreateTable(packageName, operation);
-		}
-	}
+	// /**
+	// * Scan packages and create table.
+	// *
+	// * @param packageNames
+	// * @param operation
+	// * @throws ClassNotFoundException
+	// * @throws IOException
+	// */
+	// public void scanAndCreateTable(String[] packageNames,
+	// TableOperation operation) throws ClassNotFoundException,
+	// IOException {
+	// for (String packageName : packageNames) {
+	// scanAndCreateTable(packageName, operation);
+	// }
+	// }
 
-	/**
-	 * Scan package and create table.
-	 * 
-	 * @param packageName
-	 * @throws ClassNotFoundException
-	 * @throws IOException
-	 */
-	public void scanAndCreateTable(String packageName, TableOperation operation)
-			throws ClassNotFoundException, IOException {
-		if (TableOperation.NONE.equals(operation)) {
-			return;
-		}
-		List<Class<?>> classes = ClassUtility.getClasses(packageName);
-		for (Class<?> cls : classes) {
-			if (HBaseTable.class.isAssignableFrom(cls) == false) {
-				continue;
-			}
-			String tableNm = cls.getSimpleName();
-			if (isTableExists(tableNm)) {
-				switch (operation) {
-				case ADD_NONEXISTS:
-					continue;
-				case DROP_CREATE:
-					dropTable(tableNm);
-					break;
-				case NONE:
-					continue;
-				default:
-					throw new RuntimeException("Not implements !!!");
-				}
-			}
-			createTable(cls);
-		}
-	}
-
-	/**
-	 * Create table.
-	 * 
-	 * @param clazz
-	 * @throws IOException
-	 */
-	public void createTable(Class<?> clazz) throws IOException {
-		String tableNm = clazz.getSimpleName();
-		String[] colFamArr = getColumnFamilyNames(clazz);
-		createTable(tableNm, colFamArr);
-	}
+	// /**
+	// * Scan package and create table.
+	// *
+	// * @param packageName
+	// * @throws ClassNotFoundException
+	// * @throws IOException
+	// */
+	// public void scanAndCreateTable(String packageName, TableOperation
+	// operation)
+	// throws ClassNotFoundException, IOException {
+	// if (TableOperation.NONE.equals(operation)) {
+	// return;
+	// }
+	// List<Class<?>> classes = ClassUtility.getClasses(packageName);
+	// for (Class<?> cls : classes) {
+	// if (HBaseTable.class.isAssignableFrom(cls) == false) {
+	// continue;
+	// }
+	// String tableNm = cls.getSimpleName();
+	// if (isTableExists(tableNm)) {
+	// switch (operation) {
+	// case ADD_NONEXISTS:
+	// continue;
+	// case DROP_CREATE:
+	// dropTable(tableNm);
+	// break;
+	// case NONE:
+	// continue;
+	// default:
+	// throw new RuntimeException("Not implements !!!");
+	// }
+	// }
+	// createTable(cls);
+	// }
+	// }
 
 	/**
 	 * Add a row.
@@ -155,7 +142,7 @@ public class HbaseAssistant implements InitializingBean {
 				@SuppressWarnings("unchecked")
 				Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qualMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
 						.readField(colFamObj, qualMapField.getName());
-				if(qualMap == null) {
+				if (qualMap == null) {
 					continue;
 				}
 				for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> qualEntry : qualMap
@@ -287,6 +274,18 @@ public class HbaseAssistant implements InitializingBean {
 		});
 	}
 
+	/**
+	 * Create table.
+	 * 
+	 * @param clazz
+	 * @throws IOException
+	 */
+	public void createTable(Class<?> clazz) throws IOException {
+		String tableNm = clazz.getSimpleName();
+		String[] colFamArr = getColumnFamilyNames(clazz);
+		createTable(tableNm, colFamArr);
+	}
+
 	void createTable(String tableName, String[] columnFamilies)
 			throws IOException {
 		HTableDescriptor tDesc = new HTableDescriptor(
@@ -375,6 +374,27 @@ public class HbaseAssistant implements InitializingBean {
 						return tableItf.exists(get);
 					}
 				});
+	}
+
+	void createTables(Class<?>[] classes, TableOperation operation)
+			throws IOException {
+		for (Class<?> clazz : classes) {
+			String tableNm = clazz.getSimpleName();
+			if (isTableExists(tableNm)) {
+				switch (operation) {
+				case ADD_NONEXISTS:
+					continue;
+				case DROP_CREATE:
+					dropTable(tableNm);
+					break;
+				case NONE:
+					continue;
+				default:
+					throw new RuntimeException("Not implements !!!");
+				}
+			}
+			createTable(clazz);
+		}
 	}
 
 	private boolean isAllColumnFamilyFieldNull(HBaseTable entity,

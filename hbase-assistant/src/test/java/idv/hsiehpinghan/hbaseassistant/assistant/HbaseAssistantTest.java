@@ -30,7 +30,6 @@ import org.testng.internal.junit.ArrayAsserts;
 
 public class HbaseAssistantTest {
 	private final Class<TestTable> tableClass = TestTable.class;
-	private final String tablePackage = tableClass.getPackage().getName();
 	private final String tableName = tableClass.getSimpleName();
 	private final String valueString1 = "valueString1_";
 	private final String valueString2 = "valueString2_";
@@ -83,16 +82,16 @@ public class HbaseAssistantTest {
 	}
 
 	@Test(dependsOnMethods = { "dropTable" })
-	public void scanAndCreateTable() throws ClassNotFoundException, IOException {
-		hbaseAssistant.scanAndCreateTable(tablePackage,
-				TableOperation.ADD_NONEXISTS);
+	public void createTables() throws ClassNotFoundException, IOException {
+		Class<?>[] classes = new Class<?>[1];
+		classes[0] = TestTable.class;
+		hbaseAssistant.createTables(classes, TableOperation.ADD_NONEXISTS);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName));
-		hbaseAssistant.scanAndCreateTable(tablePackage,
-				TableOperation.DROP_CREATE);
+		hbaseAssistant.createTables(classes, TableOperation.DROP_CREATE);
 		Assert.assertTrue(hbaseAssistant.isTableExists(tableName));
 	}
 
-	@Test(dependsOnMethods = { "scanAndCreateTable" })
+	@Test(dependsOnMethods = { "createTables" })
 	public void put() throws Exception {
 		TestTable entity = createTestEntity();
 		hbaseAssistant.put(entity);

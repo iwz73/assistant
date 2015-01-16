@@ -125,19 +125,19 @@ public class HbaseAssistantTest {
 	public void scan() throws Exception {
 		TestTable entity;
 		// Test no filter.
-		entity = (TestTable) hbaseAssistant.scan(new TestTable()).get(0);
+		entity = (TestTable) hbaseAssistant.scan(TestTable.class).get(0);
 		Assert.assertEquals(1, entity.getFamily1()
 				.getQualifierVersionValueSet().size());
 		Assert.assertEquals(3, entity.getFamily2()
 				.getQualifierVersionValueSet().size());
 		// Test keyOnlyFilter.
-		entity = (TestTable) hbaseAssistant.scan(new TestTable(),
+		entity = (TestTable) hbaseAssistant.scan(TestTable.class,
 				new KeyOnlyFilter()).get(0);
 		valueEmptyTest(entity.getFamily1());
 		valueEmptyTest(entity.getFamily2());
 		// Test multipleColumnPrefixFilter.
 		byte[][] prefixes = new byte[][] { ByteConvertUtility.toBytes("qual1") };
-		entity = (TestTable) hbaseAssistant.scan(new TestTable(),
+		entity = (TestTable) hbaseAssistant.scan(TestTable.class,
 				new MultipleColumnPrefixFilter(prefixes)).get(0);
 		Assert.assertEquals(1, entity.getFamily1()
 				.getQualifierVersionValueSet().size());
@@ -146,7 +146,7 @@ public class HbaseAssistantTest {
 		// Test familyFilter.
 		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
 				new BinaryComparator(ByteConvertUtility.toBytes("family2")));
-		entity = (TestTable) hbaseAssistant.scan(new TestTable(), famFilter)
+		entity = (TestTable) hbaseAssistant.scan(TestTable.class, famFilter)
 				.get(0);
 		Assert.assertEquals(0, entity.getFamily1()
 				.getQualifierVersionValueSet().size());
@@ -156,7 +156,7 @@ public class HbaseAssistantTest {
 		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
 				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
 						createTestEntity().getRowKey().toBytes()));
-		entity = (TestTable) hbaseAssistant.scan(new TestTable(), rowFilter)
+		entity = (TestTable) hbaseAssistant.scan(TestTable.class, rowFilter)
 				.get(0);
 		Assert.assertEquals(1, entity.getFamily1()
 				.getQualifierVersionValueSet().size());

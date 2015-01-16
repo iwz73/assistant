@@ -176,22 +176,23 @@ public class HbaseAssistant implements InitializingBean {
 	/**
 	 * Scan all records.
 	 * 
-	 * @param entity
+	 * @param entityClass
 	 * @return
 	 */
-	public List<HBaseTable> scan(final HBaseTable entity) {
-		return scan(entity, null);
+	public List<HBaseTable> scan(Class<? extends HBaseTable> entityClass) {
+		return scan(entityClass, null);
 	}
 
 	/**
-	 * Scan all records.
+	 * Scan records by filter.
 	 * 
-	 * @param entity
+	 * @param entityClass
 	 * @param filter
 	 * @return
 	 */
-	public List<HBaseTable> scan(final HBaseTable entity, final Filter filter) {
-		String tableName = entity.getTableName();
+	public List<HBaseTable> scan(final Class<? extends HBaseTable> entityClass,
+			final Filter filter) {
+		String tableName = entityClass.getSimpleName();
 		return hbaseTemplate.execute(tableName,
 				new TableCallback<List<HBaseTable>>() {
 					@Override
@@ -205,7 +206,7 @@ public class HbaseAssistant implements InitializingBean {
 						List<HBaseTable> entities = new ArrayList<HBaseTable>();
 						for (Result rslt : scanner) {
 							Object entityObj = ObjectUtility
-									.createClassInstance(entity.getClass());
+									.createClassInstance(entityClass);
 							HBaseTable newEntity = (HBaseTable) entityObj;
 							generateRowKeyContent(newEntity, rslt, true);
 							generateColumFamilysContent(newEntity, rslt, true);

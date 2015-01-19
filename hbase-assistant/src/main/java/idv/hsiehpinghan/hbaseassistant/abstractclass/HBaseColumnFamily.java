@@ -40,7 +40,7 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qual);
 			for (Map.Entry<Long, byte[]> verBytesEntry : verBytesMap.entrySet()) {
 				byte[] valBytes = verBytesEntry.getValue();
-				if(valBytes.length == 0) {
+				if (valBytes.length == 0) {
 					continue;
 				}
 				Date date = new Date(verBytesEntry.getKey());
@@ -51,14 +51,17 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	}
 
 	/**
-	 * Get versionValueMap.(If not exists, return empty set.)
+	 * Get latest value.
 	 * 
 	 * @param qualifier
 	 * @return
 	 */
-	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(
-			HBaseColumnQualifier qualifier) {
-		return getVersionValueMap(qualifier).descendingMap().entrySet();
+	public HBaseValue getLatestValue(HBaseColumnQualifier qualifier) {
+		Set<Entry<Date, HBaseValue>> verSet = getVersionValueSet(qualifier);
+		for (Entry<Date, HBaseValue> verEnt : verSet) {
+			return verEnt.getValue();
+		}
+		return null;
 	}
 
 	/**
@@ -81,6 +84,11 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 
 	public HBaseTable getTable() {
 		return table;
+	}
+
+	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(
+			HBaseColumnQualifier qualifier) {
+		return getVersionValueMap(qualifier).descendingMap().entrySet();
 	}
 
 	protected abstract HBaseColumnQualifier generateColumnQualifier(

@@ -85,6 +85,9 @@ public class HbaseAssistant implements InitializingBean {
 		for (Field famFld : colFamFlds) {
 			String colFamNm = famFld.getName();
 			Object colFamObj = ObjectUtility.readField(entity, colFamNm);
+			if (colFamObj == null) {
+				continue;
+			}
 			List<Field> qualMapFields = ObjectUtility
 					.getFieldsByAssignableType(colFamObj.getClass(), Map.class);
 			byte[] columnFamily = Bytes.toBytes(colFamNm);

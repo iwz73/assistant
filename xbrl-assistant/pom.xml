@@ -36,7 +36,7 @@
 		<compress-utility.version>1.0.0</compress-utility.version>
 		<xbrl.version>1.0.0</xbrl.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
-		<class-utility.version>1.0.0</class-utility.version>
+		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
@@ -105,11 +105,11 @@
 			<version>${resource-utility.version}</version>
 		</dependency>
 
-		<!-- class-utility -->
+		<!-- object-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>class-utility</artifactId>
-			<version>${class-utility.version}</version>
+			<artifactId>object-utility</artifactId>
+			<version>${object-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
 

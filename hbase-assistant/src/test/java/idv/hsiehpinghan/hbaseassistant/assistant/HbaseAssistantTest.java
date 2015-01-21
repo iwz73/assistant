@@ -30,6 +30,7 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.springframework.context.ApplicationContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.internal.junit.ArrayAsserts;
@@ -52,7 +53,7 @@ public class HbaseAssistantTest {
 		hbaseAssistant = applicationContext.getBean(HbaseAssistant.class);
 	}
 
-	// @AfterClass
+	@AfterClass
 	public void afterClass() throws Exception {
 		hbaseAssistant.dropTable(tableName);
 	}

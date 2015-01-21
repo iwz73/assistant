@@ -32,7 +32,8 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<hadoop.version>2.6.0</hadoop.version>
 		<!-- <resource-utility.version>1.0.0</resource-utility.version> -->
-		<class-utility.version>1.0.0</class-utility.version>
+		<object-utility.version>1.0.0</object-utility.version>
+		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -72,13 +73,20 @@
 		<!-- <version>${resource-utility.version}</version> -->
 		<!-- </dependency> -->
 
-		<!-- class-utility -->
+		<!-- object-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>class-utility</artifactId>
-			<version>${class-utility.version}</version>
+			<artifactId>object-utility</artifactId>
+			<version>${object-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- test-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>test-utility</artifactId>
+			<version>${test-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

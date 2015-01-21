@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration("xbrlAssistantSpringConfiguration")
-@PropertySource("classpath:xbrl-assistant.property")
+@PropertySource("classpath:/xbrl-assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.xbrlassistant" })
 public class SpringConfiguration {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());

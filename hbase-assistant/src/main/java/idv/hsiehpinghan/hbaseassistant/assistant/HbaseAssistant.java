@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.hbaseassistant.assistant;
 
-import idv.hsiehpinghan.classutility.utility.ClassUtility;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseRowKey;
@@ -9,6 +8,7 @@ import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.extension.HbaseTemplateExtension;
 import idv.hsiehpinghan.hbaseassistant.property.HbaseAssistantProperty;
+import idv.hsiehpinghan.objectutility.utility.ClassUtility;
 import idv.hsiehpinghan.objectutility.utility.ObjectUtility;
 
 import java.io.IOException;
@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
@@ -38,7 +37,6 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
@@ -46,9 +44,6 @@ import org.springframework.stereotype.Component;
 public class HbaseAssistant implements InitializingBean {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
-	@Autowired
-	@Qualifier("hbaseConfiguration")
-	private Configuration config;
 	@Autowired
 	private HBaseAdmin admin;
 	@Autowired

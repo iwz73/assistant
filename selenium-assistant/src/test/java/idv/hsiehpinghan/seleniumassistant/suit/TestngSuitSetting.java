@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.seleniumassistant.suit;
 
-import idv.hsiehpinghan.classutility.utility.ClassUtility;
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
+import idv.hsiehpinghan.objectutility.utility.ClassUtility;
 import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitFirefoxVersionBrowser;
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;

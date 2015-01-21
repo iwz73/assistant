@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.hbaseassistant.suit;
 
-import idv.hsiehpinghan.classutility.utility.ClassUtility;
+import idv.hsiehpinghan.objectutility.utility.ClassUtility;
 
 import java.io.IOException;
 

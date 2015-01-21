@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.hdfsassistant.utility;
 
 import idv.hsiehpinghan.hdfsassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,12 +59,12 @@ public class HdfsAssistantTest {
 	private void setTestData(ApplicationContext applicationContext)
 			throws IOException {
 		String userName = TestngSuitSetting.getUserName();
-		file_1 = ResourceUtility.getFileResource("sample/file_1");
+		file_1 = SystemResourceUtility.getFileResource("sample/file_1");
 		hdfsFilePath = "/user/" + userName + "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {
 			hdfsAssistant.delete(hdfsFilePath);
 		}
-		folder_1 = ResourceUtility.getFileResource("sample/folder_1");
+		folder_1 = SystemResourceUtility.getFileResource("sample/folder_1");
 		hdfsDirectoryPath = "/user/" + userName + "/test/hdfs/folder_1";
 		if (hdfsAssistant.exists(hdfsDirectoryPath)) {
 			hdfsAssistant.delete(hdfsDirectoryPath);

@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.nanohttpdassistant.suit;
 
-import idv.hsiehpinghan.classutility.utility.ClassUtility;
+import idv.hsiehpinghan.objectutility.utility.ClassUtility;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

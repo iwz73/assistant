@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,39 +17,42 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-@PropertySource("hbase-assistant.property")
+@PropertySource("classpath:/hbase-assistant.property")
 @Configuration("hbaseAssistantSpringConfiguration")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.hbaseassistant" })
 public class SpringConfiguration {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	@Autowired
 	private org.apache.hadoop.conf.Configuration hbaseConfiguration;
-	
+
 	@Bean
 	public HbaseTemplateExtension hbaseTemplate() throws IOException {
-		HbaseTemplateExtension hbaseTemplateExtension = new HbaseTemplateExtension(hbaseConfiguration);
+		HbaseTemplateExtension hbaseTemplateExtension = new HbaseTemplateExtension(
+				hbaseConfiguration());
 		return hbaseTemplateExtension;
 	}
 
 	@Bean
-	public org.apache.hadoop.conf.Configuration hbaseConfiguration()
+	public HBaseAdmin hBaseAdmin() throws Exception {
+		return new HBaseAdmin(hbaseConfiguration());
+	}
+
+	private org.apache.hadoop.conf.Configuration hbaseConfiguration()
 			throws IOException {
-		org.apache.hadoop.conf.Configuration config = new org.apache.hadoop.conf.Configuration();
-		addConfiguration(config);
+		if (hbaseConfiguration != null) {
+			return hbaseConfiguration;
+		}
+		hbaseConfiguration = new org.apache.hadoop.conf.Configuration();
+		addConfiguration(hbaseConfiguration);
 
 		// Show properties info.
-		Iterator<Map.Entry<String, String>> iter = config.iterator();
+		Iterator<Map.Entry<String, String>> iter = hbaseConfiguration
+				.iterator();
 		while (iter.hasNext()) {
 			Map.Entry<String, String> entry = iter.next();
 			logger.info("hbase-utility configuration :" + entry.getKey()
 					+ " : " + entry.getValue());
 		}
-		return config;
-	}
-
-	@Bean
-	public HBaseAdmin hBaseAdmin() throws Exception {
-		return new HBaseAdmin(hbaseConfiguration);
+		return hbaseConfiguration;
 	}
 
 	private void addConfiguration(org.apache.hadoop.conf.Configuration config)

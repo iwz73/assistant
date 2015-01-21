@@ -36,9 +36,7 @@
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<object-utility.version>1.0.0</object-utility.version>
-		<class-utility.version>1.0.0</class-utility.version>
 		<collection-utility.version>1.0.0</collection-utility.version>
-		<package-utility.version>1.0.0</package-utility.version>
 		<!-- <test-utility.version>1.0.0</test-utility.version> -->
 	</properties>
 
@@ -55,7 +53,6 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- spring -->
@@ -105,26 +102,12 @@
 			<version>${object-utility.version}</version>
 		</dependency>
 
-		<!-- class-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>class-utility</artifactId>
-			<version>${class-utility.version}</version>
-		</dependency>
-
 		<!-- collection-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>collection-utility</artifactId>
 			<version>${collection-utility.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- package-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>package-utility</artifactId>
-			<version>${package-utility.version}</version>
 		</dependency>
 
 		<!-- test-utility -->

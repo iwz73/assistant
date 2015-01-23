@@ -51,20 +51,6 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	}
 
 	/**
-	 * Get latest value.
-	 * 
-	 * @param qualifier
-	 * @return
-	 */
-	public HBaseValue getLatestValue(HBaseColumnQualifier qualifier) {
-		Set<Entry<Date, HBaseValue>> verSet = getVersionValueSet(qualifier);
-		for (Entry<Date, HBaseValue> verEnt : verSet) {
-			return verEnt.getValue();
-		}
-		return null;
-	}
-
-	/**
 	 * Get qualifierVersionValueSet.(If not exists, return empty set.)
 	 * 
 	 * @return
@@ -89,6 +75,14 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(
 			HBaseColumnQualifier qualifier) {
 		return getVersionValueMap(qualifier).descendingMap().entrySet();
+	}
+
+	protected HBaseValue getLatestValue(HBaseColumnQualifier qualifier) {
+		Set<Entry<Date, HBaseValue>> verSet = getVersionValueSet(qualifier);
+		for (Entry<Date, HBaseValue> verEnt : verSet) {
+			return verEnt.getValue();
+		}
+		return null;
 	}
 
 	protected abstract HBaseColumnQualifier generateColumnQualifier(

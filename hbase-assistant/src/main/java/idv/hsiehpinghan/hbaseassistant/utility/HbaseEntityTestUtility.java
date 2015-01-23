@@ -32,7 +32,7 @@ public class HbaseEntityTestUtility {
 		ArrayAsserts.assertArrayEquals(expecteds, actuals);
 	}
 
-	public static void dropTargetTable(RepositoryBase repo) throws IOException {
+	public static void dropAndCreateTargetTable(RepositoryBase repo) throws IOException {
 		String tableName = repo.getTargetTableName();
 		if (repo.isTableExists(tableName)) {
 			repo.dropTable(tableName);

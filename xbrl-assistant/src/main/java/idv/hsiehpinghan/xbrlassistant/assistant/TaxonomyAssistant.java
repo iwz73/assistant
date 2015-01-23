@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.xbrlassistant.assistant;
 
-import idv.hsiehpinghan.compressutility.utility.CompressUtility;
-import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 import idv.hsiehpinghan.xbrlassistant.cache.TaxonomyCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
@@ -11,7 +9,6 @@ import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,9 +22,6 @@ import jcx.xbrl.taxonomy.XbrlPresentationTree;
 import jcx.xbrl.taxonomy.XbrlPresentationTreeNode;
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,8 +32,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class TaxonomyAssistant implements InitializingBean {
+	// private Logger logger = Logger.getLogger(this.getClass().getName());
 	private final String EN = "en";
-	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private File taxonomyDir;
 
 	@Autowired
@@ -54,7 +48,14 @@ public class TaxonomyAssistant implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		taxonomyDir = new File(xbrlAssistantProperty.getTaxonomyDir());
-		exportTaxonomys();
+		File tifrs20130331Dir = new File(taxonomyDir, "tifrs-20130331");
+		if (tifrs20130331Dir.exists() == false) {
+			throw new RuntimeException(tifrs20130331Dir + " not exists !!!");
+		}
+		File tifrs20140331Dir = new File(taxonomyDir, "tifrs-20140331");
+		if (tifrs20140331Dir.exists() == false) {
+			throw new RuntimeException(tifrs20140331Dir + " not exists !!!");
+		}
 	}
 
 	/**
@@ -164,11 +165,6 @@ public class TaxonomyAssistant implements InitializingBean {
 		return cache.getTaxonomy(taxonomyDir, version);
 	}
 
-	void exportTaxonomys() {
-		exportTaxonomy("xbrl-taxonomy/tifrs-20130331.zip");
-		exportTaxonomy("xbrl-taxonomy/tifrs-20140331.zip");
-	}
-
 	private void generatePresentationJsonObjectContent(ObjectNode resultNode,
 			XbrlPresentationTreeNode presentationNode, XbrlTaxonomy taxonomy)
 			throws Exception {
@@ -198,34 +194,6 @@ public class TaxonomyAssistant implements InitializingBean {
 	private XbrlTaxonomy getTaxonomy(XbrlTaxonomyVersion version)
 			throws Exception {
 		return cache.getTaxonomy(taxonomyDir, version);
-	}
-
-	private void exportTaxonomy(String resourcePath) {
-		InputStream in = null;
-		File zip = null;
-		File dir = null;
-		try {
-			in = ResourceUtility.getResourceAsStream(resourcePath);
-			String resName = getResourceName(resourcePath);
-			zip = new File(FileUtils.getTempDirectory(), resName);
-			if (zip.exists() == false) {
-				FileUtils.copyInputStreamToFile(in, zip);
-			}
-			dir = CompressUtility.unzip(zip, taxonomyDir, false);
-			logger.info("Taxonomy(" + resName + ") export to "
-					+ dir.getAbsolutePath() + " success.");
-		} catch (Exception e) {
-			FileUtils.deleteQuietly(dir);
-			FileUtils.deleteQuietly(zip);
-			throw new RuntimeException(e);
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-	}
-
-	private String getResourceName(String resourcePath) {
-		int idx = resourcePath.lastIndexOf("/");
-		return resourcePath.substring(idx + 1);
 	}
 
 	private void addChildNodeId(XbrlPresentationTreeNode presentationNode,

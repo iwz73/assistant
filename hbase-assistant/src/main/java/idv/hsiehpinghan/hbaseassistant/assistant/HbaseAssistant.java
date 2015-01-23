@@ -33,6 +33,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
@@ -213,6 +214,16 @@ public class HbaseAssistant implements InitializingBean {
 						return entities;
 					}
 				});
+	}
+
+	/**
+	 * Get total row amount.
+	 * 
+	 * @param entityClass
+	 * @return
+	 */
+	public int getRowAmount(final Class<? extends HBaseTable> entityClass) {
+		return scan(entityClass, new KeyOnlyFilter()).size();
 	}
 
 	private void generateRowKey(HBaseTable entity)
@@ -498,14 +509,4 @@ public class HbaseAssistant implements InitializingBean {
 		}
 	}
 
-	// private String getTableName(HBaseRowKey beginRowKey, HBaseRowKey
-	// endRowKey) {
-	// HBaseTable beginTab = beginRowKey.getTable();
-	// HBaseTable endTab = endRowKey.getTable();
-	// if(beginTab != endTab) {
-	// throw new RuntimeException("BeginRowKey's table(" + beginTab +
-	// ") != endRowKey's table(" + endTab + ").");
-	// }
-	// return beginTab.getTableName();
-	// }
 }

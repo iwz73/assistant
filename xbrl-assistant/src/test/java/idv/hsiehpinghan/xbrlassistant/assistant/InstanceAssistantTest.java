@@ -73,18 +73,14 @@ public class InstanceAssistantTest {
 		// StatementOfCashFlows
 		Map<String, Set<String>> statementOfCashFlowsMap = instanceAssistant
 				.getContexts(instanceFile, Presentation.Id.StatementOfCashFlows);
-		Assert.assertEquals(getStatementOfCashFlowsInstantSet(),
-				statementOfCashFlowsMap.get(Instance.Attribute.INSTANT));
-		Assert.assertEquals(getStatementOfCashFlowsDurationSet(),
+		Assert.assertEquals(getStatementOfCashFlowsSet(),
 				statementOfCashFlowsMap.get(Instance.Attribute.DURATION));
 
 		// StatementOfChangesInEquity
 		Map<String, Set<String>> statementOfChangesInEquityMap = instanceAssistant
 				.getContexts(instanceFile,
 						Presentation.Id.StatementOfChangesInEquity);
-		Assert.assertEquals(getStatementOfChangesInEquityInstantSet(),
-				statementOfChangesInEquityMap.get(Instance.Attribute.INSTANT));
-		Assert.assertEquals(getStatementOfChangesInEquityDurationSet(),
+		Assert.assertEquals(getStatementOfChangesInEquitySet(),
 				statementOfChangesInEquityMap.get(Instance.Attribute.DURATION));
 	}
 
@@ -93,7 +89,6 @@ public class InstanceAssistantTest {
 		set.add("20120101");
 		set.add("20120331");
 		set.add("20121231");
-		set.add("20130101");
 		set.add("20130331");
 		return set;
 	}
@@ -105,36 +100,17 @@ public class InstanceAssistantTest {
 		return set;
 	}
 
-	private SortedSet<String> getStatementOfCashFlowsInstantSet() {
-		SortedSet<String> set = new TreeSet<String>();
-		set.add("20120101");
-		set.add("20120331");
-		set.add("20121231");
-		set.add("20130331");
-		return set;
-	}
-
-	private SortedSet<String> getStatementOfCashFlowsDurationSet() {
+	private SortedSet<String> getStatementOfCashFlowsSet() {
 		SortedSet<String> set = new TreeSet<String>();
 		set.add("20120101~20120331");
 		set.add("20130101~20130331");
 		return set;
 	}
 
-	private SortedSet<String> getStatementOfChangesInEquityInstantSet() {
+	private SortedSet<String> getStatementOfChangesInEquitySet() {
 		SortedSet<String> set = new TreeSet<String>();
-		set.add("20120101");
-		set.add("20130331");
-		set.add("20130101");
-		set.add("20120331");
-		set.add("20121231");
-		return set;
-	}
-
-	private SortedSet<String> getStatementOfChangesInEquityDurationSet() {
-		SortedSet<String> set = new TreeSet<String>();
-		set.add("20130101~20130331");
 		set.add("20120101~20120331");
+		set.add("20130101~20130331");
 		return set;
 	}
 }

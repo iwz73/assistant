@@ -55,7 +55,7 @@ public class HbaseAssistantTest {
 
 	@AfterClass
 	public void afterClass() throws Exception {
-		hbaseAssistant.dropTable(tableName);
+		// hbaseAssistant.dropTable(tableName);
 	}
 
 	@Test
@@ -163,6 +163,12 @@ public class HbaseAssistantTest {
 				.getQualifierVersionValueSet().size());
 		Assert.assertEquals(3, entity.getFamily2()
 				.getQualifierVersionValueSet().size());
+	}
+
+	@Test(dependsOnMethods = { "put" })
+	public void getRowAmount() {
+		int size = hbaseAssistant.getRowAmount(TestTable.class);
+		Assert.assertEquals(1, size);
 	}
 
 	private void valueEmptyTest(HBaseColumnFamily family) {

@@ -3,9 +3,9 @@ package idv.hsiehpinghan.xbrlassistant.assistant;
 import idv.hsiehpinghan.xbrlassistant.cache.InstanceCache;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.xbrl.Instance;
+import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,9 +100,6 @@ public class InstanceAssistant {
 				if (contextSet.size() <= 0) {
 					continue;
 				}
-				// ObjectNode periodTypeNode = objectMapper.createObjectNode();
-				// presentIdNode.set(Instance.Attribute.PERIOD_TYPE,
-				// periodTypeNode);
 				ArrayNode contextsArrNode = objectMapper.createArrayNode();
 				presentIdNode.set(ent.getKey(), contextsArrNode);
 				for (String context : contextSet) {
@@ -113,41 +110,43 @@ public class InstanceAssistant {
 		return infoNode;
 	}
 
-	public Map<String, Set<String>> getContexts(File instanceFile,
-			String PresentationId) throws Exception {
-		List<String> PresentationIds = new ArrayList<String>();
-		PresentationIds.add(PresentationId);
-		return getContexts(instanceFile, PresentationIds);
+	private String getPeriodsBenchmarkElementId(final String PresentationId) {
+		if (Presentation.Id.BalanceSheet.equals(PresentationId)) {
+			return "ifrs_CashAndCashEquivalents";
+		} else if (Presentation.Id.StatementOfComprehensiveIncome
+				.equals(PresentationId)) {
+			return "tifrs-bsci-ci_OperatingRevenue";
+		} else if (Presentation.Id.StatementOfCashFlows.equals(PresentationId)) {
+			return "ifrs_ProfitLossBeforeTax";
+		} else if (Presentation.Id.StatementOfChangesInEquity
+				.equals(PresentationId)) {
+			return "ifrs_ProfitLoss";
+		} else {
+			throw new RuntimeException("Presentation id(" + PresentationId
+					+ ") not implements !!!");
+		}
 	}
 
-	private Map<String, Set<String>> getContexts(File instanceFile,
-			List<String> PresentationIds) throws Exception {
+	Map<String, Set<String>> getContexts(File instanceFile,
+			String PresentationId) throws Exception {
 		XbrlDocument document = loadXbrlDocument(instanceFile);
-		XbrlTaxonomyVersion version = taxonomyAssistant
-				.getXbrlTaxonomyVersion(instanceFile);
-		Set<String> eleIds = taxonomyAssistant.getPresentationElementIds(
-				version, PresentationIds);
 		Map<String, Set<String>> resultMap = new HashMap<String, Set<String>>(2);
 		Set<String> instantSet = new TreeSet<String>();
 		Set<String> durationSet = new TreeSet<String>();
-		for (String eleId : eleIds) {
-			XbrlElement[] eles = document.getAllItems(eleId);
-			if (eles.length <= 0) {
-				continue;
-			}
-			for (XbrlElement ele : eles) {
-				XbrlContext context = ele.getContext();
-				String periodType = context.getPeriodType();
-				XbrlPeriod period = context.getPeriod();
-				if (Instance.Attribute.INSTANT.equals(periodType)) {
-					instantSet.add(period.getInstantDateString());
-				} else if (Instance.Attribute.DURATION.equals(periodType)) {
-					durationSet.add(period.getStartDateString() + "~"
-							+ period.getEndDateString());
-				} else {
-					throw new RuntimeException("PeriodType(" + periodType
-							+ ") not implement !!!");
-				}
+		String eleId = getPeriodsBenchmarkElementId(PresentationId);
+		XbrlElement[] eles = document.getAllItems(eleId);
+		for (XbrlElement ele : eles) {
+			XbrlContext context = ele.getContext();
+			String periodType = context.getPeriodType();
+			XbrlPeriod period = context.getPeriod();
+			if (Instance.Attribute.INSTANT.equals(periodType)) {
+				instantSet.add(period.getInstantDateString());
+			} else if (Instance.Attribute.DURATION.equals(periodType)) {
+				durationSet.add(period.getStartDateString() + "~"
+						+ period.getEndDateString());
+			} else {
+				throw new RuntimeException("PeriodType(" + periodType
+						+ ") not implement !!!");
 			}
 		}
 		resultMap.put(Instance.Attribute.INSTANT, instantSet);

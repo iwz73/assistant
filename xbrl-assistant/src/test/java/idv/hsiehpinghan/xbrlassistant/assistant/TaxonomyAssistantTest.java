@@ -109,9 +109,4 @@ public class TaxonomyAssistantTest {
 				XbrlTaxonomyVersion.TIFRS_CI_CR_2014_03_31, ids);
 		Assert.assertEquals(1488, actual.size());
 	}
-
-	@Test
-	public void exportTaxonomys() throws IOException {
-		taxonomyAssistant.exportTaxonomys();
-	}
 }

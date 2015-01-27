@@ -36,7 +36,7 @@ public class FirefoxBrowser extends BrowserBase {
 	}
 
 	@Override
-	public String getDownloadFileName() {
+	public String getAttachment() {
 		throw new RuntimeException("Not implement !!!");
 	}
 

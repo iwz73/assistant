@@ -3,9 +3,12 @@ package idv.hsiehpinghan.seleniumassistant.browser;
 import idv.hsiehpinghan.seleniumassistant.webelement.Button;
 import idv.hsiehpinghan.seleniumassistant.webelement.Div;
 import idv.hsiehpinghan.seleniumassistant.webelement.Font;
+import idv.hsiehpinghan.seleniumassistant.webelement.H;
 import idv.hsiehpinghan.seleniumassistant.webelement.Radio;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
+import idv.hsiehpinghan.seleniumassistant.webelement.Td;
+import idv.hsiehpinghan.seleniumassistant.webelement.TextInput;
 
 import java.io.File;
 
@@ -31,6 +34,26 @@ public abstract class BrowserBase {
 	 */
 	public Select getSelect(By by) {
 		return new Select(getWebDriver(), by);
+	}
+
+	/**
+	 * Get text input.
+	 * 
+	 * @param by
+	 * @return
+	 */
+	public TextInput getTextInput(By by) {
+		return new TextInput(getWebDriver(), by);
+	}
+
+	/**
+	 * Get H.(h1, h2, ...)
+	 * 
+	 * @param by
+	 * @return
+	 */
+	public H getH(By by) {
+		return new H(getWebDriver(), by);
 	}
 
 	/**
@@ -73,10 +96,26 @@ public abstract class BrowserBase {
 		return new Button(getWebDriver(), by);
 	}
 
+	/**
+	 * Get Radio button.
+	 * 
+	 * @param by
+	 * @return
+	 */
 	public Radio getRadio(By by) {
 		return new Radio(getWebDriver(), by);
 	}
-	
+
+	/**
+	 * Get Td.
+	 * 
+	 * @param by
+	 * @return
+	 */
+	public Td getTd(By by) {
+		return new Td(getWebDriver(), by);
+	}
+
 	/**
 	 * Back to pre-page.
 	 */
@@ -100,11 +139,11 @@ public abstract class BrowserBase {
 	public abstract WebDriver getWebDriver();
 
 	/**
-	 * Get file name by response's Content-disposition.
+	 * Get attachment of response's Content-disposition.
 	 * 
 	 * @return
 	 */
-	public abstract String getDownloadFileName();
+	public abstract String getAttachment();
 
 	/**
 	 * Cache current page for ajax page backward.

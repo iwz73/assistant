@@ -29,6 +29,7 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 
 	public HtmlUnitDriverExtension(BrowserVersion version) {
 		super(version);
+		super.setJavascriptEnabled(true);
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 	 * 
 	 * @return
 	 */
-	public String getFileName() {
+	public String getAttachment() {
 		Page page = lastPage();
 		if (page == null) {
 			return null;
@@ -46,7 +47,7 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		// ie. attachment; filename="2013-01-otc-02-C.zip"
 		String contDisp = page.getWebResponse().getResponseHeaderValue(
 				CONTENT_DISPOSITION);
-		return getFileName(contDisp);
+		return contDisp;
 	}
 
 	/**
@@ -85,12 +86,6 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 	 */
 	public Page getPage() {
 		return lastPage();
-	}
-
-	String getFileName(String str) {
-		int idxBegin = str.indexOf("\"") + 1;
-		int idxEnd = str.lastIndexOf("\"");
-		return str.substring(idxBegin, idxEnd);
 	}
 
 }

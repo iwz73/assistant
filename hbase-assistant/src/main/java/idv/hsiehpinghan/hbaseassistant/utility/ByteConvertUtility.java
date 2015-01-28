@@ -113,16 +113,24 @@ public class ByteConvertUtility {
 	}
 
 	/**
+	 * Get date from bytes.
+	 * 
+	 * @param bytes
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date getDateFromBytes(byte[] bytes) throws ParseException {
+		return getDateFromBytes(bytes, 0, 0);
+	}
+
+	/**
 	 * Convert bigDecimal to bytes.
 	 * 
 	 * @param bigDecimal
 	 * @return
 	 */
 	public static byte[] toBytes(BigDecimal bigDecimal) {
-		if (bigDecimal == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING);
-		}
-		return Bytes.toBytes(bigDecimal.toString());
+		return toBytes(bigDecimal, 0);
 	}
 
 	/**
@@ -137,7 +145,41 @@ public class ByteConvertUtility {
 			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
 					byteLength);
 		}
-		return ByteConvertUtility.toBytes(bigDecimal.toString(), byteLength);
+		if (byteLength == 0) {
+			return Bytes.toBytes(bigDecimal.toString());
+		} else {
+			return ByteConvertUtility
+					.toBytes(bigDecimal.toString(), byteLength);
+		}
+	}
+
+	/**
+	 * Convert integer to bytes.
+	 * 
+	 * @param integer
+	 * @return
+	 */
+	public static byte[] toBytes(Integer integer) {
+		return toBytes(integer, 0);
+	}
+
+	/**
+	 * Convert integer to bytes.
+	 * 
+	 * @param integer
+	 * @param byteLength
+	 * @return
+	 */
+	public static byte[] toBytes(Integer integer, int byteLength) {
+		if (integer == null) {
+			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
+					byteLength);
+		}
+		if (byteLength == 0) {
+			return Bytes.toBytes(integer.toString());
+		} else {
+			return ByteConvertUtility.toBytes(integer.toString(), byteLength);
+		}
 	}
 
 	/**
@@ -147,11 +189,15 @@ public class ByteConvertUtility {
 	 * @param beginIndex
 	 * @param endIndex
 	 * @return
-	 * @throws ParseException
 	 */
 	public static BigDecimal getBigDecimalFromBytes(byte[] bytes,
-			int beginIndex, int endIndex) throws ParseException {
-		String str = getStringFromBytes(bytes, beginIndex, endIndex);
+			int beginIndex, int endIndex) {
+		String str = null;
+		if (beginIndex == 0 && endIndex == 0) {
+			str = getStringFromBytes(bytes);
+		} else {
+			str = getStringFromBytes(bytes, beginIndex, endIndex);
+		}
 		if (StringUtility.EMPTY_STRING.equals(str)) {
 			return null;
 		}
@@ -165,11 +211,39 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static BigDecimal getBigDecimalFromBytes(byte[] bytes) {
-		String str = getStringFromBytes(bytes);
+		return getBigDecimalFromBytes(bytes, 0, 0);
+	}
+
+	/**
+	 * Get integer from bytes.
+	 * 
+	 * @param bytes
+	 * @param beginIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public static Integer getIntegerFromBytes(byte[] bytes, int beginIndex,
+			int endIndex) {
+		String str = null;
+		if (beginIndex == 0 && endIndex == 0) {
+			str = getStringFromBytes(bytes);
+		} else {
+			str = getStringFromBytes(bytes, beginIndex, endIndex);
+		}
 		if (StringUtility.EMPTY_STRING.equals(str)) {
 			return null;
 		}
-		return new BigDecimal(str);
+		return new Integer(str);
+	}
+
+	/**
+	 * Get integer from bytes.
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static Integer getIntegerFromBytes(byte[] bytes) {
+		return getIntegerFromBytes(bytes, 0, 0);
 	}
 
 	private static byte[] toBytes(Date date, int byteLength, String datePattern) {
@@ -183,7 +257,12 @@ public class ByteConvertUtility {
 
 	private static Date getDateFromBytes(byte[] bytes, int beginIndex,
 			int endIndex, String datePattern) throws ParseException {
-		String str = getStringFromBytes(bytes, beginIndex, endIndex);
+		String str = null;
+		if (beginIndex == 0 && endIndex == 0) {
+			str = getStringFromBytes(bytes);
+		} else {
+			str = getStringFromBytes(bytes, beginIndex, endIndex);
+		}
 		if (StringUtility.EMPTY_STRING.equals(str)) {
 			return null;
 		}

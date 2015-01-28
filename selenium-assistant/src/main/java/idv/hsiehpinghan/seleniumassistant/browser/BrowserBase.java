@@ -11,12 +11,12 @@ import idv.hsiehpinghan.seleniumassistant.webelement.Td;
 import idv.hsiehpinghan.seleniumassistant.webelement.TextInput;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class BrowserBase {
-
 	/**
 	 * Go to target url.
 	 * 
@@ -129,7 +129,8 @@ public abstract class BrowserBase {
 	 * @param filePath
 	 * @return
 	 */
-	public abstract File download(String filePath);
+	public abstract File download(String filePath)
+			throws UnsupportedEncodingException;
 
 	/**
 	 * Get webDriver for test.

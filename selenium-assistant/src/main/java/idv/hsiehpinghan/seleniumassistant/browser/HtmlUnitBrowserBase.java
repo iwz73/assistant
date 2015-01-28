@@ -2,13 +2,9 @@ package idv.hsiehpinghan.seleniumassistant.browser;
 
 import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtension;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 
@@ -25,19 +21,6 @@ public abstract class HtmlUnitBrowserBase extends BrowserBase {
 	@Override
 	public File download(String filePath) {
 		InputStream is = getWebDriver().getPageSourceAsInputStream();
-		
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(is, "big5"));
-			String str;
-	        while ((str = in.readLine()) != null) {
-	        	System.err.println(str);
-	        }
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		
 		File f = new File(filePath);
 		try {
 			FileUtils.copyInputStreamToFile(is, f);
@@ -46,6 +29,10 @@ public abstract class HtmlUnitBrowserBase extends BrowserBase {
 			return null;
 		}
 		return f;
+	}
+
+	public String getContentType() {
+		return getWebDriver().getContentType();
 	}
 
 	@Override

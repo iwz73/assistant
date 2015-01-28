@@ -8,19 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Select extends WebElementWithBy {
-	private static final String VALUE = "value";
-
 	public Select(WebDriver webDriver, By by) {
 		super(webDriver, by);
-	}
-
-	/**
-	 * Get value.
-	 * 
-	 * @return
-	 */
-	public String getValue() {
-		return getAttribute(VALUE);
 	}
 
 	/**

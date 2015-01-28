@@ -8,5 +8,5 @@ public interface IWebDriverExtension {
 	 * 
 	 * @return
 	 */
-	public InputStream getPageSourceAsInputStream();
+	InputStream getPageSourceAsInputStream();
 }

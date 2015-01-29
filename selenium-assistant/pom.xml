@@ -32,6 +32,7 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<selenium-java.version>2.44.0</selenium-java.version>
 		<xml-apis.version>1.4.01</xml-apis.version>
+		<data-type-utility.version>1.0.0</data-type-utility.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<nanohttpd-assistant.version>1.0.0</nanohttpd-assistant.version>
@@ -73,6 +74,13 @@
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>${xml-apis.version}</version>
+		</dependency>
+
+		<!-- data-type-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>data-type-utility</artifactId>
+			<version>${data-type-utility.version}</version>
 		</dependency>
 
 		<!-- resource-utility -->

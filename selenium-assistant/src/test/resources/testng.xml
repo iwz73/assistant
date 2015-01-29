@@ -1,18 +1,24 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="suite" verbose="1">
-	<test name="test_1">
+	<test name="browser">
 		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting" />
-			<class
-				name="idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtensionTest" />
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" />
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" />
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitFirefoxVersionBrowserTest" />
+		</classes>
+	</test>
+	<test name="webelement">
+		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.webelement.SelectTest" />
 			<class name="idv.hsiehpinghan.seleniumassistant.webelement.TableTest" />
+		</classes>
+	</test>
+	<test name="utility">
+		<classes>
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.utility.AjaxWaitUtilityTest" />
 		</classes>

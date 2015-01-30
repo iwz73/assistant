@@ -98,6 +98,7 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue; ");
 		sb.append("import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility; ");
 		sb.append("import java.math.BigDecimal; ");
+		sb.append("import java.math.BigInteger; ");
 		sb.append("import java.text.ParseException; ");
 		sb.append("import java.util.Date; ");
 		sb.append("public class " + table + " extends HBaseTable { ");
@@ -191,7 +192,7 @@ public class HBaseEntityClassGenerateUtility {
 		}
 	}
 
-	private static String getParamsString(List<Value> values) {
+	private static String getParamsWithTypeString(List<Value> values) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0, size = values.size(); i < size; ++i) {
 			Value val = values.get(i);
@@ -208,7 +209,7 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("public " + con.type + "(" + table + " entity) { ");
 		sb.append("super(entity); ");
 		sb.append("} ");
-		sb.append("public " + con.type + "(" + getParamsString(con.values)
+		sb.append("public " + con.type + "(" + getParamsWithTypeString(con.values)
 				+ ", " + table + " entity) { ");
 		sb.append("super(entity); ");
 		for (Value val : con.values) {
@@ -227,7 +228,7 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("public " + con.type + "() { ");
 		sb.append("super(); ");
 		sb.append("} ");
-		sb.append("public " + con.type + "(" + getParamsString(con.values)
+		sb.append("public " + con.type + "(" + getParamsWithTypeString(con.values)
 				+ ") { ");
 		sb.append("super(); ");
 		for (Value val : con.values) {
@@ -249,7 +250,8 @@ public class HBaseEntityClassGenerateUtility {
 		return "";
 	}
 
-	private static void generateGetFromBytesString(StringBuilder sb, int filedsAmt, Value val) {
+	private static void generateGetFromBytesString(StringBuilder sb,
+			int filedsAmt, Value val) {
 		if ("String".equals(val.type)) {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getStringFromBytes(bytes"
@@ -269,6 +271,10 @@ public class HBaseEntityClassGenerateUtility {
 		} else if ("Integer".equals(val.type)) {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getIntegerFromBytes(bytes"
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
+		} else if ("BigInteger".equals(val.type)) {
+			sb.append("this." + val.name
+					+ " = ByteConvertUtility.getBigIntegerFromBytes(bytes"
 					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 		} else {
 			throw new RuntimeException("Type(" + val.type
@@ -350,8 +356,19 @@ public class HBaseEntityClassGenerateUtility {
 		generateGetterSetterSection(sb, con);
 	}
 
+	private static String getParamsString(List<Value> values) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0, size = values.size(); i < size; ++i) {
+			Value val = values.get(i);
+			if (i > 0) {
+				sb.append(",");
+			}
+			sb.append(val.name);
+		}
+		return sb.toString();
+	}
+	
 	private static void generateColumnFamiliesSection(StringBuilder sb) {
-
 		for (Family family : families) {
 			sb.append("public class " + family.type
 					+ " extends HBaseColumnFamily { ");
@@ -360,21 +377,29 @@ public class HBaseEntityClassGenerateUtility {
 			sb.append("} ");
 
 			sb.append("public " + family.valCon.type + " getLatestValue("
-					+ getParamsString(family.qualCon.values) + ") { ");
+					+ getParamsWithTypeString(family.qualCon.values) + ") { ");
 			sb.append(family.qualCon.type + " qual = this.new "
 					+ family.qualCon.type + "( ");
-			int i = 0;
-			for (Value val : family.qualCon.values) {
-				if (i > 0) {
-					sb.append(",");
-				}
-				sb.append(val.name);
-				++i;
-			}
+			sb.append(getParamsString(family.qualCon.values));
 			sb.append("); ");
 			sb.append("return (" + family.valCon.type
 					+ ") super.getLatestValue(qual); ");
 			sb.append("} ");
+			
+			sb.append("public void add( ");
+			sb.append(getParamsWithTypeString(family.qualCon.values));
+			sb.append(", Date date, ");
+			sb.append(getParamsWithTypeString(family.valCon.values));
+			sb.append(") { ");
+			sb.append("HBaseColumnQualifier qualifier = this.new " + family.qualCon.type + "( ");
+			sb.append(getParamsString(family.qualCon.values));
+			sb.append("); ");
+			sb.append(family.valCon.type + " val = this.new " + family.valCon.type + "( ");
+			sb.append(getParamsString(family.valCon.values));
+			sb.append("); ");
+			sb.append("add(qualifier, date, val); ");
+			sb.append("} ");
+			
 			generateQualifierSection(sb, family.qualCon);
 			generateValueSection(sb, family.valCon);
 			sb.append("@Override ");
@@ -443,7 +468,7 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/FinancialReportData.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockClosingCondition.json");
 		String str = getEntityClassCode(f);
 
 		System.err.println(str);

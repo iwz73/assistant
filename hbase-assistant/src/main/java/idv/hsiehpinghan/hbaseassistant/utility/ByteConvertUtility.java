@@ -3,6 +3,7 @@ package idv.hsiehpinghan.hbaseassistant.utility;
 import idv.hsiehpinghan.datatypeutility.utility.StringUtility;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -183,6 +184,36 @@ public class ByteConvertUtility {
 	}
 
 	/**
+	 * Convert bigInteger to bytes.
+	 * 
+	 * @param bigInteger
+	 * @return
+	 */
+	public static byte[] toBytes(BigInteger bigInteger) {
+		return toBytes(bigInteger, 0);
+	}
+
+	/**
+	 * Convert bigInteger to bytes.
+	 * 
+	 * @param bigInteger
+	 * @param byteLength
+	 * @return
+	 */
+	public static byte[] toBytes(BigInteger bigInteger, int byteLength) {
+		if (bigInteger == null) {
+			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
+					byteLength);
+		}
+		if (byteLength == 0) {
+			return Bytes.toBytes(bigInteger.toString());
+		} else {
+			return ByteConvertUtility
+					.toBytes(bigInteger.toString(), byteLength);
+		}
+	}
+
+	/**
 	 * Get bigDecimal from bytes.
 	 * 
 	 * @param bytes
@@ -244,6 +275,38 @@ public class ByteConvertUtility {
 	 */
 	public static Integer getIntegerFromBytes(byte[] bytes) {
 		return getIntegerFromBytes(bytes, 0, 0);
+	}
+
+	/**
+	 * Get bigInteger from bytes.
+	 * 
+	 * @param bytes
+	 * @param beginIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public static BigInteger getBigIntegerFromBytes(byte[] bytes,
+			int beginIndex, int endIndex) {
+		String str = null;
+		if (beginIndex == 0 && endIndex == 0) {
+			str = getStringFromBytes(bytes);
+		} else {
+			str = getStringFromBytes(bytes, beginIndex, endIndex);
+		}
+		if (StringUtility.EMPTY_STRING.equals(str)) {
+			return null;
+		}
+		return new BigInteger(str);
+	}
+
+	/**
+	 * Get bigInteger from bytes.
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static BigInteger getBigIntegerFromBytes(byte[] bytes) {
+		return getBigIntegerFromBytes(bytes, 0, 0);
 	}
 
 	private static byte[] toBytes(Date date, int byteLength, String datePattern) {

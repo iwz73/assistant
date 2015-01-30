@@ -154,9 +154,15 @@ public class HBaseEntityClassGenerateUtility {
 			return;
 		} else {
 			for (Value value : con.values) {
-				sb.append("private static final int "
-						+ getLengthString(value.name) + " = " + value.length
-						+ "; ");
+				if (value.length == null && "Date".equals(value.type)) {
+					sb.append("private static final int "
+							+ getLengthString(value.name)
+							+ " = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH; ");
+				} else {
+					sb.append("private static final int "
+							+ getLengthString(value.name) + " = "
+							+ value.length + "; ");
+				}
 			}
 		}
 	}
@@ -177,9 +183,8 @@ public class HBaseEntityClassGenerateUtility {
 							+ beforeEndIndexString + " + 1; ");
 				}
 				beforeEndIndexString = getEndIndexString(value.name);
-				sb.append("private static final int "
-						+ beforeEndIndexString + " = "
-						+ getBeginIndexString(value.name) + " + "
+				sb.append("private static final int " + beforeEndIndexString
+						+ " = " + getBeginIndexString(value.name) + " + "
 						+ getLengthString(value.name) + "; ");
 				++i;
 			}
@@ -235,8 +240,8 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("} ");
 	}
 
-	private static String getBeginAndEndIndexString(Value val) {
-		if (val.length != null) {
+	private static String getBeginAndEndIndexString(int filedsAmt, Value val) {
+		if (filedsAmt > 1) {
 			String beginIdxStr = getBeginIndexString(val.name);
 			String endIdxStr = getEndIndexString(val.name);
 			return ", " + beginIdxStr + ", " + endIdxStr;
@@ -244,27 +249,27 @@ public class HBaseEntityClassGenerateUtility {
 		return "";
 	}
 
-	private static void generateGetFromBytesString(StringBuilder sb, Value val) {
+	private static void generateGetFromBytesString(StringBuilder sb, int filedsAmt, Value val) {
 		if ("String".equals(val.type)) {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getStringFromBytes(bytes"
-					+ getBeginAndEndIndexString(val) + "); ");
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 		} else if ("Date".equals(val.type)) {
 			sb.append("try { ");
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getDateFromBytes(bytes"
-					+ getBeginAndEndIndexString(val) + "); ");
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 			sb.append("} catch (ParseException e) { ");
 			sb.append("throw new RuntimeException(e); ");
 			sb.append("} ");
 		} else if ("BigDecimal".equals(val.type)) {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getBigDecimalFromBytes(bytes"
-					+ getBeginAndEndIndexString(val) + "); ");
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 		} else if ("Integer".equals(val.type)) {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getIntegerFromBytes(bytes"
-					+ getBeginAndEndIndexString(val) + "); ");
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 		} else {
 			throw new RuntimeException("Type(" + val.type
 					+ " not implements !!!");
@@ -299,8 +304,9 @@ public class HBaseEntityClassGenerateUtility {
 		// From bytes.
 		sb.append("@Override ");
 		sb.append("public void fromBytes(byte[] bytes) { ");
+		int filedsAmt = vals.size();
 		for (Value val : vals) {
-			generateGetFromBytesString(sb, val);
+			generateGetFromBytesString(sb, filedsAmt, val);
 		}
 		sb.append("} ");
 	}
@@ -436,9 +442,10 @@ public class HBaseEntityClassGenerateUtility {
 	}
 
 	public static void main(String[] args) throws IOException {
-		File f = new File("/home/centos/Desktop/f");
+		File f = new File(
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/FinancialReportData.json");
 		String str = getEntityClassCode(f);
-		
+
 		System.err.println(str);
 	}
 }

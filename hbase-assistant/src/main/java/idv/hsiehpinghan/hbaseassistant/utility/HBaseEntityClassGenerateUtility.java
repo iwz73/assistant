@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
-import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
 import idv.hsiehpinghan.datatypeutility.utility.StringUtility;
 import idv.hsiehpinghan.hbaseassistant.utility.HBaseEntityClassGenerateUtility.Container.Value;
 
@@ -15,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
 public class HBaseEntityClassGenerateUtility {
 	private static String table;
@@ -34,7 +34,6 @@ public class HBaseEntityClassGenerateUtility {
 			table = ent.getKey();
 			parseRowKeyAndColumnFamily(ent.getValue());
 		}
-
 	}
 
 	private static void parseRowKeyAndColumnFamily(JsonNode jsonNode) {
@@ -55,15 +54,14 @@ public class HBaseEntityClassGenerateUtility {
 	}
 
 	private static void parseContainerContent(Container con, JsonNode jsonNode) {
-		Iterator<Map.Entry<String, JsonNode>> iter = jsonNode.getFields();
-		while (iter.hasNext()) {
-			Map.Entry<String, JsonNode> ent = iter.next();
-			String type = ent.getKey();
-			String name = ent.getValue().get("name").getTextValue();
-			JsonNode lenNode = ent.getValue().get("length");
+		ArrayNode arrNode = (ArrayNode) jsonNode;
+		for (JsonNode node : arrNode) {
+			String type = node.get("type").getTextValue();
+			String name = node.get("name").getTextValue();
+			JsonNode lenNode = node.get("length");
 			String length = null;
 			if (lenNode != null) {
-				length = lenNode.getTextValue();
+				length = lenNode.getValueAsText();
 			}
 			con.values.add(new Value(type, name, length));
 		}
@@ -71,17 +69,37 @@ public class HBaseEntityClassGenerateUtility {
 
 	private static void parseFamilyContent(Family family, JsonNode jsonNode) {
 		Iterator<Map.Entry<String, JsonNode>> iter = jsonNode.getFields();
+		int i = 0;
 		while (iter.hasNext()) {
 			Map.Entry<String, JsonNode> ent = iter.next();
-			Container qualOrVal = new Container(ent.getKey());
-			parseContainerContent(qualOrVal, ent.getValue());
-			family.qualAndVal.add(qualOrVal);
-
+			Container con = new Container(ent.getKey());
+			if (i == 0) {
+				family.qualCon = con;
+			} else if (i == 1) {
+				family.valCon = con;
+			}
+			parseContainerContent(con, ent.getValue());
+			++i;
+		}
+		if (i != 2) {
+			throw new RuntimeException(
+					"Qualifier and value must has only one for each.");
 		}
 	}
 
 	private static String generateTableSection() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("import idv.hsiehpinghan.collectionutility.utility.ArrayUtility; ");
+		sb.append("import idv.hsiehpinghan.datatypeutility.utility.ByteUtility; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseRowKey; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility; ");
+		sb.append("import java.math.BigDecimal; ");
+		sb.append("import java.text.ParseException; ");
+		sb.append("import java.util.Date; ");
 		sb.append("public class " + table + " extends HBaseTable { ");
 		sb.append(" private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY; ");
 		sb.append(" private " + rowKey.type + " rowKey; ");
@@ -136,7 +154,7 @@ public class HBaseEntityClassGenerateUtility {
 			return;
 		} else {
 			for (Value value : con.values) {
-				sb.append("private static final " + value.type + " "
+				sb.append("private static final int "
 						+ getLengthString(value.name) + " = " + value.length
 						+ "; ");
 			}
@@ -151,15 +169,15 @@ public class HBaseEntityClassGenerateUtility {
 			String beforeEndIndexString = null;
 			for (Value value : con.values) {
 				if (i == 0) {
-					sb.append("private static final " + value.type + " "
+					sb.append("private static final int "
 							+ getBeginIndexString(value.name) + " = 0; ");
 				} else {
-					sb.append("private static final " + value.type + " "
+					sb.append("private static final int "
 							+ getBeginIndexString(value.name) + " = "
 							+ beforeEndIndexString + " + 1; ");
 				}
 				beforeEndIndexString = getEndIndexString(value.name);
-				sb.append("private static final " + value.type + " "
+				sb.append("private static final int "
 						+ beforeEndIndexString + " = "
 						+ getBeginIndexString(value.name) + " + "
 						+ getLengthString(value.name) + "; ");
@@ -180,103 +198,122 @@ public class HBaseEntityClassGenerateUtility {
 		return sb.toString();
 	}
 
-	private static void generateConstructorsSection(StringBuilder sb,
+	private static void generateRowKeyConstructorsSection(StringBuilder sb,
 			Container con) {
-		sb.append("public " + rowKey.type + "(" + table + " entity) { ");
+		sb.append("public " + con.type + "(" + table + " entity) { ");
 		sb.append("super(entity); ");
 		sb.append("} ");
-
-		sb.append("public " + rowKey.type + "(" + getParamsString(con.values)
+		sb.append("public " + con.type + "(" + getParamsString(con.values)
 				+ ", " + table + " entity) { ");
 		sb.append("super(entity); ");
 		for (Value val : con.values) {
 			sb.append("this." + val.name + " = " + val.name + "; ");
 		}
 		sb.append("} ");
-
-		sb.append("public " + rowKey.type + "(byte[] rowKey, " + table
+		sb.append("public " + con.type + "(byte[] bytes, " + table
 				+ " entity) { ");
 		sb.append("super(entity); ");
-		sb.append("fromBytes(rowKey); ");
+		sb.append("fromBytes(bytes); ");
 		sb.append("} ");
 	}
 
-	private static void generateGetFromBytes(StringBuilder sb, Value val) {
+	private static void generateConstructorsSection(StringBuilder sb,
+			Container con) {
+		sb.append("public " + con.type + "() { ");
+		sb.append("super(); ");
+		sb.append("} ");
+		sb.append("public " + con.type + "(" + getParamsString(con.values)
+				+ ") { ");
+		sb.append("super(); ");
+		for (Value val : con.values) {
+			sb.append("this." + val.name + " = " + val.name + "; ");
+		}
+		sb.append("} ");
+		sb.append("public  " + con.type + "(byte[] bytes) { ");
+		sb.append("super(); ");
+		sb.append("fromBytes(bytes); ");
+		sb.append("} ");
+	}
+
+	private static String getBeginAndEndIndexString(Value val) {
+		if (val.length != null) {
+			String beginIdxStr = getBeginIndexString(val.name);
+			String endIdxStr = getEndIndexString(val.name);
+			return ", " + beginIdxStr + ", " + endIdxStr;
+		}
+		return "";
+	}
+
+	private static void generateGetFromBytesString(StringBuilder sb, Value val) {
 		if ("String".equals(val.type)) {
 			sb.append("this." + val.name
-					+ " = ByteConvertUtility.getStringFromBytes(bytes");
-			String length = getLengthString(val.length);
-			if(length != null) {
-				sb.append(", OPENING_PRICE_BEGIN_INDEX, OPENING_PRICE_END_INDEX");
-			}
-			sb.append("); ");
+					+ " = ByteConvertUtility.getStringFromBytes(bytes"
+					+ getBeginAndEndIndexString(val) + "); ");
 		} else if ("Date".equals(val.type)) {
+			sb.append("try { ");
 			sb.append("this." + val.name
-					+ " = ByteConvertUtility.getDateFromBytes(bytes); ");
+					+ " = ByteConvertUtility.getDateFromBytes(bytes"
+					+ getBeginAndEndIndexString(val) + "); ");
+			sb.append("} catch (ParseException e) { ");
+			sb.append("throw new RuntimeException(e); ");
+			sb.append("} ");
+		} else if ("BigDecimal".equals(val.type)) {
+			sb.append("this." + val.name
+					+ " = ByteConvertUtility.getBigDecimalFromBytes(bytes"
+					+ getBeginAndEndIndexString(val) + "); ");
+		} else if ("Integer".equals(val.type)) {
+			sb.append("this." + val.name
+					+ " = ByteConvertUtility.getIntegerFromBytes(bytes"
+					+ getBeginAndEndIndexString(val) + "); ");
 		} else {
 			throw new RuntimeException("Type(" + val.type
 					+ " not implements !!!");
 		}
 	}
+
 	private static void generateToBytesFromBytesSection(StringBuilder sb,
 			Container con) {
 		List<Value> vals = con.values;
-		if (vals.size() == 1) {
-			Value val = vals.get(0);
-			sb.append("@Override ");
-			sb.append("public byte[] toBytes() { ");
-			sb.append("return ByteConvertUtility.toBytes(" + val.name + "); ");
-			sb.append("} ");
-			sb.append("@Override ");
-			sb.append("public void fromBytes(byte[] bytes) { ");
-			if ("String".equals(val.type)) {
-				sb.append("this." + val.name
-						+ " = ByteConvertUtility.getStringFromBytes(bytes); ");
-			} else if ("Date".equals(val.type)) {
-				sb.append("this." + val.name
-						+ " = ByteConvertUtility.getDateFromBytes(bytes); ");
-			} else {
-				throw new RuntimeException("Type(" + val.type
-						+ " not implements !!!");
-			}
-			sb.append("} ");
-		} else {
-			// ToBytes.
-			sb.append("@Override ");
-			sb.append("public byte[] toBytes() { ");
-			for (Value val : vals) {
-				sb.append("byte[] " + val.name + "Bytes = ByteConvertUtility.toBytes(" + val.name + ", " + getLengthString(val.length) +"); ");
-			}
-			sb.append("return ArrayUtility.addAll( ");
-			int i = 0;
-			for (Value val : vals) {
-				if(i > 0) {
-					sb.append(", SPACE, ");
-				}
-				sb.append(val.name + "Bytes ");
-				++i;
+		// ToBytes.
+		sb.append("@Override ");
+		sb.append("public byte[] toBytes() { ");
+		for (Value val : vals) {
+			sb.append("byte[] " + val.name
+					+ "Bytes = ByteConvertUtility.toBytes(" + val.name);
+			if (val.length != null) {
+				sb.append(", " + val.length);
 			}
 			sb.append("); ");
-			sb.append("} ");
-			// From bytes.
-			sb.append("@Override ");
-			sb.append("public void fromBytes(byte[] bytes) { ");
-			for (Value val : vals) {
-				sb.append("this." + val.name + " = ByteConvertUtility.getBigDecimalFromBytes(bytes, OPENING_PRICE_BEGIN_INDEX, OPENING_PRICE_END_INDEX); ");
-			}
-			sb.append("} ");
 		}
+		sb.append("return ArrayUtility.addAll( ");
+		int i = 0;
+		for (Value val : vals) {
+			if (i > 0) {
+				sb.append(", SPACE, ");
+			}
+			sb.append(val.name + "Bytes ");
+			++i;
+		}
+		sb.append("); ");
+		sb.append("} ");
+		// From bytes.
+		sb.append("@Override ");
+		sb.append("public void fromBytes(byte[] bytes) { ");
+		for (Value val : vals) {
+			generateGetFromBytesString(sb, val);
+		}
+		sb.append("} ");
 	}
 
 	private static void generateGetterSetterSection(StringBuilder sb,
 			Container con) {
 		for (Value val : con.values) {
-			sb.append("public String get" + StringUtils.capitalize(val.name)
-					+ "() { ");
+			sb.append("public " + val.type + " get"
+					+ StringUtils.capitalize(val.name) + "() { ");
 			sb.append("return " + val.name + "; ");
 			sb.append("} ");
 			sb.append("public void set" + StringUtils.capitalize(val.name)
-					+ "(String " + val.name + ") { ");
+					+ "(" + val.type + " " + val.name + ") { ");
 			sb.append("this." + val.name + " = " + val.name + "; ");
 			sb.append("} ");
 		}
@@ -284,8 +321,18 @@ public class HBaseEntityClassGenerateUtility {
 
 	private static void generateRowKeySection(StringBuilder sb) {
 		sb.append("public class " + rowKey.type + " extends HBaseRowKey { ");
-		generateContainerContent(sb, rowKey);
+		generateRowKeyContainerContent(sb, rowKey);
 		sb.append("} ");
+	}
+
+	private static void generateRowKeyContainerContent(StringBuilder sb,
+			Container con) {
+		generateLengthSection(sb, con);
+		generateIndexSection(sb, con);
+		generateFieldsSection(sb, con);
+		generateRowKeyConstructorsSection(sb, con);
+		generateToBytesFromBytesSection(sb, con);
+		generateGetterSetterSection(sb, con);
 	}
 
 	private static void generateContainerContent(StringBuilder sb, Container con) {
@@ -305,19 +352,49 @@ public class HBaseEntityClassGenerateUtility {
 			sb.append("private " + family.type + "(" + table + " entity) { ");
 			sb.append("super(entity); ");
 			sb.append("} ");
-			generateQualAndValSection(sb, family);
+
+			sb.append("public " + family.valCon.type + " getLatestValue("
+					+ getParamsString(family.qualCon.values) + ") { ");
+			sb.append(family.qualCon.type + " qual = this.new "
+					+ family.qualCon.type + "( ");
+			int i = 0;
+			for (Value val : family.qualCon.values) {
+				if (i > 0) {
+					sb.append(",");
+				}
+				sb.append(val.name);
+				++i;
+			}
+			sb.append("); ");
+			sb.append("return (" + family.valCon.type
+					+ ") super.getLatestValue(qual); ");
+			sb.append("} ");
+			generateQualifierSection(sb, family.qualCon);
+			generateValueSection(sb, family.valCon);
+			sb.append("@Override ");
+			sb.append("protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) { ");
+			sb.append("return this.new " + family.qualCon.type + "(bytes); ");
+			sb.append("} ");
+			sb.append("@Override ");
+			sb.append("protected HBaseValue generateValue(byte[] bytes) { ");
+			sb.append("return this.new " + family.valCon.type + "(bytes); ");
+			sb.append("} ");
 			sb.append("} ");
 		}
 
 	}
 
-	private static void generateQualAndValSection(StringBuilder sb,
-			Family family) {
-		sb.append("public class " + family.type
+	private static void generateValueSection(StringBuilder sb, Container val) {
+		sb.append("public class " + val.type + " extends HBaseValue { ");
+		generateContainerContent(sb, val);
+		sb.append("} ");
+	}
+
+	private static void generateQualifierSection(StringBuilder sb,
+			Container qual) {
+		sb.append("public class " + qual.type
 				+ " extends HBaseColumnQualifier { ");
-		for (Container con : family.qualAndVal) {
-			generateContainerContent(sb, con);
-		}
+		generateContainerContent(sb, qual);
 		sb.append("} ");
 	}
 
@@ -350,7 +427,8 @@ public class HBaseEntityClassGenerateUtility {
 
 	private static class Family {
 		public String type;
-		public List<Container> qualAndVal = new ArrayList<Container>();
+		public Container qualCon;
+		public Container valCon;
 
 		public Family(String type) {
 			this.type = type;
@@ -360,8 +438,7 @@ public class HBaseEntityClassGenerateUtility {
 	public static void main(String[] args) throws IOException {
 		File f = new File("/home/centos/Desktop/f");
 		String str = getEntityClassCode(f);
-
+		
 		System.err.println(str);
-
 	}
 }

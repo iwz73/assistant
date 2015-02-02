@@ -71,47 +71,69 @@ public class HbaseAssistant implements InitializingBean {
 	 * @throws IllegalAccessException
 	 */
 	public void put(HBaseTable entity) throws IllegalAccessException {
-		Class<?> cls = entity.getClass();
+		List<HBaseTable> entities = new ArrayList<HBaseTable>(1);
+		entities.add(entity);
+		put(entities);
+	}
+
+	/**
+	 * Add multi-rows.
+	 * 
+	 * @param entities
+	 * @throws IllegalAccessException
+	 */
+	public void put(List<? extends HBaseTable> entities)
+			throws IllegalAccessException {
+		int size = entities.size();
+		final List<Put> puts = new ArrayList<Put>();
+
+		Class<?> cls = entities.get(0).getClass();
 		String tableName = cls.getSimpleName();
-		// Get row key
-		byte[] rowKey = getRowKey(entity).toBytes();
-		final Put put = new Put(rowKey);
-		// Get column families
-		List<Field> colFamFlds = getColumnFamilyFields(cls);
-		for (Field famFld : colFamFlds) {
-			String colFamNm = famFld.getName();
-			Object colFamObj = ObjectUtility.readField(entity, colFamNm);
-			if (colFamObj == null) {
-				continue;
-			}
-			List<Field> qualMapFields = ObjectUtility
-					.getFieldsByAssignableType(colFamObj.getClass(), Map.class);
-			byte[] columnFamily = Bytes.toBytes(colFamNm);
-			// Get qualifier and value
-			for (Field qualMapField : qualMapFields) {
-				@SuppressWarnings("unchecked")
-				Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qualMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
-						.readField(colFamObj, qualMapField.getName());
-				if (qualMap == null) {
+		for (int i = 0; i < size; ++i) {
+			HBaseTable entity = entities.get(i);
+			// Get row key
+			byte[] rowKey = getRowKey(entity).toBytes();
+			final Put put = new Put(rowKey);
+			puts.add(put);
+			// Get column families
+			List<Field> colFamFlds = getColumnFamilyFields(cls);
+			for (Field famFld : colFamFlds) {
+				String colFamNm = famFld.getName();
+				Object colFamObj = ObjectUtility.readField(entity, colFamNm);
+				if (colFamObj == null) {
 					continue;
 				}
-				for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> qualEntry : qualMap
-						.entrySet()) {
-					byte[] qualifier = qualEntry.getKey().toBytes();
-					Map<Date, HBaseValue> verMap = qualEntry.getValue();
-					for (Map.Entry<Date, HBaseValue> verEntry : verMap
+				List<Field> qualMapFields = ObjectUtility
+						.getFieldsByAssignableType(colFamObj.getClass(),
+								Map.class);
+				byte[] columnFamily = Bytes.toBytes(colFamNm);
+				// Get qualifier and value
+				for (Field qualMapField : qualMapFields) {
+					@SuppressWarnings("unchecked")
+					Map<HBaseColumnQualifier, Map<Date, HBaseValue>> qualMap = (Map<HBaseColumnQualifier, Map<Date, HBaseValue>>) ObjectUtility
+							.readField(colFamObj, qualMapField.getName());
+					if (qualMap == null) {
+						continue;
+					}
+					for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> qualEntry : qualMap
 							.entrySet()) {
-						long version = verEntry.getKey().getTime();
-						byte[] value = verEntry.getValue().toBytes();
-						put.add(columnFamily, qualifier, version, value);
+						byte[] qualifier = qualEntry.getKey().toBytes();
+						Map<Date, HBaseValue> verMap = qualEntry.getValue();
+						for (Map.Entry<Date, HBaseValue> verEntry : verMap
+								.entrySet()) {
+							long version = verEntry.getKey().getTime();
+							byte[] value = verEntry.getValue().toBytes();
+							put.add(columnFamily, qualifier, version, value);
+						}
 					}
 				}
 			}
 		}
+
 		hbaseTemplate.execute(tableName, new TableCallback<Void>() {
 			@Override
 			public Void doInTable(HTableInterface tableItf) throws Throwable {
-				tableItf.put(put);
+				tableItf.put(puts);
 				return null;
 			}
 		});

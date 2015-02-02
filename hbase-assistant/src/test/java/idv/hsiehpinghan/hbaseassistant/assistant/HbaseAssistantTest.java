@@ -14,7 +14,9 @@ import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
@@ -100,9 +102,20 @@ public class HbaseAssistantTest {
 
 	@Test(dependsOnMethods = { "createTables" })
 	public void put() throws Exception {
-		TestTable entity = createTestEntity();
+		// Test put put.
+		TestTable entity = createTestEntity(0);
 		hbaseAssistant.put(entity);
 		Assert.assertTrue(hbaseAssistant.isRowExists(entity.getRowKey()));
+		
+		// Test put puts.
+		List<TestTable> entities = new ArrayList<TestTable>(2);
+		TestTable entity1 = createTestEntity(1);
+		entities.add(entity1);
+		TestTable entity2 = createTestEntity(2);
+		entities.add(entity2);
+		hbaseAssistant.put(entities);
+		Assert.assertTrue(hbaseAssistant.isRowExists(entity1.getRowKey()));
+		Assert.assertTrue(hbaseAssistant.isRowExists(entity2.getRowKey()));
 	}
 
 	@Test(dependsOnMethods = { "put" })
@@ -118,7 +131,7 @@ public class HbaseAssistantTest {
 
 	@Test(dependsOnMethods = { "put" })
 	public void exist() throws Exception {
-		TestTable entity = createTestEntity();
+		TestTable entity = createTestEntity(0);
 		Assert.assertTrue(hbaseAssistant.exist(entity.getRowKey()));
 	}
 
@@ -156,7 +169,7 @@ public class HbaseAssistantTest {
 		// Test rowFilter
 		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
 				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
-						createTestEntity().getRowKey().toBytes()));
+						createTestEntity(0).getRowKey().toBytes()));
 		entity = (TestTable) hbaseAssistant.scan(TestTable.class, rowFilter)
 				.get(0);
 		Assert.assertEquals(1, entity.getFamily1()
@@ -168,7 +181,7 @@ public class HbaseAssistantTest {
 	@Test(dependsOnMethods = { "put" })
 	public void getRowAmount() {
 		int size = hbaseAssistant.getRowAmount(TestTable.class);
-		Assert.assertEquals(1, size);
+		Assert.assertEquals(3, size);
 	}
 
 	private void valueEmptyTest(HBaseColumnFamily family) {
@@ -182,13 +195,13 @@ public class HbaseAssistantTest {
 
 	private void testGetRowKey() throws Exception {
 		TestTable entity = new TestTable();
-		generateRowKey(entity);
+		generateRowKey(entity, 0);
 		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
 	}
 
 	private void testGetColumnFamily1() throws Exception {
 		TestTable entity = new TestTable();
-		generateRowKey(entity);
+		generateRowKey(entity, 0);
 		entity.getFamily1();
 		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
 		testColumnFamily1(entity.getFamily1());
@@ -222,7 +235,7 @@ public class HbaseAssistantTest {
 
 	private void testGetColumnFamily2() throws Exception {
 		TestTable entity = new TestTable();
-		generateRowKey(entity);
+		generateRowKey(entity, 0);
 		entity.getFamily2();
 		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
 		testColumnFamily2(entity.getFamily2());
@@ -245,8 +258,8 @@ public class HbaseAssistantTest {
 		}
 	}
 
-	private void generateRowKey(TestTable entity) throws ParseException {
-		Date keyDate1 = DateUtils.parseDate("1978/12/24", "yyyy/MM/dd");
+	private void generateRowKey(TestTable entity, int plusDayAmt) throws ParseException {
+		Date keyDate1 = DateUtils.addDays(DateUtils.parseDate("1978/12/24", "yyyy/MM/dd"), plusDayAmt);
 		String keyString1 = "keyString1";
 		int keyInt1 = 888;
 		entity.new TestRowKey(keyDate1, keyString1, keyInt1, entity);
@@ -286,9 +299,9 @@ public class HbaseAssistantTest {
 		family2.add(qual, date, valueDate2, valueString2, valueInt2);
 	}
 
-	private TestTable createTestEntity() throws Exception {
+	private TestTable createTestEntity(int plusDayAmt) throws Exception {
 		TestTable entity = new TestTable();
-		generateRowKey(entity);
+		generateRowKey(entity, plusDayAmt);
 		generateFamily1(entity);
 		generateFamily2(entity);
 		return entity;

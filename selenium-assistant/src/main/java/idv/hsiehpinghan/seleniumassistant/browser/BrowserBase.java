@@ -12,11 +12,15 @@ import idv.hsiehpinghan.seleniumassistant.webelement.TextInput;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class BrowserBase {
+	private String parentWindowHandle;
+
 	/**
 	 * Go to target url.
 	 * 
@@ -124,12 +128,62 @@ public abstract class BrowserBase {
 	}
 
 	/**
-	 * Get download page content to filePath.
+	 * Close all child window.
+	 */
+	public void closeAllChildWindow() {
+		WebDriver webDriver = getWebDriver();
+		parentWindowHandle = webDriver.getWindowHandle();
+		Iterator<String> iter = webDriver.getWindowHandles().iterator();
+		while (iter.hasNext()) {
+			String windowHandle = iter.next();
+			if(parentWindowHandle.equals(windowHandle) == false) {
+				webDriver.switchTo().window(windowHandle);
+				webDriver.close();	
+			}
+		}
+		webDriver.switchTo().window(parentWindowHandle);
+	}
+
+	/**
+	 * Check if has child window.
 	 * 
-	 * @param filePath
 	 * @return
 	 */
-	public abstract File download(String filePath)
+	public boolean hasChildWindow() {
+		Set<String> set = getWebDriver().getWindowHandles();
+		return set.size() > 1;
+	}
+
+	/**
+	 * Switch to first child window.
+	 */
+	public void switchToFirstChildWindow() {
+		WebDriver webDriver = getWebDriver();
+		parentWindowHandle = webDriver.getWindowHandle();
+		Iterator<String> iter = webDriver.getWindowHandles().iterator();
+		while(iter.hasNext()) {
+			String windowHandle = iter.next();
+			if(parentWindowHandle.equals(windowHandle) == false) {
+				webDriver.switchTo().window(windowHandle);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Switch to parent window.
+	 */
+	public void switchToParentWindow() {
+		getWebDriver().switchTo().window(parentWindowHandle);
+	}
+
+	/**
+	 * Get download page content to filePath.
+	 * 
+	 * @param file
+	 * @throws UnsupportedEncodingException
+	 */
+	public abstract void download(File file)
 			throws UnsupportedEncodingException;
 
 	/**

@@ -27,5 +27,9 @@ public abstract class WebElementBase {
 		return webDriver;
 	}
 
+	public boolean isDisplayed() {
+		return getSeleniumWebElement().isDisplayed();
+	}
+
 	protected abstract WebElement getSeleniumWebElement();
 }

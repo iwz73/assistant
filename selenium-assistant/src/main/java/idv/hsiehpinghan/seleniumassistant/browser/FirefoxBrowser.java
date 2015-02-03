@@ -19,15 +19,13 @@ public class FirefoxBrowser extends BrowserBase {
 	private FirefoxDriverExtension webDriver;
 
 	@Override
-	public File download(String filePath) {
+	public void download(File file) {
 		InputStream is = webDriver.getPageSourceAsInputStream();
-		File f = new File(filePath);
 		try {
-			FileUtils.copyInputStreamToFile(is, f);
+			FileUtils.copyInputStreamToFile(is, file);
 		} catch (IOException e) {
-			return null;
+			throw new RuntimeException(e);
 		}
-		return f;
 	}
 
 	@Override

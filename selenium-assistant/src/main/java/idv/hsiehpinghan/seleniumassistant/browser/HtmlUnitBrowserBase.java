@@ -10,25 +10,17 @@ import org.apache.commons.io.FileUtils;
 
 import com.gargoylesoftware.htmlunit.Page;
 
-//@Component
-//@Profile("htmlUnit")
 public abstract class HtmlUnitBrowserBase extends BrowserBase {
 	private Page page;
 
-	// @Autowired
-	// private HtmlUnitDriverExtension webDriver;
-
 	@Override
-	public File download(String filePath) {
+	public void download(File file) {
 		InputStream is = getWebDriver().getPageSourceAsInputStream();
-		File f = new File(filePath);
 		try {
-			FileUtils.copyInputStreamToFile(is, f);
+			FileUtils.copyInputStreamToFile(is, file);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
 		}
-		return f;
 	}
 
 	public String getContentType() {

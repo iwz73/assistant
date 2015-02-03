@@ -1,11 +1,12 @@
 package idv.hsiehpinghan.seleniumassistant.utility;
 
 import idv.hsiehpinghan.datatypeutility.utility.VoidUtility;
-import idv.hsiehpinghan.seleniumassistant.webelement.Div;
-import idv.hsiehpinghan.seleniumassistant.webelement.Font;
+import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserBase;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select.Option;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
+import idv.hsiehpinghan.seleniumassistant.webelement.TextInput;
+import idv.hsiehpinghan.seleniumassistant.webelement.WebElementBase;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,10 +32,7 @@ public class AjaxWaitUtility {
 	 */
 	public static boolean waitUntilOptionsDifferent(final Select select,
 			final List<Option> comparedOption) {
-		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
-		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
-		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
-		return fluentWait.until(new Function<Void, Boolean>() {
+		return wait(new Function<Void, Boolean>() {
 			@Override
 			public Boolean apply(Void v) {
 				try {
@@ -58,10 +56,7 @@ public class AjaxWaitUtility {
 	 */
 	public static boolean waitUntilRowTextEqual(final Table table,
 			final int rowIndex, final List<String> comparedList) {
-		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
-		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
-		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
-		return fluentWait.until(new Function<Void, Boolean>() {
+		return wait(new Function<Void, Boolean>() {
 			@Override
 			public Boolean apply(Void v) {
 				try {
@@ -76,22 +71,19 @@ public class AjaxWaitUtility {
 	}
 
 	/**
-	 * Wait until font text equal.
+	 * Wait webElement font text equal.
 	 * 
-	 * @param font
+	 * @param webElement
 	 * @param text
 	 * @return
 	 */
-	public static boolean waitUntilFontTextEqual(final Font font,
+	public static boolean waitUntilTextEqual(final WebElementBase webElement,
 			final String text) {
-		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
-		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
-		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
-		return fluentWait.until(new Function<Void, Boolean>() {
+		return wait(new Function<Void, Boolean>() {
 			@Override
 			public Boolean apply(Void v) {
 				try {
-					return text.equals(font.getText());
+					return text.equals(webElement.getText());
 				} catch (Exception e) {
 					logger.trace("Exception : ", e);
 					return false;
@@ -100,21 +92,94 @@ public class AjaxWaitUtility {
 		});
 	}
 
-	public static boolean waitUntilDivTextStartWith(final Div div,
-			final String text) {
-		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
-		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
-		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
-		return fluentWait.until(new Function<Void, Boolean>() {
+	/**
+	 * Wait until text input equal.
+	 * 
+	 * @param TextInput
+	 * @param value
+	 * @return
+	 */
+	public static boolean waitUntilValueEqual(final TextInput TextInput,
+			final String value) {
+		return wait(new Function<Void, Boolean>() {
 			@Override
 			public Boolean apply(Void v) {
 				try {
-					return div.getText().startsWith(text);
+					return value.equals(TextInput.getValue());
 				} catch (Exception e) {
 					logger.trace("Exception : ", e);
 					return false;
 				}
 			}
 		});
+	}
+
+	/**
+	 * Wait until text start with text.
+	 * 
+	 * @param webElement
+	 * @param text
+	 * @return
+	 */
+	public static boolean waitUntilTextStartWith(
+			final WebElementBase webElement, final String text) {
+		return wait(new Function<Void, Boolean>() {
+			@Override
+			public Boolean apply(Void v) {
+				try {
+					return webElement.getText().startsWith(text);
+				} catch (Exception e) {
+					logger.trace("Exception : ", e);
+					return false;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Wait until webElement displayed.
+	 * 
+	 * @param webElement
+	 * @return
+	 */
+	public static boolean waitUntilDisplayed(final WebElementBase webElement) {
+		return wait(new Function<Void, Boolean>() {
+			@Override
+			public Boolean apply(Void v) {
+				try {
+					return webElement.isDisplayed();
+				} catch (Exception e) {
+					logger.trace("Exception : ", e);
+					return false;
+				}
+			}
+		});
+	}
+
+	public static boolean waitUntilFirstChildWindowAttachmentNotNull(final HtmlUnitBrowserBase browser) {
+		return wait(new Function<Void, Boolean>() {
+			@Override
+			public Boolean apply(Void v) {
+				try {
+					
+					System.err.println("TTT : " + browser.getWebDriver().getPageSource());
+					
+					browser.switchToFirstChildWindow();
+					return browser.getAttachment() != null;
+				} catch (Exception e) {
+					logger.trace("Exception : ", e);
+					return false;
+				} finally {
+					browser.switchToParentWindow();
+				}
+			}
+		});
+	}
+	
+	private static boolean wait(final Function<Void, Boolean> function) {
+		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
+		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);
+		fluentWait.withTimeout(TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+		return fluentWait.until(function);
 	}
 }

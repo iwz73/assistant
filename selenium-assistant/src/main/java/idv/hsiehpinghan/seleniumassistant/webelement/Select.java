@@ -22,11 +22,11 @@ public class Select extends WebElementWithBy {
 	}
 
 	/**
-	 * Select by index.
+	 * Select by value.
 	 * 
 	 * @param value
 	 */
-	public void selectByIndex(String value) {
+	public void selectByValue(String value) {
 		getSeleniumSelect().selectByValue(value);
 	}
 

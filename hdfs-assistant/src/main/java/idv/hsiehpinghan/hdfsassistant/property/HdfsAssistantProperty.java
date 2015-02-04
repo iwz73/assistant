@@ -14,7 +14,7 @@ public class HdfsAssistantProperty implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String pHdfsPath = "hdfs-assistant.hdfs_path";
+		String pHdfsPath = "hdfs_assistant_hdfs_path";
 		hdfsPath = environment.getProperty(pHdfsPath);
 		if (hdfsPath == null) {
 			throw new RuntimeException(pHdfsPath + " not set !!!");

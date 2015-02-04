@@ -14,7 +14,7 @@ public class HbaseAssistantProperty implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String pTableOperation = "hbase-assistant.table_operation";
+		String pTableOperation = "hbase_assistant_table_operation";
 		tableOperation = environment.getProperty(pTableOperation);
 		if (tableOperation == null) {
 			throw new RuntimeException(pTableOperation + " not set !!!");

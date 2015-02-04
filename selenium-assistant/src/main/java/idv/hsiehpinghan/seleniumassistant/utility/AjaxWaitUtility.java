@@ -93,6 +93,28 @@ public class AjaxWaitUtility {
 	}
 
 	/**
+	 * Wait webElement font text different.
+	 * 
+	 * @param webElement
+	 * @param text
+	 * @return
+	 */
+	public static boolean waitUntilTextDifferent(
+			final WebElementBase webElement, final String text) {
+		return wait(new Function<Void, Boolean>() {
+			@Override
+			public Boolean apply(Void v) {
+				try {
+					return text.equals(webElement.getText()) == false;
+				} catch (Exception e) {
+					logger.trace("Exception : ", e);
+					return false;
+				}
+			}
+		});
+	}
+
+	/**
 	 * Wait until text input equal.
 	 * 
 	 * @param TextInput
@@ -156,14 +178,16 @@ public class AjaxWaitUtility {
 		});
 	}
 
-	public static boolean waitUntilFirstChildWindowAttachmentNotNull(final HtmlUnitBrowserBase browser) {
+	public static boolean waitUntilFirstChildWindowAttachmentNotNull(
+			final HtmlUnitBrowserBase browser) {
 		return wait(new Function<Void, Boolean>() {
 			@Override
 			public Boolean apply(Void v) {
 				try {
-					
-					System.err.println("TTT : " + browser.getWebDriver().getPageSource());
-					
+
+					System.err.println("TTT : "
+							+ browser.getWebDriver().getPageSource());
+
 					browser.switchToFirstChildWindow();
 					return browser.getAttachment() != null;
 				} catch (Exception e) {
@@ -175,7 +199,7 @@ public class AjaxWaitUtility {
 			}
 		});
 	}
-	
+
 	private static boolean wait(final Function<Void, Boolean> function) {
 		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);
 		fluentWait.pollingEvery(POLLING_MILLISECONDS, TimeUnit.MILLISECONDS);

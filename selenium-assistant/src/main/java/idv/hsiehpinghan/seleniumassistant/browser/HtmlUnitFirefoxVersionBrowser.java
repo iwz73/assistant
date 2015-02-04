@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("htmlUnit-with-firefox-version")
+@Profile("htmlUnit_with_firefox_version")
 public class HtmlUnitFirefoxVersionBrowser extends HtmlUnitBrowserBase {
 	@Autowired
 	private HtmlUnitDriverWithFirefoxVersionExtension webDriver;

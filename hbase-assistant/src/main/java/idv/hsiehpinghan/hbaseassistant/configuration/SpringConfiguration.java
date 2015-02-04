@@ -17,7 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-@PropertySource("classpath:/hbase-assistant.property")
+@PropertySource("classpath:/hbase_assistant.property")
 @Configuration("hbaseAssistantSpringConfiguration")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.hbaseassistant" })
 public class SpringConfiguration {

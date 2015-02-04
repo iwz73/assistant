@@ -14,7 +14,7 @@ public class XbrlAssistantProperty implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String pTaxonomyDir = "xbrl-assistant.taxonomy_dir";
+		String pTaxonomyDir = "xbrl_assistant_taxonomy_dir";
 		taxonomyDir = environment.getProperty(pTaxonomyDir);
 		if (taxonomyDir == null) {
 			throw new RuntimeException(pTaxonomyDir + " not set !!!");

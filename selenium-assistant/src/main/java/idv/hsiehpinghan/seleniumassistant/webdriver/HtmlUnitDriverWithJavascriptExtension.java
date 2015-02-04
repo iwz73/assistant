@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("htmlUnit-with-javascript")
+@Profile("htmlUnit_with_javascript")
 public class HtmlUnitDriverWithJavascriptExtension extends
 		HtmlUnitDriverExtension {
 	public HtmlUnitDriverWithJavascriptExtension() {

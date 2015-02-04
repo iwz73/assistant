@@ -468,7 +468,7 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockClosingCondition.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/CompanyBasicInfo.json");
 		String str = getEntityClassCode(f);
 
 		System.err.println(str);

@@ -33,6 +33,26 @@ public abstract class HtmlUnitBrowserBase extends BrowserBase {
 	}
 
 	@Override
+	public boolean hasAttachment() {
+		String attachment = getAttachment();
+		if (attachment == null) {
+			return false;
+		}
+		if ("".equals(attachment.trim())) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String getAttachmentFileName() {
+		String str = getAttachment();
+		int idxBegin = str.indexOf("\"") + 1;
+		int idxEnd = str.lastIndexOf("\"");
+		return str.substring(idxBegin, idxEnd);
+	}
+
+	@Override
 	public void cacheCurrentPage() {
 		this.page = getWebDriver().getPage();
 	}

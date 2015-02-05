@@ -136,9 +136,9 @@ public abstract class BrowserBase {
 		Iterator<String> iter = webDriver.getWindowHandles().iterator();
 		while (iter.hasNext()) {
 			String windowHandle = iter.next();
-			if(parentWindowHandle.equals(windowHandle) == false) {
+			if (parentWindowHandle.equals(windowHandle) == false) {
 				webDriver.switchTo().window(windowHandle);
-				webDriver.close();	
+				webDriver.close();
 			}
 		}
 		webDriver.switchTo().window(parentWindowHandle);
@@ -161,9 +161,9 @@ public abstract class BrowserBase {
 		WebDriver webDriver = getWebDriver();
 		parentWindowHandle = webDriver.getWindowHandle();
 		Iterator<String> iter = webDriver.getWindowHandles().iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			String windowHandle = iter.next();
-			if(parentWindowHandle.equals(windowHandle) == false) {
+			if (parentWindowHandle.equals(windowHandle) == false) {
 				webDriver.switchTo().window(windowHandle);
 				break;
 			}
@@ -199,6 +199,20 @@ public abstract class BrowserBase {
 	 * @return
 	 */
 	public abstract String getAttachment();
+
+	/**
+	 * Check if has attachment.
+	 * 
+	 * @return
+	 */
+	public abstract boolean hasAttachment();
+
+	/**
+	 * Get attachment file name.
+	 * 
+	 * @return
+	 */
+	public abstract String getAttachmentFileName();
 
 	/**
 	 * Cache current page for ajax page backward.

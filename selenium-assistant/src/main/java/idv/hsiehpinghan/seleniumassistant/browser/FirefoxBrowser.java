@@ -39,6 +39,16 @@ public class FirefoxBrowser extends BrowserBase {
 	}
 
 	@Override
+	public boolean hasAttachment() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
+	@Override
+	public String getAttachmentFileName() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
+	@Override
 	public void cacheCurrentPage() {
 		throw new RuntimeException("Not implement !!!");
 	}
@@ -47,4 +57,5 @@ public class FirefoxBrowser extends BrowserBase {
 	public void restorePage() {
 		throw new RuntimeException("Not implement !!!");
 	}
+
 }

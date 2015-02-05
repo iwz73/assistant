@@ -39,6 +39,15 @@ public class Select extends WebElementWithBy {
 		getSeleniumSelect().selectByVisibleText(text);
 	}
 
+	public String getSelectedText() {
+		for (Option opt : getOptions()) {
+			if (opt.isSelected()) {
+				return opt.getText();
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Get content options.
 	 * 
@@ -77,6 +86,15 @@ public class Select extends WebElementWithBy {
 		 */
 		public String getValue() {
 			return getAttribute(VALUE);
+		}
+
+		/**
+		 * Check if selected.
+		 * 
+		 * @return
+		 */
+		public boolean isSelected() {
+			return getSeleniumWebElement().isSelected();
 		}
 
 		@Override

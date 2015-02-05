@@ -18,10 +18,6 @@ public class TextInput extends WebElementWithBy {
 		getSeleniumWebElement().sendKeys(charSequence);
 	}
 
-	public void inputText(String text) {
-		getSeleniumWebElement().sendKeys(text);
-	}
-
 	public String getValue() {
 		return getAttribute(VALUE);
 	}

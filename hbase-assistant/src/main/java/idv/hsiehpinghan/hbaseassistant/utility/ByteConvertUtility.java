@@ -24,6 +24,9 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string) {
+		if(string == null) {
+			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING);
+		}
 		return Bytes.toBytes(string);
 	}
 

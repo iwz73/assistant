@@ -85,6 +85,9 @@ public class HbaseAssistant implements InitializingBean {
 	public void put(List<? extends HBaseTable> entities)
 			throws IllegalAccessException {
 		int size = entities.size();
+		if (size == 0) {
+			return;
+		}
 		final List<Put> puts = new ArrayList<Put>();
 
 		Class<?> cls = entities.get(0).getClass();

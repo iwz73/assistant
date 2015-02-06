@@ -184,10 +184,6 @@ public class AjaxWaitUtility {
 			@Override
 			public Boolean apply(Void v) {
 				try {
-
-					System.err.println("TTT : "
-							+ browser.getWebDriver().getPageSource());
-
 					browser.switchToFirstChildWindow();
 					return browser.getAttachment() != null;
 				} catch (Exception e) {

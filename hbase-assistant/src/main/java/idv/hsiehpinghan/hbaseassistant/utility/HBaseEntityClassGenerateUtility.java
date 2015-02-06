@@ -276,6 +276,10 @@ public class HBaseEntityClassGenerateUtility {
 			sb.append("this." + val.name
 					+ " = ByteConvertUtility.getBigIntegerFromBytes(bytes"
 					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
+		} else if ("int".equals(val.type)) {
+			sb.append("this." + val.name
+					+ " = ByteConvertUtility.getIntFromBytes(bytes"
+					+ getBeginAndEndIndexString(filedsAmt, val) + "); ");
 		} else {
 			throw new RuntimeException("Type(" + val.type
 					+ " not implements !!!");
@@ -468,7 +472,7 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/CompanyBasicInfo.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/MonthlyOperatingIncome.json");
 		String str = getEntityClassCode(f);
 
 		System.err.println(str);

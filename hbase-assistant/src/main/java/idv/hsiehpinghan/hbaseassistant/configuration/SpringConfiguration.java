@@ -49,7 +49,7 @@ public class SpringConfiguration {
 				.iterator();
 		while (iter.hasNext()) {
 			Map.Entry<String, String> entry = iter.next();
-			logger.info("hbase-utility configuration :" + entry.getKey()
+			logger.debug("hbase-utility configuration :" + entry.getKey()
 					+ " : " + entry.getValue());
 		}
 		return hbaseConfiguration;

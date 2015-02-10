@@ -1,8 +1,13 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
 public abstract class HBaseValue extends HBaseBase {
-	public abstract byte[] toBytes();
+	private byte[] bytes;
 
-	public abstract void fromBytes(byte[] bytes);
+	public byte[] getBytes() {
+		return bytes;
+	}
 
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
 }

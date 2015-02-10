@@ -169,7 +169,7 @@ public class HbaseAssistantTest {
 		// Test rowFilter
 		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
 				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
-						createTestEntity(0).getRowKey().toBytes()));
+						createTestEntity(0).getRowKey().getBytes()));
 		entity = (TestTable) hbaseAssistant.scan(TestTable.class, rowFilter)
 				.get(0);
 		Assert.assertEquals(1, entity.getFamily1()

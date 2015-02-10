@@ -79,7 +79,7 @@ public class TestTable extends HBaseTable {
 
 		public TestRowKey(byte[] bytes, TestTable entity) {
 			super(entity);
-			fromBytes(bytes);
+			setBytes(bytes);
 		}
 
 		public Date getValueDate1() {
@@ -106,30 +106,30 @@ public class TestTable extends HBaseTable {
 			this.keyInt1 = keyInt1;
 		}
 
-		@Override
-		public byte[] toBytes() {
-			byte[] keyDate1Bytes = ByteConvertUtility.toBytes(keyDate1);
-			byte[] keyString1Bytes = ByteConvertUtility.toBytes(keyString1,
-					KEY_STRING_1_LENGTH);
-			byte[] keyInt1Bytes = ByteConvertUtility.toBytes(keyInt1,
-					KEY_INT_1_LENGTH);
-			return ArrayUtility.addAll(keyDate1Bytes, SPACE, keyString1Bytes,
-					SPACE, keyInt1Bytes);
-		}
-
-		@Override
-		public void fromBytes(byte[] bytes) {
-			try {
-				this.keyDate1 = ByteConvertUtility.getDateFromBytes(bytes,
-						KEY_DATE_1_BEGIN_INDEX, KEY_DATE_1_END_INDEX);
-			} catch (ParseException e) {
-				throw new RuntimeException(e);
-			}
-			this.keyString1 = ByteConvertUtility.getStringFromBytes(bytes,
-					KEY_STRING_1_BEGIN_INDEX, KEY_STRING_1_END_INDEX);
-			this.keyInt1 = ByteConvertUtility.getIntFromBytes(bytes,
-					KEY_INT_1_BEGIN_INDEX, KEY_INT_1_END_INDEX);
-		}
+//		@Override
+//		public byte[] toBytes() {
+//			byte[] keyDate1Bytes = ByteConvertUtility.toBytes(keyDate1);
+//			byte[] keyString1Bytes = ByteConvertUtility.toBytes(keyString1,
+//					KEY_STRING_1_LENGTH);
+//			byte[] keyInt1Bytes = ByteConvertUtility.toBytes(keyInt1,
+//					KEY_INT_1_LENGTH);
+//			return ArrayUtility.addAll(keyDate1Bytes, SPACE, keyString1Bytes,
+//					SPACE, keyInt1Bytes);
+//		}
+//
+//		@Override
+//		public void fromBytes(byte[] bytes) {
+//			try {
+//				this.keyDate1 = ByteConvertUtility.getDateFromBytes(bytes,
+//						KEY_DATE_1_BEGIN_INDEX, KEY_DATE_1_END_INDEX);
+//			} catch (ParseException e) {
+//				throw new RuntimeException(e);
+//			}
+//			this.keyString1 = ByteConvertUtility.getStringFromBytes(bytes,
+//					KEY_STRING_1_BEGIN_INDEX, KEY_STRING_1_END_INDEX);
+//			this.keyInt1 = ByteConvertUtility.getIntFromBytes(bytes,
+//					KEY_INT_1_BEGIN_INDEX, KEY_INT_1_END_INDEX);
+//		}
 	}
 
 	public class TestFamily1 extends HBaseColumnFamily {
@@ -169,19 +169,19 @@ public class TestTable extends HBaseTable {
 
 			public TestQualifier1(byte[] bytes) {
 				super();
-				fromBytes(bytes);
+				setBytes(bytes);
 			}
 
-			@Override
-			public byte[] toBytes() {
-				return ByteConvertUtility.toBytes(qual);
-			}
-
-			@Override
-			public void fromBytes(byte[] bytes) {
-
-				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
-			}
+//			@Override
+//			public byte[] toBytes() {
+//				return ByteConvertUtility.toBytes(qual);
+//			}
+//
+//			@Override
+//			public void fromBytes(byte[] bytes) {
+//
+//				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
+//			}
 
 			public String getQual() {
 				return qual;
@@ -225,7 +225,7 @@ public class TestTable extends HBaseTable {
 
 			public TestValue1(byte[] bytes) {
 				super();
-				fromBytes(bytes);
+				setBytes(bytes);
 			}
 
 			public Date getValueDate1() {
@@ -252,32 +252,32 @@ public class TestTable extends HBaseTable {
 				this.valueInt1 = valueInt1;
 			}
 
-			@Override
-			public byte[] toBytes() {
-				byte[] valueDate1Bytes = ByteConvertUtility.toBytes(valueDate1);
-				byte[] valueString1Bytes = ByteConvertUtility.toBytes(
-						valueString1, VALUE_STRING_1_LENGTH);
-				byte[] valueInt1Bytes = ByteConvertUtility.toBytes(valueInt1,
-						VALUE_INT_1_LENGTH);
-				return ArrayUtility.addAll(valueDate1Bytes, SPACE,
-						valueString1Bytes, SPACE, valueInt1Bytes);
-			}
-
-			@Override
-			public void fromBytes(byte[] bytes) {
-				try {
-					this.valueDate1 = ByteConvertUtility.getDateFromBytes(
-							bytes, VALUE_DATE_1_BEGIN_INDEX,
-							VALUE_DATE_1_END_INDEX);
-				} catch (ParseException e) {
-					throw new RuntimeException(e);
-				}
-				this.valueString1 = ByteConvertUtility.getStringFromBytes(
-						bytes, VALUE_STRING_1_BEGIN_INDEX,
-						VALUE_STRING_1_END_INDEX);
-				this.valueInt1 = ByteConvertUtility.getIntFromBytes(bytes,
-						VALUE_INT_1_BEGIN_INDEX, VALUE_INT_1_END_INDEX);
-			}
+//			@Override
+//			public byte[] toBytes() {
+//				byte[] valueDate1Bytes = ByteConvertUtility.toBytes(valueDate1);
+//				byte[] valueString1Bytes = ByteConvertUtility.toBytes(
+//						valueString1, VALUE_STRING_1_LENGTH);
+//				byte[] valueInt1Bytes = ByteConvertUtility.toBytes(valueInt1,
+//						VALUE_INT_1_LENGTH);
+//				return ArrayUtility.addAll(valueDate1Bytes, SPACE,
+//						valueString1Bytes, SPACE, valueInt1Bytes);
+//			}
+//
+//			@Override
+//			public void fromBytes(byte[] bytes) {
+//				try {
+//					this.valueDate1 = ByteConvertUtility.getDateFromBytes(
+//							bytes, VALUE_DATE_1_BEGIN_INDEX,
+//							VALUE_DATE_1_END_INDEX);
+//				} catch (ParseException e) {
+//					throw new RuntimeException(e);
+//				}
+//				this.valueString1 = ByteConvertUtility.getStringFromBytes(
+//						bytes, VALUE_STRING_1_BEGIN_INDEX,
+//						VALUE_STRING_1_END_INDEX);
+//				this.valueInt1 = ByteConvertUtility.getIntFromBytes(bytes,
+//						VALUE_INT_1_BEGIN_INDEX, VALUE_INT_1_END_INDEX);
+//			}
 		}
 	}
 
@@ -318,18 +318,18 @@ public class TestTable extends HBaseTable {
 
 			public TestQualifier2(byte[] bytes) {
 				super();
-				fromBytes(bytes);
+				setBytes(bytes);
 			}
 
-			@Override
-			public byte[] toBytes() {
-				return ByteConvertUtility.toBytes(qual);
-			}
-
-			@Override
-			public void fromBytes(byte[] bytes) {
-				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
-			}
+//			@Override
+//			public byte[] toBytes() {
+//				return ByteConvertUtility.toBytes(qual);
+//			}
+//
+//			@Override
+//			public void fromBytes(byte[] bytes) {
+//				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
+//			}
 
 			public String getQual() {
 				return qual;
@@ -373,7 +373,7 @@ public class TestTable extends HBaseTable {
 
 			public TestValue2(byte[] bytes) {
 				super();
-				fromBytes(bytes);
+				setBytes(bytes);
 			}
 
 			public Date getValueDate2() {
@@ -400,32 +400,32 @@ public class TestTable extends HBaseTable {
 				this.valueInt2 = valueInt2;
 			}
 
-			@Override
-			public byte[] toBytes() {
-				byte[] valueDate2Bytes = ByteConvertUtility.toBytes(valueDate2);
-				byte[] valueString2Bytes = ByteConvertUtility.toBytes(
-						valueString2, VALUE_STRING_2_LENGTH);
-				byte[] valueInt2Bytes = ByteConvertUtility.toBytes(valueInt2,
-						VALUE_INT_2_LENGTH);
-				return ArrayUtility.addAll(valueDate2Bytes, SPACE,
-						valueString2Bytes, SPACE, valueInt2Bytes);
-			}
-
-			@Override
-			public void fromBytes(byte[] bytes) {
-				try {
-					this.valueDate2 = ByteConvertUtility.getDateFromBytes(
-							bytes, VALUE_DATE_2_BEGIN_INDEX,
-							VALUE_DATE_2_END_INDEX);
-				} catch (ParseException e) {
-					throw new RuntimeException(e);
-				}
-				this.valueString2 = ByteConvertUtility.getStringFromBytes(
-						bytes, VALUE_STRING_2_BEGIN_INDEX,
-						VALUE_STRING_2_END_INDEX);
-				this.valueInt2 = ByteConvertUtility.getIntFromBytes(bytes,
-						VALUE_INT_2_BEGIN_INDEX, VALUE_INT_2_END_INDEX);
-			}
+//			@Override
+//			public byte[] toBytes() {
+//				byte[] valueDate2Bytes = ByteConvertUtility.toBytes(valueDate2);
+//				byte[] valueString2Bytes = ByteConvertUtility.toBytes(
+//						valueString2, VALUE_STRING_2_LENGTH);
+//				byte[] valueInt2Bytes = ByteConvertUtility.toBytes(valueInt2,
+//						VALUE_INT_2_LENGTH);
+//				return ArrayUtility.addAll(valueDate2Bytes, SPACE,
+//						valueString2Bytes, SPACE, valueInt2Bytes);
+//			}
+//
+//			@Override
+//			public void fromBytes(byte[] bytes) {
+//				try {
+//					this.valueDate2 = ByteConvertUtility.getDateFromBytes(
+//							bytes, VALUE_DATE_2_BEGIN_INDEX,
+//							VALUE_DATE_2_END_INDEX);
+//				} catch (ParseException e) {
+//					throw new RuntimeException(e);
+//				}
+//				this.valueString2 = ByteConvertUtility.getStringFromBytes(
+//						bytes, VALUE_STRING_2_BEGIN_INDEX,
+//						VALUE_STRING_2_END_INDEX);
+//				this.valueInt2 = ByteConvertUtility.getIntFromBytes(bytes,
+//						VALUE_INT_2_BEGIN_INDEX, VALUE_INT_2_END_INDEX);
+//			}
 		}
 	}
 }

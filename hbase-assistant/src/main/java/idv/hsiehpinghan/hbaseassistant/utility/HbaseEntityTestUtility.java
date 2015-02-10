@@ -11,26 +11,26 @@ import java.io.IOException;
 import org.testng.internal.junit.ArrayAsserts;
 
 public class HbaseEntityTestUtility {
-	public static void toBytesFromBytes(HBaseRowKey rowKey) {
-		byte[] expecteds = rowKey.toBytes();
-		rowKey.fromBytes(expecteds);
-		byte[] actuals = rowKey.toBytes();
-		ArrayAsserts.assertArrayEquals(expecteds, actuals);
-	}
-
-	public static void toBytesFromBytes(HBaseColumnQualifier qualifier) {
-		byte[] expecteds = qualifier.toBytes();
-		qualifier.fromBytes(expecteds);
-		byte[] actuals = qualifier.toBytes();
-		ArrayAsserts.assertArrayEquals(expecteds, actuals);
-	}
-
-	public static void toBytesFromBytes(HBaseValue value) {
-		byte[] expecteds = value.toBytes();
-		value.fromBytes(expecteds);
-		byte[] actuals = value.toBytes();
-		ArrayAsserts.assertArrayEquals(expecteds, actuals);
-	}
+//	public static void toBytesFromBytes(HBaseRowKey rowKey) {
+//		byte[] expecteds = rowKey.getBytes();
+//		rowKey.setBytes(expecteds);
+//		byte[] actuals = rowKey.getBytes();
+//		ArrayAsserts.assertArrayEquals(expecteds, actuals);
+//	}
+//
+//	public static void toBytesFromBytes(HBaseColumnQualifier qualifier) {
+//		byte[] expecteds = qualifier.getBytes();
+//		qualifier.setBytes(expecteds);
+//		byte[] actuals = qualifier.getBytes();
+//		ArrayAsserts.assertArrayEquals(expecteds, actuals);
+//	}
+//
+//	public static void toBytesFromBytes(HBaseValue value) {
+//		byte[] expecteds = value.toBytes();
+//		value.fromBytes(expecteds);
+//		byte[] actuals = value.toBytes();
+//		ArrayAsserts.assertArrayEquals(expecteds, actuals);
+//	}
 
 	public static void dropAndCreateTargetTable(RepositoryBase repo) throws IOException {
 		String tableName = repo.getTargetTableName();

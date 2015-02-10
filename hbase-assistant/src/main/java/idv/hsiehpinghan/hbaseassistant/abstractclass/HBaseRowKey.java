@@ -1,23 +1,27 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
 public abstract class HBaseRowKey extends HBaseBase {
-	private HBaseTable table;
+	private HBaseTable entity;
+	private byte[] bytes;
 
-	public HBaseRowKey(HBaseTable table) {
-		this.table = table;
-		this.table.setRowKey(this);
+	public HBaseRowKey(HBaseTable entity) {
+		this.entity = entity;
+		this.entity.setRowKey(this);
 	}
 
-	public HBaseTable getTable() {
-		return table;
+	public HBaseTable getEntity() {
+		return entity;
 	}
 
 	public String getTableName() {
-		return table.getTableName();
+		return entity.getTableName();
 	}
 
-	public abstract byte[] toBytes();
+	public byte[] getBytes() {
+		return bytes;
+	}
 
-	public abstract void fromBytes(byte[] bytes);
-
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
 }

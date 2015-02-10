@@ -14,19 +14,19 @@ import java.util.TreeMap;
  *
  */
 public abstract class HBaseColumnFamily extends HBaseBase {
-	private HBaseTable table;
+	private HBaseTable entity;
 	private NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap;
 
-	protected HBaseColumnFamily(HBaseTable table) {
+	protected HBaseColumnFamily(HBaseTable entity) {
 		super();
-		this.table = table;
+		this.entity = entity;
 	}
 
 	protected HBaseColumnFamily(
 			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap,
-			HBaseTable table) {
+			HBaseTable entity) {
 		super();
-		this.table = table;
+		this.entity = entity;
 		this.qualifierVersionValueMap = qualifierVersionValueMap;
 	}
 
@@ -68,8 +68,8 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		this.qualifierVersionValueMap = qualifierVersionValueMap;
 	}
 
-	public HBaseTable getTable() {
-		return table;
+	public HBaseTable getEntity() {
+		return entity;
 	}
 
 	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(

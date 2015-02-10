@@ -95,7 +95,7 @@ public class HbaseAssistant implements InitializingBean {
 		for (int i = 0; i < size; ++i) {
 			HBaseTable entity = entities.get(i);
 			// Get row key
-			byte[] rowKey = getRowKey(entity).toBytes();
+			byte[] rowKey = getRowKey(entity).getBytes();
 			final Put put = new Put(rowKey);
 			puts.add(put);
 			// Get column families
@@ -120,12 +120,12 @@ public class HbaseAssistant implements InitializingBean {
 					}
 					for (Map.Entry<HBaseColumnQualifier, Map<Date, HBaseValue>> qualEntry : qualMap
 							.entrySet()) {
-						byte[] qualifier = qualEntry.getKey().toBytes();
+						byte[] qualifier = qualEntry.getKey().getBytes();
 						Map<Date, HBaseValue> verMap = qualEntry.getValue();
 						for (Map.Entry<Date, HBaseValue> verEntry : verMap
 								.entrySet()) {
 							long version = verEntry.getKey().getTime();
-							byte[] value = verEntry.getValue().toBytes();
+							byte[] value = verEntry.getValue().getBytes();
 							put.add(columnFamily, qualifier, version, value);
 						}
 					}
@@ -159,7 +159,7 @@ public class HbaseAssistant implements InitializingBean {
 			IOException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalArgumentException,
 			InvocationTargetException {
-		HBaseTable entity = rowKey.getTable();
+		HBaseTable entity = rowKey.getEntity();
 		get(entity, 1, null, null, null);
 		return entity;
 	}
@@ -313,7 +313,7 @@ public class HbaseAssistant implements InitializingBean {
 	 */
 	public boolean exist(HBaseRowKey rowKey) {
 		String tableName = rowKey.getTableName();
-		final Get get = new Get(rowKey.toBytes());
+		final Get get = new Get(rowKey.getBytes());
 		return hbaseTemplate.execute(tableName, new TableCallback<Boolean>() {
 			@Override
 			public Boolean doInTable(HTableInterface tableItf) throws Throwable {
@@ -351,7 +351,7 @@ public class HbaseAssistant implements InitializingBean {
 			IOException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalArgumentException,
 			InvocationTargetException {
-		Get get = new Get(entity.getRowKey().toBytes());
+		Get get = new Get(entity.getRowKey().getBytes());
 		List<Field> colFamFields = ObjectUtility.getFieldsByAssignableType(
 				entity.getClass(), HBaseColumnFamily.class);
 		boolean isAllFamNull = isAllColumnFamilyFieldNull(entity, colFamFields);
@@ -375,7 +375,7 @@ public class HbaseAssistant implements InitializingBean {
 				continue;
 			}
 			for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> entry : qualSet) {
-				get.addColumn(Bytes.toBytes(famName), entry.getKey().toBytes());
+				get.addColumn(Bytes.toBytes(famName), entry.getKey().getBytes());
 			}
 		}
 		long minTimestamp = minDate == null ? 0 : minDate.getTime();
@@ -418,7 +418,7 @@ public class HbaseAssistant implements InitializingBean {
 					@Override
 					public Boolean doInTable(HTableInterface tableItf)
 							throws Throwable {
-						Get get = new Get(rowKey.toBytes());
+						Get get = new Get(rowKey.getBytes());
 						return tableItf.exists(get);
 					}
 				});
@@ -503,7 +503,7 @@ public class HbaseAssistant implements InitializingBean {
 			generateRowKey(entity);
 		}
 		HBaseRowKey rowKey = entity.getRowKey();
-		rowKey.fromBytes(result.getRow());
+		rowKey.setBytes(result.getRow());
 	}
 
 	private void generateColumFamilysContent(final HBaseTable entity,

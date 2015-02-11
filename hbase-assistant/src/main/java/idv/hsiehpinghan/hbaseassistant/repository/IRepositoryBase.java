@@ -2,7 +2,6 @@ package idv.hsiehpinghan.hbaseassistant.repository;
 
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
-import idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistant;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -53,13 +52,6 @@ public interface IRepositoryBase {
 			InvocationTargetException, InstantiationException, IOException;
 
 	/**
-	 * Get HBase assistant.
-	 * 
-	 * @return
-	 */
-	HbaseAssistant getHbaseAssistant();
-
-	/**
 	 * Get this repository's target table name.
 	 * 
 	 * @return
@@ -72,4 +64,5 @@ public interface IRepositoryBase {
 	 * @return
 	 */
 	Class<? extends HBaseTable> getTargetTableClass();
+
 }

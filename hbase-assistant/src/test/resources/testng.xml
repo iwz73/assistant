@@ -4,7 +4,7 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting" />
-<!-- 			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" /> -->
+			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" />
 			<class name="idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistantTest" />
 		</classes>
 	</test>

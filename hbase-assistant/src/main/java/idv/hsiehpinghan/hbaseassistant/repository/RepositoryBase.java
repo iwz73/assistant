@@ -6,6 +6,7 @@ import idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistant;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public abstract class RepositoryBase {
 	/**
@@ -62,13 +63,6 @@ public abstract class RepositoryBase {
 	}
 
 	/**
-	 * Get HBase assistant.
-	 * 
-	 * @return
-	 */
-	public abstract HbaseAssistant getHbaseAssistant();
-
-	/**
 	 * Get this repository's target table name.
 	 * 
 	 * @return
@@ -78,9 +72,56 @@ public abstract class RepositoryBase {
 	}
 
 	/**
+	 * Put entities.
+	 * 
+	 * @param entities
+	 * @throws IllegalAccessException
+	 */
+	public void put(List<? extends HBaseTable> entities)
+			throws IllegalAccessException {
+		getHbaseAssistant().put(entities);
+	}
+
+	/**
+	 * Put entity.
+	 * 
+	 * @param entity
+	 * @throws IllegalAccessException
+	 */
+	public void put(HBaseTable entity) throws IllegalAccessException {
+		getHbaseAssistant().put(entity);
+	}
+
+	/**
+	 * Get row key.
+	 * 
+	 * @param rowKey
+	 * @return
+	 * @throws IOException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws InstantiationException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws IllegalAccessException
+	 */
+	public HBaseTable get(HBaseRowKey rowKey) throws IllegalAccessException,
+			NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalArgumentException, InvocationTargetException, IOException {
+		return getHbaseAssistant().get(rowKey);
+	}
+
+	/**
 	 * Get this repository's target table class.
 	 * 
 	 * @return
 	 */
 	public abstract Class<? extends HBaseTable> getTargetTableClass();
+
+	/**
+	 * Get HBase assistant.
+	 * 
+	 * @return
+	 */
+	protected abstract HbaseAssistant getHbaseAssistant();
 }

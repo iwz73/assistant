@@ -733,7 +733,7 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/assistant/hbase-assistant/src/test/entity-json/TestTable.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/Stock.json");
 		String str = getEntityClassCode(f);
 
 		System.err.println(str);

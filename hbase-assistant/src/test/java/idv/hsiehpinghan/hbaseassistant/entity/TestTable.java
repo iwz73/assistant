@@ -7,20 +7,23 @@ import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseRowKey;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
+import idv.hsiehpinghan.hbaseassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Set;
 
 public class TestTable extends HBaseTable {
 	private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY;
-	private TestRowKey rowKey;
-	private TestFamily1 family1;
-	private TestFamily2 family2;
-
-	public TestTable() {
-		super();
-	}
+	private RowKey rowKey;
+	private InfoFamily infoFamily;
+	private XbrlInstanceFamily xbrlInstanceFamily;
+	private FinancialReportFamily financialReportFamily;
+	private MonthlyFamily monthlyFamily;
+	private DailyFamily dailyFamily;
 
 	@Override
 	public HBaseRowKey getRowKey() {
@@ -29,403 +32,767 @@ public class TestTable extends HBaseTable {
 
 	@Override
 	public void setRowKey(HBaseRowKey rowKey) {
-		this.rowKey = (TestRowKey) rowKey;
+		this.rowKey = (RowKey) rowKey;
 	}
 
-	public TestFamily1 getFamily1() {
-		if (family1 == null) {
-			family1 = this.new TestFamily1(this);
+	public InfoFamily getInfoFamily() {
+		if (infoFamily == null) {
+			infoFamily = this.new InfoFamily(this);
 		}
-		return family1;
+		return infoFamily;
 	}
 
-	public TestFamily2 getFamily2() {
-		if (family2 == null) {
-			family2 = this.new TestFamily2(this);
+	public XbrlInstanceFamily getXbrlInstanceFamily() {
+		if (xbrlInstanceFamily == null) {
+			xbrlInstanceFamily = this.new XbrlInstanceFamily(this);
 		}
-		return family2;
+		return xbrlInstanceFamily;
 	}
 
-	public class TestRowKey extends HBaseRowKey {
-		private static final int KEY_DATE_1_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
-		private static final int KEY_STRING_1_LENGTH = 20;
-		private static final int KEY_INT_1_LENGTH = 20;
+	public FinancialReportFamily getFinancialReportFamily() {
+		if (financialReportFamily == null) {
+			financialReportFamily = this.new FinancialReportFamily(this);
+		}
+		return financialReportFamily;
+	}
 
-		private static final int KEY_DATE_1_BEGIN_INDEX = 0;
-		private static final int KEY_DATE_1_END_INDEX = KEY_DATE_1_BEGIN_INDEX
-				+ KEY_DATE_1_LENGTH;
-		private static final int KEY_STRING_1_BEGIN_INDEX = KEY_DATE_1_END_INDEX + 1;
-		private static final int KEY_STRING_1_END_INDEX = KEY_STRING_1_BEGIN_INDEX
-				+ KEY_STRING_1_LENGTH;
-		private static final int KEY_INT_1_BEGIN_INDEX = KEY_STRING_1_END_INDEX + 1;
-		private static final int KEY_INT_1_END_INDEX = KEY_INT_1_BEGIN_INDEX
-				+ KEY_INT_1_LENGTH;
+	public MonthlyFamily getMonthlyFamily() {
+		if (monthlyFamily == null) {
+			monthlyFamily = this.new MonthlyFamily(this);
+		}
+		return monthlyFamily;
+	}
 
-		private Date keyDate1;
-		private String keyString1;
-		private int keyInt1;
+	public DailyFamily getDailyFamily() {
+		if (dailyFamily == null) {
+			dailyFamily = this.new DailyFamily(this);
+		}
+		return dailyFamily;
+	}
 
-		public TestRowKey(TestTable entity) {
+	public class RowKey extends HBaseRowKey {
+		public RowKey(TestTable entity) {
 			super(entity);
 		}
 
-		public TestRowKey(Date keyDate1, String keyString1, int keyInt1,
-				TestTable entity) {
-			super(entity);
-			this.keyDate1 = keyDate1;
-			this.keyString1 = keyString1;
-			this.keyInt1 = keyInt1;
-		}
-
-		public TestRowKey(byte[] bytes, TestTable entity) {
+		public RowKey(byte[] bytes, TestTable entity) {
 			super(entity);
 			setBytes(bytes);
 		}
 
-		public Date getValueDate1() {
-			return keyDate1;
+		public RowKey(String stockCode, TestTable entity) {
+			super(entity);
+			setStockCode(stockCode);
 		}
 
-		public void setValueDate1(Date keyDate1) {
-			this.keyDate1 = keyDate1;
+		public String getStockCode() {
+			return ByteConvertUtility.getStringFromBytes(getBytes());
 		}
 
-		public String getValueString1() {
-			return keyString1;
+		public void setStockCode(String stockCode) {
+			byte[] bytes = ByteConvertUtility.toBytes(stockCode);
+			setBytes(bytes);
 		}
-
-		public void setValueString1(String keyString1) {
-			this.keyString1 = keyString1;
-		}
-
-		public int getValueInt1() {
-			return keyInt1;
-		}
-
-		public void setValueInt1(int keyInt1) {
-			this.keyInt1 = keyInt1;
-		}
-
-//		@Override
-//		public byte[] toBytes() {
-//			byte[] keyDate1Bytes = ByteConvertUtility.toBytes(keyDate1);
-//			byte[] keyString1Bytes = ByteConvertUtility.toBytes(keyString1,
-//					KEY_STRING_1_LENGTH);
-//			byte[] keyInt1Bytes = ByteConvertUtility.toBytes(keyInt1,
-//					KEY_INT_1_LENGTH);
-//			return ArrayUtility.addAll(keyDate1Bytes, SPACE, keyString1Bytes,
-//					SPACE, keyInt1Bytes);
-//		}
-//
-//		@Override
-//		public void fromBytes(byte[] bytes) {
-//			try {
-//				this.keyDate1 = ByteConvertUtility.getDateFromBytes(bytes,
-//						KEY_DATE_1_BEGIN_INDEX, KEY_DATE_1_END_INDEX);
-//			} catch (ParseException e) {
-//				throw new RuntimeException(e);
-//			}
-//			this.keyString1 = ByteConvertUtility.getStringFromBytes(bytes,
-//					KEY_STRING_1_BEGIN_INDEX, KEY_STRING_1_END_INDEX);
-//			this.keyInt1 = ByteConvertUtility.getIntFromBytes(bytes,
-//					KEY_INT_1_BEGIN_INDEX, KEY_INT_1_END_INDEX);
-//		}
 	}
 
-	public class TestFamily1 extends HBaseColumnFamily {
-		private TestFamily1(TestTable entity) {
+	public class InfoFamily extends HBaseColumnFamily {
+		public static final String ENUMERATION = "enumeration";
+		public static final String STRING = "string";
+
+		private InfoFamily(TestTable entity) {
 			super(entity);
 		}
 
-		public void add(String qual, Date date, Date valueDate1,
-				String valueString1, int valueInt1) {
-			HBaseColumnQualifier qualifier = this.new TestQualifier1(qual);
-			TestValue1 val = this.new TestValue1(valueDate1, valueString1,
-					valueInt1);
-			add(qualifier, date, val);
+		@SuppressWarnings("unchecked")
+		public Set<InfoQualifier> getQualifiers() {
+			return (Set<InfoQualifier>) (Object) super
+					.getQualifierVersionValueMap().keySet();
+		}
+
+		public Enumeration getEnumeration() {
+			HBaseColumnQualifier qual = new InfoQualifier(ENUMERATION);
+			InfoValue val = (InfoValue) super.getLatestValue(qual);
+			return val.getAsEnumeration();
+		}
+
+		public void setEnumeration(Date ver, Enumeration enumeration) {
+			InfoQualifier qual = new InfoQualifier(ENUMERATION);
+			InfoValue val = new InfoValue();
+			val.set(enumeration);
+			add(qual, ver, val);
+		}
+
+		public String getString() {
+			HBaseColumnQualifier qual = new InfoQualifier(STRING);
+			InfoValue val = (InfoValue) super.getLatestValue(qual);
+			return val.getAsString();
+		}
+
+		public void setString(Date ver, String string) {
+			InfoQualifier qual = new InfoQualifier(STRING);
+			InfoValue val = new InfoValue();
+			val.set(string);
+			add(qual, ver, val);
 		}
 
 		@Override
 		protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
-			return this.new TestQualifier1(bytes);
+			return this.new InfoQualifier(bytes);
 		}
 
 		@Override
 		protected HBaseValue generateValue(byte[] bytes) {
-			return this.new TestValue1(bytes);
+			return this.new InfoValue(bytes);
 		}
 
-		public class TestQualifier1 extends HBaseColumnQualifier {
-			private String qual;
-
-			public TestQualifier1() {
+		public class InfoQualifier extends HBaseColumnQualifier {
+			public InfoQualifier() {
 				super();
 			}
 
-			public TestQualifier1(String qual) {
-				super();
-				this.qual = qual;
-			}
-
-			public TestQualifier1(byte[] bytes) {
+			public InfoQualifier(byte[] bytes) {
 				super();
 				setBytes(bytes);
 			}
 
-//			@Override
-//			public byte[] toBytes() {
-//				return ByteConvertUtility.toBytes(qual);
-//			}
-//
-//			@Override
-//			public void fromBytes(byte[] bytes) {
-//
-//				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
-//			}
-
-			public String getQual() {
-				return qual;
+			public InfoQualifier(String columnName) {
+				super();
+				setColumnName(columnName);
 			}
 
-			public void setQual(String qual) {
-				this.qual = qual;
+			public String getColumnName() {
+				return ByteConvertUtility.getStringFromBytes(getBytes());
+			}
+
+			public void setColumnName(String columnName) {
+				byte[] bytes = ByteConvertUtility.toBytes(columnName);
+				setBytes(bytes);
 			}
 		}
 
-		public class TestValue1 extends HBaseValue {
-			private static final int VALUE_DATE_1_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
-			private static final int VALUE_STRING_1_LENGTH = 20;
-			private static final int VALUE_INT_1_LENGTH = 20;
-
-			private static final int VALUE_DATE_1_BEGIN_INDEX = 0;
-			private static final int VALUE_DATE_1_END_INDEX = VALUE_DATE_1_BEGIN_INDEX
-					+ VALUE_DATE_1_LENGTH;
-			private static final int VALUE_STRING_1_BEGIN_INDEX = VALUE_DATE_1_END_INDEX + 1;
-			private static final int VALUE_STRING_1_END_INDEX = VALUE_STRING_1_BEGIN_INDEX
-					+ VALUE_STRING_1_LENGTH;
-			private static final int VALUE_INT_1_BEGIN_INDEX = VALUE_STRING_1_END_INDEX + 1;
-			private static final int VALUE_INT_1_END_INDEX = VALUE_INT_1_BEGIN_INDEX
-					+ VALUE_INT_1_LENGTH;
-
-			private Date valueDate1;
-			private String valueString1;
-			private int valueInt1;
-
-			public TestValue1() {
+		public class InfoValue extends HBaseValue {
+			public InfoValue() {
 				super();
 			}
 
-			public TestValue1(Date valueDate1, String valueString1,
-					int valueInt1) {
-				super();
-				this.valueDate1 = valueDate1;
-				this.valueString1 = valueString1;
-				this.valueInt1 = valueInt1;
-			}
-
-			public TestValue1(byte[] bytes) {
+			public InfoValue(byte[] bytes) {
 				super();
 				setBytes(bytes);
 			}
 
-			public Date getValueDate1() {
-				return valueDate1;
+			public String getAsString() {
+				return ByteConvertUtility.getStringFromBytes(getBytes());
 			}
 
-			public void setValueDate1(Date valueDate1) {
-				this.valueDate1 = valueDate1;
+			public void set(String value) {
+				setBytes(ByteConvertUtility.toBytes(value));
 			}
 
-			public String getValueString1() {
-				return valueString1;
+			public Enumeration getAsEnumeration() {
+				return Enumeration.valueOf(ByteConvertUtility
+						.getStringFromBytes(getBytes()));
 			}
 
-			public void setValueString1(String valueString1) {
-				this.valueString1 = valueString1;
+			public void set(Enumeration value) {
+				setBytes(ByteConvertUtility.toBytes(value.name()));
 			}
-
-			public int getValueInt1() {
-				return valueInt1;
-			}
-
-			public void setValueInt1(int valueInt1) {
-				this.valueInt1 = valueInt1;
-			}
-
-//			@Override
-//			public byte[] toBytes() {
-//				byte[] valueDate1Bytes = ByteConvertUtility.toBytes(valueDate1);
-//				byte[] valueString1Bytes = ByteConvertUtility.toBytes(
-//						valueString1, VALUE_STRING_1_LENGTH);
-//				byte[] valueInt1Bytes = ByteConvertUtility.toBytes(valueInt1,
-//						VALUE_INT_1_LENGTH);
-//				return ArrayUtility.addAll(valueDate1Bytes, SPACE,
-//						valueString1Bytes, SPACE, valueInt1Bytes);
-//			}
-//
-//			@Override
-//			public void fromBytes(byte[] bytes) {
-//				try {
-//					this.valueDate1 = ByteConvertUtility.getDateFromBytes(
-//							bytes, VALUE_DATE_1_BEGIN_INDEX,
-//							VALUE_DATE_1_END_INDEX);
-//				} catch (ParseException e) {
-//					throw new RuntimeException(e);
-//				}
-//				this.valueString1 = ByteConvertUtility.getStringFromBytes(
-//						bytes, VALUE_STRING_1_BEGIN_INDEX,
-//						VALUE_STRING_1_END_INDEX);
-//				this.valueInt1 = ByteConvertUtility.getIntFromBytes(bytes,
-//						VALUE_INT_1_BEGIN_INDEX, VALUE_INT_1_END_INDEX);
-//			}
 		}
 	}
 
-	public class TestFamily2 extends HBaseColumnFamily {
-		private TestFamily2(TestTable entity) {
+	public class XbrlInstanceFamily extends HBaseColumnFamily {
+		private XbrlInstanceFamily(TestTable entity) {
 			super(entity);
 		}
 
-		public void add(String qual, Date date, Date valueDate2,
-				String valueString2, int valueInt2) {
-			HBaseColumnQualifier qualifier = this.new TestQualifier2(qual);
-			TestValue2 val = this.new TestValue2(valueDate2, valueString2,
-					valueInt2);
-			add(qualifier, date, val);
+		@SuppressWarnings("unchecked")
+		public Set<XbrlInstanceQualifier> getQualifiers() {
+			return (Set<XbrlInstanceQualifier>) (Object) super
+					.getQualifierVersionValueMap().keySet();
+		}
+
+		public BigDecimal getAsBigDecimal(String elementId,
+				Enumeration enumeration, Date instant) {
+			XbrlInstanceQualifier qual = new XbrlInstanceQualifier(elementId,
+					enumeration, instant);
+			XbrlInstanceValue val = (XbrlInstanceValue) super
+					.getLatestValue(qual);
+			return val.getAsBigDecimal();
+		}
+
+		public void set(String elementId, Enumeration enumeration,
+				Date instant, Date ver, BigDecimal value) {
+			XbrlInstanceQualifier qual = new XbrlInstanceQualifier(elementId,
+					enumeration, instant);
+			XbrlInstanceValue val = new XbrlInstanceValue();
+			val.set(value);
+			add(qual, ver, val);
 		}
 
 		@Override
-		public HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
-			return this.new TestQualifier2(bytes);
+		protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
+			return this.new XbrlInstanceQualifier(bytes);
 		}
 
 		@Override
-		public HBaseValue generateValue(byte[] bytes) {
-			return this.new TestValue2(bytes);
+		protected HBaseValue generateValue(byte[] bytes) {
+			return this.new XbrlInstanceValue(bytes);
 		}
 
-		public class TestQualifier2 extends HBaseColumnQualifier {
-			private String qual;
+		public class XbrlInstanceQualifier extends HBaseColumnQualifier {
+			private static final int ELEMENT_ID_LENGTH = 300;
+			private static final int ENUMERATION_LENGTH = 10;
+			private static final int INSTANT_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
+			private static final int ELEMENT_ID_BEGIN_INDEX = 0;
+			private static final int ELEMENT_ID_END_INDEX = ELEMENT_ID_BEGIN_INDEX
+					+ ELEMENT_ID_LENGTH;
+			private static final int ENUMERATION_BEGIN_INDEX = ELEMENT_ID_END_INDEX + 1;
+			private static final int ENUMERATION_END_INDEX = ENUMERATION_BEGIN_INDEX
+					+ ENUMERATION_LENGTH;
+			private static final int INSTANT_BEGIN_INDEX = ENUMERATION_END_INDEX + 1;
+			private static final int INSTANT_END_INDEX = INSTANT_BEGIN_INDEX
+					+ INSTANT_LENGTH;
 
-			public TestQualifier2() {
+			public XbrlInstanceQualifier() {
 				super();
 			}
 
-			public TestQualifier2(String qual) {
-				super();
-				this.qual = qual;
-			}
-
-			public TestQualifier2(byte[] bytes) {
+			public XbrlInstanceQualifier(byte[] bytes) {
 				super();
 				setBytes(bytes);
 			}
 
-//			@Override
-//			public byte[] toBytes() {
-//				return ByteConvertUtility.toBytes(qual);
-//			}
-//
-//			@Override
-//			public void fromBytes(byte[] bytes) {
-//				this.qual = ByteConvertUtility.getStringFromBytes(bytes);
-//			}
-
-			public String getQual() {
-				return qual;
+			public XbrlInstanceQualifier(String elementId,
+					Enumeration enumeration, Date instant) {
+				super();
+				byte[] elementIdBytes = ByteConvertUtility.toBytes(elementId,
+						300);
+				byte[] enumerationBytes = ByteConvertUtility.toBytes(
+						enumeration.name(), 10);
+				byte[] instantBytes = ByteConvertUtility.toBytes(instant);
+				super.setBytes(ArrayUtility.addAll(elementIdBytes, SPACE,
+						enumerationBytes, SPACE, instantBytes));
 			}
 
-			public void setQual(String qual) {
-				this.qual = qual;
+			public String getElementId() {
+				return ByteConvertUtility.getStringFromBytes(getBytes(),
+						ELEMENT_ID_BEGIN_INDEX, ELEMENT_ID_END_INDEX);
+			}
+
+			public void setElementId(String elementId) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(elementId, 300);
+				ArrayUtility.replace(bytes, subBytes, ELEMENT_ID_BEGIN_INDEX,
+						ELEMENT_ID_END_INDEX);
+			}
+
+			public Enumeration getEnumeration() {
+				return Enumeration
+						.valueOf(ByteConvertUtility.getStringFromBytes(
+								getBytes(), ENUMERATION_BEGIN_INDEX,
+								ENUMERATION_END_INDEX));
+			}
+
+			public void setEnumeration(Enumeration enumeration) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(
+						enumeration.name(), 10);
+				ArrayUtility.replace(bytes, subBytes, ENUMERATION_BEGIN_INDEX,
+						ENUMERATION_END_INDEX);
+			}
+
+			public Date getInstant() {
+				try {
+					return ByteConvertUtility.getDateFromBytes(getBytes(),
+							INSTANT_BEGIN_INDEX, INSTANT_END_INDEX);
+				} catch (ParseException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			public void setInstant(Date instant) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(instant);
+				ArrayUtility.replace(bytes, subBytes, INSTANT_BEGIN_INDEX,
+						INSTANT_END_INDEX);
 			}
 		}
 
-		public class TestValue2 extends HBaseValue {
-			private static final int VALUE_DATE_2_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
-			private static final int VALUE_STRING_2_LENGTH = 20;
-			private static final int VALUE_INT_2_LENGTH = 20;
-
-			private static final int VALUE_DATE_2_BEGIN_INDEX = 0;
-			private static final int VALUE_DATE_2_END_INDEX = VALUE_DATE_2_BEGIN_INDEX
-					+ VALUE_DATE_2_LENGTH;
-			private static final int VALUE_STRING_2_BEGIN_INDEX = VALUE_DATE_2_END_INDEX + 1;
-			private static final int VALUE_STRING_2_END_INDEX = VALUE_STRING_2_BEGIN_INDEX
-					+ VALUE_STRING_2_LENGTH;
-			private static final int VALUE_INT_2_BEGIN_INDEX = VALUE_STRING_2_END_INDEX + 1;
-			private static final int VALUE_INT_2_END_INDEX = VALUE_INT_2_BEGIN_INDEX
-					+ VALUE_INT_2_LENGTH;
-
-			private Date valueDate2;
-			private String valueString2;
-			private int valueInt2;
-
-			public TestValue2() {
+		public class XbrlInstanceValue extends HBaseValue {
+			public XbrlInstanceValue() {
 				super();
 			}
 
-			public TestValue2(Date valueDate2, String valueString2,
-					int valueInt2) {
-				super();
-				this.valueDate2 = valueDate2;
-				this.valueString2 = valueString2;
-				this.valueInt2 = valueInt2;
-			}
-
-			public TestValue2(byte[] bytes) {
+			public XbrlInstanceValue(byte[] bytes) {
 				super();
 				setBytes(bytes);
 			}
 
-			public Date getValueDate2() {
-				return valueDate2;
+			public BigDecimal getAsBigDecimal() {
+				return ByteConvertUtility.getBigDecimalFromBytes(getBytes());
 			}
 
-			public void setValueDate2(Date valueDate2) {
-				this.valueDate2 = valueDate2;
+			public void set(BigDecimal value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+		}
+	}
+
+	public class FinancialReportFamily extends HBaseColumnFamily {
+		private FinancialReportFamily(TestTable entity) {
+			super(entity);
+		}
+
+		@SuppressWarnings("unchecked")
+		public Set<FinancialReportQualifier> getQualifiers() {
+			return (Set<FinancialReportQualifier>) (Object) super
+					.getQualifierVersionValueMap().keySet();
+		}
+
+		public String getAsString(String elementId, Enumeration enumeration,
+				Date instant) {
+			FinancialReportQualifier qual = new FinancialReportQualifier(
+					elementId, enumeration, instant);
+			FinancialReportValue val = (FinancialReportValue) super
+					.getLatestValue(qual);
+			return val.getAsString();
+		}
+
+		public void set(String elementId, Enumeration enumeration,
+				Date instant, Date ver, String value) {
+			FinancialReportQualifier qual = new FinancialReportQualifier(
+					elementId, enumeration, instant);
+			FinancialReportValue val = new FinancialReportValue();
+			val.set(value);
+			add(qual, ver, val);
+		}
+
+		@Override
+		protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
+			return this.new FinancialReportQualifier(bytes);
+		}
+
+		@Override
+		protected HBaseValue generateValue(byte[] bytes) {
+			return this.new FinancialReportValue(bytes);
+		}
+
+		public class FinancialReportQualifier extends HBaseColumnQualifier {
+			private static final int ELEMENT_ID_LENGTH = 300;
+			private static final int ENUMERATION_LENGTH = 10;
+			private static final int INSTANT_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
+			private static final int ELEMENT_ID_BEGIN_INDEX = 0;
+			private static final int ELEMENT_ID_END_INDEX = ELEMENT_ID_BEGIN_INDEX
+					+ ELEMENT_ID_LENGTH;
+			private static final int ENUMERATION_BEGIN_INDEX = ELEMENT_ID_END_INDEX + 1;
+			private static final int ENUMERATION_END_INDEX = ENUMERATION_BEGIN_INDEX
+					+ ENUMERATION_LENGTH;
+			private static final int INSTANT_BEGIN_INDEX = ENUMERATION_END_INDEX + 1;
+			private static final int INSTANT_END_INDEX = INSTANT_BEGIN_INDEX
+					+ INSTANT_LENGTH;
+
+			public FinancialReportQualifier() {
+				super();
 			}
 
-			public String getValueString2() {
-				return valueString2;
+			public FinancialReportQualifier(byte[] bytes) {
+				super();
+				setBytes(bytes);
 			}
 
-			public void setValueString2(String valueString2) {
-				this.valueString2 = valueString2;
+			public FinancialReportQualifier(String elementId,
+					Enumeration enumeration, Date instant) {
+				super();
+				byte[] elementIdBytes = ByteConvertUtility.toBytes(elementId,
+						300);
+				byte[] enumerationBytes = ByteConvertUtility.toBytes(
+						enumeration.name(), 10);
+				byte[] instantBytes = ByteConvertUtility.toBytes(instant);
+				super.setBytes(ArrayUtility.addAll(elementIdBytes, SPACE,
+						enumerationBytes, SPACE, instantBytes));
 			}
 
-			public int getValueInt2() {
-				return valueInt2;
+			public String getElementId() {
+				return ByteConvertUtility.getStringFromBytes(getBytes(),
+						ELEMENT_ID_BEGIN_INDEX, ELEMENT_ID_END_INDEX);
 			}
 
-			public void setValueInt2(int valueInt2) {
-				this.valueInt2 = valueInt2;
+			public void setElementId(String elementId) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(elementId, 300);
+				ArrayUtility.replace(bytes, subBytes, ELEMENT_ID_BEGIN_INDEX,
+						ELEMENT_ID_END_INDEX);
 			}
 
-//			@Override
-//			public byte[] toBytes() {
-//				byte[] valueDate2Bytes = ByteConvertUtility.toBytes(valueDate2);
-//				byte[] valueString2Bytes = ByteConvertUtility.toBytes(
-//						valueString2, VALUE_STRING_2_LENGTH);
-//				byte[] valueInt2Bytes = ByteConvertUtility.toBytes(valueInt2,
-//						VALUE_INT_2_LENGTH);
-//				return ArrayUtility.addAll(valueDate2Bytes, SPACE,
-//						valueString2Bytes, SPACE, valueInt2Bytes);
-//			}
-//
-//			@Override
-//			public void fromBytes(byte[] bytes) {
-//				try {
-//					this.valueDate2 = ByteConvertUtility.getDateFromBytes(
-//							bytes, VALUE_DATE_2_BEGIN_INDEX,
-//							VALUE_DATE_2_END_INDEX);
-//				} catch (ParseException e) {
-//					throw new RuntimeException(e);
-//				}
-//				this.valueString2 = ByteConvertUtility.getStringFromBytes(
-//						bytes, VALUE_STRING_2_BEGIN_INDEX,
-//						VALUE_STRING_2_END_INDEX);
-//				this.valueInt2 = ByteConvertUtility.getIntFromBytes(bytes,
-//						VALUE_INT_2_BEGIN_INDEX, VALUE_INT_2_END_INDEX);
-//			}
+			public Enumeration getEnumeration() {
+				return Enumeration
+						.valueOf(ByteConvertUtility.getStringFromBytes(
+								getBytes(), ENUMERATION_BEGIN_INDEX,
+								ENUMERATION_END_INDEX));
+			}
+
+			public void setEnumeration(Enumeration enumeration) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(
+						enumeration.name(), 10);
+				ArrayUtility.replace(bytes, subBytes, ENUMERATION_BEGIN_INDEX,
+						ENUMERATION_END_INDEX);
+			}
+
+			public Date getInstant() {
+				try {
+					return ByteConvertUtility.getDateFromBytes(getBytes(),
+							INSTANT_BEGIN_INDEX, INSTANT_END_INDEX);
+				} catch (ParseException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			public void setInstant(Date instant) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(instant);
+				ArrayUtility.replace(bytes, subBytes, INSTANT_BEGIN_INDEX,
+						INSTANT_END_INDEX);
+			}
+		}
+
+		public class FinancialReportValue extends HBaseValue {
+			public FinancialReportValue() {
+				super();
+			}
+
+			public FinancialReportValue(byte[] bytes) {
+				super();
+				setBytes(bytes);
+			}
+
+			public String getAsString() {
+				return ByteConvertUtility.getStringFromBytes(getBytes());
+			}
+
+			public void set(String value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+		}
+	}
+
+	public class MonthlyFamily extends HBaseColumnFamily {
+		public static final String OPERATING_INCOME_OF_CURRENT_MONTH = "operatingIncomeOfCurrentMonth";
+		public static final String OPERATING_INCOME_OF_DIFFERENT_PERCENT = "operatingIncomeOfDifferentPercent";
+		public static final String OPERATING_INCOME_OF_COMMENT = "operatingIncomeOfComment";
+
+		private MonthlyFamily(TestTable entity) {
+			super(entity);
+		}
+
+		@SuppressWarnings("unchecked")
+		public Set<MonthlyQualifier> getQualifiers() {
+			return (Set<MonthlyQualifier>) (Object) super
+					.getQualifierVersionValueMap().keySet();
+		}
+
+		public BigInteger getOperatingIncomeOfCurrentMonth(int year, int month) {
+			HBaseColumnQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_CURRENT_MONTH, year, month);
+			MonthlyValue val = (MonthlyValue) super.getLatestValue(qual);
+			return val.getAsBigInteger();
+		}
+
+		public void setOperatingIncomeOfCurrentMonth(int year, int month,
+				Date ver, BigInteger operatingIncomeOfCurrentMonth) {
+			MonthlyQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_CURRENT_MONTH, year, month);
+			MonthlyValue val = new MonthlyValue();
+			val.set(operatingIncomeOfCurrentMonth);
+			add(qual, ver, val);
+		}
+
+		public BigDecimal getOperatingIncomeOfDifferentPercent(int year,
+				int month) {
+			HBaseColumnQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_DIFFERENT_PERCENT, year, month);
+			MonthlyValue val = (MonthlyValue) super.getLatestValue(qual);
+			return val.getAsBigDecimal();
+		}
+
+		public void setOperatingIncomeOfDifferentPercent(int year, int month,
+				Date ver, BigDecimal operatingIncomeOfDifferentPercent) {
+			MonthlyQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_DIFFERENT_PERCENT, year, month);
+			MonthlyValue val = new MonthlyValue();
+			val.set(operatingIncomeOfDifferentPercent);
+			add(qual, ver, val);
+		}
+
+		public String getOperatingIncomeOfComment(int year, int month) {
+			HBaseColumnQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_COMMENT, year, month);
+			MonthlyValue val = (MonthlyValue) super.getLatestValue(qual);
+			return val.getAsString();
+		}
+
+		public void setOperatingIncomeOfComment(int year, int month, Date ver,
+				String operatingIncomeOfComment) {
+			MonthlyQualifier qual = new MonthlyQualifier(
+					OPERATING_INCOME_OF_COMMENT, year, month);
+			MonthlyValue val = new MonthlyValue();
+			val.set(operatingIncomeOfComment);
+			add(qual, ver, val);
+		}
+
+		@Override
+		protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
+			return this.new MonthlyQualifier(bytes);
+		}
+
+		@Override
+		protected HBaseValue generateValue(byte[] bytes) {
+			return this.new MonthlyValue(bytes);
+		}
+
+		public class MonthlyQualifier extends HBaseColumnQualifier {
+			private static final int COLUMN_NAME_LENGTH = 100;
+			private static final int YEAR_LENGTH = 4;
+			private static final int MONTH_LENGTH = 2;
+			private static final int COLUMN_NAME_BEGIN_INDEX = 0;
+			private static final int COLUMN_NAME_END_INDEX = COLUMN_NAME_BEGIN_INDEX
+					+ COLUMN_NAME_LENGTH;
+			private static final int YEAR_BEGIN_INDEX = COLUMN_NAME_END_INDEX + 1;
+			private static final int YEAR_END_INDEX = YEAR_BEGIN_INDEX
+					+ YEAR_LENGTH;
+			private static final int MONTH_BEGIN_INDEX = YEAR_END_INDEX + 1;
+			private static final int MONTH_END_INDEX = MONTH_BEGIN_INDEX
+					+ MONTH_LENGTH;
+
+			public MonthlyQualifier() {
+				super();
+			}
+
+			public MonthlyQualifier(byte[] bytes) {
+				super();
+				setBytes(bytes);
+			}
+
+			public MonthlyQualifier(String columnName, int year, int month) {
+				super();
+				byte[] columnNameBytes = ByteConvertUtility.toBytes(columnName,
+						100);
+				byte[] yearBytes = ByteConvertUtility.toBytes(year, 4);
+				byte[] monthBytes = ByteConvertUtility.toBytes(month, 2);
+				super.setBytes(ArrayUtility.addAll(columnNameBytes, SPACE,
+						yearBytes, SPACE, monthBytes));
+			}
+
+			public String getColumnName() {
+				return ByteConvertUtility.getStringFromBytes(getBytes(),
+						COLUMN_NAME_BEGIN_INDEX, COLUMN_NAME_END_INDEX);
+			}
+
+			public void setColumnName(String columnName) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(columnName, 100);
+				ArrayUtility.replace(bytes, subBytes, COLUMN_NAME_BEGIN_INDEX,
+						COLUMN_NAME_END_INDEX);
+			}
+
+			public int getYear() {
+				return ByteConvertUtility.getIntFromBytes(getBytes(),
+						YEAR_BEGIN_INDEX, YEAR_END_INDEX);
+			}
+
+			public void setYear(int year) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(year, 4);
+				ArrayUtility.replace(bytes, subBytes, YEAR_BEGIN_INDEX,
+						YEAR_END_INDEX);
+			}
+
+			public int getMonth() {
+				return ByteConvertUtility.getIntFromBytes(getBytes(),
+						MONTH_BEGIN_INDEX, MONTH_END_INDEX);
+			}
+
+			public void setMonth(int month) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(month, 2);
+				ArrayUtility.replace(bytes, subBytes, MONTH_BEGIN_INDEX,
+						MONTH_END_INDEX);
+			}
+		}
+
+		public class MonthlyValue extends HBaseValue {
+			public MonthlyValue() {
+				super();
+			}
+
+			public MonthlyValue(byte[] bytes) {
+				super();
+				setBytes(bytes);
+			}
+
+			public BigInteger getAsBigInteger() {
+				return ByteConvertUtility.getBigIntegerFromBytes(getBytes());
+			}
+
+			public void set(BigInteger value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+
+			public String getAsString() {
+				return ByteConvertUtility.getStringFromBytes(getBytes());
+			}
+
+			public void set(String value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+
+			public BigDecimal getAsBigDecimal() {
+				return ByteConvertUtility.getBigDecimalFromBytes(getBytes());
+			}
+
+			public void set(BigDecimal value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+		}
+	}
+
+	public class DailyFamily extends HBaseColumnFamily {
+		public static final String CLOSING_CONDITION_OF_OPENING_PRICE = "closingConditionOfOpeningPrice";
+		public static final String CLOSING_CONDITION_OF_STOCK_AMOUNT = "closingConditionOfStockAmount";
+
+		private DailyFamily(TestTable entity) {
+			super(entity);
+		}
+
+		@SuppressWarnings("unchecked")
+		public Set<DailyQualifier> getQualifiers() {
+			return (Set<DailyQualifier>) (Object) super
+					.getQualifierVersionValueMap().keySet();
+		}
+
+		public BigDecimal getClosingConditionOfOpeningPrice(Date date) {
+			HBaseColumnQualifier qual = new DailyQualifier(
+					CLOSING_CONDITION_OF_OPENING_PRICE, date);
+			DailyValue val = (DailyValue) super.getLatestValue(qual);
+			return val.getAsBigDecimal();
+		}
+
+		public void setClosingConditionOfOpeningPrice(Date date, Date ver,
+				BigDecimal closingConditionOfOpeningPrice) {
+			DailyQualifier qual = new DailyQualifier(
+					CLOSING_CONDITION_OF_OPENING_PRICE, date);
+			DailyValue val = new DailyValue();
+			val.set(closingConditionOfOpeningPrice);
+			add(qual, ver, val);
+		}
+
+		public BigInteger getClosingConditionOfStockAmount(Date date) {
+			HBaseColumnQualifier qual = new DailyQualifier(
+					CLOSING_CONDITION_OF_STOCK_AMOUNT, date);
+			DailyValue val = (DailyValue) super.getLatestValue(qual);
+			return val.getAsBigInteger();
+		}
+
+		public void setClosingConditionOfStockAmount(Date date, Date ver,
+				BigInteger closingConditionOfStockAmount) {
+			DailyQualifier qual = new DailyQualifier(
+					CLOSING_CONDITION_OF_STOCK_AMOUNT, date);
+			DailyValue val = new DailyValue();
+			val.set(closingConditionOfStockAmount);
+			add(qual, ver, val);
+		}
+
+		@Override
+		protected HBaseColumnQualifier generateColumnQualifier(byte[] bytes) {
+			return this.new DailyQualifier(bytes);
+		}
+
+		@Override
+		protected HBaseValue generateValue(byte[] bytes) {
+			return this.new DailyValue(bytes);
+		}
+
+		public class DailyQualifier extends HBaseColumnQualifier {
+			private static final int COLUMN_NAME_LENGTH = 100;
+			private static final int DATE_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
+			private static final int COLUMN_NAME_BEGIN_INDEX = 0;
+			private static final int COLUMN_NAME_END_INDEX = COLUMN_NAME_BEGIN_INDEX
+					+ COLUMN_NAME_LENGTH;
+			private static final int DATE_BEGIN_INDEX = COLUMN_NAME_END_INDEX + 1;
+			private static final int DATE_END_INDEX = DATE_BEGIN_INDEX
+					+ DATE_LENGTH;
+
+			public DailyQualifier() {
+				super();
+			}
+
+			public DailyQualifier(byte[] bytes) {
+				super();
+				setBytes(bytes);
+			}
+
+			public DailyQualifier(String columnName, Date date) {
+				super();
+				byte[] columnNameBytes = ByteConvertUtility.toBytes(columnName,
+						100);
+				byte[] dateBytes = ByteConvertUtility.toBytes(date);
+				super.setBytes(ArrayUtility.addAll(columnNameBytes, SPACE,
+						dateBytes));
+			}
+
+			public String getColumnName() {
+				return ByteConvertUtility.getStringFromBytes(getBytes(),
+						COLUMN_NAME_BEGIN_INDEX, COLUMN_NAME_END_INDEX);
+			}
+
+			public void setColumnName(String columnName) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(columnName, 100);
+				ArrayUtility.replace(bytes, subBytes, COLUMN_NAME_BEGIN_INDEX,
+						COLUMN_NAME_END_INDEX);
+			}
+
+			public Date getDate() {
+				try {
+					return ByteConvertUtility.getDateFromBytes(getBytes(),
+							DATE_BEGIN_INDEX, DATE_END_INDEX);
+				} catch (ParseException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			public void setDate(Date date) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(date);
+				ArrayUtility.replace(bytes, subBytes, DATE_BEGIN_INDEX,
+						DATE_END_INDEX);
+			}
+		}
+
+		public class DailyValue extends HBaseValue {
+			public DailyValue() {
+				super();
+			}
+
+			public DailyValue(byte[] bytes) {
+				super();
+				setBytes(bytes);
+			}
+
+			public BigInteger getAsBigInteger() {
+				return ByteConvertUtility.getBigIntegerFromBytes(getBytes());
+			}
+
+			public void set(BigInteger value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
+
+			public BigDecimal getAsBigDecimal() {
+				return ByteConvertUtility.getBigDecimalFromBytes(getBytes());
+			}
+
+			public void set(BigDecimal value) {
+				setBytes(ByteConvertUtility.toBytes(value));
+			}
 		}
 	}
 }

@@ -37,7 +37,7 @@
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<collection-utility.version>1.0.0</collection-utility.version>
-		<!-- <test-utility.version>1.0.0</test-utility.version> -->
+		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -111,11 +111,11 @@
 		</dependency>
 
 		<!-- test-utility -->
-		<!-- <dependency> -->
-		<!-- <groupId>idv.hsiehpinghan</groupId> -->
-		<!-- <artifactId>test-utility</artifactId> -->
-		<!-- <version>${test-utility.version}</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>test-utility</artifactId>
+			<version>${test-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

@@ -2,17 +2,23 @@ package idv.hsiehpinghan.hbaseassistant.assistant;
 
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnFamily;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
+import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily1;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily1.TestValue1;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily2;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.TestFamily2.TestValue2;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.DailyFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.FinancialReportFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.InfoFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.MonthlyFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.RowKey;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.XbrlInstanceFamily;
+import idv.hsiehpinghan.hbaseassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,24 +46,39 @@ import org.testng.internal.junit.ArrayAsserts;
 public class HbaseAssistantTest {
 	private final Class<TestTable> tableClass = TestTable.class;
 	private final String tableName = tableClass.getSimpleName();
-	private final String valueString1 = "valueString1_";
-	private final String valueString2 = "valueString2_";
-	private int maxVersions;
+	private HbaseAssistant hbaseAssistant;
+	private int maxVersions = 10;
 	private Date minDate;
 	private Date maxDate;
 	private Filter filter;
-	private HbaseAssistant hbaseAssistant;
+	private Date ver;
+	private Enumeration enumeration = Enumeration.TYPE1;
+	private String string = "string";
+	private String elementId = "elementId";
+	private Date instant;
+	private BigDecimal value = new BigDecimal("1.1");
+	private int year = 2015;
+	private int month = 1;
+	private String operatingIncomeOfComment = "operatingIncomeOfComment";
+	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("2");
+	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("3.3");
+	private BigDecimal closingConditionOfOpeningPrice = new BigDecimal("4.4");
+	private Date date;
+	private BigInteger closingConditionOfStockAmount = new BigInteger("5");
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		hbaseAssistant = applicationContext.getBean(HbaseAssistant.class);
+		minDate = DateUtils.parseDate("2010/01/01", "yyyy/MM/dd");
+		maxDate = DateUtils.parseDate("2020/01/01", "yyyy/MM/dd");
+		ver = DateUtils.parseDate("2015/01/01", "yyyy/MM/dd");
 	}
 
 	@AfterClass
 	public void afterClass() throws Exception {
-		// hbaseAssistant.dropTable(tableName);
+		hbaseAssistant.dropTable(tableName);
 	}
 
 	@Test
@@ -106,7 +127,7 @@ public class HbaseAssistantTest {
 		TestTable entity = createTestEntity(0);
 		hbaseAssistant.put(entity);
 		Assert.assertTrue(hbaseAssistant.isRowExists(entity.getRowKey()));
-		
+
 		// Test put puts.
 		List<TestTable> entities = new ArrayList<TestTable>(2);
 		TestTable entity1 = createTestEntity(1);
@@ -120,13 +141,12 @@ public class HbaseAssistantTest {
 
 	@Test(dependsOnMethods = { "put" })
 	public void get() throws Exception {
-		maxVersions = 10;
-		minDate = DateUtils.parseDate("2010/01/01", "yyyy/MM/dd");
-		maxDate = DateUtils.parseDate("2020/01/01", "yyyy/MM/dd");
-		filter = null;
-		testGetRowKey();
-		testGetColumnFamily1();
-		testGetColumnFamily2();
+		int id = 0;
+		TestTable entity = new TestTable();
+		generateRowKey(entity, id);
+		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
+		testGetRowKey(entity, id);
+		testGetInfoFamily(entity);
 	}
 
 	@Test(dependsOnMethods = { "put" })
@@ -135,47 +155,65 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.exist(entity.getRowKey()));
 	}
 
-	@Test(dependsOnMethods = { "put" })
-	public void scan() throws Exception {
-		TestTable entity;
-		// Test no filter.
-		entity = (TestTable) hbaseAssistant.scan(TestTable.class).get(0);
-		Assert.assertEquals(1, entity.getFamily1()
+	private void TestNoFilter() {
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class);
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.get(0);
+		Assert.assertEquals(2, entity.getInfoFamily()
 				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(3, entity.getFamily2()
+	}
+
+	private void TestKeyOnlyFilter() {
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				new KeyOnlyFilter());
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.get(0);
+		valueEmptyTest(entity.getInfoFamily());
+	}
+
+	private void TestMultipleColumnPrefixFilter() {
+		byte[][] prefixes = new byte[][] { ByteConvertUtility
+				.toBytes(InfoFamily.ENUMERATION) };
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				new MultipleColumnPrefixFilter(prefixes));
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.get(0);
+		Assert.assertEquals(1, entity.getInfoFamily()
 				.getQualifierVersionValueSet().size());
-		// Test keyOnlyFilter.
-		entity = (TestTable) hbaseAssistant.scan(TestTable.class,
-				new KeyOnlyFilter()).get(0);
-		valueEmptyTest(entity.getFamily1());
-		valueEmptyTest(entity.getFamily2());
-		// Test multipleColumnPrefixFilter.
-		byte[][] prefixes = new byte[][] { ByteConvertUtility.toBytes("qual1") };
-		entity = (TestTable) hbaseAssistant.scan(TestTable.class,
-				new MultipleColumnPrefixFilter(prefixes)).get(0);
-		Assert.assertEquals(1, entity.getFamily1()
-				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(0, entity.getFamily2()
-				.getQualifierVersionValueSet().size());
-		// Test familyFilter.
+	}
+
+	private void TestFamilyFilter() {
 		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
-				new BinaryComparator(ByteConvertUtility.toBytes("family2")));
-		entity = (TestTable) hbaseAssistant.scan(TestTable.class, famFilter)
-				.get(0);
-		Assert.assertEquals(0, entity.getFamily1()
+				new BinaryComparator(ByteConvertUtility.toBytes("infoFamily")));
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				famFilter);
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.get(0);
+		Assert.assertEquals(2, entity.getInfoFamily()
 				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(3, entity.getFamily2()
+		Assert.assertEquals(0, entity.getMonthlyFamily()
 				.getQualifierVersionValueSet().size());
-		// Test rowFilter
+	}
+
+	private void TestRowFilter() throws Exception {
 		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
 				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
 						createTestEntity(0).getRowKey().getBytes()));
-		entity = (TestTable) hbaseAssistant.scan(TestTable.class, rowFilter)
-				.get(0);
-		Assert.assertEquals(1, entity.getFamily1()
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				rowFilter);
+		Assert.assertEquals(1, entities.size());
+		TestTable entity = (TestTable) entities.get(0);
+		Assert.assertEquals(2, entity.getInfoFamily()
 				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(3, entity.getFamily2()
-				.getQualifierVersionValueSet().size());
+	}
+
+	@Test(dependsOnMethods = { "put" })
+	public void scan() throws Exception {
+		TestNoFilter();
+		TestKeyOnlyFilter();
+		TestMultipleColumnPrefixFilter();
+		TestFamilyFilter();
+		TestRowFilter();
 	}
 
 	@Test(dependsOnMethods = { "put" })
@@ -193,28 +231,23 @@ public class HbaseAssistantTest {
 		}
 	}
 
-	private void testGetRowKey() throws Exception {
-		TestTable entity = new TestTable();
-		generateRowKey(entity, 0);
-		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
+	private void testGetRowKey(TestTable entity, int id) throws Exception {
+		RowKey rowKey = (RowKey) entity.getRowKey();
+		Assert.assertEquals(generateStockCode(id), rowKey.getStockCode());
 	}
 
-	private void testGetColumnFamily1() throws Exception {
-		TestTable entity = new TestTable();
-		generateRowKey(entity, 0);
-		entity.getFamily1();
-		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
-		testColumnFamily1(entity.getFamily1());
+	private String generateStockCode(int id) {
+		return "2330_" + id;
 	}
 
-	private void testColumnFamily1(TestFamily1 family1) {
-		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = family1
+	private void testGetInfoFamily(TestTable entity) {
+		InfoFamily fam = entity.getInfoFamily();
+		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = fam
 				.getQualifierVersionValueSet();
-		Assert.assertEquals(1, qualSet.size());
+		Assert.assertEquals(2, qualSet.size());
 		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualSet) {
 			NavigableMap<Date, HBaseValue> verMap = qualEntry.getValue();
 			Assert.assertEquals(3, verMap.size());
-
 			// Test verMap's descendingMap.
 			Date beforeDate = null;
 			for (Entry<Date, HBaseValue> verEntry : verMap.descendingMap()
@@ -225,85 +258,78 @@ public class HbaseAssistantTest {
 					Date currentDate = verEntry.getKey();
 					Assert.assertTrue(currentDate.getTime() < beforeDate
 							.getTime());
+					beforeDate = currentDate;
 				}
-				TestValue1 value = (TestValue1) verEntry.getValue();
-				Assert.assertTrue(value.getValueString1().startsWith(
-						valueString1));
 			}
 		}
 	}
 
-	private void testGetColumnFamily2() throws Exception {
+	private void generateRowKey(TestTable entity, int id) throws ParseException {
+		entity.new RowKey(generateStockCode(id), entity);
+	}
+
+	private void generateInfoFamily(TestTable entity) throws Exception {
+		InfoFamily fam = entity.getInfoFamily();
+		for (int i = 0; i < 3; ++i) {
+			fam.setEnumeration(DateUtils.addDays(ver, i), enumeration);
+			fam.setString(DateUtils.addDays(ver, -i), string);
+		}
+	}
+
+	private void generateXbrlInstanceFamily(TestTable entity) throws Exception {
+		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
+		fam.set(elementId, enumeration, instant, ver, value);
+	}
+
+	private void generateFinancialReportFamily(TestTable entity)
+			throws Exception {
+		FinancialReportFamily fam = entity.getFinancialReportFamily();
+		fam.set(elementId, enumeration, instant, ver, string);
+	}
+
+	private void generateMonthlyFamily(TestTable entity) throws Exception {
+		MonthlyFamily fam = entity.getMonthlyFamily();
+		fam.setOperatingIncomeOfComment(year, month, ver,
+				operatingIncomeOfComment);
+		fam.setOperatingIncomeOfCurrentMonth(year, month, ver,
+				operatingIncomeOfCurrentMonth);
+		fam.setOperatingIncomeOfDifferentPercent(year, month, ver,
+				operatingIncomeOfDifferentPercent);
+	}
+
+	private void generateDailyFamily(TestTable entity) throws Exception {
+		DailyFamily fam = entity.getDailyFamily();
+		fam.setClosingConditionOfOpeningPrice(date, ver,
+				closingConditionOfOpeningPrice);
+		fam.setClosingConditionOfStockAmount(date, ver,
+				closingConditionOfStockAmount);
+	}
+
+	// private void generateFamily2(TestTable entity) throws Exception {
+	// TestFamily2 family2 = entity.getFamily2();
+	// for (int i = 1; i <= 3; ++i) {
+	// String qual = "qual2_" + i;
+	// Date date = DateUtils.parseDate("2015/02/0" + i, "yyyy/MM/dd");
+	// Date valueDate2 = new Date();
+	// String valueString2 = this.valueString2 + i;
+	// int valueInt2 = 20 + i;
+	// add(family2, qual, date, valueDate2, valueString2, valueInt2);
+	// }
+	// }
+
+	// private void add(TestFamily2 family2, String qual, Date date,
+	// Date valueDate2, String valueString2, int valueInt2) {
+	// family2.add(qual, date, valueDate2, valueString2, valueInt2);
+	// }
+
+	private TestTable createTestEntity(int id) throws Exception {
 		TestTable entity = new TestTable();
-		generateRowKey(entity, 0);
-		entity.getFamily2();
-		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
-		testColumnFamily2(entity.getFamily2());
-	}
-
-	private void testColumnFamily2(TestFamily2 family2) {
-		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = family2
-				.getQualifierVersionValueSet();
-		Assert.assertEquals(3, qualSet.size());
-		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEntry : qualSet) {
-			NavigableMap<Date, HBaseValue> verMap = qualEntry.getValue();
-			Assert.assertEquals(1, verMap.size());
-
-			for (Entry<Date, HBaseValue> verEntry : verMap.descendingMap()
-					.entrySet()) {
-				TestValue2 value = (TestValue2) verEntry.getValue();
-				Assert.assertTrue(value.getValueString2().startsWith(
-						valueString2));
-			}
-		}
-	}
-
-	private void generateRowKey(TestTable entity, int plusDayAmt) throws ParseException {
-		Date keyDate1 = DateUtils.addDays(DateUtils.parseDate("1978/12/24", "yyyy/MM/dd"), plusDayAmt);
-		String keyString1 = "keyString1";
-		int keyInt1 = 888;
-		entity.new TestRowKey(keyDate1, keyString1, keyInt1, entity);
-	}
-
-	private void generateFamily1(TestTable entity) throws Exception {
-		TestFamily1 family1 = entity.getFamily1();
-		for (int i = 1; i <= 3; ++i) {
-			String qual = "qual1";
-			Date date = DateUtils.parseDate("2015/01/0" + i, "yyyy/MM/dd");
-			Date valueDate1 = DateUtils.addDays(new Date(), i);
-			String valueString1 = this.valueString1 + i;
-			int valueInt1 = 10 + i;
-			add(family1, qual, date, valueDate1, valueString1, valueInt1);
-		}
-	}
-
-	private void generateFamily2(TestTable entity) throws Exception {
-		TestFamily2 family2 = entity.getFamily2();
-		for (int i = 1; i <= 3; ++i) {
-			String qual = "qual2_" + i;
-			Date date = DateUtils.parseDate("2015/02/0" + i, "yyyy/MM/dd");
-			Date valueDate2 = new Date();
-			String valueString2 = this.valueString2 + i;
-			int valueInt2 = 20 + i;
-			add(family2, qual, date, valueDate2, valueString2, valueInt2);
-		}
-	}
-
-	private void add(TestFamily1 family1, String qual, Date date,
-			Date valueDate1, String valueString1, int valueInt1) {
-		family1.add(qual, date, valueDate1, valueString1, valueInt1);
-	}
-
-	private void add(TestFamily2 family2, String qual, Date date,
-			Date valueDate2, String valueString2, int valueInt2) {
-		family2.add(qual, date, valueDate2, valueString2, valueInt2);
-	}
-
-	private TestTable createTestEntity(int plusDayAmt) throws Exception {
-		TestTable entity = new TestTable();
-		generateRowKey(entity, plusDayAmt);
-		generateFamily1(entity);
-		generateFamily2(entity);
+		generateRowKey(entity, id);
+		generateInfoFamily(entity);
+		generateXbrlInstanceFamily(entity);
+		generateFinancialReportFamily(entity);
+		generateMonthlyFamily(entity);
+		generateDailyFamily(entity);
 		return entity;
 	}
 

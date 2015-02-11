@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -395,8 +396,10 @@ public class HbaseAssistant implements InitializingBean {
 
 	String[] getColumnFamilyNames(Class<?> cls) {
 		List<Field> colFamFields = getColumnFamilyFields(cls);
-		List<String> colFamNms = convertToFiledNames(colFamFields);
-		return colFamNms.toArray(new String[colFamNms.size()]);
+		Set<String> colFamNms = convertToFiledNames(colFamFields);
+		String[] strArr = new String[colFamNms.size()];
+		colFamNms.toArray(strArr);
+		return strArr;
 	}
 
 	HColumnDescriptor[] getColumnDescriptors(String tableName) {
@@ -456,12 +459,12 @@ public class HbaseAssistant implements InitializingBean {
 		return true;
 	}
 
-	private List<String> convertToFiledNames(List<Field> colFamFields) {
-		List<String> fNms = new ArrayList<String>(colFamFields.size());
+	private Set<String> convertToFiledNames(List<Field> colFamFields) {
+		Set<String> set = new TreeSet<String>();
 		for (Field f : colFamFields) {
-			fNms.add(convertToFiledName(f));
+			set.add(convertToFiledName(f));
 		}
-		return fNms;
+		return set;
 	}
 
 	private String convertToFiledName(Field colFamField) {

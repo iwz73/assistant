@@ -100,7 +100,7 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		return qualMap.get(qualifier);
 	}
 
-	private NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
+	protected NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
 		if (qualifierVersionValueMap == null) {
 			qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
 		}

@@ -6,6 +6,8 @@
 			<class name="idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting" />
 			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" />
 			<class name="idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistantTest" />
+			<class
+				name="idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtilityTest" />
 		</classes>
 	</test>
 </suite>

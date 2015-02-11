@@ -14,6 +14,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class ByteConvertUtility {
+	private static final String EMPTY_STRING = StringUtility.EMPTY_STRING;
 	private static final String DEFAULT_DATE_PATTERN = "yyyyMMdd";
 	public static final int DEFAULT_DATE_PATTERN_LENGTH = 8;
 
@@ -24,11 +25,11 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string) {
-		if(string == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING);
-		}
-		return Bytes.toBytes(string);
+		String str = StringUtility.getNotNullString(string);
+		return Bytes.toBytes(str);
 	}
+	
+
 
 	/**
 	 * Get string from bytes.
@@ -37,7 +38,11 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static String getStringFromBytes(byte[] bytes) {
-		return Bytes.toString(bytes);
+		String str = Bytes.toString(bytes);
+		if(EMPTY_STRING.equals(str)) {
+			return null;
+		}
+		return str;
 	}
 
 	/**
@@ -48,8 +53,9 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string, int byteLength) {
-		checkSize(string, byteLength);
-		return Bytes.toBytes(StringUtils.leftPad(string, byteLength));
+		String str = StringUtility.getNotNullString(string);
+		checkSize(str, byteLength);
+		return Bytes.toBytes(StringUtils.rightPad(str, byteLength));
 	}
 
 	/**
@@ -62,8 +68,13 @@ public class ByteConvertUtility {
 	 */
 	public static String getStringFromBytes(byte[] bytes, int beginIndex,
 			int endIndex) {
-		return Bytes.toString(ArrayUtils.subarray(bytes, beginIndex, endIndex))
+		String str = Bytes.toString(ArrayUtils.subarray(bytes, beginIndex, endIndex))
 				.trim();
+		if(EMPTY_STRING.equals(str)) {
+			return null;
+		} else {
+			return str;
+		}
 	}
 
 	/**
@@ -146,14 +157,18 @@ public class ByteConvertUtility {
 	 */
 	public static byte[] toBytes(BigDecimal bigDecimal, int byteLength) {
 		if (bigDecimal == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
-					byteLength);
-		}
-		if (byteLength == 0) {
-			return Bytes.toBytes(bigDecimal.toString());
+			if (byteLength == 0) {
+				return Bytes.toBytes(StringUtility.EMPTY_STRING);
+			} else {
+				return toBytes(StringUtility.EMPTY_STRING,
+						byteLength);
+			}
 		} else {
-			return ByteConvertUtility
-					.toBytes(bigDecimal.toString(), byteLength);
+			if (byteLength == 0) {
+				return Bytes.toBytes(bigDecimal.toString());
+			} else {
+				return toBytes(bigDecimal.toString(), byteLength);
+			}	
 		}
 	}
 
@@ -176,13 +191,18 @@ public class ByteConvertUtility {
 	 */
 	public static byte[] toBytes(Integer integer, int byteLength) {
 		if (integer == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
-					byteLength);
-		}
-		if (byteLength == 0) {
-			return Bytes.toBytes(integer.toString());
+			if (byteLength == 0) {
+				return toBytes(StringUtility.EMPTY_STRING);
+			} else {
+				return toBytes(StringUtility.EMPTY_STRING,
+						byteLength);
+			}
 		} else {
-			return ByteConvertUtility.toBytes(integer.toString(), byteLength);
+			if (byteLength == 0) {
+				return toBytes(integer.toString());
+			} else {
+				return toBytes(integer.toString(), byteLength);
+			}
 		}
 	}
 
@@ -205,14 +225,18 @@ public class ByteConvertUtility {
 	 */
 	public static byte[] toBytes(BigInteger bigInteger, int byteLength) {
 		if (bigInteger == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
-					byteLength);
-		}
-		if (byteLength == 0) {
-			return Bytes.toBytes(bigInteger.toString());
+			if (byteLength == 0) {
+				return Bytes.toBytes(StringUtility.EMPTY_STRING);
+			} else {
+				return toBytes(StringUtility.EMPTY_STRING,
+						byteLength);
+			}
 		} else {
-			return ByteConvertUtility
-					.toBytes(bigInteger.toString(), byteLength);
+			if (byteLength == 0) {
+				return Bytes.toBytes(bigInteger.toString());
+			} else {
+				return toBytes(bigInteger.toString(), byteLength);
+			}	
 		}
 	}
 
@@ -232,7 +256,7 @@ public class ByteConvertUtility {
 		} else {
 			str = getStringFromBytes(bytes, beginIndex, endIndex);
 		}
-		if (StringUtility.EMPTY_STRING.equals(str)) {
+		if (str == null) {
 			return null;
 		}
 		return new BigDecimal(str);
@@ -264,7 +288,7 @@ public class ByteConvertUtility {
 		} else {
 			str = getStringFromBytes(bytes, beginIndex, endIndex);
 		}
-		if (StringUtility.EMPTY_STRING.equals(str)) {
+		if (str == null) {
 			return null;
 		}
 		return new Integer(str);
@@ -296,7 +320,7 @@ public class ByteConvertUtility {
 		} else {
 			str = getStringFromBytes(bytes, beginIndex, endIndex);
 		}
-		if (StringUtility.EMPTY_STRING.equals(str)) {
+		if (str == null) {
 			return null;
 		}
 		return new BigInteger(str);
@@ -314,11 +338,10 @@ public class ByteConvertUtility {
 
 	private static byte[] toBytes(Date date, int byteLength, String datePattern) {
 		if (date == null) {
-			return ByteConvertUtility.toBytes(StringUtility.EMPTY_STRING,
-					byteLength);
+			return Bytes.toBytes(StringUtility.EMPTY_STRING);
 		}
-		return ByteConvertUtility.toBytes(
-				DateFormatUtils.format(date, datePattern), byteLength);
+		String str = DateFormatUtils.format(date, datePattern);
+		return toBytes(str, byteLength);
 	}
 
 	private static Date getDateFromBytes(byte[] bytes, int beginIndex,
@@ -329,7 +352,7 @@ public class ByteConvertUtility {
 		} else {
 			str = getStringFromBytes(bytes, beginIndex, endIndex);
 		}
-		if (StringUtility.EMPTY_STRING.equals(str)) {
+		if (str == null) {
 			return null;
 		}
 		return DateUtils.parseDate(str, datePattern);
@@ -342,4 +365,5 @@ public class ByteConvertUtility {
 					+ length + ") bigger than " + byteLength + " !!!");
 		}
 	}
+
 }

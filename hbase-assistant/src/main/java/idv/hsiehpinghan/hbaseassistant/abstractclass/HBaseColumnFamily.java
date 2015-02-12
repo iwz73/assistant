@@ -59,6 +59,15 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		return getQualifierVersionValueMap().entrySet();
 	}
 
+	/**
+	 * Get descendingQualifierVersionValueSet.(If not exists, return empty set.)
+	 * 
+	 * @return
+	 */
+	public Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> getDescendingQualifierVersionValueSet() {
+		return getQualifierVersionValueMap().descendingMap().entrySet();
+	}
+
 	public void add(HBaseColumnQualifier qualifier, Date date, HBaseValue value) {
 		getVersionValueMap(qualifier).put(date, value);
 	}
@@ -88,6 +97,13 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	protected abstract HBaseColumnQualifier generateColumnQualifier(
 			byte[] qualifierBytes);
 
+	protected NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
+		if (qualifierVersionValueMap == null) {
+			qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
+		}
+		return qualifierVersionValueMap;
+	}
+
 	protected abstract HBaseValue generateValue(byte[] valueBytes);
 
 	private NavigableMap<Date, HBaseValue> getVersionValueMap(
@@ -98,12 +114,5 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			qualMap.put(qualifier, verMap);
 		}
 		return qualMap.get(qualifier);
-	}
-
-	protected NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> getQualifierVersionValueMap() {
-		if (qualifierVersionValueMap == null) {
-			qualifierVersionValueMap = new TreeMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>();
-		}
-		return qualifierVersionValueMap;
 	}
 }

@@ -38,7 +38,7 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static String getStringFromBytes(byte[] bytes) {
-		String str = Bytes.toString(bytes);
+		String str = Bytes.toString(bytes).trim();
 		if (EMPTY_STRING.equals(str)) {
 			return null;
 		}
@@ -338,7 +338,7 @@ public class ByteConvertUtility {
 
 	private static byte[] toBytes(Date date, int byteLength, String datePattern) {
 		if (date == null) {
-			return Bytes.toBytes(StringUtility.EMPTY_STRING);
+			return toBytes(EMPTY_STRING, byteLength);
 		}
 		String str = DateFormatUtils.format(date, datePattern);
 		return toBytes(str, byteLength);

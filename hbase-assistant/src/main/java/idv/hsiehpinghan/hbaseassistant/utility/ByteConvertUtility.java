@@ -25,11 +25,11 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string) {
-		String str = StringUtility.getNotNullString(string);
-		return Bytes.toBytes(str);
+		if (string == null) {
+			return Bytes.toBytes(EMPTY_STRING);
+		}
+		return Bytes.toBytes(string);
 	}
-	
-
 
 	/**
 	 * Get string from bytes.
@@ -39,7 +39,7 @@ public class ByteConvertUtility {
 	 */
 	public static String getStringFromBytes(byte[] bytes) {
 		String str = Bytes.toString(bytes);
-		if(EMPTY_STRING.equals(str)) {
+		if (EMPTY_STRING.equals(str)) {
 			return null;
 		}
 		return str;
@@ -53,9 +53,12 @@ public class ByteConvertUtility {
 	 * @return
 	 */
 	public static byte[] toBytes(String string, int byteLength) {
-		String str = StringUtility.getNotNullString(string);
-		checkSize(str, byteLength);
-		return Bytes.toBytes(StringUtils.rightPad(str, byteLength));
+		if (string == null) {
+			return Bytes
+					.toBytes(StringUtils.rightPad(EMPTY_STRING, byteLength));
+		}
+		checkSize(string, byteLength);
+		return Bytes.toBytes(StringUtils.rightPad(string, byteLength));
 	}
 
 	/**
@@ -68,9 +71,9 @@ public class ByteConvertUtility {
 	 */
 	public static String getStringFromBytes(byte[] bytes, int beginIndex,
 			int endIndex) {
-		String str = Bytes.toString(ArrayUtils.subarray(bytes, beginIndex, endIndex))
-				.trim();
-		if(EMPTY_STRING.equals(str)) {
+		String str = Bytes.toString(
+				ArrayUtils.subarray(bytes, beginIndex, endIndex)).trim();
+		if (EMPTY_STRING.equals(str)) {
 			return null;
 		} else {
 			return str;
@@ -160,15 +163,14 @@ public class ByteConvertUtility {
 			if (byteLength == 0) {
 				return Bytes.toBytes(StringUtility.EMPTY_STRING);
 			} else {
-				return toBytes(StringUtility.EMPTY_STRING,
-						byteLength);
+				return toBytes(StringUtility.EMPTY_STRING, byteLength);
 			}
 		} else {
 			if (byteLength == 0) {
 				return Bytes.toBytes(bigDecimal.toString());
 			} else {
 				return toBytes(bigDecimal.toString(), byteLength);
-			}	
+			}
 		}
 	}
 
@@ -194,8 +196,7 @@ public class ByteConvertUtility {
 			if (byteLength == 0) {
 				return toBytes(StringUtility.EMPTY_STRING);
 			} else {
-				return toBytes(StringUtility.EMPTY_STRING,
-						byteLength);
+				return toBytes(StringUtility.EMPTY_STRING, byteLength);
 			}
 		} else {
 			if (byteLength == 0) {
@@ -228,15 +229,14 @@ public class ByteConvertUtility {
 			if (byteLength == 0) {
 				return Bytes.toBytes(StringUtility.EMPTY_STRING);
 			} else {
-				return toBytes(StringUtility.EMPTY_STRING,
-						byteLength);
+				return toBytes(StringUtility.EMPTY_STRING, byteLength);
 			}
 		} else {
 			if (byteLength == 0) {
 				return Bytes.toBytes(bigInteger.toString());
 			} else {
 				return toBytes(bigInteger.toString(), byteLength);
-			}	
+			}
 		}
 	}
 

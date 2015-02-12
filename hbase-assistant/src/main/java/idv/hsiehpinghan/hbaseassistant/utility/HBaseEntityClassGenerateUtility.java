@@ -423,16 +423,36 @@ public class HBaseEntityClassGenerateUtility {
 		return sb.toString();
 	}
 
+	private static String getValueFieldParameterString(Family family,
+			boolean withType) {
+		List<Value> vals = family.valCon.values;
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		for (Value val : vals) {
+			if (i > 0) {
+				sb.append(",");
+			}
+			if (withType == true) {
+				sb.append(val.type + " ");
+			}
+			sb.append(val.name);
+			++i;
+		}
+		return sb.toString();
+	}
+
 	private static void generateFamilyGetterSetterSection(StringBuilder sb,
 			Family family) {
 
 		List<Value> columns = family.columns;
 		if (columns == null) {
-			return;
-		}
-		for (Value column : columns) {
-			generateFamilyGetter(sb, family, column);
-			generateFamilySetter(sb, family, column);
+			generateFamilyValueGetter(sb, family);
+			generateFamilyValueSetter(sb, family);
+		} else {
+			for (Value column : columns) {
+				generateFamilyColumnGetter(sb, family, column);
+				generateFamilyColumnSetter(sb, family, column);
+			}
 		}
 	}
 
@@ -452,24 +472,40 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("} ");
 	}
 
-	private static void generateFamilyGetter(StringBuilder sb, Family family,
-			Value val) {
-		String paramStr = getQualifierFieldWithoutColumnNameParameterString(
+	private static void generateFamilyColumnGetter(StringBuilder sb,
+			Family family, Value val) {
+		String qualParamStr = getQualifierFieldWithoutColumnNameParameterString(
 				family, true);
-		String paramStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
 				family, false);
 		sb.append("public " + val.type + " get"
-				+ StringUtils.capitalize(val.name) + "(" + paramStr + ") { ");
+				+ StringUtils.capitalize(val.name) + "(" + qualParamStr
+				+ ") { ");
 		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
 				+ "(");
 		sb.append(getColumnNameString(val.name));
-		if (EMPTY_STRING.equals(paramStrWithoutType) == false) {
-			sb.append("," + paramStrWithoutType);
+		if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
+			sb.append("," + qualParamStrWithoutType);
 		}
 		sb.append("); ");
 		sb.append(family.valCon.type + " val = (" + family.valCon.type
 				+ ") super.getLatestValue(qual); ");
 		sb.append("return val.getAs" + val.type + "(); ");
+		sb.append("} ");
+	}
+
+	private static void generateFamilyValueGetter(StringBuilder sb,
+			Family family) {
+		String paramStr = getQualifierFieldWithoutColumnNameParameterString(
+				family, true);
+		String paramStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
+		sb.append("public " + family.valCon.type + " get" + family.valCon.type
+				+ "(" + paramStr + ") { ");
+		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
+				+ "(" + paramStrWithoutType + "); ");
+		sb.append("return (" + family.valCon.type
+				+ ") super.getLatestValue(qual); ");
 		sb.append("} ");
 	}
 
@@ -520,8 +556,8 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append("} ");
 	}
 
-	private static void generateFamilySetter(StringBuilder sb, Family family,
-			Value val) {
+	private static void generateFamilyColumnSetter(StringBuilder sb,
+			Family family, Value val) {
 		String paramStr = getQualifierFieldWithoutColumnNameParameterString(
 				family, true);
 		String paramStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
@@ -542,6 +578,25 @@ public class HBaseEntityClassGenerateUtility {
 		sb.append(family.valCon.type + " val = new " + family.valCon.type
 				+ "(); ");
 		sb.append("val.set(" + val.name + "); ");
+		sb.append("add(qual, ver, val); ");
+		sb.append("} ");
+	}
+
+	private static void generateFamilyValueSetter(StringBuilder sb,
+			Family family) {
+		String qualParamStr = getQualifierFieldWithoutColumnNameParameterString(
+				family, true);
+		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
+		String valParamStr = getValueFieldParameterString(family, true);
+		String valParamStrWithoutType = getValueFieldParameterString(family,
+				false);
+		sb.append("public void set" + family.valCon.type + "(" + qualParamStr
+				+ ", Date ver, " + valParamStr + ") { ");
+		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
+				+ "(" + qualParamStrWithoutType + "); ");
+		sb.append(family.valCon.type + " val = new " + family.valCon.type + "("
+				+ valParamStrWithoutType + "); ");
 		sb.append("add(qual, ver, val); ");
 		sb.append("} ");
 	}
@@ -617,6 +672,7 @@ public class HBaseEntityClassGenerateUtility {
 		generateLengthSection(sb, con);
 		generateIndexSection(sb, con);
 		generateConstructorsSection(sb, con);
+		generateGetterSetterSection(sb, con);
 		generateValueContainerAsGetterAsSetterSection(sb, con);
 	}
 
@@ -733,7 +789,7 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/Stock.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
 		String str = getEntityClassCode(f);
 
 		System.err.println(str);

@@ -9,6 +9,7 @@ import idv.hsiehpinghan.xbrlassistant.xbrl.Presentation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +95,22 @@ public class TaxonomyAssistant implements InitializingBean {
 		}
 
 		return resultSet;
+	}
+
+	/**
+	 * Get json format presentation report. (presentationId can reference
+	 * Presentation.Id....
+	 * 
+	 * @param taxonomyVersion
+	 * @param presentationId
+	 * @return
+	 * @throws Exception
+	 */
+	public ObjectNode getPresentationJson(XbrlTaxonomyVersion taxonomyVersion,
+			String presentationId) throws Exception {
+		List<String> presentationIds = new ArrayList<String>(1);
+		presentationIds.add(presentationId);
+		return getPresentationJson(taxonomyVersion, presentationIds);
 	}
 
 	/**

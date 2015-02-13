@@ -305,23 +305,6 @@ public class HbaseAssistantTest {
 				closingConditionOfStockAmount);
 	}
 
-	// private void generateFamily2(TestTable entity) throws Exception {
-	// TestFamily2 family2 = entity.getFamily2();
-	// for (int i = 1; i <= 3; ++i) {
-	// String qual = "qual2_" + i;
-	// Date date = DateUtils.parseDate("2015/02/0" + i, "yyyy/MM/dd");
-	// Date valueDate2 = new Date();
-	// String valueString2 = this.valueString2 + i;
-	// int valueInt2 = 20 + i;
-	// add(family2, qual, date, valueDate2, valueString2, valueInt2);
-	// }
-	// }
-
-	// private void add(TestFamily2 family2, String qual, Date date,
-	// Date valueDate2, String valueString2, int valueInt2) {
-	// family2.add(qual, date, valueDate2, valueString2, valueInt2);
-	// }
-
 	private TestTable createTestEntity(int id) throws Exception {
 		TestTable entity = new TestTable();
 		generateRowKey(entity, id);

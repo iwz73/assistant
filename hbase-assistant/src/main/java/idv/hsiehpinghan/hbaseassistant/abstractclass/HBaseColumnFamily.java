@@ -30,7 +30,7 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		this.qualifierVersionValueMap = qualifierVersionValueMap;
 	}
 
-	public void fromMap(
+	public void setMap(
 			NavigableMap<byte[], NavigableMap<Long, byte[]>> qualBytesMap) {
 		for (Map.Entry<byte[], NavigableMap<Long, byte[]>> qualBytesEntry : qualBytesMap
 				.entrySet()) {
@@ -59,15 +59,6 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		return getQualifierVersionValueMap().entrySet();
 	}
 
-	/**
-	 * Get descendingQualifierVersionValueSet.(If not exists, return empty set.)
-	 * 
-	 * @return
-	 */
-	public Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> getDescendingQualifierVersionValueSet() {
-		return getQualifierVersionValueMap().descendingMap().entrySet();
-	}
-
 	public void add(HBaseColumnQualifier qualifier, Date date, HBaseValue value) {
 		getVersionValueMap(qualifier).put(date, value);
 	}
@@ -75,6 +66,44 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	public void setQualifierVersionValueMap(
 			NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualifierVersionValueMap) {
 		this.qualifierVersionValueMap = qualifierVersionValueMap;
+	}
+
+	/**
+	 * Get latest qualifier and value as map.
+	 * 
+	 * @return
+	 */
+	public Map<HBaseColumnQualifier, HBaseValue> getLatestQualifierAndValueAsMap() {
+		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = getQualifierVersionValueSet();
+		Map<HBaseColumnQualifier, HBaseValue> map = new TreeMap<HBaseColumnQualifier, HBaseValue>();
+		for (Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualEnt : qualSet) {
+			HBaseColumnQualifier qual = qualEnt.getKey();
+			for (Entry<Date, HBaseValue> verEnt : qualEnt.getValue()
+					.descendingMap().entrySet()) {
+				HBaseValue val = verEnt.getValue();
+				map.put(qual, val);
+				break;
+			}
+		}
+		return map;
+	}
+
+	/**
+	 * Get latest qualifier and value as descending set.
+	 * 
+	 * @return
+	 */
+	public Set<Entry<HBaseColumnQualifier, HBaseValue>> getLatestQualifierAndValueAsDescendingSet() {
+		return getLatestQualifierAndValueAsDescendingMap().entrySet();
+	}
+
+	/**
+	 * Get latest qualifier and value as set.
+	 * 
+	 * @return
+	 */
+	public Set<Entry<HBaseColumnQualifier, HBaseValue>> getLatestQualifierAndValueAsSet() {
+		return getLatestQualifierAndValueAsMap().entrySet();
 	}
 
 	public HBaseTable getEntity() {
@@ -114,5 +143,10 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			qualMap.put(qualifier, verMap);
 		}
 		return qualMap.get(qualifier);
+	}
+
+	private Map<HBaseColumnQualifier, HBaseValue> getLatestQualifierAndValueAsDescendingMap() {
+		return ((TreeMap<HBaseColumnQualifier, HBaseValue>) getLatestQualifierAndValueAsMap())
+				.descendingMap();
 	}
 }

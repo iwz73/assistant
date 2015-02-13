@@ -268,7 +268,7 @@ public class HBaseEntityClassGenerateUtility {
 			sb.append("ByteConvertUtility.toBytes(" + val.name);
 		}
 		if (val.length != null) {
-			sb.append(", " + val.length);
+			sb.append(", " + getLengthString(val.name));
 		}
 		sb.append("); ");
 		return sb.toString();

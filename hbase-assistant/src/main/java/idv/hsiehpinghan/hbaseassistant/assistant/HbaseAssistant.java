@@ -533,7 +533,7 @@ public class HbaseAssistant implements InitializingBean {
 			}
 			NavigableMap<byte[], NavigableMap<Long, byte[]>> qualMap = entry
 					.getValue();
-			colFam.fromMap(qualMap);
+			colFam.setMap(qualMap);
 		}
 	}
 

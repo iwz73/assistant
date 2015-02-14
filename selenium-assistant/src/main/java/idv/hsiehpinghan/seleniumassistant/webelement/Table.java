@@ -40,39 +40,40 @@ public class Table extends WebElementWithBy {
 		getButton(rowIndex, columnIndex).click();
 	}
 
-	public String getButtonAttributeOfCell(int rowIndex, int columnIndex, String attributeName) {
+	public String getButtonAttributeOfCell(int rowIndex, int columnIndex,
+			String attributeName) {
 		return getButton(rowIndex, columnIndex).getAttribute(attributeName);
 	}
-	
+
 	public String getButtonValueOrText(int rowIndex, int columnIndex) {
 		WebElement button = getButton(rowIndex, columnIndex);
 		String value = button.getAttribute("value");
-		if("".equals(value)) {
+		if ("".equals(value)) {
 			return button.getText();
 		}
 		return value;
 	}
-	
+
 	public String getTextOfCell(int rowIndex, int columnIndex) {
 		return getCell(rowIndex, columnIndex).getText();
 	}
-	
-	private WebElement getButton(int rowIndex, int columnIndex) {
-		WebElement cell = getCell(rowIndex, columnIndex);
-		return cell.findElement(By.cssSelector("button,input[type='button']"));
+
+	protected List<WebElement> getColumns(int rowIndex) {
+		WebElement row = getRow(rowIndex);
+		return row.findElements(By.cssSelector("th, td"));
 	}
-	
+
 	private WebElement getRow(int index) {
 		return getRows().get(index);
 	}
 
-	private List<WebElement> getRows() {
-		return getSeleniumWebElement().findElements(By.cssSelector("tr"));
+	private WebElement getButton(int rowIndex, int columnIndex) {
+		WebElement cell = getCell(rowIndex, columnIndex);
+		return cell.findElement(By.cssSelector("button,input[type='button']"));
 	}
 
-	private List<WebElement> getColumns(int rowIndex) {
-		WebElement row = getRow(rowIndex);
-		return row.findElements(By.cssSelector("th, td"));
+	private List<WebElement> getRows() {
+		return getSeleniumWebElement().findElements(By.cssSelector("tr"));
 	}
 
 	private WebElement getCell(int rowIndex, int columnIndex) {

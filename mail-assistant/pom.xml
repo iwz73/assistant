@@ -33,6 +33,7 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<mail.version>1.4.7</mail.version>
 		<object-utility.version>1.0.0</object-utility.version>
+		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -75,6 +76,14 @@
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>object-utility</artifactId>
 			<version>${object-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- test-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>test-utility</artifactId>
+			<version>${test-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

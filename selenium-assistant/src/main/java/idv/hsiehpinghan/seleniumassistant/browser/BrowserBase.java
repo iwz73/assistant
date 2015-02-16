@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.browser;
 
+import idv.hsiehpinghan.seleniumassistant.webelement.A;
 import idv.hsiehpinghan.seleniumassistant.webelement.Button;
 import idv.hsiehpinghan.seleniumassistant.webelement.Div;
 import idv.hsiehpinghan.seleniumassistant.webelement.Font;
@@ -78,6 +79,16 @@ public abstract class BrowserBase {
 	 */
 	public Div getDiv(By by) {
 		return new Div(getWebDriver(), by);
+	}
+
+	/**
+	 * Get a.
+	 * 
+	 * @param by
+	 * @return
+	 */
+	public A getA(By by) {
+		return new A(getWebDriver(), by);
 	}
 
 	/**

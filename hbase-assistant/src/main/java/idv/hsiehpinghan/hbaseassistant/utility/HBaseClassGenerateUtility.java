@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.utility;
 
 import idv.hsiehpinghan.datatypeutility.utility.StringUtility;
-import idv.hsiehpinghan.hbaseassistant.utility.HBaseEntityClassGenerateUtility.Container.Value;
+import idv.hsiehpinghan.hbaseassistant.utility.HBaseClassGenerateUtility.Container.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
-public class HBaseEntityClassGenerateUtility {
+public class HBaseClassGenerateUtility {
 	private static final String EMPTY_STRING = StringUtility.EMPTY_STRING;
 	private static final String COLUMNS = "Columns";
 	private static final String COLUMN_NAME = "columnName";
@@ -27,6 +27,7 @@ public class HBaseEntityClassGenerateUtility {
 	private static String tableName;
 	private static Container rowKey;
 	private static List<Family> families = new ArrayList<Family>();
+	private static int seriesNumber = 0;
 
 	private static void parseJson(File jsonfile) throws IOException {
 		JsonNode jsonNode = getJson(jsonfile);
@@ -40,13 +41,24 @@ public class HBaseEntityClassGenerateUtility {
 		return sb.toString();
 	}
 
-	private static String getEntityTestClassCode() {
+	private static String getEntityClassTestCode() {
 		StringBuilder sb = new StringBuilder();
-		generateImportSection(sb);
-		generateTableSection(sb);
+		generateImportTestSection(sb);
+		generateTableTestSection(sb);
 		return sb.toString();
 	}
-	
+
+	private static String getRepositoryClassCode() {
+		StringBuilder sb = new StringBuilder();
+		generateRepositoryImportSection(sb);
+		generateRepositorySection(sb);
+		return sb.toString();
+	}
+
+	private static int getSeriesNumber() {
+		return ++seriesNumber;
+	}
+
 	private static void parseTable(JsonNode jsonNode) {
 		Iterator<Map.Entry<String, JsonNode>> iter = jsonNode.getFields();
 		int tableCnt = 0;
@@ -147,6 +159,88 @@ public class HBaseEntityClassGenerateUtility {
 		}
 	}
 
+	private static void generateRepositoryGenerateEntityMethod(StringBuilder sb) {
+		sb.append("public " + tableName + " generateEntity("
+				+ getRowKeyFieldParameterString(true) + ") { ");
+		sb.append(tableName + " entity = new " + tableName + "(); ");
+		sb.append("generateRowKey(" + getRowKeyFieldParameterString(false)
+				+ ", entity); ");
+		sb.append("return entity; ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryGetMethod(StringBuilder sb) {
+		sb.append("public " + tableName + " get("
+				+ getRowKeyFieldParameterString(true)
+				+ ") throws IllegalAccessException, ");
+		sb.append("NoSuchMethodException, SecurityException, InstantiationException, ");
+		sb.append("IllegalArgumentException, InvocationTargetException, IOException { ");
+		sb.append("HBaseRowKey rowKey = getRowKey("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		sb.append("return (" + tableName + ") hbaseAssistant.get(rowKey); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryGetRowAmountMethod(StringBuilder sb) {
+		sb.append("public int getRowAmount() { ");
+		sb.append("return hbaseAssistant.getRowAmount(getTargetTableClass()); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryGetRowKeysMethod(StringBuilder sb) {
+		sb.append("public List<RowKey> getRowKeys() { ");
+		sb.append("List<HBaseTable> entities = hbaseAssistant.scan(getTargetTableClass(), new KeyOnlyFilter()); ");
+		sb.append("List<RowKey> rowKeys = new ArrayList<RowKey>(entities.size()); ");
+		sb.append("for (HBaseTable entity : entities) { ");
+		sb.append("RowKey rowKey = (RowKey) entity.getRowKey(); ");
+		sb.append("rowKeys.add(rowKey); ");
+		sb.append("} ");
+		sb.append("return rowKeys; ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryGetRowKeyMethod(StringBuilder sb) {
+		sb.append("private HBaseRowKey getRowKey("
+				+ getRowKeyFieldParameterString(true) + ") { ");
+		sb.append(tableName + " entity = new " + tableName + "(); ");
+		sb.append("generateRowKey(" + getRowKeyFieldParameterString(false)
+				+ ", entity); ");
+		sb.append("return entity.getRowKey(); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryGenerateRowKeyMethod(StringBuilder sb) {
+		sb.append("private void generateRowKey("
+				+ getRowKeyFieldParameterString(true) + ", " + tableName
+				+ " entity) { ");
+		sb.append("entity.new RowKey(" + getRowKeyFieldParameterString(false)
+				+ ", entity); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositorySection(StringBuilder sb) {
+		sb.append("@Repository ");
+		sb.append("public class " + tableName
+				+ "Repository extends RepositoryBase { ");
+		sb.append("@Autowired ");
+		sb.append("private HbaseAssistant hbaseAssistant; ");
+		sb.append("@Override ");
+		sb.append("public Class<? extends HBaseTable> getTargetTableClass() { ");
+		sb.append("return " + tableName + ".class; ");
+		sb.append("} ");
+		generateRepositoryGenerateEntityMethod(sb);
+		generateRepositoryGetMethod(sb);
+		generateRepositoryGetRowAmountMethod(sb);
+		generateRepositoryGetRowKeysMethod(sb);
+		sb.append("@Override ");
+		sb.append("protected HbaseAssistant getHbaseAssistant() { ");
+		sb.append("return hbaseAssistant; ");
+		sb.append("} ");
+		generateRepositoryGetRowKeyMethod(sb);
+		generateRepositoryGenerateRowKeyMethod(sb);
+		sb.append("} ");
+	}
+
 	private static void generateTableSection(StringBuilder sb) {
 		sb.append("public class " + tableName + " extends HBaseTable { ");
 		sb.append(" private static final byte[] SPACE = ByteUtility.SINGLE_SPACE_BYTE_ARRAY; ");
@@ -177,6 +271,154 @@ public class HBaseEntityClassGenerateUtility {
 		generateRowKeySection(sb);
 		generateColumnFamiliesSection(sb);
 		sb.append("} ");
+	}
+
+	private static String generateTestField(Value value) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("private " + value.type + " " + value.name + " = ");
+		int sn = getSeriesNumber();
+		switch (value.type) {
+		case "boolean":
+			sb.append("false");
+			break;
+		case "byte":
+			sb.append("'b'");
+			break;
+		case "char":
+			sb.append("'c'");
+			break;
+		case "double":
+			sb.append(sn + "." + sn);
+			break;
+		case "float":
+			sb.append(sn + "." + sn + "f");
+			break;
+		case "int":
+			sb.append(String.valueOf(sn));
+			break;
+		case "long":
+			sb.append(String.valueOf(sn));
+			break;
+		case "short":
+			sb.append(String.valueOf(sn));
+			break;
+		case "Date":
+			sb.append("DateUtility.getDate(2015, 2, 3)");
+			break;
+		case "String":
+			sb.append("\"" + value.name + "\"");
+			break;
+		default:
+			sb.append("null");
+		}
+		sb.append("; ");
+		return sb.toString();
+	}
+
+	private static void generateTestFields(StringBuilder sb) {
+		sb.append("private Date ver = DateUtility.getDate(2015, 2, 3); ");
+		for (Value value : rowKey.values) {
+			sb.append(generateTestField(value));
+		}
+		for (Family family : families) {
+			for (Value value : family.columns) {
+				sb.append(generateTestField(value));
+			}
+			for (Value value : family.valCon.values) {
+				sb.append(generateTestField(value));
+			}
+		}
+	}
+
+	private static void generateTableTestSection(StringBuilder sb) {
+		sb.append("public class " + tableName + "Test { ");
+		generateTestFields(sb);
+		generateTestBytesConvertMethod(sb);
+		generateTestRowKeyMethod(sb);
+		for (Family family : families) {
+			generateTestFamilyMethod(sb, family);
+			generateTestGenerateFamilyContentMethod(sb, family);
+			generateTestAssertFamilyMethod(sb, family);
+		}
+		sb.append("} ");
+	}
+
+	private static void generateTestFamilyMethod(StringBuilder sb, Family family) {
+		sb.append("private void test" + family.type + "(" + tableName
+				+ " entity) { ");
+		sb.append("generate" + family.type + "Content(entity); ");
+		sb.append("assert" + family.type + "(entity); ");
+		sb.append("} ");
+	}
+
+	private static void generateTestGenerateFamilyContentMethod(
+			StringBuilder sb, Family family) {
+		sb.append("private void generate" + family.type + "Content("
+				+ tableName + " entity) { ");
+		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
+		for (Value value : family.columns) {
+			sb.append("fam.set" + StringUtils.capitalize(value.name) + "(ver, "
+					+ value.name + "); ");
+		}
+		sb.append("} ");
+	}
+
+	private static void generateTestAssertFamilyMethod(StringBuilder sb,
+			Family family) {
+		sb.append("private void assert" + family.type + "(" + tableName
+				+ " entity) { ");
+		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
+		for (Value value : family.columns) {
+			sb.append("Assert.assertEquals(" + value.name + ", fam.get"
+					+ StringUtils.capitalize(value.name) + "()); ");
+		}
+		sb.append("} ");
+	}
+
+	private static void generateTestBytesConvertMethod(StringBuilder sb) {
+		sb.append("@Test ");
+		sb.append("public void bytesConvert() { ");
+		sb.append(tableName + " entity = new " + tableName + "(); ");
+		sb.append("testRowKey(entity); ");
+		for (Family family : families) {
+			sb.append("test" + family.type + "(entity); ");
+		}
+		sb.append("} ");
+	}
+
+	private static String getAssertEquals(Value value) {
+		return "Assert.assertEquals(" + value.name + ", key.get"
+				+ StringUtils.capitalize(value.name) + "()); ";
+	}
+
+	private static void generateTestRowKeyMethod(StringBuilder sb) {
+		sb.append("private void testRowKey(" + tableName + " entity) { ");
+		sb.append("RowKey key = entity.new RowKey("
+				+ getRowKeyFieldParameterString(false) + ", entity); ");
+		for (Value value : rowKey.values) {
+			sb.append(getAssertEquals(value));
+		}
+		sb.append("} ");
+	}
+
+	private static void generateImportTestSection(StringBuilder sb) {
+		generateImportSection(sb);
+		sb.append("import idv.hsiehpinghan.datetimeutility.utility.DateUtility; ");
+		sb.append("import org.testng.Assert; ");
+		sb.append("import org.testng.annotations.Test; ");
+	}
+
+	private static void generateRepositoryImportSection(StringBuilder sb) {
+		generateImportSection(sb);
+		sb.append("import idv.hsiehpinghan.hbaseassistant.repository.RepositoryBase; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistant; ");
+		sb.append("import org.springframework.beans.factory.annotation.Autowired; ");
+		sb.append("import org.springframework.stereotype.Repository; ");
+		sb.append("import java.io.IOException; ");
+		sb.append("import java.lang.reflect.InvocationTargetException; ");
+		sb.append("import java.util.ArrayList; ");
+		sb.append("import java.util.List; ");
+		sb.append("import org.apache.hadoop.hbase.filter.KeyOnlyFilter; ");
 	}
 
 	private static void generateImportSection(StringBuilder sb) {
@@ -435,6 +677,22 @@ public class HBaseEntityClassGenerateUtility {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (Value val : vals) {
+			if (i > 0) {
+				sb.append(",");
+			}
+			if (withType == true) {
+				sb.append(val.type + " ");
+			}
+			sb.append(val.name);
+			++i;
+		}
+		return sb.toString();
+	}
+
+	private static String getRowKeyFieldParameterString(boolean withType) {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		for (Value val : rowKey.values) {
 			if (i > 0) {
 				sb.append(",");
 			}
@@ -795,11 +1053,14 @@ public class HBaseEntityClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
+				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
-		System.err.println(classCode);
-		String testClassCode = getEntityTestClassCode();
-		System.err.println(testClassCode);
+		System.err.println("entity : " + classCode);
+		String classTestCode = getEntityClassTestCode();
+		System.err.println("test : " + classTestCode);
+		String repositoryClassCode = getRepositoryClassCode();
+		System.err.println("repository : " + repositoryClassCode);
+
 	}
 }

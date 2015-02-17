@@ -112,6 +112,15 @@ public abstract class RepositoryBase {
 	}
 
 	/**
+	 * Get row Amount.
+	 * 
+	 * @return
+	 */
+	public int getRowAmount() {
+		return getHbaseAssistant().getRowAmount(getTargetTableClass());
+	}
+
+	/**
 	 * Get this repository's target table class.
 	 * 
 	 * @return

@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 
 public class AjaxWaitUtility {
 	private static final int POLLING_MILLISECONDS = 1000;
-	private static final int TIMEOUT_MILLISECONDS = 10000;
+	private static final int TIMEOUT_MILLISECONDS = 3000;
 	private static Logger logger = Logger.getLogger(AjaxWaitUtility.class
 			.getName());
 

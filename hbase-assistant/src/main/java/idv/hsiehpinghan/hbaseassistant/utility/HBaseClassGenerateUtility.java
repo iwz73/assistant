@@ -55,6 +55,13 @@ public class HBaseClassGenerateUtility {
 		return sb.toString();
 	}
 
+	private static String getRepositoryClassTestCode() {
+		StringBuilder sb = new StringBuilder();
+		generateRepositoryImportTestSection(sb);
+		generateRepositoryTestSection(sb);
+		return sb.toString();
+	}
+
 	private static int getSeriesNumber() {
 		return ++seriesNumber;
 	}
@@ -315,6 +322,11 @@ public class HBaseClassGenerateUtility {
 		return sb.toString();
 	}
 
+	private static void generateRepositoryTestFields(StringBuilder sb) {
+		generateTestFields(sb);
+		sb.append("private " + tableName + "Repository repository; ");
+	}
+
 	private static void generateTestFields(StringBuilder sb) {
 		sb.append("private Date ver = DateUtility.getDate(2015, 2, 3); ");
 		for (Value value : rowKey.values) {
@@ -340,6 +352,58 @@ public class HBaseClassGenerateUtility {
 			generateTestGenerateFamilyContentMethod(sb, family);
 			generateTestAssertFamilyMethod(sb, family);
 		}
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryTestSection(StringBuilder sb) {
+		sb.append("public class " + tableName + "RepositoryTest { ");
+		generateRepositoryTestFields(sb);
+		generateRepositoryTestBeforeClassMethod(sb);
+		generateRepositoryTestPutMethod(sb);
+		generateRepositoryTestGetMethod(sb);
+		// generateTestRowKeyMethod(sb);
+		// for (Family family : families) {
+		// generateTestFamilyMethod(sb, family);
+		// generateTestGenerateFamilyContentMethod(sb, family);
+		// generateTestAssertFamilyMethod(sb, family);
+		// }
+		for (Family family : families) {
+			generateTestGenerateFamilyContentMethod(sb, family);
+			generateTestAssertFamilyMethod(sb, family);
+		}
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryTestPutMethod(StringBuilder sb) {
+		sb.append("@Test ");
+		sb.append("public void put() throws Exception { ");
+		sb.append(tableName + " entity = repository.generateEntity("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		for (Family family : families) {
+			sb.append("generate" + family.type + "Content(entity); ");
+		}
+		sb.append("repository.put(entity); ");
+		sb.append("Assert.assertTrue(repository.exists(entity.getRowKey())); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryTestGetMethod(StringBuilder sb) {
+		sb.append("@Test(dependsOnMethods = { \"put\" }) ");
+		sb.append("public void get() throws Exception { ");
+		sb.append(tableName + " entity = repository.get("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		for (Family family : families) {
+			sb.append("assert" + family.type + "(entity); ");
+		}
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryTestBeforeClassMethod(StringBuilder sb) {
+		sb.append("@BeforeClass ");
+		sb.append("public void beforeClass() throws Exception { ");
+		sb.append("ApplicationContext applicationContext = TestngSuitSetting.getApplicationContext(); ");
+		sb.append("repository = applicationContext.getBean(" + tableName
+				+ "Repository.class); ");
 		sb.append("} ");
 	}
 
@@ -419,6 +483,15 @@ public class HBaseClassGenerateUtility {
 		sb.append("import java.util.ArrayList; ");
 		sb.append("import java.util.List; ");
 		sb.append("import org.apache.hadoop.hbase.filter.KeyOnlyFilter; ");
+	}
+
+	private static void generateRepositoryImportTestSection(StringBuilder sb) {
+		generateImportSection(sb);
+		sb.append("import org.testng.annotations.BeforeClass; ");
+		sb.append("import org.springframework.context.ApplicationContext; ");
+		sb.append("import idv.hsiehpinghan.datetimeutility.utility.DateUtility; ");
+		sb.append("import org.testng.Assert; ");
+		sb.append("import org.testng.annotations.Test; ");
 	}
 
 	private static void generateImportSection(StringBuilder sb) {
@@ -1055,12 +1128,13 @@ public class HBaseClassGenerateUtility {
 		File f = new File(
 				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
 		parseJson(f);
-		String classCode = getEntityClassCode();
-		System.err.println("entity : " + classCode);
-		String classTestCode = getEntityClassTestCode();
-		System.err.println("test : " + classTestCode);
-		String repositoryClassCode = getRepositoryClassCode();
-		System.err.println("repository : " + repositoryClassCode);
-
+		// String classCode = getEntityClassCode();
+		// System.err.println("entity : " + classCode);
+		// String classTestCode = getEntityClassTestCode();
+		// System.err.println("entity test : " + classTestCode);
+		// String repositoryClassCode = getRepositoryClassCode();
+		// System.err.println("repository : " + repositoryClassCode);
+		String repositoryClassTestCode = getRepositoryClassTestCode();
+		System.err.println("repository test : " + repositoryClassTestCode);
 	}
 }

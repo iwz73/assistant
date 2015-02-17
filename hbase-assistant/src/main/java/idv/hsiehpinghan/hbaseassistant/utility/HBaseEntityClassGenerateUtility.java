@@ -28,12 +28,25 @@ public class HBaseEntityClassGenerateUtility {
 	private static Container rowKey;
 	private static List<Family> families = new ArrayList<Family>();
 
-	public static String getEntityClassCode(File jsonfile) throws IOException {
+	private static void parseJson(File jsonfile) throws IOException {
 		JsonNode jsonNode = getJson(jsonfile);
 		parseTable(jsonNode);
-		return generateClass();
 	}
 
+	private static String getEntityClassCode() {
+		StringBuilder sb = new StringBuilder();
+		generateImportSection(sb);
+		generateTableSection(sb);
+		return sb.toString();
+	}
+
+	private static String getEntityTestClassCode() {
+		StringBuilder sb = new StringBuilder();
+		generateImportSection(sb);
+		generateTableSection(sb);
+		return sb.toString();
+	}
+	
 	private static void parseTable(JsonNode jsonNode) {
 		Iterator<Map.Entry<String, JsonNode>> iter = jsonNode.getFields();
 		int tableCnt = 0;
@@ -132,13 +145,6 @@ public class HBaseEntityClassGenerateUtility {
 			throw new RuntimeException("Family(" + family.type
 					+ ")'s qualifier amount(" + qualCnt + ") not equal 1 !!!");
 		}
-	}
-
-	private static String generateClass() {
-		StringBuilder sb = new StringBuilder();
-		generateImportSection(sb);
-		generateTableSection(sb);
-		return sb.toString();
 	}
 
 	private static void generateTableSection(StringBuilder sb) {
@@ -790,8 +796,10 @@ public class HBaseEntityClassGenerateUtility {
 	public static void main(String[] args) throws IOException {
 		File f = new File(
 				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
-		String str = getEntityClassCode(f);
-
-		System.err.println(str);
+		parseJson(f);
+		String classCode = getEntityClassCode();
+		System.err.println(classCode);
+		String testClassCode = getEntityTestClassCode();
+		System.err.println(testClassCode);
 	}
 }

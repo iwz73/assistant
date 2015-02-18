@@ -29,37 +29,51 @@ public class HBaseClassGenerateUtility {
 	private static List<Family> families = new ArrayList<Family>();
 	private static int seriesNumber = 0;
 
-	private static void parseJson(File jsonfile) throws IOException {
-		JsonNode jsonNode = getJson(jsonfile);
-		parseTable(jsonNode);
+	public static void main(String[] args) throws IOException {
+		File f = new File(
+				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
+		parseJson(f);
+		String classCode = getEntityClassCode();
+		System.err.println("entity : " + classCode);
+		String classTestCode = getEntityClassTestCode();
+		System.err.println("entity test : " + classTestCode);
+		String repositoryClassCode = getRepositoryClassCode();
+		System.err.println("repository : " + repositoryClassCode);
+		String repositoryClassTestCode = getRepositoryClassTestCode();
+		System.err.println("repository test : " + repositoryClassTestCode);
 	}
 
-	private static String getEntityClassCode() {
+	public static String getEntityClassCode() {
 		StringBuilder sb = new StringBuilder();
 		generateImportSection(sb);
 		generateTableSection(sb);
 		return sb.toString();
 	}
 
-	private static String getEntityClassTestCode() {
+	public static String getEntityClassTestCode() {
 		StringBuilder sb = new StringBuilder();
 		generateImportTestSection(sb);
 		generateTableTestSection(sb);
 		return sb.toString();
 	}
 
-	private static String getRepositoryClassCode() {
+	public static String getRepositoryClassCode() {
 		StringBuilder sb = new StringBuilder();
 		generateRepositoryImportSection(sb);
 		generateRepositorySection(sb);
 		return sb.toString();
 	}
 
-	private static String getRepositoryClassTestCode() {
+	public static String getRepositoryClassTestCode() {
 		StringBuilder sb = new StringBuilder();
 		generateRepositoryImportTestSection(sb);
 		generateRepositoryTestSection(sb);
 		return sb.toString();
+	}
+
+	private static void parseJson(File jsonfile) throws IOException {
+		JsonNode jsonNode = getJson(jsonfile);
+		parseTable(jsonNode);
 	}
 
 	private static int getSeriesNumber() {
@@ -1124,17 +1138,4 @@ public class HBaseClassGenerateUtility {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		File f = new File(
-				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
-		parseJson(f);
-		// String classCode = getEntityClassCode();
-		// System.err.println("entity : " + classCode);
-		// String classTestCode = getEntityClassTestCode();
-		// System.err.println("entity test : " + classTestCode);
-		// String repositoryClassCode = getRepositoryClassCode();
-		// System.err.println("repository : " + repositoryClassCode);
-		String repositoryClassTestCode = getRepositoryClassTestCode();
-		System.err.println("repository test : " + repositoryClassTestCode);
-	}
 }

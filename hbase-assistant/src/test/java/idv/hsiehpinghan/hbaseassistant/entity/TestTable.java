@@ -210,21 +210,19 @@ public class TestTable extends HBaseTable {
 					.getQualifierVersionValueMap().keySet();
 		}
 
-		public BigDecimal getAsBigDecimal(String elementId,
+		public XbrlInstanceValue getXbrlInstanceValue(String elementId,
 				Enumeration enumeration, Date instant) {
-			XbrlInstanceQualifier qual = new XbrlInstanceQualifier(elementId,
+			HBaseColumnQualifier qual = new XbrlInstanceQualifier(elementId,
 					enumeration, instant);
-			XbrlInstanceValue val = (XbrlInstanceValue) super
-					.getLatestValue(qual);
-			return val.getAsBigDecimal();
+			return (XbrlInstanceValue) super.getLatestValue(qual);
 		}
 
-		public void set(String elementId, Enumeration enumeration,
-				Date instant, Date ver, BigDecimal value) {
-			XbrlInstanceQualifier qual = new XbrlInstanceQualifier(elementId,
+		public void setXbrlInstanceValue(String elementId,
+				Enumeration enumeration, Date instant, Date ver,
+				String unitType, BigDecimal value) {
+			HBaseColumnQualifier qual = new XbrlInstanceQualifier(elementId,
 					enumeration, instant);
-			XbrlInstanceValue val = new XbrlInstanceValue();
-			val.set(value);
+			XbrlInstanceValue val = new XbrlInstanceValue(unitType, value);
 			add(qual, ver, val);
 		}
 
@@ -265,9 +263,9 @@ public class TestTable extends HBaseTable {
 					Enumeration enumeration, Date instant) {
 				super();
 				byte[] elementIdBytes = ByteConvertUtility.toBytes(elementId,
-						300);
+						ELEMENT_ID_LENGTH);
 				byte[] enumerationBytes = ByteConvertUtility.toBytes(
-						enumeration.name(), 10);
+						enumeration.name(), ENUMERATION_LENGTH);
 				byte[] instantBytes = ByteConvertUtility.toBytes(instant);
 				super.setBytes(ArrayUtility.addAll(elementIdBytes, SPACE,
 						enumerationBytes, SPACE, instantBytes));
@@ -280,7 +278,8 @@ public class TestTable extends HBaseTable {
 
 			public void setElementId(String elementId) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(elementId, 300);
+				byte[] subBytes = ByteConvertUtility.toBytes(elementId,
+						ELEMENT_ID_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, ELEMENT_ID_BEGIN_INDEX,
 						ELEMENT_ID_END_INDEX);
 			}
@@ -295,7 +294,7 @@ public class TestTable extends HBaseTable {
 			public void setEnumeration(Enumeration enumeration) {
 				byte[] bytes = getBytes();
 				byte[] subBytes = ByteConvertUtility.toBytes(
-						enumeration.name(), 10);
+						enumeration.name(), ENUMERATION_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, ENUMERATION_BEGIN_INDEX,
 						ENUMERATION_END_INDEX);
 			}
@@ -318,6 +317,15 @@ public class TestTable extends HBaseTable {
 		}
 
 		public class XbrlInstanceValue extends HBaseValue {
+			private static final int UNIT_TYPE_LENGTH = 10;
+			private static final int VALUE_LENGTH = 20;
+			private static final int UNIT_TYPE_BEGIN_INDEX = 0;
+			private static final int UNIT_TYPE_END_INDEX = UNIT_TYPE_BEGIN_INDEX
+					+ UNIT_TYPE_LENGTH;
+			private static final int VALUE_BEGIN_INDEX = UNIT_TYPE_END_INDEX + 1;
+			private static final int VALUE_END_INDEX = VALUE_BEGIN_INDEX
+					+ VALUE_LENGTH;
+
 			public XbrlInstanceValue() {
 				super();
 			}
@@ -327,12 +335,40 @@ public class TestTable extends HBaseTable {
 				setBytes(bytes);
 			}
 
-			public BigDecimal getAsBigDecimal() {
-				return ByteConvertUtility.getBigDecimalFromBytes(getBytes());
+			public XbrlInstanceValue(String unitType, BigDecimal value) {
+				super();
+				byte[] unitTypeBytes = ByteConvertUtility.toBytes(unitType,
+						UNIT_TYPE_LENGTH);
+				byte[] valueBytes = ByteConvertUtility.toBytes(value,
+						VALUE_LENGTH);
+				super.setBytes(ArrayUtility.addAll(unitTypeBytes, SPACE,
+						valueBytes));
 			}
 
-			public void set(BigDecimal value) {
-				setBytes(ByteConvertUtility.toBytes(value));
+			public String getUnitType() {
+				return ByteConvertUtility.getStringFromBytes(getBytes(),
+						UNIT_TYPE_BEGIN_INDEX, UNIT_TYPE_END_INDEX);
+			}
+
+			public void setUnitType(String unitType) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(unitType,
+						UNIT_TYPE_LENGTH);
+				ArrayUtility.replace(bytes, subBytes, UNIT_TYPE_BEGIN_INDEX,
+						UNIT_TYPE_END_INDEX);
+			}
+
+			public BigDecimal getValue() {
+				return ByteConvertUtility.getBigDecimalFromBytes(getBytes(),
+						VALUE_BEGIN_INDEX, VALUE_END_INDEX);
+			}
+
+			public void setValue(BigDecimal value) {
+				byte[] bytes = getBytes();
+				byte[] subBytes = ByteConvertUtility.toBytes(value,
+						VALUE_LENGTH);
+				ArrayUtility.replace(bytes, subBytes, VALUE_BEGIN_INDEX,
+						VALUE_END_INDEX);
 			}
 		}
 	}
@@ -348,21 +384,19 @@ public class TestTable extends HBaseTable {
 					.getQualifierVersionValueMap().keySet();
 		}
 
-		public String getAsString(String elementId, Enumeration enumeration,
-				Date instant) {
-			FinancialReportQualifier qual = new FinancialReportQualifier(
-					elementId, enumeration, instant);
-			FinancialReportValue val = (FinancialReportValue) super
-					.getLatestValue(qual);
-			return val.getAsString();
+		public FinancialReportValue getFinancialReportValue(String elementId,
+				Enumeration enumeration, Date instant) {
+			HBaseColumnQualifier qual = new FinancialReportQualifier(elementId,
+					enumeration, instant);
+			return (FinancialReportValue) super.getLatestValue(qual);
 		}
 
-		public void set(String elementId, Enumeration enumeration,
-				Date instant, Date ver, String value) {
-			FinancialReportQualifier qual = new FinancialReportQualifier(
-					elementId, enumeration, instant);
-			FinancialReportValue val = new FinancialReportValue();
-			val.set(value);
+		public void setFinancialReportValue(String elementId,
+				Enumeration enumeration, Date instant, Date ver,
+				BigDecimal value) {
+			HBaseColumnQualifier qual = new FinancialReportQualifier(elementId,
+					enumeration, instant);
+			FinancialReportValue val = new FinancialReportValue(value);
 			add(qual, ver, val);
 		}
 
@@ -403,9 +437,9 @@ public class TestTable extends HBaseTable {
 					Enumeration enumeration, Date instant) {
 				super();
 				byte[] elementIdBytes = ByteConvertUtility.toBytes(elementId,
-						300);
+						ELEMENT_ID_LENGTH);
 				byte[] enumerationBytes = ByteConvertUtility.toBytes(
-						enumeration.name(), 10);
+						enumeration.name(), ENUMERATION_LENGTH);
 				byte[] instantBytes = ByteConvertUtility.toBytes(instant);
 				super.setBytes(ArrayUtility.addAll(elementIdBytes, SPACE,
 						enumerationBytes, SPACE, instantBytes));
@@ -418,7 +452,8 @@ public class TestTable extends HBaseTable {
 
 			public void setElementId(String elementId) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(elementId, 300);
+				byte[] subBytes = ByteConvertUtility.toBytes(elementId,
+						ELEMENT_ID_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, ELEMENT_ID_BEGIN_INDEX,
 						ELEMENT_ID_END_INDEX);
 			}
@@ -433,7 +468,7 @@ public class TestTable extends HBaseTable {
 			public void setEnumeration(Enumeration enumeration) {
 				byte[] bytes = getBytes();
 				byte[] subBytes = ByteConvertUtility.toBytes(
-						enumeration.name(), 10);
+						enumeration.name(), ENUMERATION_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, ENUMERATION_BEGIN_INDEX,
 						ENUMERATION_END_INDEX);
 			}
@@ -465,12 +500,18 @@ public class TestTable extends HBaseTable {
 				setBytes(bytes);
 			}
 
-			public String getAsString() {
-				return ByteConvertUtility.getStringFromBytes(getBytes());
+			public FinancialReportValue(BigDecimal value) {
+				super();
+				setValue(value);
 			}
 
-			public void set(String value) {
-				setBytes(ByteConvertUtility.toBytes(value));
+			public BigDecimal getValue() {
+				return ByteConvertUtility.getBigDecimalFromBytes(getBytes());
+			}
+
+			public void setValue(BigDecimal value) {
+				byte[] bytes = ByteConvertUtility.toBytes(value);
+				setBytes(bytes);
 			}
 		}
 	}
@@ -575,9 +616,11 @@ public class TestTable extends HBaseTable {
 			public MonthlyQualifier(String columnName, int year, int month) {
 				super();
 				byte[] columnNameBytes = ByteConvertUtility.toBytes(columnName,
-						100);
-				byte[] yearBytes = ByteConvertUtility.toBytes(year, 4);
-				byte[] monthBytes = ByteConvertUtility.toBytes(month, 2);
+						COLUMN_NAME_LENGTH);
+				byte[] yearBytes = ByteConvertUtility
+						.toBytes(year, YEAR_LENGTH);
+				byte[] monthBytes = ByteConvertUtility.toBytes(month,
+						MONTH_LENGTH);
 				super.setBytes(ArrayUtility.addAll(columnNameBytes, SPACE,
 						yearBytes, SPACE, monthBytes));
 			}
@@ -589,7 +632,8 @@ public class TestTable extends HBaseTable {
 
 			public void setColumnName(String columnName) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(columnName, 100);
+				byte[] subBytes = ByteConvertUtility.toBytes(columnName,
+						COLUMN_NAME_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, COLUMN_NAME_BEGIN_INDEX,
 						COLUMN_NAME_END_INDEX);
 			}
@@ -601,7 +645,7 @@ public class TestTable extends HBaseTable {
 
 			public void setYear(int year) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(year, 4);
+				byte[] subBytes = ByteConvertUtility.toBytes(year, YEAR_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, YEAR_BEGIN_INDEX,
 						YEAR_END_INDEX);
 			}
@@ -613,7 +657,8 @@ public class TestTable extends HBaseTable {
 
 			public void setMonth(int month) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(month, 2);
+				byte[] subBytes = ByteConvertUtility.toBytes(month,
+						MONTH_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, MONTH_BEGIN_INDEX,
 						MONTH_END_INDEX);
 			}
@@ -733,7 +778,7 @@ public class TestTable extends HBaseTable {
 			public DailyQualifier(String columnName, Date date) {
 				super();
 				byte[] columnNameBytes = ByteConvertUtility.toBytes(columnName,
-						100);
+						COLUMN_NAME_LENGTH);
 				byte[] dateBytes = ByteConvertUtility.toBytes(date);
 				super.setBytes(ArrayUtility.addAll(columnNameBytes, SPACE,
 						dateBytes));
@@ -746,7 +791,8 @@ public class TestTable extends HBaseTable {
 
 			public void setColumnName(String columnName) {
 				byte[] bytes = getBytes();
-				byte[] subBytes = ByteConvertUtility.toBytes(columnName, 100);
+				byte[] subBytes = ByteConvertUtility.toBytes(columnName,
+						COLUMN_NAME_LENGTH);
 				ArrayUtility.replace(bytes, subBytes, COLUMN_NAME_BEGIN_INDEX,
 						COLUMN_NAME_END_INDEX);
 			}

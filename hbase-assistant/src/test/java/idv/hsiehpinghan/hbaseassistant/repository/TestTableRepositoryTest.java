@@ -1,58 +1,71 @@
-package idv.hsiehpinghan.hbaseassistant.entity;
+package idv.hsiehpinghan.hbaseassistant.repository;
 
 import idv.hsiehpinghan.datetimeutility.utility.DateUtility;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.DailyFamily;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.FinancialReportFamily;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.InfoFamily;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.MonthlyFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.RowKey;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.XbrlInstanceFamily;
 import idv.hsiehpinghan.hbaseassistant.enumeration.Enumeration;
+import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
+import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class TestTableTest {
+public class TestTableRepositoryTest {
 	private Date ver = DateUtility.getDate(2015, 2, 3);
 	private String elementId = "elementId";
 	private String stockCode = "stockCode";
-	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("3");
+	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("18");
 	private String unitType = "unitType";
 	private Date date = DateUtility.getDate(2015, 2, 3);
-	private BigDecimal closingConditionOfOpeningPrice = new BigDecimal("6.6");
-	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("7.7");
-	private BigInteger closingConditionOfStockAmount = new BigInteger("8");
+	private BigDecimal closingConditionOfOpeningPrice = new BigDecimal("21.21");
+	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal(
+			"22.22");
+	private BigInteger closingConditionOfStockAmount = new BigInteger("23");
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private String string = "string";
-	private BigDecimal value = new BigDecimal("11.11");
-	private int month = 12;
-	private int year = 13;
+	private BigDecimal value = new BigDecimal("26.26");
+	private int month = 27;
+	private int year = 28;
 	private Enumeration enumeration = null;
 	private Date instant = DateUtility.getDate(2015, 2, 3);
+	private TestTableRepository repository;
+
+	@BeforeClass
+	public void beforeClass() throws Exception {
+		ApplicationContext applicationContext = TestngSuitSetting
+				.getApplicationContext();
+		repository = applicationContext.getBean(TestTableRepository.class);
+	}
 
 	@Test
-	public void bytesConvert() {
-		TestTable entity = new TestTable();
-		testRowKey(entity);
-		testInfoFamily(entity);
-		testXbrlInstanceFamily(entity);
-		testFinancialReportFamily(entity);
-		testMonthlyFamily(entity);
-		testDailyFamily(entity);
-	}
-
-	private void testRowKey(TestTable entity) {
-		RowKey key = entity.new RowKey(stockCode, entity);
-		Assert.assertEquals(stockCode, key.getStockCode());
-	}
-
-	private void testInfoFamily(TestTable entity) {
+	public void put() throws Exception {
+		TestTable entity = repository.generateEntity(stockCode);
 		generateInfoFamilyContent(entity);
+		generateXbrlInstanceFamilyContent(entity);
+		generateFinancialReportFamilyContent(entity);
+		generateMonthlyFamilyContent(entity);
+		generateDailyFamilyContent(entity);
+		repository.put(entity);
+		Assert.assertTrue(repository.exists(entity.getRowKey()));
+	}
+
+	@Test(dependsOnMethods = { "put" })
+	public void get() throws Exception {
+		TestTable entity = repository.get(stockCode);
 		assertInfoFamily(entity);
+		assertXbrlInstanceFamily(entity);
+		assertFinancialReportFamily(entity);
+		assertMonthlyFamily(entity);
+		assertDailyFamily(entity);
 	}
 
 	private void generateInfoFamilyContent(TestTable entity) {
@@ -67,11 +80,6 @@ public class TestTableTest {
 		Assert.assertEquals(string, fam.getString());
 	}
 
-	private void testXbrlInstanceFamily(TestTable entity) {
-		generateXbrlInstanceFamilyContent(entity);
-		assertXbrlInstanceFamily(entity);
-	}
-
 	private void generateXbrlInstanceFamilyContent(TestTable entity) {
 		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
 	}
@@ -80,22 +88,12 @@ public class TestTableTest {
 		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
 	}
 
-	private void testFinancialReportFamily(TestTable entity) {
-		generateFinancialReportFamilyContent(entity);
-		assertFinancialReportFamily(entity);
-	}
-
 	private void generateFinancialReportFamilyContent(TestTable entity) {
 		FinancialReportFamily fam = entity.getFinancialReportFamily();
 	}
 
 	private void assertFinancialReportFamily(TestTable entity) {
 		FinancialReportFamily fam = entity.getFinancialReportFamily();
-	}
-
-	private void testMonthlyFamily(TestTable entity) {
-		generateMonthlyFamilyContent(entity);
-		assertMonthlyFamily(entity);
 	}
 
 	private void generateMonthlyFamilyContent(TestTable entity) {
@@ -116,11 +114,6 @@ public class TestTableTest {
 				fam.getOperatingIncomeOfDifferentPercent(year, month));
 		Assert.assertEquals(operatingIncomeOfComment,
 				fam.getOperatingIncomeOfComment(year, month));
-	}
-
-	private void testDailyFamily(TestTable entity) {
-		generateDailyFamilyContent(entity);
-		assertDailyFamily(entity);
 	}
 
 	private void generateDailyFamilyContent(TestTable entity) {

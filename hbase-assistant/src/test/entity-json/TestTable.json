@@ -45,7 +45,16 @@
             }
          ],
          "XbrlInstanceValue":[  
-
+            {  
+               "type":"String",
+               "name":"unitType",
+               "length":10
+            },
+            {  
+               "type":"BigDecimal",
+               "name":"value",
+               "length":20
+            }
          ]
       },
       "FinancialReportFamily":{  
@@ -66,7 +75,10 @@
             }
          ],
          "FinancialReportValue":[  
-
+            {  
+               "type":"BigDecimal",
+               "name":"value"
+            }
          ]
       },
       "MonthlyFamily":{  

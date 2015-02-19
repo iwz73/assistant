@@ -6,6 +6,7 @@ import idv.hsiehpinghan.hbaseassistant.utility.HBaseClassGenerateUtility.Contain
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
+				"/home/hsiehpinghan/git/assistant/hbase-assistant/src/test/entity-json/TestTable.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -308,8 +309,7 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
-	private static String generateTestField(Value value) {
-		StringBuilder sb = new StringBuilder();
+	private static void generateTestField(StringBuilder sb, Value value) {
 		sb.append("private " + value.type + " " + value.name + " = ");
 		int sn = getSeriesNumber();
 		switch (value.type) {
@@ -353,7 +353,6 @@ public class HBaseClassGenerateUtility {
 			sb.append("null");
 		}
 		sb.append("; ");
-		return sb.toString();
 	}
 
 	private static void generateRepositoryTestFields(StringBuilder sb) {
@@ -361,18 +360,33 @@ public class HBaseClassGenerateUtility {
 		sb.append("private " + tableName + "Repository repository; ");
 	}
 
-	private static void generateTestFields(StringBuilder sb) {
-		sb.append("private Date ver = DateUtility.getDate(2015, 2, 3); ");
+	private static Map<String, Value> getRowKeyAndFamiliesFieldMapWithoutColumnName() {
+		Map<String, Value> map = new HashMap<String, Value>();
 		for (Value value : rowKey.values) {
-			sb.append(generateTestField(value));
+			map.put(value.name, value);
 		}
 		for (Family family : families) {
 			for (Value value : family.columns) {
-				sb.append(generateTestField(value));
+				map.put(value.name, value);
+			}
+			for (Value value : family.qualCon.values) {
+				if (COLUMN_NAME.equals(value.name)) {
+					continue;
+				}
+				map.put(value.name, value);
 			}
 			for (Value value : family.valCon.values) {
-				sb.append(generateTestField(value));
+				map.put(value.name, value);
 			}
+		}
+		return map;
+	}
+
+	private static void generateTestFields(StringBuilder sb) {
+		sb.append("private Date ver = DateUtility.getDate(2015, 2, 3); ");
+		Map<String, Value> map = getRowKeyAndFamiliesFieldMapWithoutColumnName();
+		for (Value value : map.values()) {
+			generateTestField(sb, value);
 		}
 	}
 
@@ -451,24 +465,35 @@ public class HBaseClassGenerateUtility {
 
 	private static void generateTestGenerateFamilyContentMethod(
 			StringBuilder sb, Family family) {
+		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
 		sb.append("private void generate" + family.type + "Content("
 				+ tableName + " entity) { ");
 		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
 		for (Value value : family.columns) {
-			sb.append("fam.set" + StringUtils.capitalize(value.name) + "(ver, "
-					+ value.name + "); ");
+			sb.append("fam.set" + StringUtils.capitalize(value.name) + "(");
+			if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
+				sb.append(qualParamStrWithoutType + ",");
+			}
+			sb.append("ver," + value.name + "); ");
 		}
 		sb.append("} ");
 	}
 
 	private static void generateTestAssertFamilyMethod(StringBuilder sb,
 			Family family) {
+		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
 		sb.append("private void assert" + family.type + "(" + tableName
 				+ " entity) { ");
 		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
 		for (Value value : family.columns) {
 			sb.append("Assert.assertEquals(" + value.name + ", fam.get"
-					+ StringUtils.capitalize(value.name) + "()); ");
+					+ StringUtils.capitalize(value.name) + "(");
+			if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
+				sb.append(qualParamStrWithoutType);
+			}
+			sb.append(")); ");
 		}
 		sb.append("} ");
 	}
@@ -814,7 +839,6 @@ public class HBaseClassGenerateUtility {
 
 	private static void generateFamilyGetterSetterSection(StringBuilder sb,
 			Family family) {
-
 		List<Value> columns = family.columns;
 		if (columns.size() <= 0) {
 			generateFamilyValueGetter(sb, family);

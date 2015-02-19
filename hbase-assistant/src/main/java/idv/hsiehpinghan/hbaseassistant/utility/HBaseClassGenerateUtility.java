@@ -31,7 +31,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/StockInfo.json");
+				"/home/hsiehpinghan/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -220,6 +220,19 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static void generateRepositoryExistsMethod(StringBuilder sb) {
+		sb.append("public boolean exists("
+				+ getRowKeyFieldParameterString(true) + ") ");
+		sb.append("throws NoSuchFieldException, SecurityException, ");
+		sb.append("IllegalArgumentException, IllegalAccessException, ");
+		sb.append("NoSuchMethodException, InvocationTargetException, ");
+		sb.append("InstantiationException, IOException { ");
+		sb.append("HBaseRowKey key = getRowKey("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		sb.append("return super.exists(key); ");
+		sb.append("} ");
+	}
+
 	private static void generateRepositoryGetRowKeyMethod(StringBuilder sb) {
 		sb.append("private HBaseRowKey getRowKey("
 				+ getRowKeyFieldParameterString(true) + ") { ");
@@ -253,6 +266,7 @@ public class HBaseClassGenerateUtility {
 		generateRepositoryGetMethod(sb);
 		generateRepositoryGetRowAmountMethod(sb);
 		generateRepositoryGetRowKeysMethod(sb);
+		generateRepositoryExistsMethod(sb);
 		sb.append("@Override ");
 		sb.append("protected HbaseAssistant getHbaseAssistant() { ");
 		sb.append("return hbaseAssistant; ");
@@ -328,6 +342,12 @@ public class HBaseClassGenerateUtility {
 			break;
 		case "String":
 			sb.append("\"" + value.name + "\"");
+			break;
+		case "BigInteger":
+			sb.append("new BigInteger(\"" + sn + "\")");
+			break;
+		case "BigDecimal":
+			sb.append("new BigDecimal(\"" + sn + "." + sn + "\")");
 			break;
 		default:
 			sb.append("null");
@@ -796,7 +816,7 @@ public class HBaseClassGenerateUtility {
 			Family family) {
 
 		List<Value> columns = family.columns;
-		if (columns == null) {
+		if (columns.size() <= 0) {
 			generateFamilyValueGetter(sb, family);
 			generateFamilyValueSetter(sb, family);
 		} else {
@@ -1129,7 +1149,7 @@ public class HBaseClassGenerateUtility {
 
 	private static class Family {
 		public String type;
-		public List<Value> columns;
+		public List<Value> columns = new ArrayList<Value>(0);
 		public Container qualCon;
 		public Container valCon;
 

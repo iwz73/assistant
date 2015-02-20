@@ -1,12 +1,12 @@
 package idv.hsiehpinghan.hbaseassistant.entity;
 
 import idv.hsiehpinghan.datetimeutility.utility.DateUtility;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.DailyFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.FinancialReportFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.InfoFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.MonthlyFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ColumnNameFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.QualifierColumnNameFamily;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.RowKey;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.XbrlInstanceFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ValueFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ValuesFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ValuesFamily.ValuesValue;
 import idv.hsiehpinghan.hbaseassistant.enumeration.Enumeration;
 
 import java.math.BigDecimal;
@@ -22,27 +22,24 @@ public class TestTableTest {
 	private String stockCode = "stockCode";
 	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("3");
 	private String unitType = "unitType";
-	private Date date = DateUtility.getDate(2015, 2, 3);
-	private BigDecimal closingConditionOfOpeningPrice = new BigDecimal("6.6");
-	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("7.7");
-	private BigInteger closingConditionOfStockAmount = new BigInteger("8");
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private String string = "string";
-	private BigDecimal value = new BigDecimal("11.11");
-	private int month = 12;
-	private int year = 13;
-	private Enumeration enumeration = null;
+	private int month = 7;
+	private BigDecimal value = new BigDecimal("8.8");
+	private int year = 9;
+	private Enumeration enumeration = Enumeration.TYPE1;
+	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal(
+			"11.11");
 	private Date instant = DateUtility.getDate(2015, 2, 3);
 
 	@Test
 	public void bytesConvert() {
 		TestTable entity = new TestTable();
 		testRowKey(entity);
-		testInfoFamily(entity);
-		testXbrlInstanceFamily(entity);
-		testFinancialReportFamily(entity);
-		testMonthlyFamily(entity);
-		testDailyFamily(entity);
+		testColumnNameFamily(entity);
+		testValuesFamily(entity);
+		testValueFamily(entity);
+		testQualifierColumnNameFamily(entity);
 	}
 
 	private void testRowKey(TestTable entity) {
@@ -50,56 +47,63 @@ public class TestTableTest {
 		Assert.assertEquals(stockCode, key.getStockCode());
 	}
 
-	private void testInfoFamily(TestTable entity) {
-		generateInfoFamilyContent(entity);
-		assertInfoFamily(entity);
+	private void testColumnNameFamily(TestTable entity) {
+		generateColumnNameFamilyContent(entity);
+		assertColumnNameFamily(entity);
 	}
 
-	private void generateInfoFamilyContent(TestTable entity) {
-		InfoFamily fam = entity.getInfoFamily();
+	private void generateColumnNameFamilyContent(TestTable entity) {
+		ColumnNameFamily fam = entity.getColumnNameFamily();
 		fam.setEnumeration(ver, enumeration);
 		fam.setString(ver, string);
 	}
 
-	private void assertInfoFamily(TestTable entity) {
-		InfoFamily fam = entity.getInfoFamily();
+	private void assertColumnNameFamily(TestTable entity) {
+		ColumnNameFamily fam = entity.getColumnNameFamily();
 		Assert.assertEquals(enumeration, fam.getEnumeration());
 		Assert.assertEquals(string, fam.getString());
 	}
 
-	private void testXbrlInstanceFamily(TestTable entity) {
-		generateXbrlInstanceFamilyContent(entity);
-		assertXbrlInstanceFamily(entity);
+	private void testValuesFamily(TestTable entity) {
+		generateValuesFamilyContent(entity);
+		assertValuesFamily(entity);
 	}
 
-	private void generateXbrlInstanceFamilyContent(TestTable entity) {
-		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
+	private void generateValuesFamilyContent(TestTable entity) {
+		ValuesFamily fam = entity.getValuesFamily();
+		fam.setValuesValue(elementId, enumeration, instant, ver, unitType,
+				value);
 	}
 
-	private void assertXbrlInstanceFamily(TestTable entity) {
-		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
+	private void assertValuesFamily(TestTable entity) {
+		ValuesFamily fam = entity.getValuesFamily();
+		ValuesValue val = fam.getValuesValue(elementId, enumeration, instant);
+		Assert.assertEquals(val.getUnitType(), unitType);
+		Assert.assertEquals(val.getValue(), value);
 	}
 
-	private void testFinancialReportFamily(TestTable entity) {
-		generateFinancialReportFamilyContent(entity);
-		assertFinancialReportFamily(entity);
+	private void testValueFamily(TestTable entity) {
+		generateValueFamilyContent(entity);
+		assertValueFamily(entity);
 	}
 
-	private void generateFinancialReportFamilyContent(TestTable entity) {
-		FinancialReportFamily fam = entity.getFinancialReportFamily();
+	private void generateValueFamilyContent(TestTable entity) {
+		ValueFamily fam = entity.getValueFamily();
+		fam.set(elementId, enumeration, instant, ver, value);
 	}
 
-	private void assertFinancialReportFamily(TestTable entity) {
-		FinancialReportFamily fam = entity.getFinancialReportFamily();
+	private void assertValueFamily(TestTable entity) {
+		ValueFamily fam = entity.getValueFamily();
+		Assert.assertEquals(fam.get(elementId, enumeration, instant), value);
 	}
 
-	private void testMonthlyFamily(TestTable entity) {
-		generateMonthlyFamilyContent(entity);
-		assertMonthlyFamily(entity);
+	private void testQualifierColumnNameFamily(TestTable entity) {
+		generateQualifierColumnNameFamilyContent(entity);
+		assertQualifierColumnNameFamily(entity);
 	}
 
-	private void generateMonthlyFamilyContent(TestTable entity) {
-		MonthlyFamily fam = entity.getMonthlyFamily();
+	private void generateQualifierColumnNameFamilyContent(TestTable entity) {
+		QualifierColumnNameFamily fam = entity.getQualifierColumnNameFamily();
 		fam.setOperatingIncomeOfCurrentMonth(year, month, ver,
 				operatingIncomeOfCurrentMonth);
 		fam.setOperatingIncomeOfDifferentPercent(year, month, ver,
@@ -108,34 +112,13 @@ public class TestTableTest {
 				operatingIncomeOfComment);
 	}
 
-	private void assertMonthlyFamily(TestTable entity) {
-		MonthlyFamily fam = entity.getMonthlyFamily();
+	private void assertQualifierColumnNameFamily(TestTable entity) {
+		QualifierColumnNameFamily fam = entity.getQualifierColumnNameFamily();
 		Assert.assertEquals(operatingIncomeOfCurrentMonth,
 				fam.getOperatingIncomeOfCurrentMonth(year, month));
 		Assert.assertEquals(operatingIncomeOfDifferentPercent,
 				fam.getOperatingIncomeOfDifferentPercent(year, month));
 		Assert.assertEquals(operatingIncomeOfComment,
 				fam.getOperatingIncomeOfComment(year, month));
-	}
-
-	private void testDailyFamily(TestTable entity) {
-		generateDailyFamilyContent(entity);
-		assertDailyFamily(entity);
-	}
-
-	private void generateDailyFamilyContent(TestTable entity) {
-		DailyFamily fam = entity.getDailyFamily();
-		fam.setClosingConditionOfOpeningPrice(date, ver,
-				closingConditionOfOpeningPrice);
-		fam.setClosingConditionOfStockAmount(date, ver,
-				closingConditionOfStockAmount);
-	}
-
-	private void assertDailyFamily(TestTable entity) {
-		DailyFamily fam = entity.getDailyFamily();
-		Assert.assertEquals(closingConditionOfOpeningPrice,
-				fam.getClosingConditionOfOpeningPrice(date));
-		Assert.assertEquals(closingConditionOfStockAmount,
-				fam.getClosingConditionOfStockAmount(date));
 	}
 }

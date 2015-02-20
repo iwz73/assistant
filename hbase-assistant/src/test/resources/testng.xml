@@ -4,8 +4,10 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting" />
-			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" />
 			<class name="idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistantTest" />
+			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" />
+			<class
+				name="idv.hsiehpinghan.hbaseassistant.repository.TestTableRepositoryTest" />
 			<class
 				name="idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtilityTest" />
 		</classes>

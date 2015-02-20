@@ -5,12 +5,11 @@ import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseColumnQualifier;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseTable;
 import idv.hsiehpinghan.hbaseassistant.abstractclass.HBaseValue;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.DailyFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.FinancialReportFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.InfoFamily;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.MonthlyFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ColumnNameFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.QualifierColumnNameFamily;
 import idv.hsiehpinghan.hbaseassistant.entity.TestTable.RowKey;
-import idv.hsiehpinghan.hbaseassistant.entity.TestTable.XbrlInstanceFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ValueFamily;
+import idv.hsiehpinghan.hbaseassistant.entity.TestTable.ValuesFamily;
 import idv.hsiehpinghan.hbaseassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hbaseassistant.enumeration.TableOperation;
 import idv.hsiehpinghan.hbaseassistant.suit.TestngSuitSetting;
@@ -38,7 +37,6 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.springframework.context.ApplicationContext;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.internal.junit.ArrayAsserts;
@@ -56,15 +54,13 @@ public class HbaseAssistantTest {
 	private String string = "string";
 	private String elementId = "elementId";
 	private Date instant;
+	private String unitType = "unitType";
 	private BigDecimal value = new BigDecimal("1.1");
 	private int year = 2015;
 	private int month = 1;
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("2");
 	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("3.3");
-	private BigDecimal closingConditionOfOpeningPrice = new BigDecimal("4.4");
-	private Date date;
-	private BigInteger closingConditionOfStockAmount = new BigInteger("5");
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
@@ -74,11 +70,6 @@ public class HbaseAssistantTest {
 		minDate = DateUtils.parseDate("2010/01/01", "yyyy/MM/dd");
 		maxDate = DateUtils.parseDate("2020/01/01", "yyyy/MM/dd");
 		ver = DateUtils.parseDate("2015/01/01", "yyyy/MM/dd");
-	}
-
-	@AfterClass
-	public void afterClass() throws Exception {
-		hbaseAssistant.dropTable(tableName);
 	}
 
 	@Test
@@ -146,7 +137,7 @@ public class HbaseAssistantTest {
 		generateRowKey(entity, id);
 		hbaseAssistant.get(entity, maxVersions, minDate, maxDate, filter);
 		testGetRowKey(entity, id);
-		testGetInfoFamily(entity);
+		testGetColumnNameFamily(entity);
 	}
 
 	@Test(dependsOnMethods = { "put" })
@@ -159,7 +150,7 @@ public class HbaseAssistantTest {
 		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class);
 		Assert.assertEquals(3, entities.size());
 		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getInfoFamily()
+		Assert.assertEquals(2, entity.getColumnNameFamily()
 				.getQualifierVersionValueSet().size());
 	}
 
@@ -168,30 +159,31 @@ public class HbaseAssistantTest {
 				new KeyOnlyFilter());
 		Assert.assertEquals(3, entities.size());
 		TestTable entity = (TestTable) entities.get(0);
-		valueEmptyTest(entity.getInfoFamily());
+		valueEmptyTest(entity.getColumnNameFamily());
 	}
 
 	private void TestMultipleColumnPrefixFilter() {
 		byte[][] prefixes = new byte[][] { ByteConvertUtility
-				.toBytes(InfoFamily.ENUMERATION) };
+				.toBytes(ColumnNameFamily.ENUMERATION) };
 		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
 				new MultipleColumnPrefixFilter(prefixes));
 		Assert.assertEquals(3, entities.size());
 		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(1, entity.getInfoFamily()
+		Assert.assertEquals(1, entity.getColumnNameFamily()
 				.getQualifierVersionValueSet().size());
 	}
 
 	private void TestFamilyFilter() {
 		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
-				new BinaryComparator(ByteConvertUtility.toBytes("infoFamily")));
+				new BinaryComparator(
+						ByteConvertUtility.toBytes("columnNameFamily")));
 		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
 				famFilter);
 		Assert.assertEquals(3, entities.size());
 		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getInfoFamily()
+		Assert.assertEquals(2, entity.getColumnNameFamily()
 				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(0, entity.getMonthlyFamily()
+		Assert.assertEquals(0, entity.getQualifierColumnNameFamily()
 				.getQualifierVersionValueSet().size());
 	}
 
@@ -203,7 +195,7 @@ public class HbaseAssistantTest {
 				rowFilter);
 		Assert.assertEquals(1, entities.size());
 		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getInfoFamily()
+		Assert.assertEquals(2, entity.getColumnNameFamily()
 				.getQualifierVersionValueSet().size());
 	}
 
@@ -240,8 +232,8 @@ public class HbaseAssistantTest {
 		return "2330_" + id;
 	}
 
-	private void testGetInfoFamily(TestTable entity) {
-		InfoFamily fam = entity.getInfoFamily();
+	private void testGetColumnNameFamily(TestTable entity) {
+		ColumnNameFamily fam = entity.getColumnNameFamily();
 		Set<Entry<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>>> qualSet = fam
 				.getQualifierVersionValueSet();
 		Assert.assertEquals(2, qualSet.size());
@@ -268,27 +260,28 @@ public class HbaseAssistantTest {
 		entity.new RowKey(generateStockCode(id), entity);
 	}
 
-	private void generateInfoFamily(TestTable entity) throws Exception {
-		InfoFamily fam = entity.getInfoFamily();
+	private void generateColumnNameFamily(TestTable entity) throws Exception {
+		ColumnNameFamily fam = entity.getColumnNameFamily();
 		for (int i = 0; i < 3; ++i) {
 			fam.setEnumeration(DateUtils.addDays(ver, i), enumeration);
 			fam.setString(DateUtils.addDays(ver, -i), string);
 		}
 	}
 
-	private void generateXbrlInstanceFamily(TestTable entity) throws Exception {
-		XbrlInstanceFamily fam = entity.getXbrlInstanceFamily();
+	private void generateValuesFamily(TestTable entity) throws Exception {
+		ValuesFamily fam = entity.getValuesFamily();
+		fam.setValuesValue(elementId, enumeration, instant, ver, unitType,
+				value);
+	}
+
+	private void generateValueFamily(TestTable entity) throws Exception {
+		ValueFamily fam = entity.getValueFamily();
 		fam.set(elementId, enumeration, instant, ver, value);
 	}
 
-	private void generateFinancialReportFamily(TestTable entity)
+	private void generateQualifierColumnNameFamily(TestTable entity)
 			throws Exception {
-		FinancialReportFamily fam = entity.getFinancialReportFamily();
-		fam.set(elementId, enumeration, instant, ver, string);
-	}
-
-	private void generateMonthlyFamily(TestTable entity) throws Exception {
-		MonthlyFamily fam = entity.getMonthlyFamily();
+		QualifierColumnNameFamily fam = entity.getQualifierColumnNameFamily();
 		fam.setOperatingIncomeOfComment(year, month, ver,
 				operatingIncomeOfComment);
 		fam.setOperatingIncomeOfCurrentMonth(year, month, ver,
@@ -297,22 +290,13 @@ public class HbaseAssistantTest {
 				operatingIncomeOfDifferentPercent);
 	}
 
-	private void generateDailyFamily(TestTable entity) throws Exception {
-		DailyFamily fam = entity.getDailyFamily();
-		fam.setClosingConditionOfOpeningPrice(date, ver,
-				closingConditionOfOpeningPrice);
-		fam.setClosingConditionOfStockAmount(date, ver,
-				closingConditionOfStockAmount);
-	}
-
 	private TestTable createTestEntity(int id) throws Exception {
 		TestTable entity = new TestTable();
 		generateRowKey(entity, id);
-		generateInfoFamily(entity);
-		generateXbrlInstanceFamily(entity);
-		generateFinancialReportFamily(entity);
-		generateMonthlyFamily(entity);
-		generateDailyFamily(entity);
+		generateColumnNameFamily(entity);
+		generateValuesFamily(entity);
+		generateValueFamily(entity);
+		generateQualifierColumnNameFamily(entity);
 		return entity;
 	}
 

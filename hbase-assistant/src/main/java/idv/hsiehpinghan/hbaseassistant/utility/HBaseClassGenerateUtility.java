@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/hsiehpinghan/git/assistant/hbase-assistant/src/test/entity-json/TestTable.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/DailyData.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -467,15 +467,30 @@ public class HBaseClassGenerateUtility {
 			StringBuilder sb, Family family) {
 		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
 				family, false);
+		String valParamStrWithoutType = getValueFieldParameterString(family,
+				false);
 		sb.append("private void generate" + family.type + "Content("
 				+ tableName + " entity) { ");
 		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
-		for (Value value : family.columns) {
-			sb.append("fam.set" + StringUtils.capitalize(value.name) + "(");
-			if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
-				sb.append(qualParamStrWithoutType + ",");
+		checkColumnsAndValues(family);
+		List<Value> columns = family.columns;
+		if (columns.size() <= 0) {
+			if (family.valCon.values.size() == 1) {
+				sb.append("fam.set(" + qualParamStrWithoutType + ", ver, "
+						+ valParamStrWithoutType + "); ");
+			} else {
+				sb.append("fam.set" + family.valCon.type + "("
+						+ qualParamStrWithoutType + ",ver,"
+						+ valParamStrWithoutType + "); ");
 			}
-			sb.append("ver," + value.name + "); ");
+		} else {
+			for (Value value : columns) {
+				sb.append("fam.set" + StringUtils.capitalize(value.name) + "(");
+				if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
+					sb.append(qualParamStrWithoutType + ",");
+				}
+				sb.append("ver," + value.name + "); ");
+			}
 		}
 		sb.append("} ");
 	}
@@ -487,13 +502,33 @@ public class HBaseClassGenerateUtility {
 		sb.append("private void assert" + family.type + "(" + tableName
 				+ " entity) { ");
 		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
-		for (Value value : family.columns) {
-			sb.append("Assert.assertEquals(" + value.name + ", fam.get"
-					+ StringUtils.capitalize(value.name) + "(");
-			if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
-				sb.append(qualParamStrWithoutType);
+		checkColumnsAndValues(family);
+		List<Value> columns = family.columns;
+		if (columns.size() <= 0) {
+			List<Value> values = family.valCon.values;
+			if (values.size() == 1) {
+				Value value = values.get(0);
+				sb.append("Assert.assertEquals(fam.get("
+						+ qualParamStrWithoutType + "), " + value.name + "); ");
+			} else {
+				sb.append(family.valCon.type + " val = fam.get"
+						+ family.valCon.type + "(" + qualParamStrWithoutType
+						+ "); ");
+				for (Value value : values) {
+					sb.append("Assert.assertEquals(val.get"
+							+ StringUtils.capitalize(value.name) + "(), "
+							+ value.name + "); ");
+				}
 			}
-			sb.append(")); ");
+		} else {
+			for (Value value : columns) {
+				sb.append("Assert.assertEquals(" + value.name + ", fam.get"
+						+ StringUtils.capitalize(value.name) + "(");
+				if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
+					sb.append(qualParamStrWithoutType);
+				}
+				sb.append(")); ");
+			}
 		}
 		sb.append("} ");
 	}
@@ -837,12 +872,28 @@ public class HBaseClassGenerateUtility {
 		return sb.toString();
 	}
 
+	private static void checkColumnsAndValues(Family family) {
+		int columnsSize = family.columns.size();
+		int valuesSize = family.valCon.values.size();
+		if (columnsSize > 0 && valuesSize > 0) {
+			throw new RuntimeException("Columns size(" + columnsSize
+					+ ") and values size(" + valuesSize
+					+ ") can't both bigger than zero.");
+		}
+	}
+
 	private static void generateFamilyGetterSetterSection(StringBuilder sb,
 			Family family) {
+		checkColumnsAndValues(family);
 		List<Value> columns = family.columns;
 		if (columns.size() <= 0) {
-			generateFamilyValueGetter(sb, family);
-			generateFamilyValueSetter(sb, family);
+			if (family.valCon.values.size() == 1) {
+				generateFamilySingleValueGetter(sb, family);
+				generateFamilySingleValueSetter(sb, family);
+			} else {
+				generateFamilyValueGetter(sb, family);
+				generateFamilyValueSetter(sb, family);
+			}
 		} else {
 			for (Value column : columns) {
 				generateFamilyColumnGetter(sb, family, column);
@@ -901,6 +952,24 @@ public class HBaseClassGenerateUtility {
 				+ "(" + paramStrWithoutType + "); ");
 		sb.append("return (" + family.valCon.type
 				+ ") super.getLatestValue(qual); ");
+		sb.append("} ");
+	}
+
+	private static void generateFamilySingleValueGetter(StringBuilder sb,
+			Family family) {
+		String paramStr = getQualifierFieldWithoutColumnNameParameterString(
+				family, true);
+		String paramStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
+		Value value = family.valCon.values.get(0);
+
+		sb.append("public " + value.type + " get(" + paramStr + ") { ");
+		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
+				+ "(" + paramStrWithoutType + "); ");
+		sb.append(family.valCon.type + " val = (" + family.valCon.type
+				+ ") super.getLatestValue(qual); ");
+		sb.append("return val.get" + StringUtils.capitalize(value.name)
+				+ "(); ");
 		sb.append("} ");
 	}
 
@@ -988,6 +1057,25 @@ public class HBaseClassGenerateUtility {
 				false);
 		sb.append("public void set" + family.valCon.type + "(" + qualParamStr
 				+ ", Date ver, " + valParamStr + ") { ");
+		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
+				+ "(" + qualParamStrWithoutType + "); ");
+		sb.append(family.valCon.type + " val = new " + family.valCon.type + "("
+				+ valParamStrWithoutType + "); ");
+		sb.append("add(qual, ver, val); ");
+		sb.append("} ");
+	}
+
+	private static void generateFamilySingleValueSetter(StringBuilder sb,
+			Family family) {
+		String qualParamStr = getQualifierFieldWithoutColumnNameParameterString(
+				family, true);
+		String qualParamStrWithoutType = getQualifierFieldWithoutColumnNameParameterString(
+				family, false);
+		String valParamStr = getValueFieldParameterString(family, true);
+		String valParamStrWithoutType = getValueFieldParameterString(family,
+				false);
+		sb.append("public void set(" + qualParamStr + ", Date ver, "
+				+ valParamStr + ") { ");
 		sb.append("HBaseColumnQualifier qual = new " + family.qualCon.type
 				+ "(" + qualParamStrWithoutType + "); ");
 		sb.append(family.valCon.type + " val = new " + family.valCon.type + "("
@@ -1142,7 +1230,7 @@ public class HBaseClassGenerateUtility {
 	static class Container {
 		public Family family;
 		public String type;
-		public List<Value> values = new ArrayList<Value>();
+		public List<Value> values = new ArrayList<Value>(0);
 
 		public Container(String type) {
 			this.type = type;

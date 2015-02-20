@@ -6,7 +6,7 @@
             "name":"stockCode"
          }
       ],
-      "InfoFamily":{  
+      "ColumnNameFamily":{  
          "Columns":[  
             {  
                "type":"Enumeration",
@@ -17,18 +17,18 @@
                "name":"string"
             }
          ],
-         "InfoQualifier":[  
+         "ColumnNameQualifier":[  
             {  
                "type":"String",
                "name":"columnName"
             }
          ],
-         "InfoValue":[  
+         "ColumnNameValue":[  
 
          ]
       },
-      "XbrlInstanceFamily":{  
-         "XbrlInstanceQualifier":[  
+      "ValuesFamily":{  
+         "ValuesQualifier":[  
             {  
                "type":"String",
                "name":"elementId",
@@ -44,7 +44,7 @@
                "name":"instant"
             }
          ],
-         "XbrlInstanceValue":[  
+         "ValuesValue":[  
             {  
                "type":"String",
                "name":"unitType",
@@ -57,8 +57,8 @@
             }
          ]
       },
-      "FinancialReportFamily":{  
-         "FinancialReportQualifier":[  
+      "ValueFamily":{  
+         "ValueQualifier":[  
             {  
                "type":"String",
                "name":"elementId",
@@ -74,14 +74,14 @@
                "name":"instant"
             }
          ],
-         "FinancialReportValue":[  
+         "ValueValue":[  
             {  
                "type":"BigDecimal",
                "name":"value"
             }
          ]
       },
-      "MonthlyFamily":{  
+      "QualifierColumnNameFamily":{  
          "Columns":[  
             {  
                "type":"BigInteger",
@@ -96,7 +96,7 @@
                "name":"operatingIncomeOfComment"
             }
          ],
-         "MonthlyQualifier":[  
+         "QualifierColumnNameQualifier":[  
             {  
                "type":"String",
                "name":"columnName",
@@ -113,33 +113,7 @@
                "length":2
             }
          ],
-         "MonthlyValue":[  
-
-         ]
-      },
-      "DailyFamily":{  
-         "Columns":[  
-            {  
-               "type":"BigDecimal",
-               "name":"closingConditionOfOpeningPrice"
-            },
-            {  
-               "type":"BigInteger",
-               "name":"closingConditionOfStockAmount"
-            }
-         ],
-         "DailyQualifier":[  
-            {  
-               "type":"String",
-               "name":"columnName",
-               "length":100
-            },
-            {  
-               "type":"Date",
-               "name":"date"
-            }
-         ],
-         "DailyValue":[  
+         "QualifierColumnNameValue":[  
 
          ]
       }

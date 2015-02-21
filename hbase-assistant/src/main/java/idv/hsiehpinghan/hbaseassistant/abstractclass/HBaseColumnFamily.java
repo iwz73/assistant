@@ -37,7 +37,8 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 			HBaseColumnQualifier qual = this
 					.generateColumnQualifier(qualBytesEntry.getKey());
 			NavigableMap<Long, byte[]> verBytesMap = qualBytesEntry.getValue();
-			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qual);
+			NavigableMap<Date, HBaseValue> verMap = getVersionValueMap(qual,
+					true);
 			for (Map.Entry<Long, byte[]> verBytesEntry : verBytesMap.entrySet()) {
 				byte[] valBytes = verBytesEntry.getValue();
 				if (valBytes.length == 0) {
@@ -60,7 +61,7 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	}
 
 	public void add(HBaseColumnQualifier qualifier, Date date, HBaseValue value) {
-		getVersionValueMap(qualifier).put(date, value);
+		getVersionValueMap(qualifier, true).put(date, value);
 	}
 
 	public void setQualifierVersionValueMap(
@@ -112,11 +113,19 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 
 	protected Set<Entry<Date, HBaseValue>> getVersionValueSet(
 			HBaseColumnQualifier qualifier) {
-		return getVersionValueMap(qualifier).descendingMap().entrySet();
+		NavigableMap<Date, HBaseValue> map = getVersionValueMap(qualifier,
+				false);
+		if (map == null) {
+			return null;
+		}
+		return map.descendingMap().entrySet();
 	}
 
 	protected HBaseValue getLatestValue(HBaseColumnQualifier qualifier) {
 		Set<Entry<Date, HBaseValue>> verSet = getVersionValueSet(qualifier);
+		if (verSet == null) {
+			return null;
+		}
 		for (Entry<Date, HBaseValue> verEnt : verSet) {
 			return verEnt.getValue();
 		}
@@ -136,11 +145,15 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 	protected abstract HBaseValue generateValue(byte[] valueBytes);
 
 	private NavigableMap<Date, HBaseValue> getVersionValueMap(
-			HBaseColumnQualifier qualifier) {
+			HBaseColumnQualifier qualifier, boolean createVerMapIsNotExists) {
 		NavigableMap<HBaseColumnQualifier, NavigableMap<Date, HBaseValue>> qualMap = getQualifierVersionValueMap();
 		if (qualMap.containsKey(qualifier) == false) {
-			NavigableMap<Date, HBaseValue> verMap = new TreeMap<Date, HBaseValue>();
-			qualMap.put(qualifier, verMap);
+			if (createVerMapIsNotExists) {
+				NavigableMap<Date, HBaseValue> verMap = new TreeMap<Date, HBaseValue>();
+				qualMap.put(qualifier, verMap);
+			} else {
+				return null;
+			}
 		}
 		return qualMap.get(qualifier);
 	}

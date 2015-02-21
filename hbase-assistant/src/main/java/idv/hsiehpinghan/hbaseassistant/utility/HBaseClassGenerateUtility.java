@@ -936,6 +936,9 @@ public class HBaseClassGenerateUtility {
 		sb.append("); ");
 		sb.append(family.valCon.type + " val = (" + family.valCon.type
 				+ ") super.getLatestValue(qual); ");
+		sb.append("if (val == null) { ");
+		sb.append("return null; ");
+		sb.append("} ");
 		sb.append("return val.getAs" + val.type + "(); ");
 		sb.append("} ");
 	}
@@ -968,6 +971,9 @@ public class HBaseClassGenerateUtility {
 				+ "(" + paramStrWithoutType + "); ");
 		sb.append(family.valCon.type + " val = (" + family.valCon.type
 				+ ") super.getLatestValue(qual); ");
+		sb.append("if(val == null) { ");
+		sb.append("return null; ");
+		sb.append("} ");
 		sb.append("return val.get" + StringUtils.capitalize(value.name)
 				+ "(); ");
 		sb.append("} ");

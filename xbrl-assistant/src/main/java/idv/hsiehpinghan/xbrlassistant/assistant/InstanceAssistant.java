@@ -115,7 +115,7 @@ public class InstanceAssistant {
 			return "ifrs_CashAndCashEquivalents";
 		} else if (Presentation.Id.StatementOfComprehensiveIncome
 				.equals(PresentationId)) {
-			return "tifrs-bsci-ci_OperatingRevenue";
+			return "ifrs_ComprehensiveIncome";
 		} else if (Presentation.Id.StatementOfCashFlows.equals(PresentationId)) {
 			return "ifrs_ProfitLossBeforeTax";
 		} else if (Presentation.Id.StatementOfChangesInEquity

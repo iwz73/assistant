@@ -63,6 +63,15 @@ public class TestTable extends HBaseTable {
 	}
 
 	public class RowKey extends HBaseRowKey {
+		private static final int STOCK_CODE_LENGTH = 15;
+		private static final int DATE_LENGTH = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH;
+		private static final int STOCK_CODE_BEGIN_INDEX = 0;
+		private static final int STOCK_CODE_END_INDEX = STOCK_CODE_BEGIN_INDEX
+				+ STOCK_CODE_LENGTH;
+		private static final int DATE_BEGIN_INDEX = STOCK_CODE_END_INDEX + 1;
+		private static final int DATE_END_INDEX = DATE_BEGIN_INDEX
+				+ DATE_LENGTH;
+
 		public RowKey(TestTable entity) {
 			super(entity);
 		}
@@ -72,18 +81,63 @@ public class TestTable extends HBaseTable {
 			setBytes(bytes);
 		}
 
-		public RowKey(String stockCode, TestTable entity) {
+		public RowKey(String stockCode, Date date, TestTable entity) {
 			super(entity);
-			setStockCode(stockCode);
+			byte[] stockCodeBytes = ByteConvertUtility.toBytes(stockCode,
+					STOCK_CODE_LENGTH);
+			byte[] dateBytes = ByteConvertUtility.toBytes(date);
+			super.setBytes(ArrayUtility
+					.addAll(stockCodeBytes, SPACE, dateBytes));
+		}
+
+		public byte[] getFuzzyBytes(String stockCode, Date date) {
+			byte[] stockCodeBytes;
+			if (stockCode == null) {
+				stockCodeBytes = ArrayUtility.getBytes(STOCK_CODE_LENGTH,
+						ByteUtility.BYTE_ONE);
+			} else {
+				stockCodeBytes = ArrayUtility.getBytes(STOCK_CODE_LENGTH,
+						ByteUtility.BYTE_ZERO);
+			}
+			byte[] dateBytes;
+			if (date == null) {
+				dateBytes = ArrayUtility.getBytes(DATE_LENGTH,
+						ByteUtility.BYTE_ONE);
+			} else {
+				dateBytes = ArrayUtility.getBytes(DATE_LENGTH,
+						ByteUtility.BYTE_ZERO);
+			}
+			return ArrayUtility.addAll(stockCodeBytes,
+					ByteUtility.SINGLE_ZERO_BYTE_ARRAY, dateBytes);
 		}
 
 		public String getStockCode() {
-			return ByteConvertUtility.getStringFromBytes(getBytes());
+			return ByteConvertUtility.getStringFromBytes(getBytes(),
+					STOCK_CODE_BEGIN_INDEX, STOCK_CODE_END_INDEX);
 		}
 
 		public void setStockCode(String stockCode) {
-			byte[] bytes = ByteConvertUtility.toBytes(stockCode);
-			setBytes(bytes);
+			byte[] bytes = getBytes();
+			byte[] subBytes = ByteConvertUtility.toBytes(stockCode,
+					STOCK_CODE_LENGTH);
+			ArrayUtility.replace(bytes, subBytes, STOCK_CODE_BEGIN_INDEX,
+					STOCK_CODE_END_INDEX);
+		}
+
+		public Date getDate() {
+			try {
+				return ByteConvertUtility.getDateFromBytes(getBytes(),
+						DATE_BEGIN_INDEX, DATE_END_INDEX);
+			} catch (ParseException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		public void setDate(Date date) {
+			byte[] bytes = getBytes();
+			byte[] subBytes = ByteConvertUtility.toBytes(date);
+			ArrayUtility.replace(bytes, subBytes, DATE_BEGIN_INDEX,
+					DATE_END_INDEX);
 		}
 	}
 
@@ -104,6 +158,9 @@ public class TestTable extends HBaseTable {
 		public Enumeration getEnumeration() {
 			HBaseColumnQualifier qual = new ColumnNameQualifier(ENUMERATION);
 			ColumnNameValue val = (ColumnNameValue) super.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getAsEnumeration();
 		}
 
@@ -117,6 +174,9 @@ public class TestTable extends HBaseTable {
 		public String getString() {
 			HBaseColumnQualifier qual = new ColumnNameQualifier(STRING);
 			ColumnNameValue val = (ColumnNameValue) super.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getAsString();
 		}
 
@@ -380,6 +440,9 @@ public class TestTable extends HBaseTable {
 			HBaseColumnQualifier qual = new ValueQualifier(elementId,
 					enumeration, instant);
 			ValueValue val = (ValueValue) super.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getValue();
 		}
 
@@ -527,6 +590,9 @@ public class TestTable extends HBaseTable {
 					OPERATING_INCOME_OF_CURRENT_MONTH, year, month);
 			QualifierColumnNameValue val = (QualifierColumnNameValue) super
 					.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getAsBigInteger();
 		}
 
@@ -545,6 +611,9 @@ public class TestTable extends HBaseTable {
 					OPERATING_INCOME_OF_DIFFERENT_PERCENT, year, month);
 			QualifierColumnNameValue val = (QualifierColumnNameValue) super
 					.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getAsBigDecimal();
 		}
 
@@ -562,6 +631,9 @@ public class TestTable extends HBaseTable {
 					OPERATING_INCOME_OF_COMMENT, year, month);
 			QualifierColumnNameValue val = (QualifierColumnNameValue) super
 					.getLatestValue(qual);
+			if (val == null) {
+				return null;
+			}
 			return val.getAsString();
 		}
 

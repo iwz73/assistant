@@ -3,7 +3,12 @@
       "RowKey":[  
          {  
             "type":"String",
-            "name":"stockCode"
+            "name":"stockCode",
+            "length":15
+         },
+         {  
+            "type":"Date",
+            "name":"date"
          }
       ],
       "ColumnNameFamily":{  

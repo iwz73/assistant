@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/MonthlyData.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -778,6 +778,37 @@ public class HBaseClassGenerateUtility {
 		generateTypeThreeConstructor(sb, con, true);
 	}
 
+	private static void generateRowKeyFuzzyBytesSection(StringBuilder sb,
+			Container con) {
+		List<Value> vals = con.values;
+		if (vals.size() <= 1) {
+			return;
+		}
+		sb.append("public byte[] getFuzzyBytes("
+				+ getRowKeyFieldParameterString(true, true) + ") { ");
+		for (Value val : vals) {
+			sb.append("byte[] " + val.name + "Bytes; ");
+			sb.append("if (" + val.name + " == null) { ");
+			sb.append(val.name + "Bytes = ArrayUtility.getBytes("
+					+ getLengthString(val.name) + ", ByteUtility.BYTE_ONE); ");
+			sb.append("} else { ");
+			sb.append(val.name + "Bytes = ArrayUtility.getBytes("
+					+ getLengthString(val.name) + ", ByteUtility.BYTE_ZERO); ");
+			sb.append("} ");
+		}
+		sb.append("return ArrayUtility.addAll( ");
+		int i = 0;
+		for (Value val : vals) {
+			if (i > 0) {
+				sb.append(", ByteUtility.SINGLE_ZERO_BYTE_ARRAY, ");
+			}
+			sb.append(val.name + "Bytes ");
+			++i;
+		}
+		sb.append("); ");
+		sb.append("} ");
+	}
+
 	private static void generateConstructorsSection(StringBuilder sb,
 			Container con) {
 		generateTypeOneConstructor(sb, con, false);
@@ -857,6 +888,34 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static String getRowKeyFieldParameterString(boolean withType) {
+		return getRowKeyFieldParameterString(withType, false);
+	}
+
+	private static String changePrimativeTypeToObject(String type) {
+		switch (type) {
+		case "boolean":
+			return "Boolean";
+		case "byte":
+			return "Byte";
+		case "char":
+			return "Character";
+		case "double":
+			return "Double";
+		case "float":
+			return "Float";
+		case "int":
+			return "Integer";
+		case "long":
+			return "Long";
+		case "short":
+			return "Short";
+		default:
+			return type;
+		}
+	}
+
+	private static String getRowKeyFieldParameterString(boolean withType,
+			boolean changePrimativeTypeToObject) {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (Value val : rowKey.values) {
@@ -864,7 +923,11 @@ public class HBaseClassGenerateUtility {
 				sb.append(",");
 			}
 			if (withType == true) {
-				sb.append(val.type + " ");
+				if (changePrimativeTypeToObject) {
+					sb.append(changePrimativeTypeToObject(val.type) + " ");
+				} else {
+					sb.append(val.type + " ");
+				}
 			}
 			sb.append(val.name);
 			++i;
@@ -1145,6 +1208,7 @@ public class HBaseClassGenerateUtility {
 		generateLengthSection(sb, con);
 		generateIndexSection(sb, con);
 		generateRowKeyConstructorsSection(sb, con);
+		generateRowKeyFuzzyBytesSection(sb, con);
 		generateGetterSetterSection(sb, con);
 	}
 

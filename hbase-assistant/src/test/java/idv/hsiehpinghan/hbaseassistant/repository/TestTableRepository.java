@@ -9,6 +9,7 @@ import idv.hsiehpinghan.hbaseassistant.entity.TestTable.RowKey;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
@@ -25,16 +26,17 @@ public class TestTableRepository extends RepositoryBase {
 		return TestTable.class;
 	}
 
-	public TestTable generateEntity(String stockCode) {
+	public TestTable generateEntity(String stockCode, Date date) {
 		TestTable entity = new TestTable();
-		generateRowKey(stockCode, entity);
+		generateRowKey(stockCode, date, entity);
 		return entity;
 	}
 
-	public TestTable get(String stockCode) throws IllegalAccessException,
-			NoSuchMethodException, SecurityException, InstantiationException,
+	public TestTable get(String stockCode, Date date)
+			throws IllegalAccessException, NoSuchMethodException,
+			SecurityException, InstantiationException,
 			IllegalArgumentException, InvocationTargetException, IOException {
-		HBaseRowKey rowKey = getRowKey(stockCode);
+		HBaseRowKey rowKey = getRowKey(stockCode, date);
 		return (TestTable) hbaseAssistant.get(rowKey);
 	}
 
@@ -53,11 +55,12 @@ public class TestTableRepository extends RepositoryBase {
 		return rowKeys;
 	}
 
-	public boolean exists(String stockCode) throws NoSuchFieldException,
-			SecurityException, IllegalArgumentException,
-			IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException, InstantiationException, IOException {
-		HBaseRowKey key = getRowKey(stockCode);
+	public boolean exists(String stockCode, Date date)
+			throws NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException,
+			NoSuchMethodException, InvocationTargetException,
+			InstantiationException, IOException {
+		HBaseRowKey key = getRowKey(stockCode, date);
 		return super.exists(key);
 	}
 
@@ -66,13 +69,13 @@ public class TestTableRepository extends RepositoryBase {
 		return hbaseAssistant;
 	}
 
-	private HBaseRowKey getRowKey(String stockCode) {
+	private HBaseRowKey getRowKey(String stockCode, Date date) {
 		TestTable entity = new TestTable();
-		generateRowKey(stockCode, entity);
+		generateRowKey(stockCode, date, entity);
 		return entity.getRowKey();
 	}
 
-	private void generateRowKey(String stockCode, TestTable entity) {
-		entity.new RowKey(stockCode, entity);
+	private void generateRowKey(String stockCode, Date date, TestTable entity) {
+		entity.new RowKey(stockCode, date, entity);
 	}
 }

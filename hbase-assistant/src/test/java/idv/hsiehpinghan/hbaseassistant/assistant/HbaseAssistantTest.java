@@ -34,9 +34,11 @@ import org.apache.hadoop.hbase.filter.BinaryComparator;
 import org.apache.hadoop.hbase.filter.CompareFilter;
 import org.apache.hadoop.hbase.filter.FamilyFilter;
 import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.FuzzyRowFilter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.apache.hadoop.hbase.filter.PageFilter;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -47,6 +49,7 @@ public class HbaseAssistantTest {
 	private final String tableName = tableClass.getSimpleName();
 	private HbaseAssistant hbaseAssistant;
 	private int maxVersions = 10;
+	private Date date;
 	private Date minDate;
 	private Date maxDate;
 	private Filter filter;
@@ -69,6 +72,7 @@ public class HbaseAssistantTest {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		hbaseAssistant = applicationContext.getBean(HbaseAssistant.class);
+		date = DateUtils.parseDate("2012/03/11", "yyyy/MM/dd");
 		minDate = DateUtils.parseDate("2010/01/01", "yyyy/MM/dd");
 		maxDate = DateUtils.parseDate("2020/01/01", "yyyy/MM/dd");
 		ver = DateUtils.parseDate("2015/01/01", "yyyy/MM/dd");
@@ -209,6 +213,21 @@ public class HbaseAssistantTest {
 		Assert.assertEquals(pageSize, entities.size());
 	}
 
+	private void TestFuzzyRowFilter() throws Exception {
+		String stockCode = generateStockCode(0);
+		TestTable entity = new TestTable();
+		TestTable.RowKey rowKey = entity.new RowKey(stockCode, date, entity);
+		List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>();
+		Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(),
+				rowKey.getFuzzyBytes(stockCode, null));
+		fuzzyKeysData.add(pair);
+		FuzzyRowFilter fuzzyRowFilter = new org.apache.hadoop.hbase.filter.FuzzyRowFilter(
+				fuzzyKeysData);
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				fuzzyRowFilter);
+		Assert.assertEquals(1, entities.size());
+	}
+
 	@Test(dependsOnMethods = { "put" })
 	public void scan() throws Exception {
 		TestNoFilter();
@@ -217,6 +236,7 @@ public class HbaseAssistantTest {
 		TestFamilyFilter();
 		TestRowFilter();
 		TestPageFilter();
+		TestFuzzyRowFilter();
 	}
 
 	@Test(dependsOnMethods = { "put" })
@@ -268,7 +288,7 @@ public class HbaseAssistantTest {
 	}
 
 	private void generateRowKey(TestTable entity, int id) throws ParseException {
-		entity.new RowKey(generateStockCode(id), entity);
+		entity.new RowKey(generateStockCode(id), date, entity);
 	}
 
 	private void generateColumnNameFamily(TestTable entity) throws Exception {

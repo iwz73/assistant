@@ -23,16 +23,17 @@ public class TestTableRepositoryTest {
 	private Date ver = DateUtility.getDate(2015, 2, 3);
 	private String elementId = "elementId";
 	private String stockCode = "stockCode";
-	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("15");
+	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("16");
 	private String unitType = "unitType";
+	private Date date = DateUtility.getDate(2015, 2, 3);
+	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal(
+			"19.19");
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private String string = "string";
-	private int month = 19;
-	private BigDecimal value = new BigDecimal("20.20");
-	private int year = 21;
+	private int month = 22;
+	private BigDecimal value = new BigDecimal("23.23");
+	private int year = 24;
 	private Enumeration enumeration = Enumeration.TYPE1;
-	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal(
-			"23.23");
 	private Date instant = DateUtility.getDate(2015, 2, 3);
 	private TestTableRepository repository;
 
@@ -45,7 +46,7 @@ public class TestTableRepositoryTest {
 
 	@Test
 	public void put() throws Exception {
-		TestTable entity = repository.generateEntity(stockCode);
+		TestTable entity = repository.generateEntity(stockCode, date);
 		generateColumnNameFamilyContent(entity);
 		generateValuesFamilyContent(entity);
 		generateValueFamilyContent(entity);
@@ -56,7 +57,7 @@ public class TestTableRepositoryTest {
 
 	@Test(dependsOnMethods = { "put" })
 	public void get() throws Exception {
-		TestTable entity = repository.get(stockCode);
+		TestTable entity = repository.get(stockCode, date);
 		assertColumnNameFamily(entity);
 		assertValuesFamily(entity);
 		assertValueFamily(entity);

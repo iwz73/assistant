@@ -22,14 +22,14 @@ public class TestTableTest {
 	private String stockCode = "stockCode";
 	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("3");
 	private String unitType = "unitType";
+	private Date date = DateUtility.getDate(2015, 2, 3);
+	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("6.6");
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private String string = "string";
-	private int month = 7;
-	private BigDecimal value = new BigDecimal("8.8");
-	private int year = 9;
+	private int month = 9;
+	private BigDecimal value = new BigDecimal("10.10");
+	private int year = 11;
 	private Enumeration enumeration = Enumeration.TYPE1;
-	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal(
-			"11.11");
 	private Date instant = DateUtility.getDate(2015, 2, 3);
 
 	@Test
@@ -43,8 +43,9 @@ public class TestTableTest {
 	}
 
 	private void testRowKey(TestTable entity) {
-		RowKey key = entity.new RowKey(stockCode, entity);
+		RowKey key = entity.new RowKey(stockCode, date, entity);
 		Assert.assertEquals(stockCode, key.getStockCode());
+		Assert.assertEquals(date, key.getDate());
 	}
 
 	private void testColumnNameFamily(TestTable entity) {

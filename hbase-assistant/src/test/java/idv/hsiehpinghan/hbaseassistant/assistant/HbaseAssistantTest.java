@@ -36,6 +36,7 @@ import org.apache.hadoop.hbase.filter.FamilyFilter;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
+import org.apache.hadoop.hbase.filter.PageFilter;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -58,6 +59,7 @@ public class HbaseAssistantTest {
 	private BigDecimal value = new BigDecimal("1.1");
 	private int year = 2015;
 	private int month = 1;
+	private int pageSize = 1;
 	private String operatingIncomeOfComment = "operatingIncomeOfComment";
 	private BigInteger operatingIncomeOfCurrentMonth = new BigInteger("2");
 	private BigDecimal operatingIncomeOfDifferentPercent = new BigDecimal("3.3");
@@ -199,6 +201,14 @@ public class HbaseAssistantTest {
 				.getQualifierVersionValueSet().size());
 	}
 
+	private void TestPageFilter() throws Exception {
+		PageFilter pageFilter = new org.apache.hadoop.hbase.filter.PageFilter(
+				pageSize);
+		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				pageFilter);
+		Assert.assertEquals(pageSize, entities.size());
+	}
+
 	@Test(dependsOnMethods = { "put" })
 	public void scan() throws Exception {
 		TestNoFilter();
@@ -206,6 +216,7 @@ public class HbaseAssistantTest {
 		TestMultipleColumnPrefixFilter();
 		TestFamilyFilter();
 		TestRowFilter();
+		TestPageFilter();
 	}
 
 	@Test(dependsOnMethods = { "put" })

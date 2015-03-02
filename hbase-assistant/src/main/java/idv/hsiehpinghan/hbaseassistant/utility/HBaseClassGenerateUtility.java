@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/DailyData.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -203,6 +203,34 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static void generateRepositoryFuzzyScanMethod(StringBuilder sb) {
+		List<Value> vals = rowKey.values;
+		if (vals.size() <= 1) {
+			return;
+		}
+		String tableNameDotRowKeyStr = tableName + "." + rowKey.type;
+		sb.append("public List<" + tableName + "> fuzzyScan("
+				+ getRowKeyFieldParameterString(true, true, false) + ") { ");
+		sb.append(tableNameDotRowKeyStr + " rowKey = (" + tableNameDotRowKeyStr
+				+ ") get" + rowKey.type + "("
+				+ getRowKeyFieldParameterString(false, false, true) + "); ");
+		sb.append("List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>(); ");
+		sb.append("Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(), rowKey.getFuzzyBytes("
+				+ getRowKeyFieldParameterString(false) + ")); ");
+		sb.append("fuzzyKeysData.add(pair); ");
+		sb.append("FuzzyRowFilter fuzzyRowFilter = new FuzzyRowFilter(fuzzyKeysData); ");
+		sb.append("@SuppressWarnings(\"unchecked\") ");
+		sb.append("List<"
+				+ tableName
+				+ "> "
+				+ StringUtils.uncapitalize(tableName)
+				+ "s = (List<"
+				+ tableName
+				+ ">) (Object) hbaseAssistant.scan(getTargetTableClass(), fuzzyRowFilter); ");
+		sb.append("return " + StringUtils.uncapitalize(tableName) + "s; ");
+		sb.append("} ");
+	}
+
 	private static void generateRepositoryGetRowAmountMethod(StringBuilder sb) {
 		sb.append("public int getRowAmount() { ");
 		sb.append("return hbaseAssistant.getRowAmount(getTargetTableClass()); ");
@@ -265,6 +293,7 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 		generateRepositoryGenerateEntityMethod(sb);
 		generateRepositoryGetMethod(sb);
+		generateRepositoryFuzzyScanMethod(sb);
 		generateRepositoryGetRowAmountMethod(sb);
 		generateRepositoryGetRowKeysMethod(sb);
 		generateRepositoryExistsMethod(sb);
@@ -576,7 +605,9 @@ public class HBaseClassGenerateUtility {
 		sb.append("import java.lang.reflect.InvocationTargetException; ");
 		sb.append("import java.util.ArrayList; ");
 		sb.append("import java.util.List; ");
+		sb.append("import org.apache.hadoop.hbase.filter.FuzzyRowFilter; ");
 		sb.append("import org.apache.hadoop.hbase.filter.KeyOnlyFilter; ");
+		sb.append("import org.apache.hadoop.hbase.util.Pair; ");
 	}
 
 	private static void generateRepositoryImportTestSection(StringBuilder sb) {
@@ -785,7 +816,7 @@ public class HBaseClassGenerateUtility {
 			return;
 		}
 		sb.append("public byte[] getFuzzyBytes("
-				+ getRowKeyFieldParameterString(true, true) + ") { ");
+				+ getRowKeyFieldParameterString(true, true, false) + ") { ");
 		for (Value val : vals) {
 			sb.append("byte[] " + val.name + "Bytes; ");
 			sb.append("if (" + val.name + " == null) { ");
@@ -888,7 +919,7 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static String getRowKeyFieldParameterString(boolean withType) {
-		return getRowKeyFieldParameterString(withType, false);
+		return getRowKeyFieldParameterString(withType, false, false);
 	}
 
 	private static String changePrimativeTypeToObject(String type) {
@@ -915,7 +946,7 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static String getRowKeyFieldParameterString(boolean withType,
-			boolean changePrimativeTypeToObject) {
+			boolean changePrimativeTypeToObject, boolean changeNullToDefaultValue) {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (Value val : rowKey.values) {
@@ -929,7 +960,11 @@ public class HBaseClassGenerateUtility {
 					sb.append(val.type + " ");
 				}
 			}
-			sb.append(val.name);
+			if(changeNullToDefaultValue && isPrimativeType(val.type)) {
+				sb.append(val.name + " == null ? " + getDefaultValueString(val.type) + " : " + val.name);
+			} else {
+				sb.append(val.name);
+			}
 			++i;
 		}
 		return sb.toString();
@@ -1153,6 +1188,37 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static String getDefaultValueString(String type) {
+		switch (type) {
+		case "boolean":
+		case "Boolean":
+			return "false";
+		case "byte":
+		case "Byte":
+			return "0";
+		case "char":
+		case "Character":
+			return "\u0000'";
+		case "double":
+		case "Double":
+			return "0d";
+		case "float":
+		case "Float":
+			return "0f";
+		case "int":
+		case "Integer":
+			return "0";
+		case "long":
+		case "Long":
+			return "0L";
+		case "short":
+		case "Short":
+			return "0";
+		default:
+			return "null";
+		}
+	}
+	
 	private static boolean isPrimativeType(String type) {
 		switch (type) {
 		case "boolean":

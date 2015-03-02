@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.hadoop.hbase.filter.FuzzyRowFilter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +40,19 @@ public class TestTableRepository extends RepositoryBase {
 			IllegalArgumentException, InvocationTargetException, IOException {
 		HBaseRowKey rowKey = getRowKey(stockCode, date);
 		return (TestTable) hbaseAssistant.get(rowKey);
+	}
+
+	public List<TestTable> fuzzyScan(String stockCode, Date date) {
+		TestTable.RowKey rowKey = (TestTable.RowKey) getRowKey(stockCode, date);
+		List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>();
+		Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(),
+				rowKey.getFuzzyBytes(stockCode, date));
+		fuzzyKeysData.add(pair);
+		FuzzyRowFilter fuzzyRowFilter = new FuzzyRowFilter(fuzzyKeysData);
+		@SuppressWarnings("unchecked")
+		List<TestTable> testTables = (List<TestTable>) (Object) hbaseAssistant
+				.scan(getTargetTableClass(), fuzzyRowFilter);
+		return testTables;
 	}
 
 	public int getRowAmount() {

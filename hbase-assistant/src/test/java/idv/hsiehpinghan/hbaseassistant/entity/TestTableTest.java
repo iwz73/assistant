@@ -29,7 +29,7 @@ public class TestTableTest {
 	private int month = 9;
 	private BigDecimal value = new BigDecimal("10.10");
 	private int year = 11;
-	private Enumeration enumeration = Enumeration.TYPE1;
+	private Enumeration enumeration = Enumeration.TYPE2;
 	private Date instant = DateUtility.getDate(2015, 2, 3);
 
 	@Test

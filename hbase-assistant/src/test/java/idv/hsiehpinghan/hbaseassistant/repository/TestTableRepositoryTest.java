@@ -33,7 +33,7 @@ public class TestTableRepositoryTest {
 	private int month = 22;
 	private BigDecimal value = new BigDecimal("23.23");
 	private int year = 24;
-	private Enumeration enumeration = Enumeration.TYPE1;
+	private Enumeration enumeration = Enumeration.TYPE2;
 	private Date instant = DateUtility.getDate(2015, 2, 3);
 	private TestTableRepository repository;
 

@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.xbrlassistant.xbrl;
 
+import java.math.BigDecimal;
+
 public class Presentation {
 	public static class Id {
 		public static final String AccountantsReport = "http://www.xbrl.org/tifrs/ar/role/AccountantsReport";
@@ -36,5 +38,19 @@ public class Presentation {
 	public static class Unit {
 		public static final String TWD = "TWD";
 		public static final String SHARES = "Shares";
+	}
+	
+	public static class ElementId {
+		// Asset
+		public static final String CURRENT_ASSETS = "ifrs_CurrentAssets";
+		public static final String NONCURRENT_ASSETS = "ifrs_NoncurrentAssets";
+		
+		// Liability
+		public static final String CURRENT_LIABILITIES = "ifrs_CurrentLiabilities";
+		public static final String NONCURRENT_LIABILITIES = "ifrs_NoncurrentLiabilities";
+		
+		// Equity
+		public static final String EQUITY = "ifrs_Equity";
+		
 	}
 }

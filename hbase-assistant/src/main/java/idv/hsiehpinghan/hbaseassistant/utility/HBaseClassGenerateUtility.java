@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/hsiehpinghan/git/assistant/hbase-assistant/src/test/entity-json/TestTable.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);

@@ -1,8 +1,16 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
-public abstract class HBaseRowKey extends HBaseBase {
+import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
+
+public abstract class HBaseRowKey extends HBaseBase implements
+		Comparable<HBaseRowKey> {
 	private HBaseTable entity;
 	private byte[] bytes;
+
+	@Override
+	public int compareTo(HBaseRowKey o) {
+		return ArrayUtility.compareTo(this.getBytes(), o.getBytes());
+	}
 
 	public HBaseRowKey(HBaseTable entity) {
 		this.entity = entity;

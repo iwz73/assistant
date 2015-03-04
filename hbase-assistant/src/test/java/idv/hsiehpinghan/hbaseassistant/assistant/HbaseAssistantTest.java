@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
+import java.util.TreeSet;
 
 import junit.framework.Assert;
 
@@ -152,82 +153,6 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(hbaseAssistant.exist(entity.getRowKey()));
 	}
 
-	private void TestNoFilter() {
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class);
-		Assert.assertEquals(3, entities.size());
-		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getColumnNameFamily()
-				.getQualifierVersionValueSet().size());
-	}
-
-	private void TestKeyOnlyFilter() {
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				new KeyOnlyFilter());
-		Assert.assertEquals(3, entities.size());
-		TestTable entity = (TestTable) entities.get(0);
-		valueEmptyTest(entity.getColumnNameFamily());
-	}
-
-	private void TestMultipleColumnPrefixFilter() {
-		byte[][] prefixes = new byte[][] { ByteConvertUtility
-				.toBytes(ColumnNameFamily.ENUMERATION) };
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				new MultipleColumnPrefixFilter(prefixes));
-		Assert.assertEquals(3, entities.size());
-		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(1, entity.getColumnNameFamily()
-				.getQualifierVersionValueSet().size());
-	}
-
-	private void TestFamilyFilter() {
-		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
-				new BinaryComparator(
-						ByteConvertUtility.toBytes("columnNameFamily")));
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				famFilter);
-		Assert.assertEquals(3, entities.size());
-		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getColumnNameFamily()
-				.getQualifierVersionValueSet().size());
-		Assert.assertEquals(0, entity.getQualifierColumnNameFamily()
-				.getQualifierVersionValueSet().size());
-	}
-
-	private void TestRowFilter() throws Exception {
-		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
-				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
-						createTestEntity(0).getRowKey().getBytes()));
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				rowFilter);
-		Assert.assertEquals(1, entities.size());
-		TestTable entity = (TestTable) entities.get(0);
-		Assert.assertEquals(2, entity.getColumnNameFamily()
-				.getQualifierVersionValueSet().size());
-	}
-
-	private void TestPageFilter() throws Exception {
-		PageFilter pageFilter = new org.apache.hadoop.hbase.filter.PageFilter(
-				pageSize);
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				pageFilter);
-		Assert.assertEquals(pageSize, entities.size());
-	}
-
-	private void TestFuzzyRowFilter() throws Exception {
-		String stockCode = generateStockCode(0);
-		TestTable entity = new TestTable();
-		TestTable.RowKey rowKey = entity.new RowKey(stockCode, date, entity);
-		List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>();
-		Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(),
-				rowKey.getFuzzyBytes(stockCode, null));
-		fuzzyKeysData.add(pair);
-		FuzzyRowFilter fuzzyRowFilter = new org.apache.hadoop.hbase.filter.FuzzyRowFilter(
-				fuzzyKeysData);
-		List<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
-				fuzzyRowFilter);
-		Assert.assertEquals(1, entities.size());
-	}
-
 	@Test(dependsOnMethods = { "put" })
 	public void scan() throws Exception {
 		TestNoFilter();
@@ -243,6 +168,82 @@ public class HbaseAssistantTest {
 	public void getRowAmount() {
 		int size = hbaseAssistant.getRowAmount(TestTable.class);
 		Assert.assertEquals(3, size);
+	}
+	
+	private void TestNoFilter() {
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class);
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.first();
+		Assert.assertEquals(2, entity.getColumnNameFamily()
+				.getQualifierVersionValueSet().size());
+	}
+
+	private void TestKeyOnlyFilter() {
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				new KeyOnlyFilter());
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.first();
+		valueEmptyTest(entity.getColumnNameFamily());
+	}
+
+	private void TestMultipleColumnPrefixFilter() {
+		byte[][] prefixes = new byte[][] { ByteConvertUtility
+				.toBytes(ColumnNameFamily.ENUMERATION) };
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				new MultipleColumnPrefixFilter(prefixes));
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.first();
+		Assert.assertEquals(1, entity.getColumnNameFamily()
+				.getQualifierVersionValueSet().size());
+	}
+
+	private void TestFamilyFilter() {
+		Filter famFilter = new FamilyFilter(CompareFilter.CompareOp.EQUAL,
+				new BinaryComparator(
+						ByteConvertUtility.toBytes("columnNameFamily")));
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				famFilter);
+		Assert.assertEquals(3, entities.size());
+		TestTable entity = (TestTable) entities.first();
+		Assert.assertEquals(2, entity.getColumnNameFamily()
+				.getQualifierVersionValueSet().size());
+		Assert.assertEquals(0, entity.getQualifierColumnNameFamily()
+				.getQualifierVersionValueSet().size());
+	}
+
+	private void TestRowFilter() throws Exception {
+		Filter rowFilter = new org.apache.hadoop.hbase.filter.RowFilter(
+				CompareFilter.CompareOp.EQUAL, new BinaryComparator(
+						createTestEntity(0).getRowKey().getBytes()));
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				rowFilter);
+		Assert.assertEquals(1, entities.size());
+		TestTable entity = (TestTable) entities.first();
+		Assert.assertEquals(2, entity.getColumnNameFamily()
+				.getQualifierVersionValueSet().size());
+	}
+
+	private void TestPageFilter() throws Exception {
+		PageFilter pageFilter = new org.apache.hadoop.hbase.filter.PageFilter(
+				pageSize);
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				pageFilter);
+		Assert.assertEquals(pageSize, entities.size());
+	}
+
+	private void TestFuzzyRowFilter() throws Exception {
+		String stockCode = generateStockCode(0);
+		TestTable entity = new TestTable();
+		TestTable.RowKey rowKey = entity.new RowKey(stockCode, date, entity);
+		List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>();
+		Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(),
+				rowKey.getFuzzyBytes(stockCode, null));
+		fuzzyKeysData.add(pair);
+		FuzzyRowFilter fuzzyRowFilter = new org.apache.hadoop.hbase.filter.FuzzyRowFilter(
+				fuzzyKeysData);
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(TestTable.class,
+				fuzzyRowFilter);
+		Assert.assertEquals(1, entities.size());
 	}
 
 	private void valueEmptyTest(HBaseColumnFamily family) {

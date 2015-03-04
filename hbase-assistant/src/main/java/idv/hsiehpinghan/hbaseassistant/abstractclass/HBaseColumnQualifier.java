@@ -1,17 +1,14 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
+import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
 
 public abstract class HBaseColumnQualifier extends HBaseBase implements
 		Comparable<HBaseColumnQualifier> {
 	private byte[] bytes;
 
-	/**
-	 * Overwrite compare to get customerize order.
-	 */
 	@Override
 	public int compareTo(HBaseColumnQualifier o) {
-		return CompareToBuilder.reflectionCompare(this, o);
+		return ArrayUtility.compareTo(this.getBytes(), o.getBytes());
 	}
 
 	public byte[] getBytes() {

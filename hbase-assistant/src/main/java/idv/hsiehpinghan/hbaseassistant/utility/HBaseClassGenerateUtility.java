@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/MonthlyOperatingIncome.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/StockClosingCondition.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -209,7 +209,7 @@ public class HBaseClassGenerateUtility {
 			return;
 		}
 		String tableNameDotRowKeyStr = tableName + "." + rowKey.type;
-		sb.append("public List<" + tableName + "> fuzzyScan("
+		sb.append("public TreeSet<" + tableName + "> fuzzyScan("
 				+ getRowKeyFieldParameterString(true, true, false) + ") { ");
 		sb.append(tableNameDotRowKeyStr + " rowKey = (" + tableNameDotRowKeyStr
 				+ ") get" + rowKey.type + "("
@@ -220,11 +220,11 @@ public class HBaseClassGenerateUtility {
 		sb.append("fuzzyKeysData.add(pair); ");
 		sb.append("FuzzyRowFilter fuzzyRowFilter = new FuzzyRowFilter(fuzzyKeysData); ");
 		sb.append("@SuppressWarnings(\"unchecked\") ");
-		sb.append("List<"
+		sb.append("TreeSet<"
 				+ tableName
 				+ "> "
 				+ StringUtils.uncapitalize(tableName)
-				+ "s = (List<"
+				+ "s = (TreeSet<"
 				+ tableName
 				+ ">) (Object) hbaseAssistant.scan(getTargetTableClass(), fuzzyRowFilter); ");
 		sb.append("return " + StringUtils.uncapitalize(tableName) + "s; ");
@@ -238,9 +238,9 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static void generateRepositoryGetRowKeysMethod(StringBuilder sb) {
-		sb.append("public List<RowKey> getRowKeys() { ");
-		sb.append("List<HBaseTable> entities = hbaseAssistant.scan(getTargetTableClass(), new KeyOnlyFilter()); ");
-		sb.append("List<RowKey> rowKeys = new ArrayList<RowKey>(entities.size()); ");
+		sb.append("public TreeSet<RowKey> getRowKeys() { ");
+		sb.append("TreeSet<HBaseTable> entities = hbaseAssistant.scan(getTargetTableClass(), new KeyOnlyFilter()); ");
+		sb.append("TreeSet<RowKey> rowKeys = new TreeSet<RowKey>(); ");
 		sb.append("for (HBaseTable entity : entities) { ");
 		sb.append("RowKey rowKey = (RowKey) entity.getRowKey(); ");
 		sb.append("rowKeys.add(rowKey); ");
@@ -605,6 +605,7 @@ public class HBaseClassGenerateUtility {
 		sb.append("import java.lang.reflect.InvocationTargetException; ");
 		sb.append("import java.util.ArrayList; ");
 		sb.append("import java.util.List; ");
+		sb.append("import java.util.TreeSet; ");
 		sb.append("import org.apache.hadoop.hbase.filter.FuzzyRowFilter; ");
 		sb.append("import org.apache.hadoop.hbase.filter.KeyOnlyFilter; ");
 		sb.append("import org.apache.hadoop.hbase.util.Pair; ");
@@ -716,8 +717,9 @@ public class HBaseClassGenerateUtility {
 
 	private static String getToBytesString(Value val) {
 		StringBuilder sb = new StringBuilder();
-		if (isEnum(val.type)) {		
-			sb.append("ByteConvertUtility.toBytes(" + val.name + " == null ? null : " + val.name + ".name()");
+		if (isEnum(val.type)) {
+			sb.append("ByteConvertUtility.toBytes(" + val.name
+					+ " == null ? null : " + val.name + ".name()");
 		} else {
 			sb.append("ByteConvertUtility.toBytes(" + val.name);
 		}

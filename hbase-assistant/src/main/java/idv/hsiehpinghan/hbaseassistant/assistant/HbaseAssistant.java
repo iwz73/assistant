@@ -204,7 +204,7 @@ public class HbaseAssistant implements InitializingBean {
 	 * @param entityClass
 	 * @return
 	 */
-	public List<HBaseTable> scan(Class<? extends HBaseTable> entityClass) {
+	public TreeSet<HBaseTable> scan(Class<? extends HBaseTable> entityClass) {
 		return scan(entityClass, null);
 	}
 
@@ -215,20 +215,20 @@ public class HbaseAssistant implements InitializingBean {
 	 * @param filter
 	 * @return
 	 */
-	public List<HBaseTable> scan(final Class<? extends HBaseTable> entityClass,
-			final Filter filter) {
+	public TreeSet<HBaseTable> scan(
+			final Class<? extends HBaseTable> entityClass, final Filter filter) {
 		String tableName = entityClass.getSimpleName();
 		return hbaseTemplate.execute(tableName,
-				new TableCallback<List<HBaseTable>>() {
+				new TableCallback<TreeSet<HBaseTable>>() {
 					@Override
-					public List<HBaseTable> doInTable(HTableInterface tableItf)
-							throws Throwable {
+					public TreeSet<HBaseTable> doInTable(
+							HTableInterface tableItf) throws Throwable {
 						Scan scan = new Scan();
 						if (filter != null) {
 							scan.setFilter(filter);
 						}
 						ResultScanner scanner = tableItf.getScanner(scan);
-						List<HBaseTable> entities = new ArrayList<HBaseTable>();
+						TreeSet<HBaseTable> entities = new TreeSet<HBaseTable>();
 						for (Result rslt : scanner) {
 							Object entityObj = ObjectUtility
 									.createClassInstance(entityClass);

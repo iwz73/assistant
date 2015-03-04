@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.hadoop.hbase.filter.FuzzyRowFilter;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
@@ -42,7 +43,7 @@ public class TestTableRepository extends RepositoryBase {
 		return (TestTable) hbaseAssistant.get(rowKey);
 	}
 
-	public List<TestTable> fuzzyScan(String stockCode, Date date) {
+	public TreeSet<TestTable> fuzzyScan(String stockCode, Date date) {
 		TestTable.RowKey rowKey = (TestTable.RowKey) getRowKey(stockCode, date);
 		List<Pair<byte[], byte[]>> fuzzyKeysData = new ArrayList<Pair<byte[], byte[]>>();
 		Pair<byte[], byte[]> pair = new Pair<byte[], byte[]>(rowKey.getBytes(),
@@ -50,7 +51,7 @@ public class TestTableRepository extends RepositoryBase {
 		fuzzyKeysData.add(pair);
 		FuzzyRowFilter fuzzyRowFilter = new FuzzyRowFilter(fuzzyKeysData);
 		@SuppressWarnings("unchecked")
-		List<TestTable> testTables = (List<TestTable>) (Object) hbaseAssistant
+		TreeSet<TestTable> testTables = (TreeSet<TestTable>) (Object) hbaseAssistant
 				.scan(getTargetTableClass(), fuzzyRowFilter);
 		return testTables;
 	}
@@ -59,10 +60,10 @@ public class TestTableRepository extends RepositoryBase {
 		return hbaseAssistant.getRowAmount(getTargetTableClass());
 	}
 
-	public List<RowKey> getRowKeys() {
-		List<HBaseTable> entities = hbaseAssistant.scan(getTargetTableClass(),
-				new KeyOnlyFilter());
-		List<RowKey> rowKeys = new ArrayList<RowKey>(entities.size());
+	public TreeSet<RowKey> getRowKeys() {
+		TreeSet<HBaseTable> entities = hbaseAssistant.scan(
+				getTargetTableClass(), new KeyOnlyFilter());
+		TreeSet<RowKey> rowKeys = new TreeSet<RowKey>();
 		for (HBaseTable entity : entities) {
 			RowKey rowKey = (RowKey) entity.getRowKey();
 			rowKeys.add(rowKey);

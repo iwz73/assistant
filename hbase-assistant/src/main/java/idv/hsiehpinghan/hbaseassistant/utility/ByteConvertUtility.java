@@ -144,10 +144,10 @@ public class ByteConvertUtility {
 	public static byte[] toBytes(String string, int byteLength) {
 		if (string == null) {
 			return Bytes
-					.toBytes(StringUtils.rightPad(EMPTY_STRING, byteLength));
+					.toBytes(StringUtils.leftPad(EMPTY_STRING, byteLength));
 		}
 		checkSize(string, byteLength);
-		return Bytes.toBytes(StringUtils.rightPad(string, byteLength));
+		return Bytes.toBytes(StringUtils.leftPad(string, byteLength));
 	}
 
 	/**

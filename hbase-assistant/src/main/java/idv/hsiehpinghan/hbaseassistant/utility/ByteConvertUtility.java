@@ -17,6 +17,7 @@ public class ByteConvertUtility {
 	private static final String EMPTY_STRING = StringUtility.EMPTY_STRING;
 	private static final String DEFAULT_DATE_PATTERN = "yyyyMMdd";
 	public static final int DEFAULT_DATE_PATTERN_LENGTH = 8;
+	public static final int DEFAULT_BOOLEAN_LENGTH = 5;
 
 	/**
 	 * Convert String to bytes.
@@ -43,6 +44,94 @@ public class ByteConvertUtility {
 			return null;
 		}
 		return str;
+	}
+
+	/**
+	 * Convert boolean to bytes.
+	 * 
+	 * @param bool
+	 * @return
+	 */
+	public static byte[] toBytes(boolean bool) {
+		String str = String.valueOf(bool);
+		return toBytes(str, DEFAULT_BOOLEAN_LENGTH);
+	}
+
+	/**
+	 * Convert boolean to bytes.
+	 * 
+	 * @param bool
+	 * @param byteLength
+	 * @return
+	 */
+	public static byte[] toBytes(boolean bool, int byteLength) {
+		String str = String.valueOf(bool);
+		return toBytes(str, byteLength);
+	}
+
+	/**
+	 * Convert bool to bytes.
+	 * 
+	 * @param bool
+	 * @return
+	 */
+	public static byte[] toBytes(Boolean bool) {
+		return toBytes(bool, 0);
+	}
+
+	/**
+	 * Convert bool to bytes.
+	 * 
+	 * @param bool
+	 * @param byteLength
+	 * @return
+	 */
+	public static byte[] toBytes(Boolean bool, int byteLength) {
+		if (bool == null) {
+			if (byteLength == 0) {
+				return toBytes(StringUtility.EMPTY_STRING);
+			} else {
+				return toBytes(StringUtility.EMPTY_STRING, byteLength);
+			}
+		} else {
+			if (byteLength == 0) {
+				return toBytes(bool.toString());
+			} else {
+				return toBytes(bool.toString(), byteLength);
+			}
+		}
+	}
+
+	/**
+	 * Get boolean from bytes.
+	 * 
+	 * @param bytes
+	 * @param beginIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public static Boolean getBooleanFromBytes(byte[] bytes, int beginIndex,
+			int endIndex) {
+		String str = null;
+		if (beginIndex == 0 && endIndex == 0) {
+			str = getStringFromBytes(bytes);
+		} else {
+			str = getStringFromBytes(bytes, beginIndex, endIndex);
+		}
+		if (str == null) {
+			return null;
+		}
+		return Boolean.valueOf(str);
+	}
+
+	/**
+	 * Get boolean from bytes.
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static Boolean getBooleanFromBytes(byte[] bytes) {
+		return getBooleanFromBytes(bytes, 0, 0);
 	}
 
 	/**
@@ -291,7 +380,7 @@ public class ByteConvertUtility {
 		if (str == null) {
 			return null;
 		}
-		return new Integer(str);
+		return Integer.valueOf(str);
 	}
 
 	/**

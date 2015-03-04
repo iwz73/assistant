@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/MonthlyOperatingIncome.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -661,6 +661,14 @@ public class HBaseClassGenerateUtility {
 					sb.append("private static final int "
 							+ getLengthString(value.name)
 							+ " = ByteConvertUtility.DEFAULT_DATE_PATTERN_LENGTH; ");
+				} else if (value.length == null && "boolean".equals(value.type)) {
+					sb.append("private static final int "
+							+ getLengthString(value.name)
+							+ " = ByteConvertUtility.DEFAULT_BOOLEAN_LENGTH; ");
+				} else if (value.length == null && "Boolean".equals(value.type)) {
+					sb.append("private static final int "
+							+ getLengthString(value.name)
+							+ " = ByteConvertUtility.DEFAULT_BOOLEAN_LENGTH; ");
 				} else {
 					sb.append("private static final int "
 							+ getLengthString(value.name) + " = "
@@ -708,8 +716,8 @@ public class HBaseClassGenerateUtility {
 
 	private static String getToBytesString(Value val) {
 		StringBuilder sb = new StringBuilder();
-		if (isEnum(val.type)) {
-			sb.append("ByteConvertUtility.toBytes(" + val.name + ".name()");
+		if (isEnum(val.type)) {		
+			sb.append("ByteConvertUtility.toBytes(" + val.name + " == null ? null : " + val.name + ".name()");
 		} else {
 			sb.append("ByteConvertUtility.toBytes(" + val.name);
 		}
@@ -946,7 +954,8 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static String getRowKeyFieldParameterString(boolean withType,
-			boolean changePrimativeTypeToObject, boolean changeNullToDefaultValue) {
+			boolean changePrimativeTypeToObject,
+			boolean changeNullToDefaultValue) {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (Value val : rowKey.values) {
@@ -960,8 +969,9 @@ public class HBaseClassGenerateUtility {
 					sb.append(val.type + " ");
 				}
 			}
-			if(changeNullToDefaultValue && isPrimativeType(val.type)) {
-				sb.append(val.name + " == null ? " + getDefaultValueString(val.type) + " : " + val.name);
+			if (changeNullToDefaultValue && isPrimativeType(val.type)) {
+				sb.append(val.name + " == null ? "
+						+ getDefaultValueString(val.type) + " : " + val.name);
 			} else {
 				sb.append(val.name);
 			}
@@ -1218,7 +1228,7 @@ public class HBaseClassGenerateUtility {
 			return "null";
 		}
 	}
-	
+
 	private static boolean isPrimativeType(String type) {
 		switch (type) {
 		case "boolean":
@@ -1240,9 +1250,11 @@ public class HBaseClassGenerateUtility {
 		case "String":
 		case "Date":
 		case "BigDecimal":
+		case "int":
 		case "Integer":
 		case "BigInteger":
-		case "int":
+		case "boolean":
+		case "Boolean":
 			return false;
 		default:
 			return true;

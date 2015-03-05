@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.xbrlassistant.xbrl;
 
-import java.math.BigDecimal;
-
 public class Presentation {
 	public static class Id {
 		public static final String AccountantsReport = "http://www.xbrl.org/tifrs/ar/role/AccountantsReport";
@@ -21,7 +19,7 @@ public class Presentation {
 		public static final String NamesLocationsAndRelatedInformationOfInvesteesOverWhichTheCompanyExercisesSignificantInfluence = "http://www.xbrl.org/tifrs/notes/role/NamesLocationsAndRelatedInformationOfInvesteesOverWhichTheCompanyExercisesSignificantInfluence";
 		public static final String InvestmentInMainlandChina = "http://www.xbrl.org/tifrs/notes/role/InvestmentInMainlandChina";
 	}
-	
+
 	public static class Attribute {
 		public static final String ORDER = "order";
 		public static final String CHINESE_LABEL = "chinese_label";
@@ -34,23 +32,35 @@ public class Presentation {
 		public static final String START_DATE = "startDate";
 		public static final String END_DATE = "endDate";
 	}
-	
+
 	public static class Unit {
 		public static final String TWD = "TWD";
 		public static final String SHARES = "Shares";
 	}
-	
+
 	public static class ElementId {
-		// Asset
+		// BalanceSheet
 		public static final String CURRENT_ASSETS = "ifrs_CurrentAssets";
 		public static final String NONCURRENT_ASSETS = "ifrs_NoncurrentAssets";
-		
-		// Liability
 		public static final String CURRENT_LIABILITIES = "ifrs_CurrentLiabilities";
 		public static final String NONCURRENT_LIABILITIES = "ifrs_NoncurrentLiabilities";
-		
-		// Equity
 		public static final String EQUITY = "ifrs_Equity";
+
+		// StatementOfComprehensiveIncome
+		public static final String GROSS_PROFIT_LOSS_FROM_OPERATIONS_NET = "tifrs-bsci-ci_GrossProfitLossFromOperationsNet";
+		public static final String NET_OPERATING_INCOME_LOSS = "tifrs-bsci-ci_NetOperatingIncomeLoss";
+		public static final String NONOPERATING_INCOME_AND_EXPENSES = "tifrs-bsci-ci_NonoperatingIncomeAndExpenses";
+		public static final String INCOME_TAX_EXPENSE_CONTINUING_OPERATIONS = "ifrs_IncomeTaxExpenseContinuingOperations";
+		public static final String PROFIT_LOSS_FROM_CONTINUING_OPERATIONS = "ifrs_ProfitLossFromContinuingOperations";
+		public static final String DILUTED_EARNINGS_LOSS_PER_SHARE = "ifrs_DilutedEarningsLossPerShare";
 		
+		// Statement Of Cash Flows
+		public static final String CASH_FLOWS_FROM_USED_IN_OPERATING_ACTIVITIES = "ifrs_CashFlowsFromUsedInOperatingActivities";
+		public static final String NET_CASH_FLOWS_FROM_USED_IN_INVESTING_ACTIVITIES = "tifrs-SCF_NetCashFlowsFromUsedInInvestingActivities";
+		public static final String CASH_FLOWS_FROM_USED_IN_FINANCING_ACTIVITIES = "tifrs-SCF_CashFlowsFromUsedInFinancingActivities";
+
+		// StatementOfChangesInEquity
+		public static final String PROFIT_LOSS = "ifrs_ProfitLoss";
+		public static final String OTHER_COMPREHENSIVE_INCOME = "ifrs_OtherComprehensiveIncome";
 	}
 }

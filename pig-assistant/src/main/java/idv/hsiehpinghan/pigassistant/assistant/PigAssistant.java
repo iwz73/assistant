@@ -14,7 +14,9 @@ public class PigAssistant {
 //    	pigServer.registerScript("/test.pig");
     	
     	PigServer pigServer = new PigServer(ExecType.LOCAL);
-    	runMyQuery(pigServer);
+//    	runMyQuery(pigServer);
+    	storeIntoHbase(pigServer);
+    	loadFromHbase(pigServer);
     }
     
     public static void runMyQuery(PigServer pigServer) throws IOException {  
@@ -25,7 +27,17 @@ public class PigAssistant {
 //        pigServer.registerQuery("D = foreach C generate flatten(group), COUNT(B.$0);");
        
         pigServer.store("A", "/tmp/passwd_out");
-        
-        System.err.println("done!!!");
+    }
+    
+    public static void storeIntoHbase(PigServer pigServer) throws IOException {  
+    	pigServer.registerQuery("pigTestData = LOAD '/tmp/pigTestData' USING PigStorage(',') AS (id: chararray, fname: chararray,lname: chararray );");
+    	pigServer.registerQuery("STORE pigTestData INTO 'hbase://sample_names' USING org.apache.pig.backend.hadoop.hbase.HBaseStorage ('info:fname info:lname');");		
+    	System.err.println("storeIntoHbase done!!!");
+    }
+    
+    public static void loadFromHbase(PigServer pigServer) throws IOException {  
+    	pigServer.registerQuery("pigHbaseData = load 'hbase://sample_names' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('info:fname info:lname', '-loadKey true') as (id, fname: chararray,lname: chararray);");
+    	pigServer.store("pigHbaseData", "/tmp/output");
+    	System.err.println("loadFromHbase done!!!");
     }
 }

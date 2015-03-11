@@ -9,6 +9,8 @@
 	<test name="assistant">
 		<classes>
 			<class name="idv.hsiehpinghan.rassistant.assistant.RAssistantTest" />
+			<class
+				name="idv.hsiehpinghan.rassistant.assistant.UniformDistributionAssistantTest" />
 		</classes>
 	</test>
 </suite>

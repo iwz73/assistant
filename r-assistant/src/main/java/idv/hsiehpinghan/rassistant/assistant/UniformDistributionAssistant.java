@@ -8,20 +8,18 @@ import org.springframework.stereotype.Component;
 public class UniformDistributionAssistant {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 	@Autowired
-	private RAssistant rAssistant;
+	private Rengine rengine;
 
 	public double getDensity(int quantile, int min, int max) {
-		Rengine engine = rAssistant.getRengine();
-		engine.eval("result <- dunif(" + quantile + ", min = " + min
+		rengine.eval("result <- dunif(" + quantile + ", min = " + min
 				+ ", max = " + max + ")");
-		return engine.eval("result").asDouble();
+		return rengine.eval("result").asDouble();
 	}
 
 	public double getDistribution(int quantile, int min, int max) {
-		Rengine engine = rAssistant.getRengine();
-		engine.eval("result <- punif(" + quantile + ", min = " + min
+		rengine.eval("result <- punif(" + quantile + ", min = " + min
 				+ ", max = " + max + ")");
-		return engine.eval("result").asDouble();
+		return rengine.eval("result").asDouble();
 	}
 
 }

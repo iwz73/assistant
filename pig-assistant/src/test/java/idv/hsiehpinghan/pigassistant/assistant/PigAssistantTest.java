@@ -1,7 +1,13 @@
 package idv.hsiehpinghan.pigassistant.assistant;
 
-import idv.hsiehpinghan.pigassistant.suit.TestngSuitSetting;
+import java.io.File;
 
+import idv.hsiehpinghan.pigassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.testutility.utility.PrintUtility;
+
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.map.introspect.BasicClassIntrospector.GetterMethodFilter;
+import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -17,8 +23,11 @@ public class PigAssistantTest {
 	}
 
 	@Test
-	public void loadFromHbase() throws Exception {
-		assistant.loadFromHbase();
-
+	public void downloadHbaseData() throws Exception {
+		File targetDirectory = new File(FileUtils.getTempDirectory(),
+				"downloadHbaseData");
+		assistant.downloadHbaseData(targetDirectory);
+		Assert.assertTrue(targetDirectory.list().length > 0);
+//		FileUtils.deleteDirectory(targetDirectory);
 	}
 }

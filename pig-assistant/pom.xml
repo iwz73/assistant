@@ -35,6 +35,8 @@
 		<!-- <pig.version>0.14.0</pig.version> -->
 		<hbase-assistant.version>1.0.0</hbase-assistant.version>
 		<object-utility.version>1.0.0</object-utility.version>
+		<collection-utility.version>1.0.0</collection-utility.version>
+		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -239,6 +241,22 @@
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>object-utility</artifactId>
 			<version>${object-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- collection-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>collection-utility</artifactId>
+			<version>${collection-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- test-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>test-utility</artifactId>
+			<version>${test-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -12,13 +12,12 @@ public class PigAssistant {
 	@Autowired
 	private PigServer pigServer;
 
-	public void downloadHbaseData(File targetDirectory) throws IOException {
-//		pigServer
-//				.registerQuery("result = load 'hbase://sample_names' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('info:fname info:lname', '-loadKey true') as (id, fname: chararray,lname: chararray);");
-		pigServer
-		.registerQuery("result = load 'hbase://Xbrl' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('ratioDifferenceFamily:*', '-loadKey true') as (id, ratioDifferenceFamily:map[]);");
+	public void runQuery(String query) throws IOException {
+		pigServer.registerQuery(query);
+	}
 
-		pigServer.store("result", targetDirectory.getAbsolutePath());
+	public void store(File targetDirectory, String dataName) throws IOException {
+		pigServer.store(dataName, targetDirectory.getAbsolutePath());
 	}
 
 	// public static void main(String[] args) throws Exception {

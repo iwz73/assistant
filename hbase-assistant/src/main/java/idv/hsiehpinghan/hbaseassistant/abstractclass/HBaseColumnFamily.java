@@ -7,6 +7,8 @@ import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * HBase column family base class.
  * 
@@ -28,6 +30,10 @@ public abstract class HBaseColumnFamily extends HBaseBase {
 		super();
 		this.entity = entity;
 		this.qualifierVersionValueMap = qualifierVersionValueMap;
+	}
+
+	public String getColumnFamilyName() {
+		return StringUtils.uncapitalize(this.getClass().getSimpleName());
 	}
 
 	public void setMap(

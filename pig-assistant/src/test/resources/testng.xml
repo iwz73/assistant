@@ -6,6 +6,18 @@
 			<class name="idv.hsiehpinghan.pigassistant.suit.TestngSuitSetting" />
 		</classes>
 	</test>
+	<!-- <test name="entity"> -->
+	<!-- <classes> -->
+	<!-- <class name="idv.hsiehpinghan.pigassistant.entity.TestTable2Test" /> -->
+	<!-- </classes> -->
+	<!-- </test> -->
+	<!-- <test name="repository"> -->
+	<!-- <classes> -->
+	<!-- <class -->
+	<!-- name="idv.hsiehpinghan.pigassistant.repository.TestTable2RepositoryTest" 
+		/> -->
+	<!-- </classes> -->
+	<!-- </test> -->
 	<test name="assistant">
 		<classes>
 			<class name="idv.hsiehpinghan.pigassistant.assistant.PigAssistantTest" />

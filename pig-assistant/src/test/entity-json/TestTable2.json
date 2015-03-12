@@ -1,6 +1,6 @@
 {  
    "TestTable2":{  
-      "RowKey2":[  
+      "RowKey":[  
          {  
             "type":"String",
             "name":"stockCode",
@@ -11,22 +11,83 @@
             "name":"date"
          }
       ],
-      "TestFamily":{  
+      "AFamily":{  
          "Columns":[  
-            {  
-               "type":"BigInteger",
-               "name":"bigInteger"
-            },
-            {  
-               "type":"BigDecimal",
-               "name":"bigDecimal"
-            },
             {  
                "type":"String",
                "name":"string"
             }
          ],
-         "TestQualifier":[  
+         "AQualifier":[  
+            {  
+               "type":"String",
+               "name":"columnName"
+            }
+         ],
+         "AValue":[  
+
+         ]
+      },
+      "BFamily":{  
+         "BQualifier":[  
+            {  
+               "type":"String",
+               "name":"elementId",
+               "length":300
+            },
+            {  
+               "type":"Date",
+               "name":"instant"
+            }
+         ],
+         "BValue":[  
+            {  
+               "type":"String",
+               "name":"unitType",
+               "length":10
+            },
+            {  
+               "type":"BigDecimal",
+               "name":"value",
+               "length":20
+            }
+         ]
+      },
+      "CFamily":{  
+         "CQualifier":[  
+            {  
+               "type":"String",
+               "name":"elementId",
+               "length":300
+            },
+            {  
+               "type":"Date",
+               "name":"instant"
+            }
+         ],
+         "CValue":[  
+            {  
+               "type":"BigDecimal",
+               "name":"value"
+            }
+         ]
+      },
+      "DFamily":{  
+         "Columns":[  
+            {  
+               "type":"BigInteger",
+               "name":"operatingIncomeOfCurrentMonth"
+            },
+            {  
+               "type":"BigDecimal",
+               "name":"operatingIncomeOfDifferentPercent"
+            },
+            {  
+               "type":"String",
+               "name":"operatingIncomeOfComment"
+            }
+         ],
+         "DQualifier":[  
             {  
                "type":"String",
                "name":"columnName",
@@ -43,7 +104,7 @@
                "length":2
             }
          ],
-         "TestValue":[  
+         "DValue":[  
 
          ]
       }

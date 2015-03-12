@@ -25,6 +25,14 @@ public abstract class HBaseRowKey extends HBaseBase implements
 		return entity.getTableName();
 	}
 
+	public String getHexString() {
+		StringBuilder sb = new StringBuilder();
+		for (byte b : bytes) {
+			sb.append(String.format("\\\\x%02X", b));
+		}
+		return sb.toString();
+	}
+
 	public byte[] getBytes() {
 		return bytes;
 	}

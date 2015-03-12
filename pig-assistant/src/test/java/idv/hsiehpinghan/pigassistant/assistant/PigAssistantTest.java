@@ -37,16 +37,23 @@ public class PigAssistantTest {
 		TestTable2 entity = new TestTable2();
 		RowKey rowKey1 = entity.new RowKey(stockCode + 1, date, entity);
 
-		RowKey rowKey2 = entity.new RowKey(stockCode + 2, date, entity);
-
-		System.err.println(Bytes.toBigDecimal(rowKey1.getBytes()));
-		
+		RowKey rowKey3 = entity.new RowKey(stockCode + 3, date, entity);
 
 		String query = dataName + " = load 'hbase://" + entity.getTableName()
 				+ "' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('"
 				+ entity.getAFamily().getColumnFamilyName()
-				+ ":*', '-loadKey true') as (id, "
+				+ ":*', '-loadKey true -ignoreWhitespace false -gt " + rowKey1.getHexString() + " -lt " + rowKey3.getHexString() + "') as (id, "
 				+ entity.getAFamily().getColumnFamilyName() + ":map[]);";
+
+//	     stockCode2 20150203        [string#string]
+//	    	     stockCode3 20150203        [string#string]
+//
+//
+//	    	      stockCode 20150203        [string#string]
+//	    	     stockCode1 20150203        [string#string]
+//	    	     stockCode2 20150203        [string#string]
+//	    	    		 
+//	     stockCode2 20150203        [string#string]
 
 		System.err.println(query);
 

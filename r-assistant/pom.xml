@@ -31,6 +31,8 @@
 		<log4j.version>1.2.17</log4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
+		<collection-utility.version>1.0.0</collection-utility.version>
+		<data-type-utility.version>1.0.0</data-type-utility.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -56,6 +58,20 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- collection-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>collection-utility</artifactId>
+			<version>${collection-utility.version}</version>
+		</dependency>
+
+		<!-- data-type-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>data-type-utility</artifactId>
+			<version>${data-type-utility.version}</version>
 		</dependency>
 
 		<!-- object-utility -->

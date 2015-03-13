@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=pig-0.15.0-SNAPSHOT-core-h2.jar -DgroupId=org.apache.pig -DartifactId=pig -Dversion=0.15.0-SNAPSHOT -Dpackaging=jar

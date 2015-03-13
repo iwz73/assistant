@@ -20,6 +20,35 @@ public class ByteConvertUtility {
 	public static final int DEFAULT_BOOLEAN_LENGTH = 5;
 
 	/**
+	 * Increment string by 1.
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String incrementString(String string) {
+		byte[] byteArray = string.getBytes();
+		incrementByteArray(byteArray);
+		return Bytes.toString(byteArray);
+	}
+
+	/**
+	 * Increment byte array by 1.
+	 * 
+	 * @param byteArray
+	 */
+	public static void incrementByteArray(byte[] byteArray) {
+		for (int i = byteArray.length - 1; i >= 0; --i) {
+			if (byteArray[i] == Byte.MAX_VALUE) {
+				byteArray[i] = 0;
+				continue;
+			}
+			byteArray[i] += 1;
+			return;
+		}
+		throw new RuntimeException("Increment byte array overflow !!!");
+	}
+
+	/**
 	 * Convert String to bytes.
 	 * 
 	 * @param string
@@ -143,8 +172,7 @@ public class ByteConvertUtility {
 	 */
 	public static byte[] toBytes(String string, int byteLength) {
 		if (string == null) {
-			return Bytes
-					.toBytes(StringUtils.leftPad(EMPTY_STRING, byteLength));
+			return Bytes.toBytes(StringUtils.leftPad(EMPTY_STRING, byteLength));
 		}
 		checkSize(string, byteLength);
 		return Bytes.toBytes(StringUtils.leftPad(string, byteLength));

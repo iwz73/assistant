@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.hbaseassistant.abstractclass;
 
 import idv.hsiehpinghan.collectionutility.utility.ArrayUtility;
+import idv.hsiehpinghan.datatypeutility.utility.ByteUtility;
 
 public abstract class HBaseRowKey extends HBaseBase implements
 		Comparable<HBaseRowKey> {
@@ -26,9 +27,11 @@ public abstract class HBaseRowKey extends HBaseBase implements
 	}
 
 	public String getHexString() {
+		String prefix = "\\\\x";
 		StringBuilder sb = new StringBuilder();
 		for (byte b : bytes) {
-			sb.append(String.format("\\\\x%02X", b));
+			sb.append(prefix);
+			sb.append(ByteUtility.getHexString(b));
 		}
 		return sb.toString();
 	}

@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.pigassistant.assistant;
 
 import idv.hsiehpinghan.datetimeutility.utility.DateUtility;
+import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility;
 import idv.hsiehpinghan.pigassistant.entity.TestTable2;
 import idv.hsiehpinghan.pigassistant.entity.TestTable2.RowKey;
 import idv.hsiehpinghan.pigassistant.suit.TestngSuitSetting;
@@ -45,8 +46,10 @@ public class PigAssistantTest {
 				"runQuery");
 		String dataName = "data";
 		TestTable2 entity = new TestTable2();
-		RowKey rowKey1 = entity.new RowKey(stockCode + 1, date, entity);
-		RowKey rowKey3 = entity.new RowKey(stockCode + 3, date, entity);
+		String beginStockCode = stockCode + 1;
+		RowKey rowKey1 = entity.new RowKey(beginStockCode, date, entity);
+		String endStockCode = getEndStockCode(beginStockCode);
+		RowKey rowKey3 = entity.new RowKey(endStockCode, date, entity);
 		String query = dataName + " = load 'hbase://" + entity.getTableName()
 				+ "' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('"
 				+ entity.getAFamily().getColumnFamilyName()
@@ -61,5 +64,11 @@ public class PigAssistantTest {
 		Assert.assertEquals("     stockCode2 20150203	[string#string]",
 				lines.get(0));
 		// FileUtils.deleteDirectory(targetDirectory);
+	}
+
+	private String getEndStockCode(String beginStockCode) {
+		String plusOne = ByteConvertUtility.incrementString(beginStockCode);
+		String plusTwo = ByteConvertUtility.incrementString(plusOne);
+		return plusTwo;
 	}
 }

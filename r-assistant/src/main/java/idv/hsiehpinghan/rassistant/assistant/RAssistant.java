@@ -13,7 +13,7 @@ public class RAssistant {
 	@Autowired
 	private Rengine rengine;
 
-	public synchronized REXP runScript(File scriptFile, File logFile) {
+	public synchronized REXP runScript(File script, File logFile) {
 		try {
 			if (rengine.waitForR() == false) {
 				throw new RuntimeException("Wait for R fail !!!");
@@ -21,7 +21,7 @@ public class RAssistant {
 			if (logFile != null) {
 				rengine.eval("sink('" + logFile.getAbsolutePath() + "')");
 			}
-			REXP rexp = rengine.eval("source('" + scriptFile.getAbsolutePath()
+			REXP rexp = rengine.eval("source('" + script.getAbsolutePath()
 					+ "')");
 			return rexp;
 		} finally {

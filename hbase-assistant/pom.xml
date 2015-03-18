@@ -109,7 +109,6 @@
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>collection-utility</artifactId>
 			<version>${collection-utility.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- datetime-utility -->

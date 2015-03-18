@@ -23,9 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/JRI.jar"/>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/JRIEngine.jar"/>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/REngine.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

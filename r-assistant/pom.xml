@@ -31,6 +31,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
+		<jri.version>1.0.0</jri.version>
 		<collection-utility.version>1.0.0</collection-utility.version>
 		<data-type-utility.version>1.0.0</data-type-utility.version>
 		<object-utility.version>1.0.0</object-utility.version>
@@ -58,6 +59,23 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- jri -->
+		<dependency>
+			<groupId>org.rosuda.JRI</groupId>
+			<artifactId>JRI</artifactId>
+			<version>${jri.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.rosuda.JRI</groupId>
+			<artifactId>JRIEngine</artifactId>
+			<version>${jri.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.rosuda.JRI</groupId>
+			<artifactId>REngine</artifactId>
+			<version>${jri.version}</version>
 		</dependency>
 
 		<!-- collection-utility -->

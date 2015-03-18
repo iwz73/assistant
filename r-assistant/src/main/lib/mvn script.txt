@@ -1,0 +1,3 @@
+mvn install:install-file -Dfile=JRI.jar -DgroupId=org.rosuda.JRI -DartifactId=JRI -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=JRIEngine.jar -DgroupId=org.rosuda.JRI -DartifactId=JRIEngine -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=REngine.jar -DgroupId=org.rosuda.JRI -DartifactId=REngine -Dversion=1.0.0 -Dpackaging=jar

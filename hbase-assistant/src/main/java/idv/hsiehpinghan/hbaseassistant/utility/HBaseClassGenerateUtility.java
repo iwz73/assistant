@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/RatioDifference.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -191,6 +191,25 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static void generateRepositoryGetWithFamilyOnlyMethod(
+			StringBuilder sb, Family family) {
+		sb.append("public " + tableName + " getWith" + family.type + "Only("
+				+ getRowKeyFieldParameterString(true) + ") { ");
+
+		sb.append(tableName + " entity = generateEntity("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		sb.append("RowFilter rowFilter = getRowFilter(entity); ");
+		sb.append("FamilyFilter familyFilter = getFamilyFilter(entity, \""
+				+ StringUtils.uncapitalize(family.type) + "\"); ");
+		sb.append("FilterList filterList = new FilterList(rowFilter, familyFilter); ");
+		sb.append("TreeSet<HBaseTable> entities = hbaseAssistant.scan(Xbrl.class, filterList); ");
+		sb.append("if (entities.size() <= 0) { ");
+		sb.append("return null; ");
+		sb.append("} ");
+		sb.append("return (" + tableName + ") entities.first(); ");
+		sb.append("} ");
+	}
+
 	private static void generateRepositoryGetMethod(StringBuilder sb) {
 		sb.append("public " + tableName + " get("
 				+ getRowKeyFieldParameterString(true)
@@ -262,6 +281,19 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static void generateGetRowFilterMethod(StringBuilder sb) {
+		sb.append("private RowFilter getRowFilter(Xbrl entity) { ");
+		sb.append("return new RowFilter(CompareFilter.CompareOp.EQUAL,new BinaryComparator(entity.getRowKey().getBytes())); ");
+		sb.append("} ");
+	}
+
+	private static void generateGetFamilyFilter(StringBuilder sb) {
+		sb.append("private FamilyFilter getFamilyFilter(" + tableName
+				+ " entity, String columnFamilyName) { ");
+		sb.append("return new FamilyFilter(CompareFilter.CompareOp.EQUAL,new BinaryComparator(ByteConvertUtility.toBytes(columnFamilyName))); ");
+		sb.append("} ");
+	}
+
 	private static void generateRepositoryGetRowKeyMethod(StringBuilder sb) {
 		sb.append("private HBaseRowKey getRowKey("
 				+ getRowKeyFieldParameterString(true) + ") { ");
@@ -297,6 +329,11 @@ public class HBaseClassGenerateUtility {
 		generateRepositoryGetRowAmountMethod(sb);
 		generateRepositoryGetRowKeysMethod(sb);
 		generateRepositoryExistsMethod(sb);
+		for (Family family : families) {
+			generateRepositoryGetWithFamilyOnlyMethod(sb, family);
+		}
+		generateGetRowFilterMethod(sb);
+		generateGetFamilyFilter(sb);
 		sb.append("@Override ");
 		sb.append("protected HbaseAssistant getHbaseAssistant() { ");
 		sb.append("return hbaseAssistant; ");
@@ -437,16 +474,14 @@ public class HBaseClassGenerateUtility {
 		generateRepositoryTestFields(sb);
 		generateRepositoryTestBeforeClassMethod(sb);
 		generateRepositoryTestPutMethod(sb);
+		for (Family family : families) {
+			generateRepositoryTestGetWithFamilyOnly(sb, family);
+		}
 		generateRepositoryTestGetMethod(sb);
-		// generateTestRowKeyMethod(sb);
-		// for (Family family : families) {
-		// generateTestFamilyMethod(sb, family);
-		// generateTestGenerateFamilyContentMethod(sb, family);
-		// generateTestAssertFamilyMethod(sb, family);
-		// }
 		for (Family family : families) {
 			generateTestGenerateFamilyContentMethod(sb, family);
 			generateTestAssertFamilyMethod(sb, family);
+			generateTestAssertEmptyFamilyMethod(sb, family);
 		}
 		sb.append("} ");
 	}
@@ -471,6 +506,21 @@ public class HBaseClassGenerateUtility {
 				+ getRowKeyFieldParameterString(false) + "); ");
 		for (Family family : families) {
 			sb.append("assert" + family.type + "(entity); ");
+		}
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryTestGetWithFamilyOnly(StringBuilder sb, Family family) {
+		sb.append("@Test(dependsOnMethods = { \"get\" }) ");
+		sb.append("public void getWith" + family.type + "Only() throws Exception { ");
+		sb.append(tableName + " entity = repository.getWith" + family.type + "Only("
+				+ getRowKeyFieldParameterString(false) + "); ");
+		for (Family fam : families) {
+			if(family.type.equals(fam.type)) {
+				sb.append("assert" + fam.type + "(entity); ");
+			} else {
+				sb.append("assertEmpty" + fam.type + "(entity); ");	
+			}
 		}
 		sb.append("} ");
 	}
@@ -562,6 +612,15 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
+	private static void generateTestAssertEmptyFamilyMethod(StringBuilder sb,
+			Family family) {
+		sb.append("private void assertEmpty" + family.type + "(" + tableName
+				+ " entity) { ");
+		sb.append(family.type + " fam = entity.get" + family.type + "(); ");
+		sb.append("Assert.assertEquals(fam.getLatestQualifierAndValueAsMap().size(), 0); ");
+		sb.append("} ");
+	}
+
 	private static void generateTestBytesConvertMethod(StringBuilder sb) {
 		sb.append("@Test ");
 		sb.append("public void bytesConvert() { ");
@@ -608,6 +667,12 @@ public class HBaseClassGenerateUtility {
 		sb.append("import java.util.TreeSet; ");
 		sb.append("import org.apache.hadoop.hbase.filter.FuzzyRowFilter; ");
 		sb.append("import org.apache.hadoop.hbase.filter.KeyOnlyFilter; ");
+		sb.append("import org.apache.hadoop.hbase.filter.RowFilter; ");
+		sb.append("import org.apache.hadoop.hbase.filter.FamilyFilter; ");
+		sb.append("import org.apache.hadoop.hbase.filter.FilterList; ");
+		sb.append("import org.apache.hadoop.hbase.filter.BinaryComparator; ");
+		sb.append("import idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtility; ");
+		sb.append("import org.apache.hadoop.hbase.filter.CompareFilter; ");
 		sb.append("import org.apache.hadoop.hbase.util.Pair; ");
 	}
 

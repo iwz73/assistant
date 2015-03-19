@@ -199,7 +199,7 @@ public class HBaseClassGenerateUtility {
 		sb.append(tableName + " entity = generateEntity("
 				+ getRowKeyFieldParameterString(false) + "); ");
 		sb.append("RowFilter rowFilter = getRowFilter(entity); ");
-		sb.append("FamilyFilter familyFilter = getFamilyFilter(entity, \""
+		sb.append("FamilyFilter familyFilter = getFamilyFilter(\""
 				+ StringUtils.uncapitalize(family.type) + "\"); ");
 		sb.append("FilterList filterList = new FilterList(rowFilter, familyFilter); ");
 		sb.append("TreeSet<HBaseTable> entities = hbaseAssistant.scan(Xbrl.class, filterList); ");
@@ -207,6 +207,20 @@ public class HBaseClassGenerateUtility {
 		sb.append("return null; ");
 		sb.append("} ");
 		sb.append("return (" + tableName + ") entities.first(); ");
+		sb.append("} ");
+	}
+
+	private static void generateRepositoryScanWithFamilyOnlyMethod(
+			StringBuilder sb, Family family) {
+		sb.append("public TreeSet<" + tableName + "> scanWith" + family.type
+				+ "Only() { ");
+		sb.append("FamilyFilter familyFilter = getFamilyFilter(\""
+				+ StringUtils.uncapitalize(family.type) + "\"); ");
+		sb.append("@SuppressWarnings(\"unchecked\") ");
+		sb.append("TreeSet<" + tableName + "> entities = (TreeSet<" + tableName
+				+ ">)(Object)hbaseAssistant.scan(" + tableName
+				+ ".class,familyFilter); ");
+		sb.append("return entities; ");
 		sb.append("} ");
 	}
 
@@ -288,8 +302,7 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static void generateGetFamilyFilter(StringBuilder sb) {
-		sb.append("private FamilyFilter getFamilyFilter(" + tableName
-				+ " entity, String columnFamilyName) { ");
+		sb.append("private FamilyFilter getFamilyFilter(String columnFamilyName) { ");
 		sb.append("return new FamilyFilter(CompareFilter.CompareOp.EQUAL,new BinaryComparator(ByteConvertUtility.toBytes(columnFamilyName))); ");
 		sb.append("} ");
 	}
@@ -331,6 +344,7 @@ public class HBaseClassGenerateUtility {
 		generateRepositoryExistsMethod(sb);
 		for (Family family : families) {
 			generateRepositoryGetWithFamilyOnlyMethod(sb, family);
+			generateRepositoryScanWithFamilyOnlyMethod(sb, family);
 		}
 		generateGetRowFilterMethod(sb);
 		generateGetFamilyFilter(sb);
@@ -510,16 +524,18 @@ public class HBaseClassGenerateUtility {
 		sb.append("} ");
 	}
 
-	private static void generateRepositoryTestGetWithFamilyOnly(StringBuilder sb, Family family) {
+	private static void generateRepositoryTestGetWithFamilyOnly(
+			StringBuilder sb, Family family) {
 		sb.append("@Test(dependsOnMethods = { \"get\" }) ");
-		sb.append("public void getWith" + family.type + "Only() throws Exception { ");
-		sb.append(tableName + " entity = repository.getWith" + family.type + "Only("
-				+ getRowKeyFieldParameterString(false) + "); ");
+		sb.append("public void getWith" + family.type
+				+ "Only() throws Exception { ");
+		sb.append(tableName + " entity = repository.getWith" + family.type
+				+ "Only(" + getRowKeyFieldParameterString(false) + "); ");
 		for (Family fam : families) {
-			if(family.type.equals(fam.type)) {
+			if (family.type.equals(fam.type)) {
 				sb.append("assert" + fam.type + "(entity); ");
 			} else {
-				sb.append("assertEmpty" + fam.type + "(entity); ");	
+				sb.append("assertEmpty" + fam.type + "(entity); ");
 			}
 		}
 		sb.append("} ");
@@ -601,12 +617,12 @@ public class HBaseClassGenerateUtility {
 			}
 		} else {
 			for (Value value : columns) {
-				sb.append("Assert.assertEquals(" + value.name + ", fam.get"
+				sb.append("Assert.assertEquals(fam.get"
 						+ StringUtils.capitalize(value.name) + "(");
 				if (EMPTY_STRING.equals(qualParamStrWithoutType) == false) {
 					sb.append(qualParamStrWithoutType);
 				}
-				sb.append(")); ");
+				sb.append(")," + value.name + "); ");
 			}
 		}
 		sb.append("} ");
@@ -633,8 +649,9 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static String getAssertEquals(Value value) {
-		return "Assert.assertEquals(" + value.name + ", key.get"
-				+ StringUtils.capitalize(value.name) + "()); ";
+		return "Assert.assertEquals(key.get"
+				+ StringUtils.capitalize(value.name) + "()," + value.name
+				+ "); ";
 	}
 
 	private static void generateTestRowKeyMethod(StringBuilder sb) {
@@ -683,6 +700,7 @@ public class HBaseClassGenerateUtility {
 		sb.append("import idv.hsiehpinghan.datetimeutility.utility.DateUtility; ");
 		sb.append("import org.testng.Assert; ");
 		sb.append("import org.testng.annotations.Test; ");
+		sb.append("import java.util.TreeSet; ");
 	}
 
 	private static void generateImportSection(StringBuilder sb) {

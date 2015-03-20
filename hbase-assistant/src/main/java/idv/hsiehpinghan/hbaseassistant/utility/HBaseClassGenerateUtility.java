@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/Xbrl.json");
+				"/home/centos/git/dao/stock-dao/src/test/entity-json/RatioDifference.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -202,7 +202,8 @@ public class HBaseClassGenerateUtility {
 		sb.append("FamilyFilter familyFilter = getFamilyFilter(\""
 				+ StringUtils.uncapitalize(family.type) + "\"); ");
 		sb.append("FilterList filterList = new FilterList(rowFilter, familyFilter); ");
-		sb.append("TreeSet<HBaseTable> entities = hbaseAssistant.scan(Xbrl.class, filterList); ");
+		sb.append("TreeSet<HBaseTable> entities = hbaseAssistant.scan("
+				+ tableName + ".class, filterList); ");
 		sb.append("if (entities.size() <= 0) { ");
 		sb.append("return null; ");
 		sb.append("} ");
@@ -296,7 +297,7 @@ public class HBaseClassGenerateUtility {
 	}
 
 	private static void generateGetRowFilterMethod(StringBuilder sb) {
-		sb.append("private RowFilter getRowFilter(Xbrl entity) { ");
+		sb.append("private RowFilter getRowFilter(" + tableName + " entity) { ");
 		sb.append("return new RowFilter(CompareFilter.CompareOp.EQUAL,new BinaryComparator(entity.getRowKey().getBytes())); ");
 		sb.append("} ");
 	}

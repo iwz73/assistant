@@ -7,21 +7,21 @@
 		</classes>
 	</test>
 	<test name="assistant">
-<!-- 		<classes> -->
-<!-- 			<class name="idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistantTest" /> -->
-<!-- 		</classes> -->
+		<classes>
+			<class name="idv.hsiehpinghan.hbaseassistant.assistant.HbaseAssistantTest" />
+		</classes>
 	</test>
 	<test name="entityAndRepository">
-<!-- 		<classes> -->
-<!-- 			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.hbaseassistant.repository.TestTableRepositoryTest" /> -->
-<!-- 		</classes> -->
+		<classes>
+			<class name="idv.hsiehpinghan.hbaseassistant.entity.TestTableTest" />
+			<class
+				name="idv.hsiehpinghan.hbaseassistant.repository.TestTableRepositoryTest" />
+		</classes>
 	</test>
 	<test name="utility">
-<!-- 		<classes> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtilityTest" /> -->
-<!-- 		</classes> -->
+		<classes>
+			<class
+				name="idv.hsiehpinghan.hbaseassistant.utility.ByteConvertUtilityTest" />
+		</classes>
 	</test>
 </suite>

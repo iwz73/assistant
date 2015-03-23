@@ -2,18 +2,18 @@
 
 <suite name="suite" verbose="1">
 	<test name="suit">
-<!-- 		<classes> -->
-<!-- 			<class name="idv.hsiehpinghan.rassistant.suit.TestngSuitSetting" /> -->
-<!-- 		</classes> -->
+		<classes>
+			<class name="idv.hsiehpinghan.rassistant.suit.TestngSuitSetting" />
+		</classes>
 	</test>
 	<test name="assistant">
-<!-- 		<classes> -->
-<!-- 			<class name="idv.hsiehpinghan.rassistant.assistant.RAssistantTest" /> -->
-<!-- 			<class name="idv.hsiehpinghan.rassistant.assistant.TTestAssistantTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.rassistant.assistant.WilcoxonTestAssistantTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.rassistant.assistant.UniformDistributionAssistantTest" /> -->
-<!-- 		</classes> -->
+		<classes>
+			<class name="idv.hsiehpinghan.rassistant.assistant.RAssistantTest" />
+			<class name="idv.hsiehpinghan.rassistant.assistant.TTestAssistantTest" />
+			<class
+				name="idv.hsiehpinghan.rassistant.assistant.WilcoxonTestAssistantTest" />
+			<class
+				name="idv.hsiehpinghan.rassistant.assistant.UniformDistributionAssistantTest" />
+		</classes>
 	</test>
 </suite>

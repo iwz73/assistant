@@ -6,7 +6,9 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -14,6 +16,7 @@ import com.gargoylesoftware.htmlunit.Page;
 
 @Component
 @Profile("htmlUnit")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		IWebDriverExtension {
 	private static final String CONTENT_DISPOSITION = "Content-disposition";

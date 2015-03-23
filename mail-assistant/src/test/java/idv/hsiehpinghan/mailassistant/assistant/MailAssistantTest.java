@@ -28,23 +28,22 @@ public class MailAssistantTest {
 		mailAssistant = applicationContext.getBean(MailAssistant.class);
 	}
 
-//	@Test
+	// @Test
 	public void sendMail() throws MessagingException {
-		mailAssistant.sendMail(from, to, subject, msg);
+		mailAssistant.sendMail(from, to, subject, msg, false);
 	}
 
-//	@Test
+	// @Test
 	public void sendMailWithAttachment() throws MessagingException {
 		Map<String, File> map = new HashMap<String, File>(2);
-		File jpeg = SystemResourceUtility
-				.getFileResource("file/jpeg.jpeg");
+		File jpeg = SystemResourceUtility.getFileResource("file/jpeg.jpeg");
 		map.put("jpeg", jpeg);
-		File xls = SystemResourceUtility
-				.getFileResource("file/xls.xls");
+		File xls = SystemResourceUtility.getFileResource("file/xls.xls");
 		map.put("xls", xls);
-		mailAssistant.sendMailWithAttachment(from, to, subject, msg, map);
+		mailAssistant
+				.sendMailWithAttachment(from, to, subject, msg, false, map);
 	}
-	
+
 	@Test
 	public void sendMailWithInline() throws MessagingException {
 		Map<String, File> map = new HashMap<String, File>(1);
@@ -54,9 +53,9 @@ public class MailAssistantTest {
 		sb.append("<img src='cid:jpeg'> ");
 		sb.append("</body> ");
 		sb.append("</html> ");
-		File jpeg = SystemResourceUtility
-				.getFileResource("file/jpeg.jpeg");
+		File jpeg = SystemResourceUtility.getFileResource("file/jpeg.jpeg");
 		map.put("jpeg", jpeg);
-		mailAssistant.sendMailWithInline(from, to, subject, sb.toString(), map);
+		mailAssistant.sendMailWithInline(from, to, subject, sb.toString(),
+				true, map);
 	}
 }

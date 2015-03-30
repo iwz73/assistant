@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="suite" verbose="1">
+	<test name="suit">
+		<classes>
+			<class name="idv.hsiehpinghan.mongodbassistant.suit.TestngSuitSetting" />
+		</classes>
+	</test>
+	<test name="assistant">
+		<classes>
+			<class
+				name="idv.hsiehpinghan.mongodbassistant.assistant.MongodbAssistantTest" />
+		</classes>
+	</test>
+</suite>

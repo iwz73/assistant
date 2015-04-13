@@ -32,7 +32,7 @@ public class HBaseClassGenerateUtility {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File(
-				"/home/centos/git/dao/stock-dao/src/test/entity-json/MainRatioAnalysis.json");
+				"/home/centos/git/assistant/hbase-assistant/src/test/entity-json/DemoTable.json");
 		parseJson(f);
 		String classCode = getEntityClassCode();
 		System.err.println("entity : " + classCode);
@@ -423,6 +423,9 @@ public class HBaseClassGenerateUtility {
 			break;
 		case "String":
 			sb.append("\"" + value.name + "\"");
+			break;
+		case "Integer":
+			sb.append(String.valueOf(sn));
 			break;
 		case "BigInteger":
 			sb.append("new BigInteger(\"" + sn + "\")");

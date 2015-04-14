@@ -29,9 +29,10 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<log4j.version>1.2.17</log4j.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<mahout.version>0.8</mahout.version>
+		<mahout.version>0.5</mahout.version>
 	</properties>
 
 	<dependencies>
@@ -40,6 +41,13 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<!-- testng -->
@@ -63,10 +71,11 @@
 			<artifactId>mahout-core</artifactId>
 			<version>${mahout.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.mahout</groupId> -->
-<!-- 			<artifactId>mahout-math</artifactId> -->
-<!-- 			<version>${mahout.version}</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-examples</artifactId>
+			<version>${mahout.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>

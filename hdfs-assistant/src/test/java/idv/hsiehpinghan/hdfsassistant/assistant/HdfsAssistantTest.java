@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.hdfsassistant.utility;
+package idv.hsiehpinghan.hdfsassistant.assistant;
 
 import idv.hsiehpinghan.hdfsassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.SequenceFile;
+import org.apache.hadoop.io.Text;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -14,7 +17,10 @@ import org.testng.annotations.Test;
 
 public class HdfsAssistantTest {
 	private HdfsAssistant hdfsAssistant;
+	private String userName;
 	private String hdfsFilePath;
+	private String writeAndReadFilePath;
+	private File writeAndReadLocalFile;
 	private File file_1;
 	private String hdfsDirectoryPath;
 	private File folder_1;
@@ -28,6 +34,39 @@ public class HdfsAssistantTest {
 				.getApplicationContext();
 		hdfsAssistant = applicationContext.getBean(HdfsAssistant.class);
 		setTestData(applicationContext);
+	}
+
+	@Test
+	public void mkdir() throws Exception {
+		String dir = "/user/" + userName + "/test/hdfs/dir1/dir2/dir3";
+		boolean result = hdfsAssistant.mkdir(dir);
+		Assert.assertTrue(result);
+		Assert.assertTrue(hdfsAssistant.exists(dir));
+	}
+
+	@Test
+	public void getWriter() throws Exception {
+		SequenceFile.Writer writer = hdfsAssistant.getWriter(
+				writeAndReadFilePath, Text.class, IntWritable.class);
+		writer.append(new Text("key1"), new IntWritable(1));
+		writer.append(new Text("key2"), new IntWritable(2));
+		writer.append(new Text("key3"), new IntWritable(3));
+		writer.close();
+		Assert.assertTrue(hdfsAssistant.exists(writeAndReadFilePath));
+	}
+
+	@Test(dependsOnMethods = { "getWriter" })
+	public void getReader() throws Exception {
+		SequenceFile.Reader reader = hdfsAssistant.getReader(writeAndReadFilePath);
+	    Text key = new Text();
+	    IntWritable val = new IntWritable();
+	    int i = 1;
+	    while (reader.next(key, val)) {
+	    	Assert.assertEquals(key.toString(), "key" + i);
+	    	Assert.assertEquals(val.get(), i);
+	    	++i;
+	    }
+	    reader.close();
 	}
 
 	@Test
@@ -58,7 +97,9 @@ public class HdfsAssistantTest {
 
 	private void setTestData(ApplicationContext applicationContext)
 			throws IOException {
-		String userName = TestngSuitSetting.getUserName();
+		userName = TestngSuitSetting.getUserName();
+		writeAndReadFilePath = "/user/" + userName
+				+ "/test/hdfs/writeAndReadFile.seq";
 		file_1 = SystemResourceUtility.getFileResource("sample/file_1");
 		hdfsFilePath = "/user/" + userName + "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {

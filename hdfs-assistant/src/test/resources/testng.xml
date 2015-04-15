@@ -4,7 +4,7 @@
 	<test name="test_1">
 		<classes>
 			<class name="idv.hsiehpinghan.hdfsassistant.suit.TestngSuitSetting" />
-			<class name="idv.hsiehpinghan.hdfsassistant.utility.HdfsAssistantTest" />
+			<class name="idv.hsiehpinghan.hdfsassistant.assistant.HdfsAssistantTest" />
 		</classes>
 	</test>
 </suite>

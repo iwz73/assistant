@@ -33,6 +33,9 @@
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<mahout.version>0.5</mahout.version>
+		<hdfs-assistant.version>1.0.0</hdfs-assistant.version>
+		<object-utility.version>1.0.0</object-utility.version>
+		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -70,6 +73,12 @@
 			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-core</artifactId>
 			<version>${mahout.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hadoop-core</artifactId>
+					<groupId>org.apache.hadoop</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.mahout</groupId>
@@ -77,5 +86,29 @@
 			<version>${mahout.version}</version>
 		</dependency>
 
+		<!-- hdfs-assistant -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>hdfs-assistant</artifactId>
+			<version>${hdfs-assistant.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- object-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>object-utility</artifactId>
+			<version>${object-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- test-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>test-utility</artifactId>
+			<version>${test-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>

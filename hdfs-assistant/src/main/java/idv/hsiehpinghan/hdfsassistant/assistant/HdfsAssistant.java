@@ -1,14 +1,17 @@
-package idv.hsiehpinghan.hdfsassistant.utility;
+package idv.hsiehpinghan.hdfsassistant.assistant;
 
 import idv.hsiehpinghan.hdfsassistant.property.HdfsAssistantProperty;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.SequenceFile;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +27,7 @@ public class HdfsAssistant implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		hdfsPath = hdfsAssistantProperty.getHdfsPath();
+		conf.set(CommonConfigurationKeys.FS_DEFAULT_NAME_KEY, hdfsPath);
 	}
 
 	/**
@@ -108,4 +112,53 @@ public class HdfsAssistant implements InitializingBean {
 		return fs.delete(new Path(hdfsPath + hdfsFilePath), true);
 	}
 
+	/**
+	 * Recursively make dir.
+	 * 
+	 * @param hdfsFilePath
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean mkdir(String hdfsFilePath) throws IOException {
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		return fs.mkdirs(new Path(hdfsPath + hdfsFilePath));
+	}
+
+	/**
+	 * Get sequence file writer.
+	 * 
+	 * @param hdfsFilePath
+	 * @param keyClass
+	 * @param valueClass
+	 * @return
+	 * @throws IOException
+	 */
+	public SequenceFile.Writer getWriter(String hdfsFilePath,
+			Class<?> keyClass, Class<?> valueClass) throws IOException {
+		SequenceFile.Writer.Option filePath = SequenceFile.Writer
+				.file(new Path(hdfsFilePath));
+		SequenceFile.Writer.Option keyClz = SequenceFile.Writer
+				.keyClass(keyClass);
+		SequenceFile.Writer.Option valueClz = SequenceFile.Writer
+				.valueClass(valueClass);
+		
+		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+	
+		
+		return SequenceFile.createWriter(conf, filePath, keyClz, valueClz);
+	}
+
+	/**
+	 * Get sequence file reader.
+	 * 
+	 * @param hdfsFilePath
+	 * @return
+	 * @throws IOException
+	 */
+	public SequenceFile.Reader getReader(String hdfsFilePath)
+			throws IOException {
+		SequenceFile.Reader.Option filePath = SequenceFile.Reader
+				.file(new Path(hdfsFilePath));
+		return new SequenceFile.Reader(conf, filePath);
+	}
 }

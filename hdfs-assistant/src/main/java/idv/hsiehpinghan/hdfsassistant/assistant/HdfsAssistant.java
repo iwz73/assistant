@@ -4,8 +4,6 @@ import idv.hsiehpinghan.hdfsassistant.property.HdfsAssistantProperty;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.util.Collection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CommonConfigurationKeys;
@@ -53,7 +51,7 @@ public class HdfsAssistant implements InitializingBean {
 	 */
 	public String copyFromLocal(String localFilePath, String hdfsFilePath)
 			throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		FileSystem fs = FileSystem.get(conf);
 		Path src = new Path(localFilePath);
 		String path = hdfsPath + hdfsFilePath;
 		Path dst = new Path(path);
@@ -82,7 +80,7 @@ public class HdfsAssistant implements InitializingBean {
 	 */
 	public void copyToLocal(String hdfsFilePath, String localFilePath)
 			throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		FileSystem fs = FileSystem.get(conf);
 		Path src = new Path(hdfsPath + hdfsFilePath);
 		Path dst = new Path(localFilePath);
 		fs.copyToLocalFile(src, dst);
@@ -96,7 +94,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @throws IOException
 	 */
 	public boolean exists(String hdfsFilePath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		FileSystem fs = FileSystem.get(conf);
 		return fs.exists(new Path(hdfsPath + hdfsFilePath));
 	}
 
@@ -108,8 +106,19 @@ public class HdfsAssistant implements InitializingBean {
 	 * @throws IOException
 	 */
 	public boolean delete(String hdfsFilePath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		FileSystem fs = FileSystem.get(conf);
 		return fs.delete(new Path(hdfsPath + hdfsFilePath), true);
+	}
+
+	/**
+	 * Recursively delete a directory.
+	 * 
+	 * @param hdfsFilePath
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean removeDirectory(String hdfsFilePath) throws IOException {
+		return delete(hdfsFilePath);
 	}
 
 	/**
@@ -120,7 +129,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @throws IOException
 	 */
 	public boolean mkdir(String hdfsFilePath) throws IOException {
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+		FileSystem fs = FileSystem.get(conf);
 		return fs.mkdirs(new Path(hdfsPath + hdfsFilePath));
 	}
 
@@ -141,10 +150,6 @@ public class HdfsAssistant implements InitializingBean {
 				.keyClass(keyClass);
 		SequenceFile.Writer.Option valueClz = SequenceFile.Writer
 				.valueClass(valueClass);
-		
-		FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
-	
-		
 		return SequenceFile.createWriter(conf, filePath, keyClz, valueClz);
 	}
 
@@ -160,5 +165,13 @@ public class HdfsAssistant implements InitializingBean {
 		SequenceFile.Reader.Option filePath = SequenceFile.Reader
 				.file(new Path(hdfsFilePath));
 		return new SequenceFile.Reader(conf, filePath);
+	}
+
+	public Configuration getHdfsConfiguration() {
+		return conf;
+	}
+
+	public String getHdfsPath() {
+		return hdfsPath;
 	}
 }

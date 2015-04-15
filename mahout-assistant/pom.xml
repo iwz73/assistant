@@ -32,7 +32,7 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<mahout.version>0.5</mahout.version>
+		<mahout.version>0.9</mahout.version>
 		<hdfs-assistant.version>1.0.0</hdfs-assistant.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
@@ -80,18 +80,18 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.mahout</groupId>
-			<artifactId>mahout-examples</artifactId>
-			<version>${mahout.version}</version>
-		</dependency>
 
 		<!-- hdfs-assistant -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>
 			<artifactId>hdfs-assistant</artifactId>
 			<version>${hdfs-assistant.version}</version>
-			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- object-utility -->

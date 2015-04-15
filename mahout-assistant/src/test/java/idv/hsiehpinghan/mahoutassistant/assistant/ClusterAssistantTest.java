@@ -10,15 +10,11 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 import org.apache.mahout.clustering.classify.WeightedPropertyVectorWritable;
-import org.apache.mahout.clustering.kmeans.Kluster;
-import org.apache.mahout.common.distance.EuclideanDistanceMeasure;
 import org.apache.mahout.math.RandomAccessSparseVector;
 import org.apache.mahout.math.Vector;
-import org.apache.mahout.math.VectorWritable;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -45,17 +41,16 @@ public class ClusterAssistantTest {
 	@Test
 	public void runKMeans() throws Exception {
 		List<Vector> points = getPoints(POINTS);
-		String hdfsPointsFilePath = writePointsToFile(points);
-		String hdfsClustersDirPath = writeClusterInitialCenters(points);
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String resultFilePath = clusterAssistant.runKMeans(hdfsPointsFilePath,
-				hdfsClustersDirPath, hdfsOutputDirectoryPath, convergenceDelta,
-				maxIterations, runClustering, clusterClassificationThreshold,
-				runSequential);
+		String resultFilePath = clusterAssistant.runKMeans(points,
+				numberOfClusters, hdfsPointsFilePath,
+				hdfsClustersDirectoryPath, hdfsOutputDirectoryPath,
+				convergenceDelta, maxIterations, runClustering,
+				clusterClassificationThreshold, runSequential);
 		SequenceFile.Reader reader = hdfsAssistant.getReader(resultFilePath);
 		IntWritable key = new IntWritable();
 		WeightedPropertyVectorWritable value = new WeightedPropertyVectorWritable();
@@ -63,10 +58,10 @@ public class ClusterAssistantTest {
 		while (reader.next(key, value)) {
 			System.err.println(key.toString() + "/" + value.toString());
 			Text distance = value.getProperties().get(new Text("distance"));
-			if(i == 0) {
+			if (i == 0) {
 				Assert.assertEquals("0", key.toString());
 				Assert.assertEquals("1.1313708498984762", distance.toString());
-			} else if(i == 7) {
+			} else if (i == 7) {
 				Assert.assertEquals("1", key.toString());
 				Assert.assertEquals("0.7071067811865476", distance.toString());
 			}
@@ -74,34 +69,6 @@ public class ClusterAssistantTest {
 		}
 		reader.close();
 		Assert.assertEquals(9, i);
-	}
-
-	private String writeClusterInitialCenters(List<Vector> points)
-			throws IOException {
-		String hdfsFilePath = hdfsClustersDirectoryPath + "/part-00000";
-		SequenceFile.Writer writer = hdfsAssistant.getWriter(hdfsFilePath,
-				Text.class, Kluster.class);
-		for (int i = 0; i < numberOfClusters; i++) {
-			final Vector vec = points.get(i);
-			final Kluster cluster = new Kluster(vec, i,
-					new EuclideanDistanceMeasure());
-			writer.append(new Text(cluster.getIdentifier()), cluster);
-		}
-		writer.close();
-		return hdfsClustersDirectoryPath;
-	}
-
-	private String writePointsToFile(List<Vector> points) throws IOException {
-		SequenceFile.Writer writer = hdfsAssistant.getWriter(
-				hdfsPointsFilePath, LongWritable.class, VectorWritable.class);
-		VectorWritable vec = new VectorWritable();
-		int i = 0;
-		for (Vector point : points) {
-			vec.set(point);
-			writer.append(new LongWritable(++i), vec);
-		}
-		writer.close();
-		return hdfsPointsFilePath;
 	}
 
 	private List<Vector> getPoints(double[][] points) {

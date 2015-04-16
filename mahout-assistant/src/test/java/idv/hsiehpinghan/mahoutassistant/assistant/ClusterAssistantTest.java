@@ -22,9 +22,11 @@ import org.testng.annotations.Test;
 public class ClusterAssistantTest {
 	private final double[][] POINTS = { { 1, 1 }, { 2, 1 }, { 1, 2 }, { 2, 2 },
 			{ 3, 3 }, { 8, 8 }, { 9, 8 }, { 8, 9 }, { 9, 9 } };
+	private final int NUMBER_OF_CLUSTERS = 2;
 	private String clusterAssistantDirectoryPath;
 	private HdfsAssistant hdfsAssistant;
 	private ClusterAssistant clusterAssistant;
+	private SequenceFilesAssistant sequenceFilesAssistant;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
@@ -32,25 +34,30 @@ public class ClusterAssistantTest {
 				.getApplicationContext();
 		hdfsAssistant = applicationContext.getBean(HdfsAssistant.class);
 		clusterAssistant = applicationContext.getBean(ClusterAssistant.class);
-		setTestData();
+		sequenceFilesAssistant = applicationContext
+				.getBean(SequenceFilesAssistant.class);
+		init();
 	}
 
-//	@Test
+	@Test
 	public void runEuclideanDistanceMeasureKMeans() throws Exception {
 		String testName = "runEuclideanDistanceMeasureKMeans";
 		List<Vector> points = getPoints(POINTS);
+		List<Vector> initialPoints = getInitialPoints(points,
+				NUMBER_OF_CLUSTERS);
 		String hdfsPointsFilePath = deleteAndGetHdfsPointsFilePath(testName);
 		String hdfsClustersDirectoryPath = removeAndGetHdfsClustersDirectoryPath(testName);
 		String hdfsOutputDirectoryPath = removeAndGetHdfsOutputDirectoryPath(testName);
-		int numberOfClusters = 2;
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
+		String pointsSeqenceFilePath = sequenceFilesAssistant
+				.writePointsToFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
-				.runEuclideanDistanceMeasureKMeans(points, numberOfClusters,
-						hdfsPointsFilePath, hdfsClustersDirectoryPath,
+				.runEuclideanDistanceMeasureKMeans(initialPoints,
+						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
 						hdfsOutputDirectoryPath, convergenceDelta,
 						maxIterations, runClustering,
 						clusterClassificationThreshold, runSequential);
@@ -75,24 +82,27 @@ public class ClusterAssistantTest {
 		Assert.assertEquals(9, i);
 	}
 
-//	@Test
+	@Test
 	public void runSquaredEuclideanDistanceMeasureKMeans() throws Exception {
 		String testName = "runSquaredEuclideanDistanceMeasureKMeans";
 		List<Vector> points = getPoints(POINTS);
+		List<Vector> initialPoints = getInitialPoints(points,
+				NUMBER_OF_CLUSTERS);
 		String hdfsPointsFilePath = deleteAndGetHdfsPointsFilePath(testName);
 		String hdfsClustersDirectoryPath = removeAndGetHdfsClustersDirectoryPath(testName);
 		String hdfsOutputDirectoryPath = removeAndGetHdfsOutputDirectoryPath(testName);
-		int numberOfClusters = 2;
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
+		String pointsSeqenceFilePath = sequenceFilesAssistant
+				.writePointsToFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
-				.runSquaredEuclideanDistanceMeasureKMeans(points,
-						numberOfClusters, hdfsPointsFilePath,
-						hdfsClustersDirectoryPath, hdfsOutputDirectoryPath,
-						convergenceDelta, maxIterations, runClustering,
+				.runSquaredEuclideanDistanceMeasureKMeans(initialPoints,
+						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
+						hdfsOutputDirectoryPath, convergenceDelta,
+						maxIterations, runClustering,
 						clusterClassificationThreshold, runSequential);
 		SequenceFile.Reader reader = hdfsAssistant.getReader(resultFilePath);
 		IntWritable key = new IntWritable();
@@ -115,22 +125,25 @@ public class ClusterAssistantTest {
 		Assert.assertEquals(9, i);
 	}
 
-//	@Test
+	@Test
 	public void runManhattanDistanceMeasureKMeans() throws Exception {
 		String testName = "runManhattanDistanceMeasureKMeans";
 		List<Vector> points = getPoints(POINTS);
+		List<Vector> initialPoints = getInitialPoints(points,
+				NUMBER_OF_CLUSTERS);
 		String hdfsPointsFilePath = deleteAndGetHdfsPointsFilePath(testName);
 		String hdfsClustersDirectoryPath = removeAndGetHdfsClustersDirectoryPath(testName);
 		String hdfsOutputDirectoryPath = removeAndGetHdfsOutputDirectoryPath(testName);
-		int numberOfClusters = 2;
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
+		String pointsSeqenceFilePath = sequenceFilesAssistant
+				.writePointsToFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
-				.runManhattanDistanceMeasureKMeans(points, numberOfClusters,
-						hdfsPointsFilePath, hdfsClustersDirectoryPath,
+				.runManhattanDistanceMeasureKMeans(initialPoints,
+						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
 						hdfsOutputDirectoryPath, convergenceDelta,
 						maxIterations, runClustering,
 						clusterClassificationThreshold, runSequential);
@@ -155,22 +168,25 @@ public class ClusterAssistantTest {
 		Assert.assertEquals(9, i);
 	}
 
-//	@Test
+	@Test
 	public void runCosineDistanceMeasureKMeans() throws Exception {
 		String testName = "runCosineDistanceMeasureKMeans";
 		List<Vector> points = getPoints(POINTS);
+		List<Vector> initialPoints = getInitialPoints(points,
+				NUMBER_OF_CLUSTERS);
 		String hdfsPointsFilePath = deleteAndGetHdfsPointsFilePath(testName);
 		String hdfsClustersDirectoryPath = removeAndGetHdfsClustersDirectoryPath(testName);
 		String hdfsOutputDirectoryPath = removeAndGetHdfsOutputDirectoryPath(testName);
-		int numberOfClusters = 2;
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
+		String pointsSeqenceFilePath = sequenceFilesAssistant
+				.writePointsToFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
-				.runCosineDistanceMeasureKMeans(points, numberOfClusters,
-						hdfsPointsFilePath, hdfsClustersDirectoryPath,
+				.runCosineDistanceMeasureKMeans(initialPoints,
+						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
 						hdfsOutputDirectoryPath, convergenceDelta,
 						maxIterations, runClustering,
 						clusterClassificationThreshold, runSequential);
@@ -187,30 +203,34 @@ public class ClusterAssistantTest {
 				Assert.assertEquals("7.25715738101318E-5", distance.toString());
 			} else if (i == 1) {
 				Assert.assertEquals("1", key.toString());
-				Assert.assertEquals("2.220446049250313E-16", distance.toString());
+				Assert.assertEquals("2.220446049250313E-16",
+						distance.toString());
 			}
 			++i;
 		}
 		reader.close();
 		Assert.assertEquals(9, i);
 	}
-	
+
 	@Test
 	public void runTanimotoDistanceMeasureKMeans() throws Exception {
 		String testName = "runTanimotoDistanceMeasureKMeans";
 		List<Vector> points = getPoints(POINTS);
+		List<Vector> initialPoints = getInitialPoints(points,
+				NUMBER_OF_CLUSTERS);
 		String hdfsPointsFilePath = deleteAndGetHdfsPointsFilePath(testName);
 		String hdfsClustersDirectoryPath = removeAndGetHdfsClustersDirectoryPath(testName);
 		String hdfsOutputDirectoryPath = removeAndGetHdfsOutputDirectoryPath(testName);
-		int numberOfClusters = 2;
 		double convergenceDelta = 0.001;
 		int maxIterations = 10;
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
+		String pointsSeqenceFilePath = sequenceFilesAssistant
+				.writePointsToFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
-				.runTanimotoDistanceMeasureKMeans(points, numberOfClusters,
-						hdfsPointsFilePath, hdfsClustersDirectoryPath,
+				.runTanimotoDistanceMeasureKMeans(initialPoints,
+						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
 						hdfsOutputDirectoryPath, convergenceDelta,
 						maxIterations, runClustering,
 						clusterClassificationThreshold, runSequential);
@@ -227,14 +247,15 @@ public class ClusterAssistantTest {
 				Assert.assertEquals("0.2622950819672132", distance.toString());
 			} else if (i == 8) {
 				Assert.assertEquals("1", key.toString());
-				Assert.assertEquals("0.0032573289902280145", distance.toString());
+				Assert.assertEquals("0.0032573289902280145",
+						distance.toString());
 			}
 			++i;
 		}
 		reader.close();
 		Assert.assertEquals(9, i);
 	}
-	
+
 	private List<Vector> getPoints(double[][] points) {
 		List<Vector> vectors = new ArrayList<Vector>();
 		for (int i = 0; i < points.length; i++) {
@@ -246,7 +267,16 @@ public class ClusterAssistantTest {
 		return vectors;
 	}
 
-	private void setTestData() throws IOException {
+	private List<Vector> getInitialPoints(List<Vector> points,
+			int numberOfClusters) {
+		List<Vector> vectors = new ArrayList<Vector>();
+		for (int i = 0; i < numberOfClusters; i++) {
+			vectors.add(points.get(i));
+		}
+		return vectors;
+	}
+
+	private void init() throws IOException {
 		// Create hdfs directory
 		String userName = TestngSuitSetting.getUserName();
 		clusterAssistantDirectoryPath = "/user/" + userName
@@ -279,8 +309,8 @@ public class ClusterAssistantTest {
 
 	private String removeAndGetHdfsOutputDirectoryPath(String testName)
 			throws IOException {
-		String hdfsOutputDirectoryPath = clusterAssistantDirectoryPath
-				+ "/output";
+		String hdfsOutputDirectoryPath = clusterAssistantDirectoryPath + "/"
+				+ testName + "/output";
 		if (hdfsAssistant.exists(hdfsOutputDirectoryPath)) {
 			hdfsAssistant.removeDirectory(hdfsOutputDirectoryPath);
 		}

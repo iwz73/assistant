@@ -3,12 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>idv.hsiehpinghan</groupId>
-	<artifactId>mahout-assistant</artifactId>
+	<artifactId>lucene-assistant</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>mahout-assistant</name>
+	<name>lucene-assistant</name>
 	<url>http://maven.apache.org</url>
+
 
 	<build>
 		<plugins>
@@ -32,10 +33,7 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<mahout.version>0.9</mahout.version>
 		<lucene.version>4.6.1</lucene.version>
-		<hdfs-assistant.version>1.0.0</hdfs-assistant.version>
-		<lucene-assistant.version>1.0.0</lucene-assistant.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -70,43 +68,16 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- mahout -->
+		<!-- lucene -->
 		<dependency>
-			<groupId>org.apache.mahout</groupId>
-			<artifactId>mahout-core</artifactId>
-			<version>${mahout.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>hadoop-core</artifactId>
-					<groupId>org.apache.hadoop</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.mahout</groupId> -->
-<!-- 			<artifactId>mahout-integration</artifactId> -->
-<!-- 			<version>${mahout.version}</version> -->
-<!-- 		</dependency> -->
-
-		<!-- hdfs-assistant -->
 		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>hdfs-assistant</artifactId>
-			<version>${hdfs-assistant.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>guava</artifactId>
-					<groupId>com.google.guava</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- lucene-assistant -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>lucene-assistant</artifactId>
-			<version>${lucene-assistant.version}</version>
-			<scope>test</scope>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-benchmark</artifactId>
+			<version>${lucene.version}</version>
 		</dependency>
 
 		<!-- object-utility -->

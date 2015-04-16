@@ -30,8 +30,6 @@ public class ClusterAssistant implements InitializingBean {
 
 	@Autowired
 	private HdfsAssistant hdfsAssistant;
-	@Autowired
-	private SequenceFilesAssistant sequenceFilesAssistant;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {

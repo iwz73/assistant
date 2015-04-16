@@ -8,11 +8,11 @@
 	</test>
 	<test name="assistant">
 		<classes>
-			<class
-				name="idv.hsiehpinghan.mahoutassistant.assistant.ClusterAssistantTest" />
 			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.mahoutassistant.assistant.SequenceFilesAssistantTest" 
+			<!-- name="idv.hsiehpinghan.mahoutassistant.assistant.ClusterAssistantTest" 
 				/> -->
+			<class
+				name="idv.hsiehpinghan.mahoutassistant.assistant.SequenceFilesAssistantTest" />
 		</classes>
 	</test>
 </suite>

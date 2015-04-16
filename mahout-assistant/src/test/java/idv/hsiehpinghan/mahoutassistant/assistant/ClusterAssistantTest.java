@@ -26,7 +26,7 @@ public class ClusterAssistantTest {
 	private String clusterAssistantDirectoryPath;
 	private HdfsAssistant hdfsAssistant;
 	private ClusterAssistant clusterAssistant;
-	private SequenceFilesAssistant sequenceFilesAssistant;
+	private SequenceFileAssistant sequenceFileAssistant;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
@@ -34,8 +34,8 @@ public class ClusterAssistantTest {
 				.getApplicationContext();
 		hdfsAssistant = applicationContext.getBean(HdfsAssistant.class);
 		clusterAssistant = applicationContext.getBean(ClusterAssistant.class);
-		sequenceFilesAssistant = applicationContext
-				.getBean(SequenceFilesAssistant.class);
+		sequenceFileAssistant = applicationContext
+				.getBean(SequenceFileAssistant.class);
 		init();
 	}
 
@@ -53,8 +53,8 @@ public class ClusterAssistantTest {
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String pointsSeqenceFilePath = sequenceFilesAssistant
-				.writePointsToFile(points, hdfsPointsFilePath);
+		String pointsSeqenceFilePath = sequenceFileAssistant
+				.writePointsToSequenceFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
 				.runEuclideanDistanceMeasureKMeans(initialPoints,
 						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
@@ -96,8 +96,8 @@ public class ClusterAssistantTest {
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String pointsSeqenceFilePath = sequenceFilesAssistant
-				.writePointsToFile(points, hdfsPointsFilePath);
+		String pointsSeqenceFilePath = sequenceFileAssistant
+				.writePointsToSequenceFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
 				.runSquaredEuclideanDistanceMeasureKMeans(initialPoints,
 						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
@@ -139,8 +139,8 @@ public class ClusterAssistantTest {
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String pointsSeqenceFilePath = sequenceFilesAssistant
-				.writePointsToFile(points, hdfsPointsFilePath);
+		String pointsSeqenceFilePath = sequenceFileAssistant
+				.writePointsToSequenceFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
 				.runManhattanDistanceMeasureKMeans(initialPoints,
 						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
@@ -182,8 +182,8 @@ public class ClusterAssistantTest {
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String pointsSeqenceFilePath = sequenceFilesAssistant
-				.writePointsToFile(points, hdfsPointsFilePath);
+		String pointsSeqenceFilePath = sequenceFileAssistant
+				.writePointsToSequenceFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
 				.runCosineDistanceMeasureKMeans(initialPoints,
 						pointsSeqenceFilePath, hdfsClustersDirectoryPath,
@@ -226,8 +226,8 @@ public class ClusterAssistantTest {
 		boolean runClustering = true;
 		double clusterClassificationThreshold = 0;
 		boolean runSequential = false;
-		String pointsSeqenceFilePath = sequenceFilesAssistant
-				.writePointsToFile(points, hdfsPointsFilePath);
+		String pointsSeqenceFilePath = sequenceFileAssistant
+				.writePointsToSequenceFile(points, hdfsPointsFilePath);
 		String resultFilePath = clusterAssistant
 				.runTanimotoDistanceMeasureKMeans(initialPoints,
 						pointsSeqenceFilePath, hdfsClustersDirectoryPath,

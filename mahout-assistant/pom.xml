@@ -33,7 +33,6 @@
 		<testng.version>6.1.1</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<mahout.version>0.9</mahout.version>
-		<lucene.version>4.6.1</lucene.version>
 		<hdfs-assistant.version>1.0.0</hdfs-assistant.version>
 		<lucene-assistant.version>1.0.0</lucene-assistant.version>
 		<object-utility.version>1.0.0</object-utility.version>
@@ -75,12 +74,12 @@
 			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-core</artifactId>
 			<version>${mahout.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>hadoop-core</artifactId>
-					<groupId>org.apache.hadoop</groupId>
-				</exclusion>
-			</exclusions>
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 					<artifactId>hadoop-core</artifactId> -->
+<!-- 					<groupId>org.apache.hadoop</groupId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.mahout</groupId>

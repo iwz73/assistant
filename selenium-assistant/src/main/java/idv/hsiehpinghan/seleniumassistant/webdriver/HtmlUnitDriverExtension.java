@@ -17,8 +17,7 @@ import com.gargoylesoftware.htmlunit.Page;
 @Component
 @Profile("htmlUnit")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
-		IWebDriverExtension {
+public class HtmlUnitDriverExtension extends HtmlUnitDriver {
 	private static final String CONTENT_DISPOSITION = "Content-disposition";
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -30,16 +29,16 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 		super(enableJavascript);
 	}
 
-	public HtmlUnitDriverExtension(BrowserVersion version) {
+	public HtmlUnitDriverExtension(BrowserVersion version,
+			boolean enableJavascript) {
 		super(version);
-		super.setJavascriptEnabled(true);
+		super.setJavascriptEnabled(enableJavascript);
 	}
 
 	public String getContentType() {
 		return lastPage().getWebResponse().getContentType();
 	}
 
-	@Override
 	public InputStream getPageSourceAsInputStream() {
 		Page page = lastPage();
 		if (page == null) {
@@ -57,11 +56,11 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver implements
 	}
 
 	/**
-	 * Get file name.
+	 * Get content disposition.
 	 * 
 	 * @return
 	 */
-	public String getAttachment() {
+	public String getContentDisposition() {
 		Page page = lastPage();
 		if (page == null) {
 			return null;

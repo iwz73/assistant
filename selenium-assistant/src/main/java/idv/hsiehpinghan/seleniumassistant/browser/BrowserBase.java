@@ -209,14 +209,14 @@ public abstract class BrowserBase {
 	 * 
 	 * @return
 	 */
-	public abstract String getAttachment();
+	public abstract String getContentDisposition();
 
 	/**
 	 * Check if has attachment.
 	 * 
 	 * @return
 	 */
-	public abstract boolean hasAttachment();
+	public abstract boolean hasContentDisposition();
 
 	/**
 	 * Get attachment file name.
@@ -234,4 +234,11 @@ public abstract class BrowserBase {
 	 * Restore cacheCurrentPage's page.
 	 */
 	public abstract void restorePage();
+
+	/**
+	 * Get content type.
+	 * 
+	 * @return
+	 */
+	public abstract String getContentType();
 }

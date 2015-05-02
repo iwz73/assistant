@@ -14,13 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("firefox")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class FirefoxDriverExtension extends FirefoxDriver implements
-		IWebDriverExtension {
+public class FirefoxDriverExtension extends FirefoxDriver {
 
-	public FirefoxDriverExtension() {
-	}
-
-	@Override
 	public InputStream getPageSourceAsInputStream() {
 		Response resp = execute(DriverCommand.GET_PAGE_SOURCE);
 		byte[] bs = resp.getValue().toString().getBytes();

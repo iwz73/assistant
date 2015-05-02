@@ -37,12 +37,12 @@ public class FirefoxBrowser extends BrowserBase {
 	}
 
 	@Override
-	public String getAttachment() {
+	public String getContentDisposition() {
 		throw new RuntimeException("Not implement !!!");
 	}
 
 	@Override
-	public boolean hasAttachment() {
+	public boolean hasContentDisposition() {
 		throw new RuntimeException("Not implement !!!");
 	}
 
@@ -58,6 +58,11 @@ public class FirefoxBrowser extends BrowserBase {
 
 	@Override
 	public void restorePage() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
+	@Override
+	public String getContentType() {
 		throw new RuntimeException("Not implement !!!");
 	}
 

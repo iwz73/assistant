@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.webelement;
 
-import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
+import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -10,27 +10,35 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.openqa.selenium.By;
+import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+
 public class TableTest {
-	private Table table;
+	private HtmlUnitBrowser browser;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		FirefoxBrowser browser = TestngSuitSetting.getFirefoxBrowser();
+		ApplicationContext applicationContext = TestngSuitSetting
+				.getApplicationContext();
+		browser = applicationContext.getBean(HtmlUnitBrowser.class,
+				BrowserVersion.FIREFOX_24, true);
 		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
-		table = browser.getTable(By.cssSelector("#tableId"));
+
 	}
 
 	@Test
 	public void getRowAsStringList() {
+		Table table = browser.getTable(By.cssSelector("#tableId"));
 		List<String> strs = table.getRowAsStringList(0);
 		Assert.assertEquals(strs, getRowTexts());
 	}
 
-	@Test(dependsOnMethods={"getRowAsStringList"})
+	@Test(dependsOnMethods = { "getRowAsStringList" })
 	public void clickButtonOfCell() {
+		Table table = browser.getTable(By.cssSelector("#tableId"));
 		int rowInd_1 = 2;
 		int colInd_1 = 2;
 		table.clickButtonOfCell(rowInd_1, colInd_1);

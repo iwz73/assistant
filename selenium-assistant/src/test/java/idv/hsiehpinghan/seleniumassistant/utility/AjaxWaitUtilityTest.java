@@ -2,15 +2,19 @@ package idv.hsiehpinghan.seleniumassistant.utility;
 
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.seleniumassistant.browser.BrowserBase;
+import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
+import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 
 public class AjaxWaitUtilityTest {
 	private static final String URL_BASE = "http://127.0.0.1:8080/";
@@ -19,8 +23,11 @@ public class AjaxWaitUtilityTest {
 
 	@BeforeClass
 	public void beforeClass() {
+		ApplicationContext applicationContext = TestngSuitSetting
+				.getApplicationContext();
+		browser = applicationContext.getBean(HtmlUnitBrowser.class,
+				BrowserVersion.FIREFOX_24, true);
 		htmlServer = TestngSuitSetting.getHtmlServer();
-		browser = TestngSuitSetting.getHtmlUnitWithJavascriptBrowser();
 	}
 
 	@Test
@@ -41,8 +48,8 @@ public class AjaxWaitUtilityTest {
 				s.getOptions()));
 	}
 
-	@AfterClass
-	public void afterClass() {
-		htmlServer.stop();
-	}
+//	@AfterClass
+//	public void afterClass() {
+//		htmlServer.stop();
+//	}
 }

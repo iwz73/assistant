@@ -2,10 +2,6 @@ package idv.hsiehpinghan.seleniumassistant.suit;
 
 import idv.hsiehpinghan.nanohttpdassistant.server.MockHtmlServer;
 import idv.hsiehpinghan.objectutility.utility.ClassUtility;
-import idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowser;
-import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitFirefoxVersionBrowser;
-import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitWithJavascriptBrowser;
-import idv.hsiehpinghan.seleniumassistant.webdriver.HtmlUnitDriverExtension;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,10 +14,13 @@ public class TestngSuitSetting {
 
 	private static AnnotationConfigApplicationContext applicationContext;
 	private static MockHtmlServer htmlServer;
-	private static HtmlUnitDriverExtension htmlUnitDriverExtension;
-	private static HtmlUnitFirefoxVersionBrowser htmlUnitFirefoxVersionBrowser;
-	private static HtmlUnitWithJavascriptBrowser htmlUnitWithJavascriptBrowser;
-	private static FirefoxBrowser firefoxBrowser;
+
+	// private static HtmlUnitDriverExtension htmlUnitDriverExtension;
+	// private static HtmlUnitFirefoxVersionBrowser
+	// htmlUnitFirefoxVersionBrowser;
+	// private static HtmlUnitWithJavascriptBrowser
+	// htmlUnitWithJavascriptBrowser;
+	// private static FirefoxBrowser firefoxBrowser;
 
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
@@ -29,13 +28,13 @@ public class TestngSuitSetting {
 				"idv.hsiehpinghan", Configuration.class);
 		applicationContext = new AnnotationConfigApplicationContext(clsArr);
 		htmlServer = applicationContext.getBean(MockHtmlServer.class);
-		htmlUnitDriverExtension = applicationContext.getBean(
-				"htmlUnitDriverExtension", HtmlUnitDriverExtension.class);
-		htmlUnitWithJavascriptBrowser = applicationContext
-				.getBean(HtmlUnitWithJavascriptBrowser.class);
-		htmlUnitFirefoxVersionBrowser = applicationContext
-				.getBean(HtmlUnitFirefoxVersionBrowser.class);
-		firefoxBrowser = applicationContext.getBean(FirefoxBrowser.class);
+		// htmlUnitDriverExtension = applicationContext.getBean(
+		// "htmlUnitDriverExtension", HtmlUnitDriverExtension.class);
+		// htmlUnitWithJavascriptBrowser = applicationContext
+		// .getBean(HtmlUnitWithJavascriptBrowser.class);
+		// htmlUnitFirefoxVersionBrowser = applicationContext
+		// .getBean(HtmlUnitFirefoxVersionBrowser.class);
+		// firefoxBrowser = applicationContext.getBean(FirefoxBrowser.class);
 	}
 
 	public static ApplicationContext getApplicationContext() {
@@ -46,21 +45,23 @@ public class TestngSuitSetting {
 		return htmlServer;
 	}
 
-	public static HtmlUnitWithJavascriptBrowser getHtmlUnitWithJavascriptBrowser() {
-		return htmlUnitWithJavascriptBrowser;
-	}
-
-	public static FirefoxBrowser getFirefoxBrowser() {
-		return firefoxBrowser;
-	}
-
-	public static HtmlUnitDriverExtension getHtmlUnitDriverExtension() {
-		return htmlUnitDriverExtension;
-	}
-
-	public static HtmlUnitFirefoxVersionBrowser getHtmlUnitFirefoxVersionBrowser() {
-		return htmlUnitFirefoxVersionBrowser;
-	}
+	// public static HtmlUnitWithJavascriptBrowser
+	// getHtmlUnitWithJavascriptBrowser() {
+	// return htmlUnitWithJavascriptBrowser;
+	// }
+	//
+	// public static FirefoxBrowser getFirefoxBrowser() {
+	// return firefoxBrowser;
+	// }
+	//
+	// public static HtmlUnitDriverExtension getHtmlUnitDriverExtension() {
+	// return htmlUnitDriverExtension;
+	// }
+	//
+	// public static HtmlUnitFirefoxVersionBrowser
+	// getHtmlUnitFirefoxVersionBrowser() {
+	// return htmlUnitFirefoxVersionBrowser;
+	// }
 
 	@AfterSuite
 	public void afterClass() {

@@ -66,4 +66,9 @@ public class FirefoxBrowser extends BrowserBase {
 		throw new RuntimeException("Not implement !!!");
 	}
 
+	@Override
+	public void clean() {
+		throw new RuntimeException("Not implement !!!");
+	}
+
 }

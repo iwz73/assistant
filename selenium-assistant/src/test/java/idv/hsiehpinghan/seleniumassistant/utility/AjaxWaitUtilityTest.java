@@ -10,11 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import com.gargoylesoftware.htmlunit.BrowserVersion;
 
 public class AjaxWaitUtilityTest {
 	private static final String URL_BASE = "http://127.0.0.1:8080/";
@@ -25,8 +22,7 @@ public class AjaxWaitUtilityTest {
 	public void beforeClass() {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
-		browser = applicationContext.getBean(HtmlUnitBrowser.class,
-				BrowserVersion.FIREFOX_24, true, false);
+		browser = applicationContext.getBean(HtmlUnitBrowser.class);
 		htmlServer = TestngSuitSetting.getHtmlServer();
 	}
 
@@ -48,8 +44,8 @@ public class AjaxWaitUtilityTest {
 				s.getOptions()));
 	}
 
-//	@AfterClass
-//	public void afterClass() {
-//		htmlServer.stop();
-//	}
+	// @AfterClass
+	// public void afterClass() {
+	// htmlServer.stop();
+	// }
 }

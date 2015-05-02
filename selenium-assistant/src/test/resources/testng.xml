@@ -1,8 +1,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="suite" verbose="1">
-	<test name="browser">
+	<test name="suit">
 		<classes>
 			<class name="idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting" />
+		</classes>
+	</test>
+	<test name="browser">
+		<classes>
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" />
 			<class
@@ -19,6 +23,12 @@
 		<classes>
 			<class
 				name="idv.hsiehpinghan.seleniumassistant.utility.AjaxWaitUtilityTest" />
+		</classes>
+	</test>
+	<test name="pool">
+		<classes>
+			<class
+				name="idv.hsiehpinghan.seleniumassistant.pool.HtmlUnitBrowserPoolTest" />
 		</classes>
 	</test>
 </suite>

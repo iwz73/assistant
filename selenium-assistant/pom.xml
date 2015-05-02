@@ -36,7 +36,7 @@
 		<resource-utility.version>1.0.0</resource-utility.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<nanohttpd-assistant.version>1.0.0</nanohttpd-assistant.version>
-		<!-- <commons-io.version>2.4</commons-io.version> -->
+		<pool-utility.version>1.0.0</pool-utility.version>
 	</properties>
 
 	<dependencies>
@@ -107,11 +107,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- commons-io -->
-		<!-- <dependency> -->
-		<!-- <groupId>commons-io</groupId> -->
-		<!-- <artifactId>commons-io</artifactId> -->
-		<!-- <version>${commons-io.version}</version> -->
-		<!-- </dependency> -->
+		<!-- pool-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>pool-utility</artifactId>
+			<version>${pool-utility.version}</version>
+		</dependency>
 	</dependencies>
 </project>

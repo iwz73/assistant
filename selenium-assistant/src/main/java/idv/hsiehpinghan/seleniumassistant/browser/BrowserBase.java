@@ -241,4 +241,9 @@ public abstract class BrowserBase {
 	 * @return
 	 */
 	public abstract String getContentType();
+
+	/**
+	 * Clean browser.
+	 */
+	public abstract void clean();
 }

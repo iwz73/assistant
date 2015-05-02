@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.History;
 import com.gargoylesoftware.htmlunit.Page;
 
 @Component
@@ -40,6 +41,13 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver {
 		return lastPage().getWebResponse().getContentType();
 	}
 
+	public void removeAllHistories() {
+		History history = getCurrentWindow().getHistory();
+		for(int i = 0, size = history.getLength(); i < size; ++i) {
+			history.removeCurrent();
+		}
+	}
+	
 	public InputStream getPageSourceAsInputStream() {
 		Page page = lastPage();
 		if (page == null) {

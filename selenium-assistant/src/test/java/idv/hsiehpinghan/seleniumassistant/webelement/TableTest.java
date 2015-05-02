@@ -14,8 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-
 public class TableTest {
 	private HtmlUnitBrowser browser;
 
@@ -23,8 +21,7 @@ public class TableTest {
 	public void beforeClass() throws IOException {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
-		browser = applicationContext.getBean(HtmlUnitBrowser.class,
-				BrowserVersion.FIREFOX_24, true, false);
+		browser = applicationContext.getBean(HtmlUnitBrowser.class);
 		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
 
 	}

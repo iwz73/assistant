@@ -22,9 +22,9 @@ import com.gargoylesoftware.htmlunit.Page;
 @Profile("htmlUnit")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class HtmlUnitBrowser extends BrowserBase implements InitializingBean {
-	private BrowserVersion version;
-	private boolean enableJavascript;
-	private boolean enableCookies;
+	private final BrowserVersion VERSION;
+	private final boolean ENABLE_JAVASCRIPT;
+	private final boolean ENABLE_COOKIES;
 	private Page page;
 	private HtmlUnitDriverExtension webDriver;
 
@@ -37,15 +37,15 @@ public class HtmlUnitBrowser extends BrowserBase implements InitializingBean {
 
 	public HtmlUnitBrowser(BrowserVersion version, boolean enableJavascript,
 			boolean enableCookies) {
-		this.version = version;
-		this.enableJavascript = enableJavascript;
-		this.enableCookies = enableCookies;
+		this.VERSION = version;
+		this.ENABLE_JAVASCRIPT = enableJavascript;
+		this.ENABLE_COOKIES = enableCookies;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		webDriver = applicationContext.getBean(HtmlUnitDriverExtension.class,
-				version, enableJavascript, enableCookies);
+				VERSION, ENABLE_JAVASCRIPT, ENABLE_COOKIES);
 	}
 
 	@Override
@@ -58,6 +58,7 @@ public class HtmlUnitBrowser extends BrowserBase implements InitializingBean {
 		}
 	}
 
+	@Override
 	public String getContentType() {
 		return webDriver.getContentType();
 	}
@@ -94,12 +95,22 @@ public class HtmlUnitBrowser extends BrowserBase implements InitializingBean {
 
 	@Override
 	public void restorePage() {
-		webDriver.setPage(page);
+		if (page != null) {
+			webDriver.setPage(page);
+			page = null;
+		}
 	}
 
 	@Override
 	public HtmlUnitDriverExtension getWebDriver() {
 		return webDriver;
+	}
+
+	@Override
+	public void clean() {
+		browse("about:blank");
+		closeAllChildWindow();
+		webDriver.manage().deleteAllCookies();
 	}
 
 }

@@ -1,1 +1,1 @@
-spring.profiles.active=htmlUnit,htmlUnit_with_javascript,htmlUnit_with_firefox_version,firefox
+spring.profiles.active=htmlUnit,firefox

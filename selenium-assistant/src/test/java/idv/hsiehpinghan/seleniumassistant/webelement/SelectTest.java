@@ -23,7 +23,7 @@ public class SelectTest {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		browser = applicationContext.getBean(HtmlUnitBrowser.class,
-				BrowserVersion.FIREFOX_24, true);
+				BrowserVersion.FIREFOX_24, true, false);
 		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
 
 	}

@@ -14,7 +14,7 @@ public class HtmlUnitBrowserTest extends BrowserTest {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		HtmlUnitBrowser browser = applicationContext.getBean(
-				HtmlUnitBrowser.class, BrowserVersion.FIREFOX_24, true);
+				HtmlUnitBrowser.class, BrowserVersion.FIREFOX_24, true, false);
 		setBrowser(browser);
 	}
 }

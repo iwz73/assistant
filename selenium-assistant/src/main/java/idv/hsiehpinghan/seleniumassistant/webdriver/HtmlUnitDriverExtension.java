@@ -30,9 +30,10 @@ public class HtmlUnitDriverExtension extends HtmlUnitDriver {
 	}
 
 	public HtmlUnitDriverExtension(BrowserVersion version,
-			boolean enableJavascript) {
+			boolean enableJavascript, boolean enableCookies) {
 		super(version);
-		super.setJavascriptEnabled(enableJavascript);
+		setJavascriptEnabled(enableJavascript);
+		getWebClient().getCookieManager().setCookiesEnabled(enableCookies);
 	}
 
 	public String getContentType() {

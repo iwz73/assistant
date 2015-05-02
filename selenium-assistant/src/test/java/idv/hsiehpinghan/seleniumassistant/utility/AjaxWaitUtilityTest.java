@@ -26,7 +26,7 @@ public class AjaxWaitUtilityTest {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		browser = applicationContext.getBean(HtmlUnitBrowser.class,
-				BrowserVersion.FIREFOX_24, true);
+				BrowserVersion.FIREFOX_24, true, false);
 		htmlServer = TestngSuitSetting.getHtmlServer();
 	}
 

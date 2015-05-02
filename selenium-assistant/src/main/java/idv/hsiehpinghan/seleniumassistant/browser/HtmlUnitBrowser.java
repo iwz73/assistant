@@ -24,21 +24,28 @@ import com.gargoylesoftware.htmlunit.Page;
 public class HtmlUnitBrowser extends BrowserBase implements InitializingBean {
 	private BrowserVersion version;
 	private boolean enableJavascript;
+	private boolean enableCookies;
 	private Page page;
 	private HtmlUnitDriverExtension webDriver;
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public HtmlUnitBrowser(BrowserVersion version, boolean enableJavascript) {
+	public HtmlUnitBrowser() {
+		this(BrowserVersion.FIREFOX_24, true, false);
+	}
+
+	public HtmlUnitBrowser(BrowserVersion version, boolean enableJavascript,
+			boolean enableCookies) {
 		this.version = version;
 		this.enableJavascript = enableJavascript;
+		this.enableCookies = enableCookies;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		webDriver = applicationContext.getBean(HtmlUnitDriverExtension.class,
-				version, enableJavascript);
+				version, enableJavascript, enableCookies);
 	}
 
 	@Override

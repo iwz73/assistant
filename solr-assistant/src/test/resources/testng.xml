@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="suite" verbose="1">
+	<test name="suit">
+		<classes>
+			<class name="idv.hsiehpinghan.solrassistant.suit.TestngSuitSetting" />
+		</classes>
+	</test>
+	<test name="repository">
+		<classes>
+			<class
+				name="idv.hsiehpinghan.solrassistant.repository.ISolrEntityRepositoryTest" />
+			<class name="idv.hsiehpinghan.solrassistant.repository.SolrRepositoryTest" />
+		</classes>
+	</test>
+</suite>

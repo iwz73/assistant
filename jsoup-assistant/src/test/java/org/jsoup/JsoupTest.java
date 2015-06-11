@@ -4,10 +4,9 @@ import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
 
 import java.io.File;
 
-import junit.framework.Assert;
-
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -34,6 +33,12 @@ public class JsoupTest {
 		
 		String charset = doc.select("meta").get(0).attr("charset");
 		Assert.assertEquals("UTF-8", charset);
+		
+		String divClass = doc.select("div.divClass").get(0).text();
+		Assert.assertEquals("div class", divClass);
+		
+		String divInner = doc.select("div.divOutter > div.divInner").get(0).text();
+		Assert.assertEquals("div inner", divInner);
 	}
 	
 	@Test

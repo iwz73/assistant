@@ -3,10 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>spring mvc assistant</title>
+<script src="/spring-mvc-assistant/javascript/jquery-2.1.4/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("#consumesAndProducesController").on("click", function() {
+		
+		alert("aajj");
+		
+		$.ajax({
+			  url: "controller/consumesAndProducesController",
+			  data: { name: "John", location: "Boston" },
+			  dataType: "json"
+			});
+		
+		alert("jj");
+	});
+});
+</script>
 </head>
 <body>
-	test
-<!-- 	<a href="webpageQuery/index">webpage query</a> -->
-<!-- 	<br> -->
+	<h5>controller</h5>
+	<a href="controller/addViewControllers">add view controllers</a>
+	<br>
+	<a href="controller/parameterizableViewController">parameterizable view controller</a>
+	<br>
+	<input id="consumesAndProducesController" type="button" value="consumes and produces controller">
+	<br>
 </body>
 </html>

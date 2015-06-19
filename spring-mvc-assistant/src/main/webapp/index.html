@@ -3,23 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>spring mvc assistant</title>
-<script src="/spring-mvc-assistant/javascript/jquery-2.1.4/jquery-2.1.4.min.js"></script>
-<script type="text/javascript">
-$(function() {
-	$("#consumesAndProducesController").on("click", function() {
-		
-		alert("aajj");
-		
-		$.ajax({
-			  url: "controller/consumesAndProducesController",
-			  data: { name: "John", location: "Boston" },
-			  dataType: "json"
-			});
-		
-		alert("jj");
-	});
-});
-</script>
 </head>
 <body>
 	<h5>controller</h5>
@@ -27,7 +10,27 @@ $(function() {
 	<br>
 	<a href="controller/parameterizableViewController">parameterizable view controller</a>
 	<br>
-	<input id="consumesAndProducesController" type="button" value="consumes and produces controller">
+	<h5>method argument type</h5>
+	<a href="methodArgumentType/servletRequest?parameter=servletRequest">servletRequest</a>
+	<br>
+	<form action="methodArgumentType/multipartRequest" method="post" enctype="multipart/form-data">
+		<input type="file" name="uploadedFile">
+		<input type="submit" value="multipartRequest">
+	</form>
+	<br>
+	<form action="methodArgumentType/multipartHttpServletRequest" method="post" enctype="multipart/form-data">
+		<input type="file" name="uploadedFile">
+		<input type="submit" value="multipartHttpServletRequest">
+	</form>
+	<a href="methodArgumentType/httpSession">httpSession</a>
+	<br>
+	<a href="methodArgumentType/webRequest?parameter=webRequest">webRequest</a>
+	<br>
+	<a href="methodArgumentType/webRequest?parameter=nativeWebRequest">nativeWebRequest</a>
+	<br>
+	<a href="methodArgumentType/locale">locale</a>
+	<br>
+	<a href="methodArgumentType/principal">principal</a>
 	<br>
 </body>
 </html>

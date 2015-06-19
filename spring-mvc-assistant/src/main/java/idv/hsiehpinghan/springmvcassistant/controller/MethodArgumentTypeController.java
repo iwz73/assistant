@@ -10,17 +10,24 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/methodArgumentType")
 public class MethodArgumentTypeController {
 
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() {
+		return "/methodArgumentType/index";
+	}
+	
 	@RequestMapping(value = "/servletRequest", method = RequestMethod.GET)
 	public ModelAndView servletRequest(ServletRequest servletRequest) {
 		ModelAndView modelAndView = new ModelAndView(
@@ -107,6 +114,19 @@ public class MethodArgumentTypeController {
 		modelAndView.addObject("parameter", "name:"
 				+ (principal == null ? null : principal.getName()));
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/requestParam", method = RequestMethod.GET)
+	public ModelAndView requestParam(@RequestParam Integer integerValue, @RequestParam Float floatValue, @RequestParam String stringValue) {
+		ModelAndView modelAndView = new ModelAndView("/methodArgumentType/index");
+		modelAndView.addObject("parameter", "integerValue:" + integerValue + "; floatValue:" + floatValue + "; stringValue:" + stringValue);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/redirectAttributes", method = RequestMethod.POST)
+	public String redirectAttributes(RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("parameter", "flashAttribute");
+		return "redirect:/methodArgumentType/index";
 	}
 
 }

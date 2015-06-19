@@ -8,6 +8,6 @@
 <title>method argument type</title>
 </head>
 <body>
-	<c:out value="${parameter}"></c:out>
+	parameter:${parameter}<br>
 </body>
 </html>

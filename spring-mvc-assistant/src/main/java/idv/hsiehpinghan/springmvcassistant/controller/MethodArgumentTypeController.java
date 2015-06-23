@@ -1,6 +1,9 @@
 package idv.hsiehpinghan.springmvcassistant.controller;
 
+import idv.hsiehpinghan.springmvcassistant.criteria.Criteria;
+
 import java.security.Principal;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.ServletRequest;
@@ -129,4 +132,14 @@ public class MethodArgumentTypeController {
 		return "redirect:/methodArgumentType/index";
 	}
 
+	@RequestMapping(value = "/criteria", method = RequestMethod.POST)
+	public ModelAndView criteria(Criteria criteria) {
+		ModelAndView modelAndView = new ModelAndView("/methodArgumentType/index");
+		Integer integerValue = criteria.getIntegerValue();
+		Float floatValue = criteria.getFloatValue();
+		String stringValue = criteria.getStringValue();
+		Date dateValue = criteria.getDateValue();
+		modelAndView.addObject("parameter", "integerValue:" + integerValue + "; floatValue:" + floatValue + "; stringValue:" + stringValue + "; dateValue:" + dateValue);
+		return modelAndView;
+	}
 }

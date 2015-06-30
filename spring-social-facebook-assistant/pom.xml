@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>idv.hsiehpinghan</groupId>
+	<artifactId>spring-social-facebook-assistant</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<name>spring-social-facebook-assistant Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<build>
+		<finalName>spring-social-facebook-assistant</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j.version>1.7.10</slf4j.version>
+		<testng.version>6.9.4</testng.version>
+<!-- 		<spring.version>4.1.2.RELEASE</spring.version> -->
+		<jstl.version>1.2</jstl.version>
+		<tomcat-servlet-api.version>7.0.61</tomcat-servlet-api.version>
+		<spring-social-facebook.version>2.0.1.RELEASE</spring-social-facebook.version>
+		<spring-social.version>1.1.0.RELEASE</spring-social.version>
+		<httpclient.version>4.5</httpclient.version>
+		<object-utility.version>1.0.0</object-utility.version>
+	</properties>
+
+	<dependencies>
+		<!-- log4j (for spring logging) -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- spring -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-webmvc</artifactId> -->
+<!-- 			<version>${spring.version}</version> -->
+<!-- 		</dependency> -->
+
+		<!-- jstl -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+
+		<!-- tomcat-servlet-api -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>${tomcat-servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- spring-social -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-security</artifactId>
+			<version>${spring-social.version}</version>
+		</dependency>
+		
+		<!-- spring-social-facebook -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${spring-social-facebook.version}</version>
+		</dependency>
+
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+
+		<!-- object-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>object-utility</artifactId>
+			<version>${object-utility.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+</project>

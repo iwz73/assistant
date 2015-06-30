@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.springmvcassistant.initializer;
 
+import javax.servlet.FilterRegistration;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class WebInitializer implements WebApplicationInitializer {
@@ -17,14 +19,7 @@ public class WebInitializer implements WebApplicationInitializer {
 			throws ServletException {
 		// registerListener(servletContext);
 		registerDispatcherServlet(servletContext);
-	}
-
-	private AnnotationConfigWebApplicationContext createApplicationContext(
-			final Class<?>... annotationClasses) {
-		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-		applicationContext.getEnvironment().setActiveProfiles("local");
-		applicationContext.register(annotationClasses);
-		return applicationContext;
+		registerCharacterEncodingFilter(servletContext);
 	}
 
 	private void registerListener(final ServletContext servletContext) {
@@ -54,6 +49,23 @@ public class WebInitializer implements WebApplicationInitializer {
 		MultipartConfigElement config = new MultipartConfigElement(location,
 				maxFileSize, maxRequestSize, fileSizeThreshold);
 		registration.setMultipartConfig(config);
+	}
+	
+	private void registerCharacterEncodingFilter(ServletContext servletContext) {
+		FilterRegistration.Dynamic characterEncodingFilter = servletContext
+				.addFilter("characterEncodingFilter",
+						new CharacterEncodingFilter());
+		characterEncodingFilter.setInitParameter("encoding", "UTF-8");
+		characterEncodingFilter.setInitParameter("forceEncoding", "true");
+		characterEncodingFilter.addMappingForUrlPatterns(null, false, "/*");
+	}
+
+	private AnnotationConfigWebApplicationContext createApplicationContext(
+			final Class<?>... annotationClasses) {
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+		applicationContext.getEnvironment().setActiveProfiles("local");
+		applicationContext.register(annotationClasses);
+		return applicationContext;
 	}
 
 }

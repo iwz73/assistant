@@ -21,8 +21,10 @@ public class ElementCollectionService implements IElementCollectionService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ElementCollectionEntity findOne(Integer id) {
-		return repository.findOne(id);
+		ElementCollectionEntity entity = repository.findOne(id);
+		entity.getElements().size();
+		return entity;
 	}
 }

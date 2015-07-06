@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -33,10 +34,12 @@ public class SpringConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws PropertyVetoException {
-		String driverClass = environment.getProperty("postgresql.driverClass");
-		String jdbcUrl = environment.getProperty("postgresql.jdbcUrl");
-		String user = environment.getProperty("postgresql.user");
-		String password = environment.getProperty("postgresql.password");
+		String driverClass = environment
+				.getRequiredProperty("postgresql.driverClass");
+		String jdbcUrl = environment.getRequiredProperty("postgresql.jdbcUrl");
+		String user = environment.getRequiredProperty("postgresql.user");
+		String password = environment
+				.getRequiredProperty("postgresql.password");
 
 		ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
 		comboPooledDataSource.setDriverClass(driverClass);
@@ -63,25 +66,29 @@ public class SpringConfiguration {
 		entityManagerFactoryBean
 				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan(environment
-				.getProperty("jsp.packagesToScan"));
+				.getRequiredProperty("jsp.packagesToScan"));
 		Properties jpaProperties = new Properties();
-		// jpaProperties
-		// .put("hibernate.default_schema", environment
-		// .getRequiredProperty("jpa.hibernate.default_schema"));
+		jpaProperties
+				.put("hibernate.default_schema", environment
+						.getRequiredProperty("jpa.hibernate.default_schema"));
 		jpaProperties.put("hibernate.dialect",
 				environment.getRequiredProperty("jpa.hibernate.dialect"));
 		jpaProperties.put("hibernate.format_sql",
 				environment.getRequiredProperty("jpa.hibernate.format_sql"));
 		jpaProperties.put("hibernate.hbm2ddl.auto",
-				environment.getProperty("jpa.hibernate.hbm2ddl.auto"));
+				environment.getRequiredProperty("jpa.hibernate.hbm2ddl.auto"));
 		jpaProperties.put("hibernate.show_sql",
 				environment.getRequiredProperty("jpa.hibernate.show_sql"));
-		jpaProperties.put("hibernate.generate_statistics",
-				environment.getProperty("jpa.hibernate.generate_statistics"));
+		jpaProperties.put("hibernate.generate_statistics", environment
+				.getRequiredProperty("jpa.hibernate.generate_statistics"));
 		jpaProperties.put("hibernate.use_sql_comments", environment
 				.getRequiredProperty("jpa.hibernate.use_sql_comments"));
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 		return entityManagerFactoryBean;
 	}
 
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
 }

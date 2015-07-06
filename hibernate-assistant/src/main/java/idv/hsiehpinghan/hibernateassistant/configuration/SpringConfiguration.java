@@ -21,7 +21,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableTransactionManagement
 @Configuration("hibernateAssistantSpringConfiguration")
 @PropertySource("classpath:/hibernate_assistant.property")
-@ComponentScan(basePackages = { "idv.hsiehpinghan.hibernateassistant" })
+// @ComponentScan(basePackages = { "idv.hsiehpinghan.hibernateassistant" })
+@ComponentScan(basePackages = { "com.eitc" })
 public class SpringConfiguration {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -30,10 +31,12 @@ public class SpringConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws PropertyVetoException {
-		String driverClass = environment.getProperty("postgresql.driverClass");
-		String jdbcUrl = environment.getProperty("postgresql.jdbcUrl");
-		String user = environment.getProperty("postgresql.user");
-		String password = environment.getProperty("postgresql.password");
+		String driverClass = environment
+				.getRequiredProperty("postgresql.driverClass");
+		String jdbcUrl = environment.getRequiredProperty("postgresql.jdbcUrl");
+		String user = environment.getRequiredProperty("postgresql.user");
+		String password = environment
+				.getRequiredProperty("postgresql.password");
 
 		ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
 		comboPooledDataSource.setDriverClass(driverClass);
@@ -49,7 +52,7 @@ public class SpringConfiguration {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
 		sessionFactory.setPackagesToScan(new String[] { environment
-				.getProperty("hibernate.packagesToScan") });
+				.getRequiredProperty("hibernate.packagesToScan") });
 		sessionFactory.setHibernateProperties(getHibernateProperties());
 		return sessionFactory;
 	}
@@ -65,7 +68,7 @@ public class SpringConfiguration {
 
 	private Properties getHibernateProperties() {
 		Properties prop = new Properties();
-		// prop.setProperty("hibernate.hbm2ddl.auto", "create"); // validate,
+		prop.setProperty("hibernate.hbm2ddl.auto", "create"); // validate,
 		// update,
 		// create,
 		// create-drop

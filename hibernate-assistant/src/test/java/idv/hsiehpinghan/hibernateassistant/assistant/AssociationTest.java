@@ -1,7 +1,7 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEntity;
-import idv.hsiehpinghan.hibernateassistant.service.IElementCollectionService;
+import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -23,12 +23,12 @@ public class AssociationTest {
 
 	@Test
 	public void oneToOne() {
-		IElementCollectionService service = applicationContext
-				.getBean(IElementCollectionService.class);
+		ElementCollectionService service = applicationContext
+				.getBean(ElementCollectionService.class);
 		ElementCollectionEntity entity = generateElementCollectionEntity();
 		service.save(entity);
 		int id = entity.getId();
-		ElementCollectionEntity returnEntity = service.findById(id);
+		ElementCollectionEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}

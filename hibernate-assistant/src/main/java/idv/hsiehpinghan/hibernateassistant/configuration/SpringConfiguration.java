@@ -21,8 +21,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableTransactionManagement
 @Configuration("hibernateAssistantSpringConfiguration")
 @PropertySource("classpath:/hibernate_assistant.property")
-// @ComponentScan(basePackages = { "idv.hsiehpinghan.hibernateassistant" })
-@ComponentScan(basePackages = { "com.eitc" })
+@ComponentScan(basePackages = { "idv.hsiehpinghan.hibernateassistant" })
 public class SpringConfiguration {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -68,7 +67,7 @@ public class SpringConfiguration {
 
 	private Properties getHibernateProperties() {
 		Properties prop = new Properties();
-		prop.setProperty("hibernate.hbm2ddl.auto", "create"); // validate,
+		prop.setProperty("hibernate.hbm2ddl.auto", "update"); // validate,
 		// update,
 		// create,
 		// create-drop

@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.hibernateassistant.service;
 
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.repository.ManyToManyBidirectionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,17 @@ public class ManyToManyBidirectionService {
 	@Autowired
 	private ManyToManyBidirectionRepository repository;
 
-	public void save(ManyToManyBidirectionFromEntity entity) {
-		repository.save(entity);
+	public void saveOrUpdate(ManyToManyBidirectionFromEntity entity) {
+		repository.saveOrUpdate(entity);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public ManyToManyBidirectionFromEntity findOne(int id) {
 		ManyToManyBidirectionFromEntity entity = repository.findOne(id);
+		entity.getTos().size();
+		for (ManyToManyBidirectionToEntity to : entity.getTos()) {
+			to.getFroms().size();
+		}
 		return entity;
 	}
 

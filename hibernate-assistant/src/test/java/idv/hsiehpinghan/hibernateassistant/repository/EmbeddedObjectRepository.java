@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.hibernateassistant.repository;
 
-import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,19 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ManyToManyBidirectionRepository {
+public class EmbeddedObjectRepository {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void saveOrUpdate(ManyToManyBidirectionFromEntity entity) {
+	public void save(EmbeddedObjectContainerEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(entity);
+		session.save(entity);
 	}
 
-	public ManyToManyBidirectionFromEntity findOne(int id) {
+	public EmbeddedObjectContainerEntity findOne(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		return (ManyToManyBidirectionFromEntity) session.get(
-				ManyToManyBidirectionFromEntity.class, id);
+		return (EmbeddedObjectContainerEntity) session.get(
+				EmbeddedObjectContainerEntity.class, id);
 	}
-
 }

@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.hibernateassistant.repository;
 
-import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyJoinTableFromEntity;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,19 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ManyToManyBidirectionRepository {
+public class ManyToManyJoinTableRepository {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void saveOrUpdate(ManyToManyBidirectionFromEntity entity) {
+	public void saveOrUpdate(ManyToManyJoinTableFromEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(entity);
 	}
 
-	public ManyToManyBidirectionFromEntity findOne(int id) {
+	public ManyToManyJoinTableFromEntity findOne(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		return (ManyToManyBidirectionFromEntity) session.get(
-				ManyToManyBidirectionFromEntity.class, id);
+		return (ManyToManyJoinTableFromEntity) session.get(
+				ManyToManyJoinTableFromEntity.class, id);
 	}
 
 }

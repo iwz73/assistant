@@ -1,22 +1,20 @@
 package idv.hsiehpinghan.hibernateassistant.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
 public class ManyToManyBidirectionFromEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	private Collection<ManyToManyBidirectionToEntity> to;
+	private Collection<ManyToManyBidirectionToEntity> tos;
 
 	public Integer getId() {
 		return id;
@@ -26,12 +24,18 @@ public class ManyToManyBidirectionFromEntity {
 		this.id = id;
 	}
 
-	public Collection<ManyToManyBidirectionToEntity> getTo() {
-		return to;
+	public Collection<ManyToManyBidirectionToEntity> getTos() {
+		return tos;
 	}
 
-	public void setTo(Collection<ManyToManyBidirectionToEntity> to) {
-		this.to = to;
+	public void setTos(Collection<ManyToManyBidirectionToEntity> tos) {
+		this.tos = tos;
 	}
 
+	public void addTo(ManyToManyBidirectionToEntity to) {
+		if (this.tos == null) {
+			this.tos = new ArrayList<ManyToManyBidirectionToEntity>();
+		}
+		this.tos.add(to);
+	}
 }

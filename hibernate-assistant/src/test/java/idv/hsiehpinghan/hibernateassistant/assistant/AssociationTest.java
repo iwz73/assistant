@@ -1,7 +1,13 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneOneEntity;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService;
+import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
+import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
@@ -22,7 +28,7 @@ public class AssociationTest {
 	}
 
 	@Test
-	public void oneToOne() {
+	public void elementCollection() {
 		ElementCollectionService service = applicationContext
 				.getBean(ElementCollectionService.class);
 		ElementCollectionEntity entity = generateElementCollectionEntity();
@@ -31,6 +37,50 @@ public class AssociationTest {
 		ElementCollectionEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
+	}
+
+	@Test
+	public void manyToOne() {
+		ManyToOneService service = applicationContext
+				.getBean(ManyToOneService.class);
+		ManyToOneManyEntity entity = generateManyToOneManyEntity();
+		service.save(entity);
+		int id = entity.getId();
+		ManyToOneManyEntity returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity.getOne());
+	}
+
+	@Test
+	public void manyToOneJoinColumn() {
+		ManyToOneJoinColumnService service = applicationContext
+				.getBean(ManyToOneJoinColumnService.class);
+		ManyToOneJoinColumnManyEntity entity = generateManyToOneJoinColumnManyEntity();
+		service.save(entity);
+		int id = entity.getId();
+		ManyToOneJoinColumnManyEntity returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity.getOne());
+	}
+
+	private ManyToOneJoinColumnManyEntity generateManyToOneJoinColumnManyEntity() {
+		ManyToOneJoinColumnManyEntity entity = new ManyToOneJoinColumnManyEntity();
+		entity.setOne(generateManyToOneJoinColumnOneEntity());
+		return entity;
+	}
+
+	private ManyToOneJoinColumnOneEntity generateManyToOneJoinColumnOneEntity() {
+		ManyToOneJoinColumnOneEntity entity = new ManyToOneJoinColumnOneEntity();
+		return entity;
+	}
+
+	private ManyToOneManyEntity generateManyToOneManyEntity() {
+		ManyToOneManyEntity entity = new ManyToOneManyEntity();
+		entity.setOne(generateManyToOneOneEntity());
+		return entity;
+	}
+
+	private ManyToOneOneEntity generateManyToOneOneEntity() {
+		ManyToOneOneEntity entity = new ManyToOneOneEntity();
+		return entity;
 	}
 
 	private ElementCollectionEntity generateElementCollectionEntity() {

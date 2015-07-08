@@ -5,25 +5,20 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@EnableTransactionManagement
 @Configuration("hibernateAssistantSpringConfiguration")
 @PropertySource("classpath:/hibernate_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.hibernateassistant" })
 public class SpringConfiguration {
-	// private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Autowired
 	private Environment environment;
@@ -54,15 +49,6 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.packagesToScan") });
 		sessionFactory.setHibernateProperties(getHibernateProperties());
 		return sessionFactory;
-	}
-
-	@Bean
-	@Autowired
-	public HibernateTransactionManager transactionManager(
-			SessionFactory sessionFactory) {
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		txManager.setSessionFactory(sessionFactory);
-		return txManager;
 	}
 
 	private Properties getHibernateProperties() {

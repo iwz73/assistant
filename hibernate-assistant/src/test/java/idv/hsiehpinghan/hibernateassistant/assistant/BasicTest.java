@@ -83,7 +83,7 @@ public class BasicTest {
 		Assert.assertEquals(returnEntity.getId().intValue(), 1);
 	}
 
-	@Test
+//	@Test
 	public void sequenceGenerator() {
 		SequenceGeneratorService service = applicationContext
 				.getBean(SequenceGeneratorService.class);

@@ -1,6 +1,10 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
+import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionContainerEntity1;
+import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEmbeddableEntity1;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableContainerEntity2;
+import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableEmbeddableEntity2;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
@@ -22,6 +26,8 @@ import idv.hsiehpinghan.hibernateassistant.entity.OneToOnePkMappingToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService;
+import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService1;
+import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService2;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
@@ -62,6 +68,31 @@ public class AssociationTest {
 		service.save(entity);
 		int id = entity.getId();
 		ElementCollectionEntity returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity);
+		Assert.assertEquals(returnEntity.getElements().size(), 3);
+	}
+
+	@Test
+	public void elementCollection1() {
+		ElementCollectionService1 service = applicationContext
+				.getBean(ElementCollectionService1.class);
+		ElementCollectionContainerEntity1 entity = generateElementCollectionContainerEntity1();
+		service.save(entity);
+		int id = entity.getId();
+		ElementCollectionContainerEntity1 returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity);
+		Assert.assertEquals(returnEntity.getElements().size(), 3);
+	}
+
+	@Test
+	public void elementCollection2() {
+		ElementCollectionService2 service = applicationContext
+				.getBean(ElementCollectionService2.class);
+		ElementCollectionTableContainerEntity2 entity = generateElementCollectionTableContainerEntity2();
+		service.save(entity);
+		int id = entity.getId();
+		ElementCollectionTableContainerEntity2 returnEntity = service
+				.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
@@ -375,6 +406,20 @@ public class AssociationTest {
 		return entity;
 	}
 
+	private ElementCollectionContainerEntity1 generateElementCollectionContainerEntity1() {
+		ElementCollectionContainerEntity1 entity = new ElementCollectionContainerEntity1();
+		Set<ElementCollectionEmbeddableEntity1> elements = generateElementCollectionEmbeddableEntity1s();
+		entity.setElements(elements);
+		return entity;
+	}
+
+	private ElementCollectionTableContainerEntity2 generateElementCollectionTableContainerEntity2() {
+		ElementCollectionTableContainerEntity2 entity = new ElementCollectionTableContainerEntity2();
+		Set<ElementCollectionTableEmbeddableEntity2> elements = generateElementCollectionTableEmbeddableEntity2s();
+		entity.setElements(elements);
+		return entity;
+	}
+
 	private ElementCollectionEntity generateElementCollectionEntity() {
 		ElementCollectionEntity entity = new ElementCollectionEntity();
 		Set<String> elements = generateStringElements();
@@ -387,6 +432,26 @@ public class AssociationTest {
 		elements.add("item 1");
 		elements.add("item 2");
 		elements.add("item 3");
+		return elements;
+	}
+
+	private Set<ElementCollectionEmbeddableEntity1> generateElementCollectionEmbeddableEntity1s() {
+		Set<ElementCollectionEmbeddableEntity1> elements = new HashSet<ElementCollectionEmbeddableEntity1>();
+		for (int i = 0; i < 3; ++i) {
+			ElementCollectionEmbeddableEntity1 element = new ElementCollectionEmbeddableEntity1();
+			element.setName("name " + i);
+			elements.add(element);
+		}
+		return elements;
+	}
+
+	private Set<ElementCollectionTableEmbeddableEntity2> generateElementCollectionTableEmbeddableEntity2s() {
+		Set<ElementCollectionTableEmbeddableEntity2> elements = new HashSet<ElementCollectionTableEmbeddableEntity2>();
+		for (int i = 0; i < 3; ++i) {
+			ElementCollectionTableEmbeddableEntity2 element = new ElementCollectionTableEmbeddableEntity2();
+			element.setName("name " + i);
+			elements.add(element);
+		}
 		return elements;
 	}
 }

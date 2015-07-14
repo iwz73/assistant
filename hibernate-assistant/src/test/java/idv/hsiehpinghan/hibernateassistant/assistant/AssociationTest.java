@@ -3,6 +3,7 @@ package idv.hsiehpinghan.hibernateassistant.assistant;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionContainerEntity1;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEmbeddableEntity1;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionStringMapEntity3;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableContainerEntity2;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableEmbeddableEntity2;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
@@ -17,6 +18,10 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyOrderColumnManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyOrderColumnOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyUnidirectionManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyUnidirectionOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneBidirectionFromEntity;
@@ -28,12 +33,15 @@ import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService1;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService2;
+import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService3;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyBidirectionService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToManyListService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToManyOrderColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyUnidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOneBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOnePkMappingService;
@@ -43,7 +51,10 @@ import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
@@ -95,6 +106,18 @@ public class AssociationTest {
 				.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
+	}
+
+	@Test
+	public void elementCollection3() {
+		ElementCollectionService3 service = applicationContext
+				.getBean(ElementCollectionService3.class);
+		ElementCollectionStringMapEntity3 entity = generateElementCollectionStringMapEntity3();
+		service.save(entity);
+		int id = entity.getId();
+		ElementCollectionStringMapEntity3 returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity);
+		Assert.assertEquals(returnEntity.getMap().size(), 3);
 	}
 
 	@Test
@@ -165,6 +188,36 @@ public class AssociationTest {
 		int id = entity.getId();
 		OneToManyBidirectionOneEntity oneEntity = service.findOne(id);
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
+	}
+
+	@Test
+	public void oneToManyOrderColumn() {
+		OneToManyOrderColumnService service = applicationContext
+				.getBean(OneToManyOrderColumnService.class);
+		OneToManyOrderColumnOneEntity entity = generateOneToManyOrderColumnOneEntity();
+		service.save(entity);
+		int id = entity.getId();
+		OneToManyOrderColumnOneEntity oneEntity = service.findOne(id);
+		Assert.assertEquals(oneEntity.getMany().size(), 3);
+		for (int i = 0, size = oneEntity.getMany().size(); i < size; ++i) {
+			Assert.assertEquals(oneEntity.getMany().get(i).getId(),
+					Integer.valueOf(2 - i));
+		}
+	}
+
+	@Test
+	public void oneToManyList() {
+		OneToManyListService service = applicationContext
+				.getBean(OneToManyListService.class);
+		OneToManyListOneEntity entity = generateOneToManyListOneEntity();
+		service.save(entity);
+		int id = entity.getId();
+		OneToManyListOneEntity oneEntity = service.findOne(id);
+		Assert.assertEquals(oneEntity.getMany().size(), 3);
+		for (int i = 0, size = oneEntity.getMany().size(); i < size; ++i) {
+			OneToManyListManyEntity many = oneEntity.getMany().get(i);
+			Assert.assertEquals(many.getName(), "name_" + (2 - i));
+		}
 	}
 
 	@Test
@@ -316,6 +369,18 @@ public class AssociationTest {
 		return one;
 	}
 
+	private OneToManyOrderColumnOneEntity generateOneToManyOrderColumnOneEntity() {
+		OneToManyOrderColumnOneEntity one = new OneToManyOrderColumnOneEntity();
+		one.setMany(generateOneToManyOrderColumnManyEntities(one));
+		return one;
+	}
+
+	private OneToManyListOneEntity generateOneToManyListOneEntity() {
+		OneToManyListOneEntity one = new OneToManyListOneEntity();
+		one.setMany(generateOneToManyListManyEntities(one));
+		return one;
+	}
+
 	private Collection<OneToManyUnidirectionManyEntity> generateOneToManyUnidirectionManyEntities(
 			OneToManyUnidirectionOneEntity one) {
 		Collection<OneToManyUnidirectionManyEntity> entities = new ArrayList<OneToManyUnidirectionManyEntity>();
@@ -334,6 +399,24 @@ public class AssociationTest {
 		return entities;
 	}
 
+	private List<OneToManyOrderColumnManyEntity> generateOneToManyOrderColumnManyEntities(
+			OneToManyOrderColumnOneEntity one) {
+		List<OneToManyOrderColumnManyEntity> entities = new ArrayList<OneToManyOrderColumnManyEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateOneToManyOrderColumnManyEntity(one, i));
+		}
+		return entities;
+	}
+
+	private List<OneToManyListManyEntity> generateOneToManyListManyEntities(
+			OneToManyListOneEntity one) {
+		List<OneToManyListManyEntity> entities = new ArrayList<OneToManyListManyEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateOneToManyListManyEntity(one, i));
+		}
+		return entities;
+	}
+
 	private OneToManyUnidirectionManyEntity generateOneToManyUnidirectionManyEntity(
 			OneToManyUnidirectionOneEntity one) {
 		OneToManyUnidirectionManyEntity many = new OneToManyUnidirectionManyEntity();
@@ -343,6 +426,22 @@ public class AssociationTest {
 	private OneToManyBidirectionManyEntity generateOneToManyBidirectionManyEntity(
 			OneToManyBidirectionOneEntity one) {
 		OneToManyBidirectionManyEntity many = new OneToManyBidirectionManyEntity();
+		many.setOne(one);
+		return many;
+	}
+
+	private OneToManyOrderColumnManyEntity generateOneToManyOrderColumnManyEntity(
+			OneToManyOrderColumnOneEntity one, int i) {
+		OneToManyOrderColumnManyEntity many = new OneToManyOrderColumnManyEntity();
+		many.setId(2 - i);
+		many.setOne(one);
+		return many;
+	}
+
+	private OneToManyListManyEntity generateOneToManyListManyEntity(
+			OneToManyListOneEntity one, int i) {
+		OneToManyListManyEntity many = new OneToManyListManyEntity();
+		many.setName("name_" + i);
 		many.setOne(one);
 		return many;
 	}
@@ -424,6 +523,16 @@ public class AssociationTest {
 		ElementCollectionEntity entity = new ElementCollectionEntity();
 		Set<String> elements = generateStringElements();
 		entity.setElements(elements);
+		return entity;
+	}
+
+	private ElementCollectionStringMapEntity3 generateElementCollectionStringMapEntity3() {
+		ElementCollectionStringMapEntity3 entity = new ElementCollectionStringMapEntity3();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("key_1", "value_1");
+		map.put("key_2", "value_2");
+		map.put("key_3", "value_3");
+		entity.setMap(map);
 		return entity;
 	}
 

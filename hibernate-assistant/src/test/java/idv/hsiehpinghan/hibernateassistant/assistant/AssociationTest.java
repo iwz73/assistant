@@ -238,7 +238,7 @@ public class AssociationTest {
 		OneToManyMapKeyOneEntity oneEntity = service.findOne(id);
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 		for(Entry<Integer, OneToManyMapKeyManyEntity> entry : oneEntity.getMany().entrySet()) {
-			Assert.assertTrue(ArrayUtils.contains(new int[]{100,101,102}, entry.getKey()));
+			Assert.assertEquals(entry.getKey(), entry.getValue().getTargetId());
 		}
 	}
 

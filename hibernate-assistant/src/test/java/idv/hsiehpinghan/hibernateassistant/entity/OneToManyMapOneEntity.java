@@ -15,7 +15,7 @@ public class OneToManyMapOneEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@MapKeyColumn(name = "mapKey")
+	@MapKeyColumn(name = "mapKey", nullable = true)
 	@OneToMany(mappedBy = "one", cascade = CascadeType.ALL)
 	private Map<String, OneToManyMapManyEntity> many;
 

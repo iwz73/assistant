@@ -1,8 +1,8 @@
 package idv.hsiehpinghan.hibernateassistant.service;
 
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableToEntity;
-import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableValueObject;
 import idv.hsiehpinghan.hibernateassistant.repository.ManyToManyMapEmbeddableRepository;
 
 import java.util.Map.Entry;
@@ -26,7 +26,7 @@ public class ManyToManyMapEmbeddableService {
 	public ManyToManyMapEmbeddableFromEntity findOne(int id) {
 		ManyToManyMapEmbeddableFromEntity entity = repository.findOne(id);
 		entity.getTos().size();
-		for (Entry<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> to : entity
+		for (Entry<ManyToManyMapEmbeddableEntity, ManyToManyMapEmbeddableToEntity> to : entity
 				.getTos().entrySet()) {
 			to.getValue().getFroms().size();
 		}

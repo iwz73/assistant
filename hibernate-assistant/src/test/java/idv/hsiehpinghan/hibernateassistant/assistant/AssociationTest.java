@@ -14,9 +14,9 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyJoinTableFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyJoinTableToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableEmbeddedEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableToEntity;
-import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableValueObject;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnManyEntity;
@@ -28,6 +28,7 @@ import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapEmbeddableEmbeddedEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapEmbeddableManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapEmbeddableOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapKeyManyEntity;
@@ -251,7 +252,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void oneToManyMapEmbeddable() {
 		OneToManyMapEmbeddableService service = applicationContext
 				.getBean(OneToManyMapEmbeddableService.class);
@@ -260,12 +261,9 @@ public class AssociationTest {
 		int id = entity.getId();
 		OneToManyMapEmbeddableOneEntity oneEntity = service.findOne(id);
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
-		for (Entry<OneToManyMapEmbeddableEmbeddedEntity, OneToManyMapEmbeddableManyEntity> entry : oneEntity
+		for (Entry<OneToManyMapEmbeddableEntity, OneToManyMapEmbeddableManyEntity> entry : oneEntity
 				.getMany().entrySet()) {
-			Assert.assertEquals(entry.getKey().getFirstName(), entry.getValue()
-					.getEmbeddable().getFirstName());
-			Assert.assertEquals(entry.getKey().getLastName(), entry.getValue()
-					.getEmbeddable().getLastName());
+			Assert.assertNotNull(entry.getValue().getOne());
 		}
 	}
 
@@ -328,7 +326,7 @@ public class AssociationTest {
 		}
 	}
 
-//	@Test
+	// @Test
 	public void ManyToManyMapEmbeddable() {
 		ManyToManyMapEmbeddableService service = applicationContext
 				.getBean(ManyToManyMapEmbeddableService.class);
@@ -340,7 +338,7 @@ public class AssociationTest {
 			int id = entity.getId();
 			ManyToManyMapEmbeddableFromEntity fromEntity = service.findOne(id);
 			Assert.assertEquals(fromEntity.getTos().size(), 3);
-			for (Entry<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> to : fromEntity
+			for (Entry<ManyToManyMapEmbeddableEntity, ManyToManyMapEmbeddableToEntity> to : fromEntity
 					.getTos().entrySet()) {
 				Assert.assertEquals(to.getValue().getFroms().size(), 3);
 			}
@@ -489,11 +487,11 @@ public class AssociationTest {
 		return entities;
 	}
 
-	private Map<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> generateManyToManyMapEmbeddableToEntityMap(
+	private Map<ManyToManyMapEmbeddableEntity, ManyToManyMapEmbeddableToEntity> generateManyToManyMapEmbeddableToEntityMap(
 			ManyToManyMapEmbeddableFromEntity from) {
-		Map<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> map = new HashMap<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity>();
+		Map<ManyToManyMapEmbeddableEntity, ManyToManyMapEmbeddableToEntity> map = new HashMap<ManyToManyMapEmbeddableEntity, ManyToManyMapEmbeddableToEntity>();
 		for (int i = 0; i < 3; ++i) {
-			ManyToManyMapEmbeddableValueObject key = new ManyToManyMapEmbeddableValueObject();
+			ManyToManyMapEmbeddableEntity key = new ManyToManyMapEmbeddableEntity();
 			key.setAge(i);
 			key.setName("name_" + i);
 			map.put(key, generateManyToManyMapEmbeddableToEntity(from, i));
@@ -636,20 +634,15 @@ public class AssociationTest {
 		return entityMapKey;
 	}
 
-	private Map<OneToManyMapEmbeddableEmbeddedEntity, OneToManyMapEmbeddableManyEntity> generateOneToManyMapEmbeddableManyEntityMap(
+	private Map<OneToManyMapEmbeddableEntity, OneToManyMapEmbeddableManyEntity> generateOneToManyMapEmbeddableManyEntityMap(
 			OneToManyMapEmbeddableOneEntity one) {
-		Map<OneToManyMapEmbeddableEmbeddedEntity, OneToManyMapEmbeddableManyEntity> entityMapEmbeddable = new HashMap<OneToManyMapEmbeddableEmbeddedEntity, OneToManyMapEmbeddableManyEntity>();
+		Map<OneToManyMapEmbeddableEntity, OneToManyMapEmbeddableManyEntity> entityMapEmbeddable = new HashMap<OneToManyMapEmbeddableEntity, OneToManyMapEmbeddableManyEntity>();
 		for (int i = 0; i < 3; ++i) {
-			OneToManyMapEmbeddableEmbeddedEntity embedded = new OneToManyMapEmbeddableEmbeddedEntity();
-			embedded.setFirstName("firstName_" + i);
-			embedded.setLastName("lastName_" + i);
-			entityMapEmbeddable.put(embedded,
-					generateOneToManyMapEmbeddableManyEntity(one, i)); // the
-			// key
-			// of
-			// map
-			// will
-			// persisted.
+			OneToManyMapEmbeddableEntity embeddable = new OneToManyMapEmbeddableEntity();
+			embeddable.setAge(i);
+			embeddable.setName("name_" + i);
+			entityMapEmbeddable.put(embeddable,
+					generateOneToManyMapEmbeddableManyEntity(one, i));
 		}
 		return entityMapEmbeddable;
 	}

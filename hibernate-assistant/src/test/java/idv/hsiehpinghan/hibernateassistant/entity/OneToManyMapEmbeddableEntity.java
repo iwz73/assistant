@@ -3,7 +3,7 @@ package idv.hsiehpinghan.hibernateassistant.entity;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class ManyToManyMapEmbeddableValueObject {
+public class OneToManyMapEmbeddableEntity {
 	private int age;
 	private String name;
 
@@ -40,7 +40,7 @@ public class ManyToManyMapEmbeddableValueObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ManyToManyMapEmbeddableValueObject other = (ManyToManyMapEmbeddableValueObject) obj;
+		OneToManyMapEmbeddableEntity other = (OneToManyMapEmbeddableEntity) obj;
 		if (age != other.age)
 			return false;
 		if (name == null) {

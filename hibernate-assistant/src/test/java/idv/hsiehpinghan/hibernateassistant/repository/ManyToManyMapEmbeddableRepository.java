@@ -2,6 +2,7 @@ package idv.hsiehpinghan.hibernateassistant.repository;
 
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableFromEntity;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +24,11 @@ public class ManyToManyMapEmbeddableRepository {
 				ManyToManyMapEmbeddableFromEntity.class, id);
 	}
 
+	public int deleteAll() {
+		Session session = sessionFactory.getCurrentSession();
+		String table = ManyToManyMapEmbeddableFromEntity.class.getSimpleName();
+		String hql = String.format("delete from %s", table);
+		Query query = session.createQuery(hql);
+		return query.executeUpdate();
+	}
 }

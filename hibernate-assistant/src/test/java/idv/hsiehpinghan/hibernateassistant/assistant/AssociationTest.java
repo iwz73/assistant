@@ -252,7 +252,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void oneToManyMapEmbeddable() {
 		OneToManyMapEmbeddableService service = applicationContext
 				.getBean(OneToManyMapEmbeddableService.class);

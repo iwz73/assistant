@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,7 +15,6 @@ public class OneToManyMapEmbeddableOneEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@OneToMany(mappedBy = "one", cascade = CascadeType.ALL)
-	@JoinTable(name = "OneToManyMapEmbeddableJoinTable", joinColumns = @JoinColumn(name = "OneToManyMapEmbeddableEmbeddedEntityId"), inverseJoinColumns = @JoinColumn(name = "OneToManyMapEmbeddableManyEntityId"))
 	private Map<OneToManyMapEmbeddableEmbeddedEntity, OneToManyMapEmbeddableManyEntity> many;
 
 	public Integer getId() {

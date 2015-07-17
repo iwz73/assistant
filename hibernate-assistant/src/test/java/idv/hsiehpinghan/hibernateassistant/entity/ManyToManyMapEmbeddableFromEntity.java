@@ -18,7 +18,7 @@ public class ManyToManyMapEmbeddableFromEntity {
 	private Integer id;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "ManyToManyMapEmbeddableJoinTable", joinColumns = @JoinColumn(name = "ManyToManyMapEmbeddableFromEntityId"), inverseJoinColumns = @JoinColumn(name = "ManyToManyMapEmbeddableToEntityId"))
-	private Map<ManyToManyMapEmbeddableEmbeddedEntity, ManyToManyMapEmbeddableToEntity> tos;
+	private Map<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> tos;
 
 	public Integer getId() {
 		return id;
@@ -28,12 +28,12 @@ public class ManyToManyMapEmbeddableFromEntity {
 		this.id = id;
 	}
 
-	public Map<ManyToManyMapEmbeddableEmbeddedEntity, ManyToManyMapEmbeddableToEntity> getTos() {
+	public Map<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> getTos() {
 		return tos;
 	}
 
 	public void setTos(
-			Map<ManyToManyMapEmbeddableEmbeddedEntity, ManyToManyMapEmbeddableToEntity> tos) {
+			Map<ManyToManyMapEmbeddableValueObject, ManyToManyMapEmbeddableToEntity> tos) {
 		this.tos = tos;
 	}
 

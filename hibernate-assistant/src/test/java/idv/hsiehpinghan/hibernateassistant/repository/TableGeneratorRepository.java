@@ -2,6 +2,8 @@ package idv.hsiehpinghan.hibernateassistant.repository;
 
 import idv.hsiehpinghan.hibernateassistant.entity.TableGeneratorEntity;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +25,15 @@ public class TableGeneratorRepository {
 				id);
 	}
 
+	public int dropTable() {
+		Session session = sessionFactory.getCurrentSession();
+		Query generatorQuery = session
+				.createSQLQuery("drop table table_generator_table");
+		generatorQuery.executeUpdate();
+		String table = StringUtils.uncapitalize(TableGeneratorEntity.class
+				.getSimpleName());
+		Query query = session.createSQLQuery(String.format("drop table %s",
+				table));
+		return query.executeUpdate();
+	}
 }

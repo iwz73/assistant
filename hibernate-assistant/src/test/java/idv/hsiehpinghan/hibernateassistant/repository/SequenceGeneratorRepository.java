@@ -2,6 +2,8 @@ package idv.hsiehpinghan.hibernateassistant.repository;
 
 import idv.hsiehpinghan.hibernateassistant.entity.SequenceGeneratorEntity;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,18 @@ public class SequenceGeneratorRepository {
 		Session session = sessionFactory.getCurrentSession();
 		return (SequenceGeneratorEntity) session.get(
 				SequenceGeneratorEntity.class, id);
+	}
+
+	public int dropTable() {
+		Session session = sessionFactory.getCurrentSession();
+		Query generatorQuery = session
+				.createSQLQuery("drop sequence sequence_generator_sequence_name");
+		generatorQuery.executeUpdate();
+		String table = StringUtils.uncapitalize(SequenceGeneratorEntity.class
+				.getSimpleName());
+		Query query = session.createSQLQuery(String.format("drop table %s",
+				table));
+		return query.executeUpdate();
 	}
 
 }

@@ -18,6 +18,10 @@ public class SequenceGeneratorService {
 		repository.save(entity);
 	}
 
+	public void dropTable() {
+		repository.dropTable();
+	}
+
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public SequenceGeneratorEntity findOne(int id) {
 		SequenceGeneratorEntity entity = repository.findOne(id);

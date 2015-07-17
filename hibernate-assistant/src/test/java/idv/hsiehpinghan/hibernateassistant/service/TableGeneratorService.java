@@ -18,6 +18,10 @@ public class TableGeneratorService {
 		repository.save(entity);
 	}
 
+	public void dropTable() {
+		repository.dropTable();
+	}
+
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public TableGeneratorEntity findOne(int id) {
 		TableGeneratorEntity entity = repository.findOne(id);

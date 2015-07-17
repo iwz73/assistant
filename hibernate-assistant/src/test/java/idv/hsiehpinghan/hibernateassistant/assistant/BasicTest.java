@@ -72,7 +72,7 @@ public class BasicTest {
 				getYyyyMmDd(calendar));
 	}
 
-//	@Test
+	@Test
 	public void tableGenerator() {
 		TableGeneratorService service = applicationContext
 				.getBean(TableGeneratorService.class);
@@ -81,9 +81,10 @@ public class BasicTest {
 		int id = entity.getId();
 		TableGeneratorEntity returnEntity = service.findOne(id);
 		Assert.assertEquals(returnEntity.getId().intValue(), 1);
+		service.dropTable();
 	}
 
-//	@Test
+	@Test
 	public void sequenceGenerator() {
 		SequenceGeneratorService service = applicationContext
 				.getBean(SequenceGeneratorService.class);
@@ -92,6 +93,7 @@ public class BasicTest {
 		int id = entity.getId();
 		SequenceGeneratorEntity returnEntity = service.findOne(id);
 		Assert.assertEquals(returnEntity.getId().intValue(), 1);
+		service.dropTable();
 	}
 
 	private SequenceGeneratorEntity generateSequenceGeneratorEntity() {

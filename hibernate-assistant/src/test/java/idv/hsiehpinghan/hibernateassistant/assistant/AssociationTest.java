@@ -7,6 +7,8 @@ import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionEnumerationMa
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionStringMapEntity3;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableContainerEntity2;
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableEmbeddableEntity2;
+import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedIdContainerEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedIdEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
@@ -51,6 +53,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService1;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService2;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService3;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService4;
+import idv.hsiehpinghan.hibernateassistant.service.EmbeddedIdService;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
@@ -395,15 +398,40 @@ public class AssociationTest {
 				EMBEDDABLE_STRING);
 	}
 
+	@Test
+	public void embeddedId() {
+		EmbeddedIdService service = applicationContext
+				.getBean(EmbeddedIdService.class);
+		EmbeddedIdContainerEntity entity = generateEmbeddedIdContainerEntity();
+		service.save(entity);
+		EmbeddedIdEmbeddableEntity id = generateEmbeddedIdEmbeddableEntity();
+		EmbeddedIdContainerEntity returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity);
+		service.deleteAll();
+	}
+
 	private EmbeddedObjectContainerEntity generateEmbeddedObjectContainerEntity() {
 		EmbeddedObjectContainerEntity entity = new EmbeddedObjectContainerEntity();
 		entity.setEmbedded(generateEmbeddedObjectEmbeddableEntity());
 		return entity;
 	}
 
+	private EmbeddedIdContainerEntity generateEmbeddedIdContainerEntity() {
+		EmbeddedIdContainerEntity entity = new EmbeddedIdContainerEntity();
+		entity.setId(generateEmbeddedIdEmbeddableEntity());
+		return entity;
+	}
+
 	private EmbeddedObjectEmbeddableEntity generateEmbeddedObjectEmbeddableEntity() {
 		EmbeddedObjectEmbeddableEntity entity = new EmbeddedObjectEmbeddableEntity();
 		entity.setEmbeddableString(EMBEDDABLE_STRING);
+		return entity;
+	}
+
+	private EmbeddedIdEmbeddableEntity generateEmbeddedIdEmbeddableEntity() {
+		EmbeddedIdEmbeddableEntity entity = new EmbeddedIdEmbeddableEntity();
+		entity.setFirstName("firstName");
+		entity.setLastName("lastName");
 		return entity;
 	}
 

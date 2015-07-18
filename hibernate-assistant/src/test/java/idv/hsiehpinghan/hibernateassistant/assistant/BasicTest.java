@@ -1,11 +1,13 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
+import idv.hsiehpinghan.hibernateassistant.entity.AttributeConverterEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EnumerationEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.LobEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.SequenceGeneratorEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.TableGeneratorEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.TemporalEntity;
 import idv.hsiehpinghan.hibernateassistant.enumeration.Enumeration;
+import idv.hsiehpinghan.hibernateassistant.service.AttributeConverterService;
 import idv.hsiehpinghan.hibernateassistant.service.EnumerationService;
 import idv.hsiehpinghan.hibernateassistant.service.LobService;
 import idv.hsiehpinghan.hibernateassistant.service.SequenceGeneratorService;
@@ -96,8 +98,27 @@ public class BasicTest {
 		service.dropTable();
 	}
 
+	@Test
+	public void attributeConverter() {
+		final String name = "name";
+		AttributeConverterService service = applicationContext
+				.getBean(AttributeConverterService.class);
+		AttributeConverterEntity entity = generateAttributeConverterEntity(name);
+		service.save(entity);
+		int id = entity.getId();
+		AttributeConverterEntity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getName(), "name".toUpperCase());
+	}
+
 	private SequenceGeneratorEntity generateSequenceGeneratorEntity() {
 		SequenceGeneratorEntity entity = new SequenceGeneratorEntity();
+		return entity;
+	}
+
+	private AttributeConverterEntity generateAttributeConverterEntity(
+			String name) {
+		AttributeConverterEntity entity = new AttributeConverterEntity();
+		entity.setName(name);
 		return entity;
 	}
 

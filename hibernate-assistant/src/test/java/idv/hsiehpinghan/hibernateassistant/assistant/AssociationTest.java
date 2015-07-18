@@ -43,6 +43,10 @@ import idv.hsiehpinghan.hibernateassistant.entity.OneToManyUnidirectionManyEntit
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyUnidirectionOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneBidirectionFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneBidirectionToEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToOneDerivedSingleKeyDerivedEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToOneDerivedSingleKeyMainEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToOneMapsIdMainEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToOneMapsIdMapperEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOnePkMappingFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOnePkMappingToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionFromEntity;
@@ -69,6 +73,10 @@ import idv.hsiehpinghan.hibernateassistant.service.OneToManyMapService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyOrderColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyUnidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOneBidirectionService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToOneDerivedSingleKeyDerivedService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToOneDerivedSingleKeyMainService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToOneMapsIdMainService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToOneMapsIdMapperService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOnePkMappingService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOneUnidirectionService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
@@ -97,7 +105,7 @@ public class AssociationTest {
 		applicationContext = TestngSuitSetting.getApplicationContext();
 	}
 
-	@Test
+	// @Test
 	public void elementCollection() {
 		ElementCollectionService service = applicationContext
 				.getBean(ElementCollectionService.class);
@@ -109,7 +117,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void elementCollection1() {
 		ElementCollectionService1 service = applicationContext
 				.getBean(ElementCollectionService1.class);
@@ -121,7 +129,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void elementCollection2() {
 		ElementCollectionService2 service = applicationContext
 				.getBean(ElementCollectionService2.class);
@@ -134,7 +142,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void elementCollection3() {
 		ElementCollectionService3 service = applicationContext
 				.getBean(ElementCollectionService3.class);
@@ -146,7 +154,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getMap().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void elementCollection4() {
 		ElementCollectionService4 service = applicationContext
 				.getBean(ElementCollectionService4.class);
@@ -159,7 +167,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getMap().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void manyToOne() {
 		ManyToOneService service = applicationContext
 				.getBean(ManyToOneService.class);
@@ -170,7 +178,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	@Test
+	// @Test
 	public void manyToOneJoinColumn() {
 		ManyToOneJoinColumnService service = applicationContext
 				.getBean(ManyToOneJoinColumnService.class);
@@ -181,7 +189,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	@Test
+	// @Test
 	public void oneToOneUnidirection() {
 		OneToOneUnidirectionService service = applicationContext
 				.getBean(OneToOneUnidirectionService.class);
@@ -192,7 +200,7 @@ public class AssociationTest {
 		Assert.assertNotNull(fromEntity.getTo());
 	}
 
-	@Test
+	// @Test
 	public void oneToOneBidirection() {
 		OneToOneBidirectionService service = applicationContext
 				.getBean(OneToOneBidirectionService.class);
@@ -205,7 +213,7 @@ public class AssociationTest {
 		Assert.assertNotNull(toEntity.getFrom());
 	}
 
-	@Test
+	// @Test
 	public void oneToOnePkMapping() {
 		OneToOnePkMappingService service = applicationContext
 				.getBean(OneToOnePkMappingService.class);
@@ -218,7 +226,7 @@ public class AssociationTest {
 		Assert.assertNotNull(toEntity.getFrom());
 	}
 
-	@Test
+	// @Test
 	public void oneToManyBidirection() {
 		OneToManyBidirectionService service = applicationContext
 				.getBean(OneToManyBidirectionService.class);
@@ -229,7 +237,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void oneToManyMap() {
 		OneToManyMapService service = applicationContext
 				.getBean(OneToManyMapService.class);
@@ -240,7 +248,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void oneToManyMapKey() {
 		OneToManyMapKeyService service = applicationContext
 				.getBean(OneToManyMapKeyService.class);
@@ -270,7 +278,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void oneToManyOrderColumn() {
 		OneToManyOrderColumnService service = applicationContext
 				.getBean(OneToManyOrderColumnService.class);
@@ -285,7 +293,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void oneToManyList() {
 		OneToManyListService service = applicationContext
 				.getBean(OneToManyListService.class);
@@ -300,7 +308,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void oneToManyUnidirection() {
 		OneToManyUnidirectionService service = applicationContext
 				.getBean(OneToManyUnidirectionService.class);
@@ -311,7 +319,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void ManyToManyBidirection() {
 		ManyToManyBidirectionService service = applicationContext
 				.getBean(ManyToManyBidirectionService.class);
@@ -329,7 +337,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void ManyToManyMapEmbeddable() {
 		ManyToManyMapEmbeddableService service = applicationContext
 				.getBean(ManyToManyMapEmbeddableService.class);
@@ -349,7 +357,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void ManyToManyMap() {
 		ManyToManyMapService service = applicationContext
 				.getBean(ManyToManyMapService.class);
@@ -368,7 +376,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void ManyToManyJoinTable() {
 		ManyToManyJoinTableService service = applicationContext
 				.getBean(ManyToManyJoinTableService.class);
@@ -386,7 +394,7 @@ public class AssociationTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void embeddedObject() {
 		EmbeddedObjectService service = applicationContext
 				.getBean(EmbeddedObjectService.class);
@@ -398,7 +406,7 @@ public class AssociationTest {
 				EMBEDDABLE_STRING);
 	}
 
-	@Test
+	// @Test
 	public void embeddedId() {
 		EmbeddedIdService service = applicationContext
 				.getBean(EmbeddedIdService.class);
@@ -408,6 +416,38 @@ public class AssociationTest {
 		EmbeddedIdContainerEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		service.deleteAll();
+	}
+
+	@Test
+	public void OneToOneDerivedSingleKey() {
+		OneToOneDerivedSingleKeyMainService mainService = applicationContext
+				.getBean(OneToOneDerivedSingleKeyMainService.class);
+		OneToOneDerivedSingleKeyMainEntity main = generateOneToOneDerivedSingleKeyMainEntity();
+		mainService.save(main);
+		OneToOneDerivedSingleKeyDerivedService derivedService = applicationContext
+				.getBean(OneToOneDerivedSingleKeyDerivedService.class);
+		OneToOneDerivedSingleKeyDerivedEntity derived = generateOneToOneDerivedSingleKeyDerivedEntity(main);
+		derivedService.save(derived);
+		OneToOneDerivedSingleKeyDerivedEntity returnDerived = derivedService
+				.findOne(main.getId());
+		Assert.assertNotNull(returnDerived);
+		Assert.assertNotNull(returnDerived.getMain());
+	}
+
+	@Test
+	public void OneToOneMapsId() {
+		OneToOneMapsIdMainService mainService = applicationContext
+				.getBean(OneToOneMapsIdMainService.class);
+		OneToOneMapsIdMainEntity main = generateOneToOneMapsIdMainEntity();
+		mainService.save(main);
+		OneToOneMapsIdMapperService derivedService = applicationContext
+				.getBean(OneToOneMapsIdMapperService.class);
+		OneToOneMapsIdMapperEntity derived = generateOneToOneMapsIdMapperEntity(main);
+		derivedService.save(derived);
+		OneToOneMapsIdMapperEntity returnMapper = derivedService.findOne(main
+				.getId());
+		Assert.assertNotNull(returnMapper);
+		Assert.assertNotNull(returnMapper.getMain());
 	}
 
 	private EmbeddedObjectContainerEntity generateEmbeddedObjectContainerEntity() {
@@ -432,6 +472,33 @@ public class AssociationTest {
 		EmbeddedIdEmbeddableEntity entity = new EmbeddedIdEmbeddableEntity();
 		entity.setFirstName("firstName");
 		entity.setLastName("lastName");
+		return entity;
+	}
+
+	private OneToOneDerivedSingleKeyDerivedEntity generateOneToOneDerivedSingleKeyDerivedEntity(
+			OneToOneDerivedSingleKeyMainEntity main) {
+		OneToOneDerivedSingleKeyDerivedEntity entity = new OneToOneDerivedSingleKeyDerivedEntity();
+		entity.setMain(main);
+		return entity;
+	}
+
+	private OneToOneMapsIdMapperEntity generateOneToOneMapsIdMapperEntity(
+			OneToOneMapsIdMainEntity main) {
+		OneToOneMapsIdMapperEntity entity = new OneToOneMapsIdMapperEntity();
+		entity.setId(999); // this value won't be persisted.
+		entity.setMain(main);
+		return entity;
+	}
+
+	private OneToOneDerivedSingleKeyMainEntity generateOneToOneDerivedSingleKeyMainEntity() {
+		OneToOneDerivedSingleKeyMainEntity entity = new OneToOneDerivedSingleKeyMainEntity();
+		entity.setName("name");
+		return entity;
+	}
+
+	private OneToOneMapsIdMainEntity generateOneToOneMapsIdMainEntity() {
+		OneToOneMapsIdMainEntity entity = new OneToOneMapsIdMainEntity();
+		entity.setName("name");
 		return entity;
 	}
 

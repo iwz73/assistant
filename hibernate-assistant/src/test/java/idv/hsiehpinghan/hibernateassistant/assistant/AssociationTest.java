@@ -23,6 +23,8 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinTableManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinTableOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionManyEntity;
@@ -68,6 +70,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapEmbeddableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
+import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyDerivedEmbeddedIdService;
@@ -191,6 +194,17 @@ public class AssociationTest {
 		service.save(entity);
 		int id = entity.getId();
 		ManyToOneJoinColumnManyEntity returnEntity = service.findOne(id);
+		Assert.assertNotNull(returnEntity.getOne());
+	}
+
+	@Test
+	public void manyToOneJoinTable() {
+		ManyToOneJoinTableService service = applicationContext
+				.getBean(ManyToOneJoinTableService.class);
+		ManyToOneJoinTableManyEntity entity = generateManyToOneJoinTableManyEntity();
+		service.save(entity);
+		int id = entity.getId();
+		ManyToOneJoinTableManyEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
@@ -928,8 +942,19 @@ public class AssociationTest {
 		return entity;
 	}
 
+	private ManyToOneJoinTableManyEntity generateManyToOneJoinTableManyEntity() {
+		ManyToOneJoinTableManyEntity entity = new ManyToOneJoinTableManyEntity();
+		entity.setOne(generateManyToOneJoinTableOneEntity());
+		return entity;
+	}
+
 	private ManyToOneJoinColumnOneEntity generateManyToOneJoinColumnOneEntity() {
 		ManyToOneJoinColumnOneEntity entity = new ManyToOneJoinColumnOneEntity();
+		return entity;
+	}
+
+	private ManyToOneJoinTableOneEntity generateManyToOneJoinTableOneEntity() {
+		ManyToOneJoinTableOneEntity entity = new ManyToOneJoinTableOneEntity();
 		return entity;
 	}
 

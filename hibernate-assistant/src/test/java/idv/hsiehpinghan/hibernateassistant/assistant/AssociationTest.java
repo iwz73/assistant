@@ -201,9 +201,12 @@ public class AssociationTest {
 	public void manyToOneJoinTable() {
 		ManyToOneJoinTableService service = applicationContext
 				.getBean(ManyToOneJoinTableService.class);
-		ManyToOneJoinTableManyEntity entity = generateManyToOneJoinTableManyEntity();
-		service.save(entity);
-		int id = entity.getId();
+		ManyToOneJoinTableOneEntity one = generateManyToOneJoinTableOneEntity();
+		ManyToOneJoinTableManyEntity many_1 = generateManyToOneJoinTableManyEntity(one);
+		service.save(many_1);
+		ManyToOneJoinTableManyEntity many_2 = generateManyToOneJoinTableManyEntity(one);
+		service.save(many_2);
+		int id = many_2.getId();
 		ManyToOneJoinTableManyEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity.getOne());
 	}
@@ -942,9 +945,10 @@ public class AssociationTest {
 		return entity;
 	}
 
-	private ManyToOneJoinTableManyEntity generateManyToOneJoinTableManyEntity() {
+	private ManyToOneJoinTableManyEntity generateManyToOneJoinTableManyEntity(
+			ManyToOneJoinTableOneEntity one) {
 		ManyToOneJoinTableManyEntity entity = new ManyToOneJoinTableManyEntity();
-		entity.setOne(generateManyToOneJoinTableOneEntity());
+		entity.setOne(one);
 		return entity;
 	}
 
@@ -955,6 +959,7 @@ public class AssociationTest {
 
 	private ManyToOneJoinTableOneEntity generateManyToOneJoinTableOneEntity() {
 		ManyToOneJoinTableOneEntity entity = new ManyToOneJoinTableOneEntity();
+		entity.setId(1);
 		return entity;
 	}
 

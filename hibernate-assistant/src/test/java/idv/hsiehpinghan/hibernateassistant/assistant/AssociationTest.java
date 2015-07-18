@@ -27,6 +27,10 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyDerivedEmbeddedIdManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyDerivedEmbeddedIdManyIdEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyDerivedEmbeddedIdOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.OneToManyDerivedEmbeddedIdOneIdEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyListOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyMapEmbeddableEmbeddedEntity;
@@ -66,6 +70,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyBidirectionService;
+import idv.hsiehpinghan.hibernateassistant.service.OneToManyDerivedEmbeddedIdService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyListService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyMapEmbeddableService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyMapKeyService;
@@ -235,6 +240,18 @@ public class AssociationTest {
 		int id = entity.getId();
 		OneToManyBidirectionOneEntity oneEntity = service.findOne(id);
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
+	}
+
+	@Test
+	public void oneToManyDerivedEmbeddedId() {
+		OneToManyDerivedEmbeddedIdService service = applicationContext
+				.getBean(OneToManyDerivedEmbeddedIdService.class);
+		OneToManyDerivedEmbeddedIdOneEntity entity = generateOneToManyDerivedEmbeddedIdOneEntity();
+		service.save(entity);
+		OneToManyDerivedEmbeddedIdOneIdEntity id = entity.getId();
+		OneToManyDerivedEmbeddedIdOneEntity oneEntity = service.findOne(id);
+		Assert.assertEquals(oneEntity.getMany().size(), 3);
+		service.delete(oneEntity);
 	}
 
 	// @Test
@@ -658,6 +675,13 @@ public class AssociationTest {
 		return one;
 	}
 
+	private OneToManyDerivedEmbeddedIdOneEntity generateOneToManyDerivedEmbeddedIdOneEntity() {
+		OneToManyDerivedEmbeddedIdOneEntity one = new OneToManyDerivedEmbeddedIdOneEntity();
+		one.setId(generateOneToManyDerivedEmbeddedIdOneIdEntity());
+		one.setMany(generateOneToManyDerivedEmbeddedIdManyEntities(one));
+		return one;
+	}
+
 	private OneToManyMapOneEntity generateOneToManyMapOneEntity() {
 		OneToManyMapOneEntity one = new OneToManyMapOneEntity();
 		one.setMany(generateOneToManyMapManyEntityMap(one));
@@ -704,6 +728,22 @@ public class AssociationTest {
 			entities.add(generateOneToManyBidirectionManyEntity(one));
 		}
 		return entities;
+	}
+
+	private Collection<OneToManyDerivedEmbeddedIdManyEntity> generateOneToManyDerivedEmbeddedIdManyEntities(
+			OneToManyDerivedEmbeddedIdOneEntity one) {
+		Collection<OneToManyDerivedEmbeddedIdManyEntity> entities = new ArrayList<OneToManyDerivedEmbeddedIdManyEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateOneToManyDerivedEmbeddedIdManyEntity(one, i));
+		}
+		return entities;
+	}
+
+	private OneToManyDerivedEmbeddedIdOneIdEntity generateOneToManyDerivedEmbeddedIdOneIdEntity() {
+		OneToManyDerivedEmbeddedIdOneIdEntity entity = new OneToManyDerivedEmbeddedIdOneIdEntity();
+		entity.setOneKey1("oneKey1");
+		entity.setOneKey2("oneKey2");
+		return entity;
 	}
 
 	private Map<String, OneToManyMapManyEntity> generateOneToManyMapManyEntityMap(
@@ -772,6 +812,22 @@ public class AssociationTest {
 		OneToManyBidirectionManyEntity many = new OneToManyBidirectionManyEntity();
 		many.setOne(one);
 		return many;
+	}
+
+	private OneToManyDerivedEmbeddedIdManyEntity generateOneToManyDerivedEmbeddedIdManyEntity(
+			OneToManyDerivedEmbeddedIdOneEntity one, int i) {
+		OneToManyDerivedEmbeddedIdManyEntity many = new OneToManyDerivedEmbeddedIdManyEntity();
+		many.setId(generateOneToManyDerivedEmbeddedIdManyIdEntity(one, i));
+		many.setOne(one);
+		return many;
+	}
+
+	private OneToManyDerivedEmbeddedIdManyIdEntity generateOneToManyDerivedEmbeddedIdManyIdEntity(
+			OneToManyDerivedEmbeddedIdOneEntity one, int i) {
+		OneToManyDerivedEmbeddedIdManyIdEntity id = new OneToManyDerivedEmbeddedIdManyIdEntity();
+		id.setManyKey("manyKey_" + i);
+		id.setOneKey(one.getId());
+		return id;
 	}
 
 	private OneToManyMapManyEntity generateOneToManyMapManyEntity(

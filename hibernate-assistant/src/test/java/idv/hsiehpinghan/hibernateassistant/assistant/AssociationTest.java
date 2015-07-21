@@ -9,6 +9,8 @@ import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableContaine
 import idv.hsiehpinghan.hibernateassistant.entity.ElementCollectionTableEmbeddableEntity2;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedIdContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedIdEmbeddableEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedMultipleTableContainerEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedMultipleTableEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
@@ -68,6 +70,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService2;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService3;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService4;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedIdService;
+import idv.hsiehpinghan.hibernateassistant.service.EmbeddedMultipleTableService;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyCompoundIdService;
@@ -516,14 +519,39 @@ public class AssociationTest {
 		multipleTableService.save(entity);
 		MultipleTableEntity returnEntity = multipleTableService.findOne(entity
 				.getId());
-		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getName(), "name");
 		Assert.assertEquals(returnEntity.getAddress(), "address");
+	}
+
+	@Test
+	public void embeddedMultipleTable() {
+		EmbeddedMultipleTableService EmbeddedMultipleTableService = applicationContext
+				.getBean(EmbeddedMultipleTableService.class);
+		EmbeddedMultipleTableContainerEntity entity = generateEmbeddedMultipleTableContainerEntity();
+		EmbeddedMultipleTableService.save(entity);
+		EmbeddedMultipleTableContainerEntity returnEntity = EmbeddedMultipleTableService
+				.findOne(entity.getId());
+		Assert.assertEquals(returnEntity.getName(), "name");
+		Assert.assertEquals(returnEntity.getEmbeddable().getAddress(),
+				"address");
 	}
 
 	private MultipleTableEntity generateMultipleTableEntity() {
 		MultipleTableEntity entity = new MultipleTableEntity();
 		entity.setName("name");
+		entity.setAddress("address");
+		return entity;
+	}
+
+	private EmbeddedMultipleTableContainerEntity generateEmbeddedMultipleTableContainerEntity() {
+		EmbeddedMultipleTableContainerEntity entity = new EmbeddedMultipleTableContainerEntity();
+		entity.setName("name");
+		entity.setEmbeddable(generateEmbeddedMultipleTableEmbeddableEntity());
+		return entity;
+	}
+
+	private EmbeddedMultipleTableEmbeddableEntity generateEmbeddedMultipleTableEmbeddableEntity() {
+		EmbeddedMultipleTableEmbeddableEntity entity = new EmbeddedMultipleTableEmbeddableEntity();
 		entity.setAddress("address");
 		return entity;
 	}

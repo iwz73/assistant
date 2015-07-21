@@ -10,9 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 
 @Entity
-@SecondaryTable(name = "embeddedMultipleTableSecondaryTable", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTables({ @SecondaryTable(name = "embeddedMultipleTableSecondaryTable", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id")) })
 public class EmbeddedMultipleTableContainerEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

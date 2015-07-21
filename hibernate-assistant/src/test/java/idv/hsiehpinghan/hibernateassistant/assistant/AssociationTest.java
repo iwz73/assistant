@@ -13,6 +13,9 @@ import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionToEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyCompoundIdFromEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyCompoundIdFromIdEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyCompoundIdToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyJoinTableFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyJoinTableToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableEmbeddedEntity;
@@ -66,6 +69,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService4;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedIdService;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
+import idv.hsiehpinghan.hibernateassistant.service.ManyToManyCompoundIdService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapEmbeddableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapService;
@@ -371,6 +375,24 @@ public class AssociationTest {
 		}
 	}
 
+	@Test
+	public void ManyToManyCompoundId() {
+		ManyToManyCompoundIdService service = applicationContext
+				.getBean(ManyToManyCompoundIdService.class);
+		Collection<ManyToManyCompoundIdFromEntity> entities = generateManyToManyCompoundIdFromEntities();
+		for (ManyToManyCompoundIdFromEntity entity : entities) {
+			service.saveOrUpdate(entity);
+		}
+		for (ManyToManyCompoundIdFromEntity entity : entities) {
+			ManyToManyCompoundIdFromIdEntity id = entity.getId();
+			ManyToManyCompoundIdFromEntity fromEntity = service.findOne(id);
+			Assert.assertEquals(fromEntity.getTos().size(), 3);
+			for (ManyToManyCompoundIdToEntity to : fromEntity.getTos()) {
+				Assert.assertEquals(to.getFroms().size(), 3);
+			}
+		}
+	}
+
 	// @Test
 	public void ManyToManyMapEmbeddable() {
 		ManyToManyMapEmbeddableService service = applicationContext
@@ -552,6 +574,14 @@ public class AssociationTest {
 		return entities;
 	}
 
+	private Collection<ManyToManyCompoundIdFromEntity> generateManyToManyCompoundIdFromEntities() {
+		Collection<ManyToManyCompoundIdFromEntity> entities = new ArrayList<ManyToManyCompoundIdFromEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateManyToManyCompoundIdFromEntity(i));
+		}
+		return entities;
+	}
+
 	private Collection<ManyToManyMapEmbeddableFromEntity> generateManyToManyMapEmbeddableFromEntities() {
 		Collection<ManyToManyMapEmbeddableFromEntity> entities = new ArrayList<ManyToManyMapEmbeddableFromEntity>();
 		for (int i = 0; i < 3; ++i) {
@@ -584,6 +614,22 @@ public class AssociationTest {
 		return from;
 	}
 
+	private ManyToManyCompoundIdFromEntity generateManyToManyCompoundIdFromEntity(
+			int i) {
+		ManyToManyCompoundIdFromEntity from = new ManyToManyCompoundIdFromEntity();
+		from.setId(generateManyToManyCompoundIdFromIdEntity(i));
+		from.setTos(generateManyToManyCompoundIdToEntities(from));
+		return from;
+	}
+
+	private ManyToManyCompoundIdFromIdEntity generateManyToManyCompoundIdFromIdEntity(
+			int i) {
+		ManyToManyCompoundIdFromIdEntity id = new ManyToManyCompoundIdFromIdEntity();
+		id.setFromKey1("fromKey1_" + i);
+		id.setFromKey2("fromKey2_" + i);
+		return id;
+	}
+
 	private ManyToManyMapEmbeddableFromEntity generateManyToManyMapEmbeddableFromEntity(
 			int i) {
 		ManyToManyMapEmbeddableFromEntity from = new ManyToManyMapEmbeddableFromEntity();
@@ -613,6 +659,15 @@ public class AssociationTest {
 		Collection<ManyToManyBidirectionToEntity> entities = new ArrayList<ManyToManyBidirectionToEntity>();
 		for (int i = 0; i < 3; ++i) {
 			entities.add(generateManyToManyBidirectionToEntity(from, i));
+		}
+		return entities;
+	}
+
+	private Collection<ManyToManyCompoundIdToEntity> generateManyToManyCompoundIdToEntities(
+			ManyToManyCompoundIdFromEntity from) {
+		Collection<ManyToManyCompoundIdToEntity> entities = new ArrayList<ManyToManyCompoundIdToEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateManyToManyCompoundIdToEntity(from, i));
 		}
 		return entities;
 	}
@@ -650,6 +705,14 @@ public class AssociationTest {
 	private ManyToManyBidirectionToEntity generateManyToManyBidirectionToEntity(
 			ManyToManyBidirectionFromEntity from, int i) {
 		ManyToManyBidirectionToEntity to = new ManyToManyBidirectionToEntity();
+		to.setId(i);
+		to.addFrom(from);
+		return to;
+	}
+
+	private ManyToManyCompoundIdToEntity generateManyToManyCompoundIdToEntity(
+			ManyToManyCompoundIdFromEntity from, int i) {
+		ManyToManyCompoundIdToEntity to = new ManyToManyCompoundIdToEntity();
 		to.setId(i);
 		to.addFrom(from);
 		return to;

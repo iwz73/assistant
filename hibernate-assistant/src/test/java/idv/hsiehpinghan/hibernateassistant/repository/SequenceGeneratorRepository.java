@@ -28,11 +28,11 @@ public class SequenceGeneratorRepository {
 	public int dropTable() {
 		Session session = sessionFactory.getCurrentSession();
 		Query generatorQuery = session
-				.createSQLQuery("drop sequence sequence_generator_sequence_name");
+				.createSQLQuery("drop sequence {h-schema}sequence_generator_sequence_name");
 		generatorQuery.executeUpdate();
 		String table = StringUtils.uncapitalize(SequenceGeneratorEntity.class
 				.getSimpleName());
-		Query query = session.createSQLQuery(String.format("drop table %s",
+		Query query = session.createSQLQuery(String.format("drop table {h-schema}%s",
 				table));
 		return query.executeUpdate();
 	}

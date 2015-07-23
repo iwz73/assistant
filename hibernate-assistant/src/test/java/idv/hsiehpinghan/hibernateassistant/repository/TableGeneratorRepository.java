@@ -28,12 +28,12 @@ public class TableGeneratorRepository {
 	public int dropTable() {
 		Session session = sessionFactory.getCurrentSession();
 		Query generatorQuery = session
-				.createSQLQuery("drop table table_generator_table");
+				.createSQLQuery("drop table {h-schema}table_generator_table");
 		generatorQuery.executeUpdate();
 		String table = StringUtils.uncapitalize(TableGeneratorEntity.class
 				.getSimpleName());
-		Query query = session.createSQLQuery(String.format("drop table %s",
-				table));
+		Query query = session.createSQLQuery(String.format(
+				"drop table {h-schema}%s", table));
 		return query.executeUpdate();
 	}
 }

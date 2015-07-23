@@ -36,7 +36,7 @@ public class BasicTest {
 		applicationContext = TestngSuitSetting.getApplicationContext();
 	}
 
-	@Test
+	// @Test
 	public void lob() {
 		LobService service = applicationContext.getBean(LobService.class);
 		LobEntity entity = generateLobEntity();
@@ -48,7 +48,7 @@ public class BasicTest {
 		Assert.assertNotNull(returnEntity.getLob().length > 0);
 	}
 
-	@Test
+	// @Test
 	public void enumeration() {
 		EnumerationService service = applicationContext
 				.getBean(EnumerationService.class);
@@ -60,7 +60,7 @@ public class BasicTest {
 				Enumeration.ENUM_3));
 	}
 
-	@Test
+	// @Test
 	public void temporal() {
 		TemporalService service = applicationContext
 				.getBean(TemporalService.class);
@@ -74,7 +74,7 @@ public class BasicTest {
 				getYyyyMmDd(calendar));
 	}
 
-	@Test
+	// @Test
 	public void tableGenerator() {
 		TableGeneratorService service = applicationContext
 				.getBean(TableGeneratorService.class);
@@ -86,7 +86,7 @@ public class BasicTest {
 		service.dropTable();
 	}
 
-	@Test
+	// @Test
 	public void sequenceGenerator() {
 		SequenceGeneratorService service = applicationContext
 				.getBean(SequenceGeneratorService.class);
@@ -98,7 +98,7 @@ public class BasicTest {
 		service.dropTable();
 	}
 
-	@Test
+	// @Test
 	public void attributeConverter() {
 		final String name = "name";
 		AttributeConverterService service = applicationContext

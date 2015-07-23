@@ -50,10 +50,12 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public PlatformTransactionManager transactionManager()
+	@Autowired
+	public PlatformTransactionManager transactionManager(
+			LocalContainerEntityManagerFactoryBean entityManagerFactory)
 			throws PropertyVetoException {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory()
+		transactionManager.setEntityManagerFactory(entityManagerFactory
 				.getObject());
 		return transactionManager;
 	}

@@ -4,8 +4,6 @@ import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -13,14 +11,13 @@ import javax.persistence.OneToOne;
 @Entity
 public class OneToManyBidirectionOneEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 
-	@OneToMany(mappedBy = "one", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "one", cascade = CascadeType.ALL)
 	private Collection<OneToManyBidirectionManyEntity_1> many_1;
 
-	@OneToMany(mappedBy = "one", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "one", cascade = CascadeType.ALL)
 	private Collection<OneToManyBidirectionManyEntity_2> many_2;
 
 	@OneToOne(cascade = CascadeType.ALL)

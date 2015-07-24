@@ -44,6 +44,7 @@ public class AssociationTest {
 		IOneToManyBidirectionService service = applicationContext
 				.getBean(IOneToManyBidirectionService.class);
 		OneToManyBidirectionOneEntity one = generateOneToManyBidirectionOneEntity();
+		one.setId(0);
 		service.save(one);
 		System.err.println(one.getId());
 		
@@ -59,7 +60,7 @@ public class AssociationTest {
 		OneToManyBidirectionOneEntity one = new OneToManyBidirectionOneEntity();
 		one.setName("ttt");
 		one.setMany_1(generateOneToManyBidirectionManyEntity_1s(one));
-//		one.setMany_2(generateOneToManyBidirectionManyEntity_2s(one));
+		one.setMany_2(generateOneToManyBidirectionManyEntity_2s(one));
 		return one;
 	}
 	

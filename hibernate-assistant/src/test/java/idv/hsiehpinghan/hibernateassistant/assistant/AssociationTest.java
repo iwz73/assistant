@@ -63,6 +63,9 @@ import idv.hsiehpinghan.hibernateassistant.entity.OneToOnePkMappingFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOnePkMappingToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToOneUnidirectionToEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.SingleTableInheritance_1_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.SingleTableInheritance_2_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.SingleTableInheritance_2_B_Entity;
 import idv.hsiehpinghan.hibernateassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService1;
@@ -96,11 +99,15 @@ import idv.hsiehpinghan.hibernateassistant.service.OneToOneMapsIdMainService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOneMapsIdMapperService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOnePkMappingService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToOneUnidirectionService;
+import idv.hsiehpinghan.hibernateassistant.service.SingleTableInheritance_1_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.SingleTableInheritance_2_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.SingleTableInheritance_2_B_Service;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -114,7 +121,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class AssociationTest {
-	private static final String EMBEDDABLE_STRING = "EmbeddableString";
+	private final String EMBEDDABLE_STRING = "EmbeddableString";
+	private final Date DATE = new Date();
 	private ApplicationContext applicationContext;
 
 	@BeforeClass
@@ -132,6 +140,13 @@ public class AssociationTest {
 		ElementCollectionEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity);
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
+	}
+
+	@Test
+	public void SingleTableInheritance() {
+		testTableInheritance_1_A_Entity();
+		testTableInheritance_2_A_Entity();
+		testTableInheritance_2_B_Entity();
 	}
 
 	// @Test
@@ -206,7 +221,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	@Test
+	// @Test
 	public void manyToOneJoinTable() {
 		ManyToOneJoinTableService service = applicationContext
 				.getBean(ManyToOneJoinTableService.class);
@@ -268,7 +283,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	@Test
+	// @Test
 	public void oneToManyDerivedEmbeddedId() {
 		OneToManyDerivedEmbeddedIdService service = applicationContext
 				.getBean(OneToManyDerivedEmbeddedIdService.class);
@@ -511,7 +526,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnMapper.getMain());
 	}
 
-	@Test
+	// @Test
 	public void multipleTable() {
 		MultipleTableService multipleTableService = applicationContext
 				.getBean(MultipleTableService.class);
@@ -523,7 +538,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getAddress(), "address");
 	}
 
-	@Test
+	// @Test
 	public void embeddedMultipleTable() {
 		EmbeddedMultipleTableService EmbeddedMultipleTableService = applicationContext
 				.getBean(EmbeddedMultipleTableService.class);
@@ -1155,4 +1170,63 @@ public class AssociationTest {
 		}
 		return elements;
 	}
+
+	private void testTableInheritance_1_A_Entity() {
+		SingleTableInheritance_1_A_Service service = applicationContext
+				.getBean(SingleTableInheritance_1_A_Service.class);
+		SingleTableInheritance_1_A_Entity entity = generateSingleTableInheritance_1_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		SingleTableInheritance_1_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getA1(), "a1");
+	}
+
+	private void testTableInheritance_2_A_Entity() {
+		SingleTableInheritance_2_A_Service service = applicationContext
+				.getBean(SingleTableInheritance_2_A_Service.class);
+		SingleTableInheritance_2_A_Entity entity = generateSingleTableInheritance_2_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		SingleTableInheritance_2_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getA2(), "a2");
+	}
+
+	private void testTableInheritance_2_B_Entity() {
+		SingleTableInheritance_2_B_Service service = applicationContext
+				.getBean(SingleTableInheritance_2_B_Service.class);
+		SingleTableInheritance_2_B_Entity entity = generateSingleTableInheritance_2_B_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		SingleTableInheritance_2_B_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getB2(), "b2");
+	}
+
+	private SingleTableInheritance_1_A_Entity generateSingleTableInheritance_1_A_Entity() {
+		SingleTableInheritance_1_A_Entity entity = new SingleTableInheritance_1_A_Entity();
+		entity.setDate(DATE);
+		entity.setA1("a1");
+		return entity;
+	}
+
+	private SingleTableInheritance_2_A_Entity generateSingleTableInheritance_2_A_Entity() {
+		SingleTableInheritance_2_A_Entity entity = new SingleTableInheritance_2_A_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setA2("a2");
+		return entity;
+	}
+
+	private SingleTableInheritance_2_B_Entity generateSingleTableInheritance_2_B_Entity() {
+		SingleTableInheritance_2_B_Entity entity = new SingleTableInheritance_2_B_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setB2("b2");
+		return entity;
+	}
+
 }

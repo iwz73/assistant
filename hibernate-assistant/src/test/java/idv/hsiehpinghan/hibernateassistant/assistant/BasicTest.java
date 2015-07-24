@@ -1,25 +1,34 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
 import idv.hsiehpinghan.hibernateassistant.entity.AttributeConverterEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EnumerationEntity;
-import idv.hsiehpinghan.hibernateassistant.entity.LobEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.SequenceGeneratorEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.TableGeneratorEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.TemporalEntity;
 import idv.hsiehpinghan.hibernateassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hibernateassistant.service.AttributeConverterService;
+import idv.hsiehpinghan.hibernateassistant.service.BasicTypeService;
 import idv.hsiehpinghan.hibernateassistant.service.EnumerationService;
-import idv.hsiehpinghan.hibernateassistant.service.LobService;
 import idv.hsiehpinghan.hibernateassistant.service.SequenceGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TableGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TemporalService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
-import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialClob;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -28,24 +37,110 @@ import org.testng.annotations.Test;
 public class BasicTest {
 	private static final String YYYYMMDD = "yyyyMMdd";
 	private ApplicationContext applicationContext;
-	private Date date = new Date();
+	private boolean primativeBoolean = true;
+	private Boolean wrappedBoolean = true;
+	private byte primativeByte = 0x1;
+	private Byte wrappedByte = 0x1;
+	private char primativeChar = 'a';
+	private Character wrappedChar = 'a';
+	private double primativeDouble = 1.1;
+	private Double wrappedDouble = 1.1;
+	private float primativeFloat = 1.1f;
+	private Float wrappedFloat = 1.1f;
+	private int primativeInt = 1;
+	private Integer wrappedInt = 1;
+	private long primativeLong = 1L;
+	private Long wrappedLong = 1L;
+	private short primativeShort = 1;
+	private Short wrappedShort = 1;
+	private String string = "string";
+	private String lobString = "string";
+	private BigInteger bigInteger = BigInteger.ONE;
+	private BigDecimal bigDecimal = BigDecimal.ONE;
+	private Locale locale = Locale.CHINESE;
+	private TimeZone timeZone = TimeZone.getDefault();
+	private Currency currency = Currency.getInstance(Locale.US);
+	private Class<BasicTypeEntity> clazz = BasicTypeEntity.class;
+	private Serializable serializable = new BasicTypeEntity();
+	private Date date = Calendar.getInstance().getTime();
+	private Date dateDate = Calendar.getInstance().getTime();
+	private Date timeDate = Calendar.getInstance().getTime();
+	private Date timestampDate = new Date();
 	private Calendar calendar = Calendar.getInstance();
+	private Calendar dateCalendar = Calendar.getInstance();
+	private Calendar timestampCalendar = Calendar.getInstance();
+	private java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance()
+			.getTimeInMillis());
+	private java.sql.Time sqlTime = new java.sql.Time(Calendar.getInstance()
+			.getTimeInMillis());
+	private java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(Calendar
+			.getInstance().getTimeInMillis());
+	private java.sql.Clob clob;
+	private java.sql.Blob blob;
+	private byte[] byteArray = getByteArray();
+	private byte[] lobByteArray = getByteArray();
+	private char[] charArray = getCharArray();
+	private char[] lobCharArray = getCharArray();
 
 	@BeforeClass
-	public void beforeClass() throws IOException {
+	public void beforeClass() throws Exception {
+		clob = new SerialClob(getCharArray());
+		blob = new SerialBlob(getByteArray());
 		applicationContext = TestngSuitSetting.getApplicationContext();
 	}
 
-	// @Test
-	public void lob() {
-		LobService service = applicationContext.getBean(LobService.class);
-		LobEntity entity = generateLobEntity();
+	@Test
+	public void basicType() {
+		BasicTypeService service = applicationContext
+				.getBean(BasicTypeService.class);
+		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
 		int id = entity.getId();
-		LobEntity returnEntity = service.findOne(id);
-		Assert.assertNotNull(returnEntity);
-		Assert.assertNotNull(returnEntity.getLob());
-		Assert.assertNotNull(returnEntity.getLob().length > 0);
+		BasicTypeEntity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.isPrimativeBoolean(), primativeBoolean);
+		Assert.assertEquals(returnEntity.getWrappedBoolean(), wrappedBoolean);
+		Assert.assertEquals(String.valueOf(returnEntity.getPrimativeByte()),
+				String.valueOf(primativeByte));
+		Assert.assertEquals(returnEntity.getWrappedByte(), wrappedByte);
+		Assert.assertEquals(returnEntity.getPrimativeChar(), primativeChar);
+		Assert.assertEquals(returnEntity.getWrappedChar(), wrappedChar);
+		Assert.assertEquals(returnEntity.getPrimativeDouble(), primativeDouble);
+		Assert.assertEquals(returnEntity.getWrappedDouble(), wrappedDouble);
+		Assert.assertEquals(returnEntity.getPrimativeFloat(), primativeFloat);
+		Assert.assertEquals(returnEntity.getWrappedFloat(), wrappedFloat);
+		Assert.assertEquals(returnEntity.getPrimativeInt(), primativeInt);
+		Assert.assertEquals(returnEntity.getWrappedInt(), wrappedInt);
+		Assert.assertEquals(returnEntity.getPrimativeLong(), primativeLong);
+		Assert.assertEquals(returnEntity.getWrappedLong(), wrappedLong);
+		Assert.assertEquals(returnEntity.getPrimativeShort(), primativeShort);
+		Assert.assertEquals(returnEntity.getWrappedShort(), wrappedShort);
+		Assert.assertEquals(returnEntity.getString(), string);
+		Assert.assertEquals(returnEntity.getLobString(), lobString);
+		Assert.assertEquals(returnEntity.getBigInteger(), bigInteger);
+		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(), bigDecimal.doubleValue());
+		Assert.assertEquals(returnEntity.getLocale(), locale);
+		Assert.assertEquals(returnEntity.getTimeZone(), timeZone);
+		Assert.assertEquals(returnEntity.getCurrency(), currency);
+		Assert.assertEquals(returnEntity.getClazz(), clazz);
+		Assert.assertEquals(returnEntity.getSerializable().getClass(), serializable.getClass());
+		Assert.assertEquals(returnEntity.getDate(), date);
+		Assert.assertTrue(DateUtils.isSameDay(returnEntity.getDateDate(), dateDate));
+		Assert.assertEquals(returnEntity.getTimeDate(), timeDate);
+		Assert.assertEquals(returnEntity.getTimestampDate(), timestampDate);
+		Assert.assertEquals(returnEntity.getCalendar(), calendar);
+		Assert.assertEquals(returnEntity.getDateCalendar(), dateCalendar);
+		Assert.assertEquals(returnEntity.getTimestampCalendar(),
+				timestampCalendar);
+		Assert.assertEquals(returnEntity.getSqlDate(), sqlDate);
+		Assert.assertEquals(returnEntity.getSqlTime(), sqlTime);
+		Assert.assertEquals(returnEntity.getSqlTimestamp(), sqlTimestamp);
+		Assert.assertEquals(returnEntity.getClob(), clob);
+		Assert.assertEquals(returnEntity.getBlob(), blob);
+		Assert.assertEquals(returnEntity.getByteArray(), byteArray);
+		Assert.assertEquals(returnEntity.getLobByteArray(), lobByteArray);
+		Assert.assertEquals(returnEntity.getCharArray(), charArray);
+		Assert.assertEquals(returnEntity.getLobCharArray(), lobCharArray);
+
 	}
 
 	// @Test
@@ -148,11 +243,58 @@ public class BasicTest {
 		return entity;
 	}
 
-	private LobEntity generateLobEntity() {
-		LobEntity entity = new LobEntity();
-		byte[] lob = new byte[] { (byte) 1, (byte) 2, (byte) 3 };
-		entity.setLob(lob);
+	private BasicTypeEntity generateBasicTypeEntity() {
+		BasicTypeEntity entity = new BasicTypeEntity();
+		entity.setPrimativeBoolean(primativeBoolean);
+		entity.setWrappedBoolean(wrappedBoolean);
+		entity.setPrimativeByte(primativeByte);
+		entity.setWrappedByte(wrappedByte);
+		entity.setPrimativeChar(primativeChar);
+		entity.setWrappedChar(wrappedChar);
+		entity.setPrimativeDouble(primativeDouble);
+		entity.setWrappedDouble(wrappedDouble);
+		entity.setPrimativeFloat(primativeFloat);
+		entity.setWrappedFloat(wrappedFloat);
+		entity.setPrimativeInt(primativeInt);
+		entity.setWrappedInt(wrappedInt);
+		entity.setPrimativeLong(primativeLong);
+		entity.setWrappedLong(wrappedLong);
+		entity.setPrimativeShort(primativeShort);
+		entity.setWrappedShort(wrappedShort);
+		entity.setString(lobString);
+		entity.setLobString(lobString);
+		entity.setBigInteger(bigInteger);
+		entity.setBigDecimal(bigDecimal);
+		entity.setLocale(locale);
+		entity.setTimeZone(timeZone);
+		entity.setCurrency(currency);
+		entity.setClazz(clazz);
+		entity.setSerializable(serializable);
+		entity.setDate(date);
+		entity.setDateDate(dateDate);
+		entity.setTimeDate(timeDate);
+		entity.setTimestampDate(timestampDate);
+		entity.setCalendar(calendar);
+		entity.setDateCalendar(dateCalendar);
+		entity.setTimestampCalendar(timestampCalendar);
+		entity.setSqlDate(sqlDate);
+		entity.setSqlTime(sqlTime);
+		entity.setSqlTimestamp(sqlTimestamp);
+		entity.setClob(clob);
+		entity.setBlob(blob);
+		entity.setByteArray(byteArray);
+		entity.setLobByteArray(lobByteArray);
+		entity.setCharArray(charArray);
+		entity.setLobCharArray(lobCharArray);
 		return entity;
+	}
+
+	private char[] getCharArray() {
+		return new char[] { 'a', 'b', 'c' };
+	}
+
+	private byte[] getByteArray() {
+		return new byte[] { 0x0, 0x1, 0x2 };
 	}
 
 }

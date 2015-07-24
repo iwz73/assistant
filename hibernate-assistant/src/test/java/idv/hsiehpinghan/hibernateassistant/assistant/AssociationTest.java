@@ -35,6 +35,9 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinTableManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinTableOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneOneEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.MixedInheritance_1_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.MixedInheritance_2_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.MixedInheritance_2_B_Entity;
 import idv.hsiehpinghan.hibernateassistant.entity.MultipleTableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.OneToManyBidirectionOneEntity;
@@ -92,6 +95,9 @@ import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
+import idv.hsiehpinghan.hibernateassistant.service.MixedInheritance_1_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.MixedInheritance_2_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.MixedInheritance_2_B_Service;
 import idv.hsiehpinghan.hibernateassistant.service.MultipleTableService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.OneToManyDerivedEmbeddedIdService;
@@ -168,11 +174,18 @@ public class AssociationTest {
 		testJoinedInheritance_2_B_Entity();
 	}
 
-	@Test
+	// @Test
 	public void tablePerClassInheritance() {
 		testTablePerClassInheritance_1_A_Entity();
 		testTablePerClassInheritance_2_A_Entity();
 		testTablePerClassInheritance_2_B_Entity();
+	}
+
+	@Test
+	public void mixedInheritance() {
+		testMixedInheritance_1_A_Entity();
+		testMixedInheritance_2_A_Entity();
+		testMixedInheritance_2_B_Entity();
 	}
 
 	// @Test
@@ -1365,6 +1378,64 @@ public class AssociationTest {
 
 	private TablePerClassInheritance_2_B_Entity generateTablePerClassInheritance_2_B_Entity() {
 		TablePerClassInheritance_2_B_Entity entity = new TablePerClassInheritance_2_B_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setB2("b2");
+		return entity;
+	}
+
+	private void testMixedInheritance_1_A_Entity() {
+		MixedInheritance_1_A_Service service = applicationContext
+				.getBean(MixedInheritance_1_A_Service.class);
+		MixedInheritance_1_A_Entity entity = generateMixedInheritance_1_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		MixedInheritance_1_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getA1(), "a1");
+	}
+
+	private void testMixedInheritance_2_A_Entity() {
+		MixedInheritance_2_A_Service service = applicationContext
+				.getBean(MixedInheritance_2_A_Service.class);
+		MixedInheritance_2_A_Entity entity = generateMixedInheritance_2_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		MixedInheritance_2_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getA2(), "a2");
+	}
+
+	private void testMixedInheritance_2_B_Entity() {
+		MixedInheritance_2_B_Service service = applicationContext
+				.getBean(MixedInheritance_2_B_Service.class);
+		MixedInheritance_2_B_Entity entity = generateMixedInheritance_2_B_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		MixedInheritance_2_B_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getB2(), "b2");
+	}
+
+	private MixedInheritance_1_A_Entity generateMixedInheritance_1_A_Entity() {
+		MixedInheritance_1_A_Entity entity = new MixedInheritance_1_A_Entity();
+		entity.setDate(DATE);
+		entity.setA1("a1");
+		return entity;
+	}
+
+	private MixedInheritance_2_A_Entity generateMixedInheritance_2_A_Entity() {
+		MixedInheritance_2_A_Entity entity = new MixedInheritance_2_A_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setA2("a2");
+		return entity;
+	}
+
+	private MixedInheritance_2_B_Entity generateMixedInheritance_2_B_Entity() {
+		MixedInheritance_2_B_Entity entity = new MixedInheritance_2_B_Entity();
 		entity.setDate(DATE);
 		entity.setB1("b1");
 		entity.setB2("b2");

@@ -9,13 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.TableGenerator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminatorColumn")
-public abstract class JoinedInheritance_0_Entity {
+public abstract class MixedInheritance_0_Entity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGenerator")
+	@TableGenerator(name = "tableGenerator", table = "MIXED_INHERITANCE_TABLE_GENERATOR", pkColumnName = "PK_COLUMN_NAME", valueColumnName = "VALUE_COLUMN_NAME")
 	private int id;
 	private Date date;
 

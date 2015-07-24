@@ -13,7 +13,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "oneDiscriminatorColumn")
-public abstract class JoinedTableInheritance_0_Entity {
+public abstract class JoinedInheritance_0_Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

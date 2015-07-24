@@ -1,12 +1,10 @@
 package idv.hsiehpinghan.hibernateassistant.entity;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("2A")
-public class JoinedTableInheritance_2_A_Entity extends
-		JoinedTableInheritance_1_B_Entity {
+public class TablePerClassInheritance_2_A_Entity extends
+		TablePerClassInheritance_1_B_Entity {
 	private String a2;
 
 	public String getA2() {

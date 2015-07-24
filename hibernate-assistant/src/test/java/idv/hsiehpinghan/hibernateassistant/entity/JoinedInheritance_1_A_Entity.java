@@ -5,8 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("1A")
-public class JoinedTableInheritance_1_A_Entity extends
-		JoinedTableInheritance_0_Entity {
+public class JoinedInheritance_1_A_Entity extends JoinedInheritance_0_Entity {
 	private String a1;
 
 	public String getA1() {

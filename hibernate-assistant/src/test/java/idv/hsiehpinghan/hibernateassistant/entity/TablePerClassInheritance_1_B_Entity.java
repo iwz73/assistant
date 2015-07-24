@@ -3,8 +3,8 @@ package idv.hsiehpinghan.hibernateassistant.entity;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class JoinedTableInheritance_1_B_Entity extends
-		JoinedTableInheritance_0_Entity {
+public abstract class TablePerClassInheritance_1_B_Entity extends
+		TablePerClassInheritance_0_Entity {
 	private String b1;
 
 	public String getB1() {

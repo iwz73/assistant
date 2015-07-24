@@ -13,6 +13,9 @@ import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedMultipleTableContainer
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedMultipleTableEmbeddableEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectContainerEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.EmbeddedObjectEmbeddableEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.JoinedTableInheritance_1_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.JoinedTableInheritance_2_A_Entity;
+import idv.hsiehpinghan.hibernateassistant.entity.JoinedTableInheritance_2_B_Entity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyBidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyCompoundIdFromEntity;
@@ -75,6 +78,9 @@ import idv.hsiehpinghan.hibernateassistant.service.ElementCollectionService4;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedIdService;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedMultipleTableService;
 import idv.hsiehpinghan.hibernateassistant.service.EmbeddedObjectService;
+import idv.hsiehpinghan.hibernateassistant.service.JoinedTableInheritance_1_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.JoinedTableInheritance_2_A_Service;
+import idv.hsiehpinghan.hibernateassistant.service.JoinedTableInheritance_2_B_Service;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyBidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyCompoundIdService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
@@ -142,11 +148,18 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
+//	@Test
+	public void singleTableInheritance() {
+		testSingleTableInheritance_1_A_Entity();
+		testSingleTableInheritance_2_A_Entity();
+		testSingleTableInheritance_2_B_Entity();
+	}
+
 	@Test
-	public void SingleTableInheritance() {
-		testTableInheritance_1_A_Entity();
-		testTableInheritance_2_A_Entity();
-		testTableInheritance_2_B_Entity();
+	public void joinedTableInheritance() {
+		testJoinedTableInheritance_1_A_Entity();
+		testJoinedTableInheritance_2_A_Entity();
+		testJoinedTableInheritance_2_B_Entity();
 	}
 
 	// @Test
@@ -1171,7 +1184,7 @@ public class AssociationTest {
 		return elements;
 	}
 
-	private void testTableInheritance_1_A_Entity() {
+	private void testSingleTableInheritance_1_A_Entity() {
 		SingleTableInheritance_1_A_Service service = applicationContext
 				.getBean(SingleTableInheritance_1_A_Service.class);
 		SingleTableInheritance_1_A_Entity entity = generateSingleTableInheritance_1_A_Entity();
@@ -1182,7 +1195,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getA1(), "a1");
 	}
 
-	private void testTableInheritance_2_A_Entity() {
+	private void testSingleTableInheritance_2_A_Entity() {
 		SingleTableInheritance_2_A_Service service = applicationContext
 				.getBean(SingleTableInheritance_2_A_Service.class);
 		SingleTableInheritance_2_A_Entity entity = generateSingleTableInheritance_2_A_Entity();
@@ -1194,7 +1207,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getA2(), "a2");
 	}
 
-	private void testTableInheritance_2_B_Entity() {
+	private void testSingleTableInheritance_2_B_Entity() {
 		SingleTableInheritance_2_B_Service service = applicationContext
 				.getBean(SingleTableInheritance_2_B_Service.class);
 		SingleTableInheritance_2_B_Entity entity = generateSingleTableInheritance_2_B_Entity();
@@ -1223,6 +1236,64 @@ public class AssociationTest {
 
 	private SingleTableInheritance_2_B_Entity generateSingleTableInheritance_2_B_Entity() {
 		SingleTableInheritance_2_B_Entity entity = new SingleTableInheritance_2_B_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setB2("b2");
+		return entity;
+	}
+
+	private void testJoinedTableInheritance_1_A_Entity() {
+		JoinedTableInheritance_1_A_Service service = applicationContext
+				.getBean(JoinedTableInheritance_1_A_Service.class);
+		JoinedTableInheritance_1_A_Entity entity = generateJoinedTableInheritance_1_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		JoinedTableInheritance_1_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getA1(), "a1");
+	}
+
+	private void testJoinedTableInheritance_2_A_Entity() {
+		JoinedTableInheritance_2_A_Service service = applicationContext
+				.getBean(JoinedTableInheritance_2_A_Service.class);
+		JoinedTableInheritance_2_A_Entity entity = generateJoinedTableInheritance_2_A_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		JoinedTableInheritance_2_A_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getA2(), "a2");
+	}
+
+	private void testJoinedTableInheritance_2_B_Entity() {
+		JoinedTableInheritance_2_B_Service service = applicationContext
+				.getBean(JoinedTableInheritance_2_B_Service.class);
+		JoinedTableInheritance_2_B_Entity entity = generateJoinedTableInheritance_2_B_Entity();
+		service.save(entity);
+		int id = entity.getId();
+		JoinedTableInheritance_2_B_Entity returnEntity = service.findOne(id);
+		Assert.assertEquals(returnEntity.getDate().getTime(), DATE.getTime());
+		Assert.assertEquals(returnEntity.getB1(), "b1");
+		Assert.assertEquals(returnEntity.getB2(), "b2");
+	}
+
+	private JoinedTableInheritance_1_A_Entity generateJoinedTableInheritance_1_A_Entity() {
+		JoinedTableInheritance_1_A_Entity entity = new JoinedTableInheritance_1_A_Entity();
+		entity.setDate(DATE);
+		entity.setA1("a1");
+		return entity;
+	}
+
+	private JoinedTableInheritance_2_A_Entity generateJoinedTableInheritance_2_A_Entity() {
+		JoinedTableInheritance_2_A_Entity entity = new JoinedTableInheritance_2_A_Entity();
+		entity.setDate(DATE);
+		entity.setB1("b1");
+		entity.setA2("a2");
+		return entity;
+	}
+
+	private JoinedTableInheritance_2_B_Entity generateJoinedTableInheritance_2_B_Entity() {
+		JoinedTableInheritance_2_B_Entity entity = new JoinedTableInheritance_2_B_Entity();
 		entity.setDate(DATE);
 		entity.setB1("b1");
 		entity.setB2("b2");

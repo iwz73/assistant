@@ -14,10 +14,15 @@ import idv.hsiehpinghan.hibernateassistant.service.SequenceGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TableGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TemporalService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -28,7 +33,6 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -90,7 +94,7 @@ public class BasicTest {
 	}
 
 	@Test
-	public void basicType() {
+	public void basicType() throws Exception {
 		BasicTypeService service = applicationContext
 				.getBean(BasicTypeService.class);
 		BasicTypeEntity entity = generateBasicTypeEntity();
@@ -117,30 +121,40 @@ public class BasicTest {
 		Assert.assertEquals(returnEntity.getString(), string);
 		Assert.assertEquals(returnEntity.getLobString(), lobString);
 		Assert.assertEquals(returnEntity.getBigInteger(), bigInteger);
-		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(), bigDecimal.doubleValue());
+		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(),
+				bigDecimal.doubleValue());
 		Assert.assertEquals(returnEntity.getLocale(), locale);
 		Assert.assertEquals(returnEntity.getTimeZone(), timeZone);
 		Assert.assertEquals(returnEntity.getCurrency(), currency);
 		Assert.assertEquals(returnEntity.getClazz(), clazz);
-		Assert.assertEquals(returnEntity.getSerializable().getClass(), serializable.getClass());
+		Assert.assertEquals(returnEntity.getSerializable().getClass(),
+				serializable.getClass());
 		Assert.assertEquals(returnEntity.getDate(), date);
-		Assert.assertTrue(DateUtils.isSameDay(returnEntity.getDateDate(), dateDate));
-		Assert.assertEquals(returnEntity.getTimeDate(), timeDate);
+		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateDate(),
+				"yyyy/MM/dd"), DateFormatUtils.format(dateDate, "yyyy/MM/dd"));
+		Assert.assertEquals(
+				DateFormatUtils.format(returnEntity.getTimeDate(), "hh:mm:ss"),
+				DateFormatUtils.format(timeDate, "hh:mm:ss"));
 		Assert.assertEquals(returnEntity.getTimestampDate(), timestampDate);
 		Assert.assertEquals(returnEntity.getCalendar(), calendar);
-		Assert.assertEquals(returnEntity.getDateCalendar(), dateCalendar);
+		Assert.assertEquals(DateFormatUtils.format(
+				returnEntity.getDateCalendar(), "yyyy/MM/dd"), DateFormatUtils
+				.format(dateCalendar, "yyyy/MM/dd"));
 		Assert.assertEquals(returnEntity.getTimestampCalendar(),
 				timestampCalendar);
-		Assert.assertEquals(returnEntity.getSqlDate(), sqlDate);
-		Assert.assertEquals(returnEntity.getSqlTime(), sqlTime);
+		Assert.assertEquals(
+				DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
+				DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
+		Assert.assertEquals(
+				DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
+				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
 		Assert.assertEquals(returnEntity.getSqlTimestamp(), sqlTimestamp);
-		Assert.assertEquals(returnEntity.getClob(), clob);
-		Assert.assertEquals(returnEntity.getBlob(), blob);
+		Assert.assertEquals(service.findClobAsString(id), convertToString(clob));
+		Assert.assertEquals(service.findBlobAsString(id), convertToString(blob));
 		Assert.assertEquals(returnEntity.getByteArray(), byteArray);
 		Assert.assertEquals(returnEntity.getLobByteArray(), lobByteArray);
 		Assert.assertEquals(returnEntity.getCharArray(), charArray);
 		Assert.assertEquals(returnEntity.getLobCharArray(), lobCharArray);
-
 	}
 
 	// @Test
@@ -294,7 +308,17 @@ public class BasicTest {
 	}
 
 	private byte[] getByteArray() {
-		return new byte[] { 0x0, 0x1, 0x2 };
+		return new byte[] { 0x1, 0x2, 0x3 };
 	}
 
+	private String convertToString(java.sql.Clob clob) throws Exception {
+		Reader reader = clob.getCharacterStream();
+		return ReaderUtility.readAsString(reader);
+	}
+
+	private String convertToString(java.sql.Blob blob) throws SQLException,
+			IOException {
+		InputStream inputStream = blob.getBinaryStream();
+		return ReaderUtility.readAsString(inputStream);
+	}
 }

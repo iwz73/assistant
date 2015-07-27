@@ -148,7 +148,7 @@ public class AssociationTest {
 		applicationContext = TestngSuitSetting.getApplicationContext();
 	}
 
-	// @Test
+	@Test
 	public void elementCollection() {
 		ElementCollectionService service = applicationContext
 				.getBean(ElementCollectionService.class);
@@ -160,7 +160,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void singleTableInheritance() {
 		testSingleTableInheritance_1_A_Entity();
 		testSingleTableInheritance_2_A_Entity();
@@ -188,7 +188,7 @@ public class AssociationTest {
 		testMixedInheritance_2_B_Entity();
 	}
 
-	// @Test
+	@Test
 	public void elementCollection1() {
 		ElementCollectionService1 service = applicationContext
 				.getBean(ElementCollectionService1.class);
@@ -200,7 +200,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void elementCollection2() {
 		ElementCollectionService2 service = applicationContext
 				.getBean(ElementCollectionService2.class);
@@ -213,7 +213,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getElements().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void elementCollection3() {
 		ElementCollectionService3 service = applicationContext
 				.getBean(ElementCollectionService3.class);
@@ -225,7 +225,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getMap().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void elementCollection4() {
 		ElementCollectionService4 service = applicationContext
 				.getBean(ElementCollectionService4.class);
@@ -238,7 +238,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getMap().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void manyToOne() {
 		ManyToOneService service = applicationContext
 				.getBean(ManyToOneService.class);
@@ -249,7 +249,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	// @Test
+	@Test
 	public void manyToOneJoinColumn() {
 		ManyToOneJoinColumnService service = applicationContext
 				.getBean(ManyToOneJoinColumnService.class);
@@ -260,7 +260,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	// @Test
+	@Test
 	public void manyToOneJoinTable() {
 		ManyToOneJoinTableService service = applicationContext
 				.getBean(ManyToOneJoinTableService.class);
@@ -274,7 +274,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnEntity.getOne());
 	}
 
-	// @Test
+	@Test
 	public void oneToOneUnidirection() {
 		OneToOneUnidirectionService service = applicationContext
 				.getBean(OneToOneUnidirectionService.class);
@@ -285,7 +285,7 @@ public class AssociationTest {
 		Assert.assertNotNull(fromEntity.getTo());
 	}
 
-	// @Test
+	@Test
 	public void oneToOneBidirection() {
 		OneToOneBidirectionService service = applicationContext
 				.getBean(OneToOneBidirectionService.class);
@@ -298,7 +298,7 @@ public class AssociationTest {
 		Assert.assertNotNull(toEntity.getFrom());
 	}
 
-	// @Test
+	@Test
 	public void oneToOnePkMapping() {
 		OneToOnePkMappingService service = applicationContext
 				.getBean(OneToOnePkMappingService.class);
@@ -311,7 +311,7 @@ public class AssociationTest {
 		Assert.assertNotNull(toEntity.getFrom());
 	}
 
-	// @Test
+	@Test
 	public void oneToManyBidirection() {
 		OneToManyBidirectionService service = applicationContext
 				.getBean(OneToManyBidirectionService.class);
@@ -322,7 +322,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void oneToManyDerivedEmbeddedId() {
 		OneToManyDerivedEmbeddedIdService service = applicationContext
 				.getBean(OneToManyDerivedEmbeddedIdService.class);
@@ -334,7 +334,7 @@ public class AssociationTest {
 		service.delete(oneEntity);
 	}
 
-	// @Test
+	@Test
 	public void oneToManyMap() {
 		OneToManyMapService service = applicationContext
 				.getBean(OneToManyMapService.class);
@@ -345,7 +345,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void oneToManyMapKey() {
 		OneToManyMapKeyService service = applicationContext
 				.getBean(OneToManyMapKeyService.class);
@@ -360,7 +360,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void oneToManyMapEmbeddable() {
 		OneToManyMapEmbeddableService service = applicationContext
 				.getBean(OneToManyMapEmbeddableService.class);
@@ -375,7 +375,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void oneToManyOrderColumn() {
 		OneToManyOrderColumnService service = applicationContext
 				.getBean(OneToManyOrderColumnService.class);
@@ -390,7 +390,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void oneToManyList() {
 		OneToManyListService service = applicationContext
 				.getBean(OneToManyListService.class);
@@ -405,7 +405,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void oneToManyUnidirection() {
 		OneToManyUnidirectionService service = applicationContext
 				.getBean(OneToManyUnidirectionService.class);
@@ -416,7 +416,7 @@ public class AssociationTest {
 		Assert.assertEquals(oneEntity.getMany().size(), 3);
 	}
 
-	// @Test
+	@Test
 	public void ManyToManyBidirection() {
 		ManyToManyBidirectionService service = applicationContext
 				.getBean(ManyToManyBidirectionService.class);
@@ -434,7 +434,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void ManyToManyCompoundId() {
 		ManyToManyCompoundIdService service = applicationContext
 				.getBean(ManyToManyCompoundIdService.class);
@@ -452,7 +452,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void ManyToManyMapEmbeddable() {
 		ManyToManyMapEmbeddableService service = applicationContext
 				.getBean(ManyToManyMapEmbeddableService.class);
@@ -472,7 +472,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void ManyToManyMap() {
 		ManyToManyMapService service = applicationContext
 				.getBean(ManyToManyMapService.class);
@@ -491,7 +491,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void ManyToManyJoinTable() {
 		ManyToManyJoinTableService service = applicationContext
 				.getBean(ManyToManyJoinTableService.class);
@@ -509,7 +509,7 @@ public class AssociationTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void embeddedObject() {
 		EmbeddedObjectService service = applicationContext
 				.getBean(EmbeddedObjectService.class);
@@ -521,7 +521,7 @@ public class AssociationTest {
 				EMBEDDABLE_STRING);
 	}
 
-	// @Test
+	@Test
 	public void embeddedId() {
 		EmbeddedIdService service = applicationContext
 				.getBean(EmbeddedIdService.class);
@@ -533,7 +533,7 @@ public class AssociationTest {
 		service.deleteAll();
 	}
 
-	// @Test
+	@Test
 	public void OneToOneDerivedSingleKey() {
 		OneToOneDerivedSingleKeyMainService mainService = applicationContext
 				.getBean(OneToOneDerivedSingleKeyMainService.class);
@@ -549,7 +549,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnDerived.getMain());
 	}
 
-	// @Test
+	@Test
 	public void OneToOneMapsId() {
 		OneToOneMapsIdMainService mainService = applicationContext
 				.getBean(OneToOneMapsIdMainService.class);
@@ -565,7 +565,7 @@ public class AssociationTest {
 		Assert.assertNotNull(returnMapper.getMain());
 	}
 
-	// @Test
+	@Test
 	public void multipleTable() {
 		MultipleTableService multipleTableService = applicationContext
 				.getBean(MultipleTableService.class);
@@ -577,7 +577,7 @@ public class AssociationTest {
 		Assert.assertEquals(returnEntity.getAddress(), "address");
 	}
 
-	// @Test
+	@Test
 	public void embeddedMultipleTable() {
 		EmbeddedMultipleTableService EmbeddedMultipleTableService = applicationContext
 				.getBean(EmbeddedMultipleTableService.class);

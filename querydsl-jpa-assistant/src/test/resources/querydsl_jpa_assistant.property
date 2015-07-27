@@ -2,8 +2,8 @@ postgresql.driverClass=org.postgresql.Driver
 postgresql.jdbcUrl=jdbc:postgresql://localhost:5432/postgres
 postgresql.user=thank
 postgresql.password=!)09w5t43w1oJ
-hibernate.packagesToScan=idv.hsiehpinghan.hibernateassistant.**.entity
-hibernate.default_schema=hibernate_assistant
+hibernate.packagesToScan=idv.hsiehpinghan.querydsljpaassistant.**.entity
+hibernate.default_schema=querydsl_jpa_assistant
 hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.format_sql=true
 # validate, update, create, create-drop

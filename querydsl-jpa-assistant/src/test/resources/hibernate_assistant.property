@@ -1,5 +1,0 @@
-postgresql.driverClass=org.postgresql.Driver
-postgresql.jdbcUrl=jdbc:postgresql://localhost:5432/postgres
-postgresql.user=thank
-postgresql.password=!)09w5t43w1oJ
-hibernate.packagesToScan=idv.hsiehpinghan.querydsljpaassistant.**.entity

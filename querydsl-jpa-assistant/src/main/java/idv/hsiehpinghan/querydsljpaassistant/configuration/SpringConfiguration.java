@@ -19,7 +19,7 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration("queryAssistantSpringConfiguration")
-@PropertySource("classpath:/hibernate_assistant.property")
+@PropertySource("classpath:/querydsl_jpa_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.querydsljpaassistant" })
 public class SpringConfiguration {
 
@@ -70,14 +70,20 @@ public class SpringConfiguration {
 
 	private Properties getHibernateProperties() {
 		Properties prop = new Properties();
-		prop.setProperty("hibernate.hbm2ddl.auto", "update"); // validate,
-		// update,
-		// create,
-		// create-drop
-		prop.setProperty("hibernate.show_sql", "true");
-		prop.setProperty("hibernate.format_sql", "true");
-		prop.setProperty("hibernate.generate_statistics", "true");
-		prop.setProperty("hibernate.use_sql_comments", "true");
+		prop.put("hibernate.default_schema",
+				environment.getRequiredProperty("hibernate.default_schema"));
+		prop.put("hibernate.dialect",
+				environment.getRequiredProperty("hibernate.dialect"));
+		prop.put("hibernate.format_sql",
+				environment.getRequiredProperty("hibernate.format_sql"));
+		prop.put("hibernate.hbm2ddl.auto",
+				environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+		prop.put("hibernate.show_sql",
+				environment.getRequiredProperty("hibernate.show_sql"));
+		prop.put("hibernate.generate_statistics", environment
+				.getRequiredProperty("hibernate.generate_statistics"));
+		prop.put("hibernate.use_sql_comments",
+				environment.getRequiredProperty("hibernate.use_sql_comments"));
 		return prop;
 	}
 }

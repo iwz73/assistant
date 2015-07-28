@@ -85,6 +85,8 @@ public class BasicTest {
 	private byte[] lobByteArray = getByteArray();
 	private char[] charArray = getCharArray();
 	private char[] lobCharArray = getCharArray();
+	private Enumeration stringEnumeration = Enumeration.ENUM_2;
+	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
@@ -155,6 +157,10 @@ public class BasicTest {
 		Assert.assertEquals(returnEntity.getLobByteArray(), lobByteArray);
 		Assert.assertEquals(returnEntity.getCharArray(), charArray);
 		Assert.assertEquals(returnEntity.getLobCharArray(), lobCharArray);
+		Assert.assertEquals(returnEntity.getStringEnumeration(),
+				stringEnumeration);
+		Assert.assertEquals(returnEntity.getOrdinalEnumeration(),
+				ordinalEnumeration);
 	}
 
 	// @Test
@@ -300,6 +306,8 @@ public class BasicTest {
 		entity.setLobByteArray(lobByteArray);
 		entity.setCharArray(charArray);
 		entity.setLobCharArray(lobCharArray);
+		entity.setStringEnumeration(stringEnumeration);
+		entity.setOrdinalEnumeration(ordinalEnumeration);
 		return entity;
 	}
 

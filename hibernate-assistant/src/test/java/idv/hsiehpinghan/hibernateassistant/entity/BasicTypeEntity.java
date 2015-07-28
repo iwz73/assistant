@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.hibernateassistant.entity;
 
+import idv.hsiehpinghan.hibernateassistant.enumeration.Enumeration;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,6 +13,8 @@ import java.util.TimeZone;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -81,6 +85,10 @@ public class BasicTypeEntity implements Serializable {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private char[] lobCharArray;
+	@Enumerated(EnumType.STRING)
+	private Enumeration stringEnumeration;
+	@Enumerated(EnumType.ORDINAL)
+	private Enumeration ordinalEnumeration;
 
 	public Integer getId() {
 		return id;
@@ -416,6 +424,22 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setLobCharArray(char[] lobCharArray) {
 		this.lobCharArray = lobCharArray;
+	}
+
+	public Enumeration getStringEnumeration() {
+		return stringEnumeration;
+	}
+
+	public void setStringEnumeration(Enumeration stringEnumeration) {
+		this.stringEnumeration = stringEnumeration;
+	}
+
+	public Enumeration getOrdinalEnumeration() {
+		return ordinalEnumeration;
+	}
+
+	public void setOrdinalEnumeration(Enumeration ordinalEnumeration) {
+		this.ordinalEnumeration = ordinalEnumeration;
 	}
 
 }

@@ -8,7 +8,7 @@
 	</test>
 	<test name="test">
 		<classes>
-<!-- 			<class name="idv.hsiehpinghan.hibernateassistant.assistant.BasicTest" /> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.BasicTest" />
 			<class
 				name="idv.hsiehpinghan.hibernateassistant.assistant.AssociationTest" />
 		</classes>

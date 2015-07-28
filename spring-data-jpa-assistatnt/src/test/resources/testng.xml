@@ -9,8 +9,7 @@
 	</test>
 	<test name="test">
 		<classes>
-			<class
-				name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.AssociationTest" />
+			<class name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.BasicTest" />
 		</classes>
 	</test>
 </suite>

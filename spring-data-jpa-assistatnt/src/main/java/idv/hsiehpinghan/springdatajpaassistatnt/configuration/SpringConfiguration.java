@@ -68,7 +68,7 @@ public class SpringConfiguration {
 		entityManagerFactoryBean
 				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan(environment
-				.getRequiredProperty("jsp.packagesToScan"));
+				.getRequiredProperty("jpa.packagesToScan"));
 		Properties jpaProperties = new Properties();
 		jpaProperties
 				.put("hibernate.default_schema", environment

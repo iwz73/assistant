@@ -3,14 +3,13 @@
 <suite name="suite" verbose="1">
 	<test name="suit">
 		<classes>
-			<class name="idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting" />
+			<class name="idv.hsiehpinghan.querydsljpaassistant.suit.TestngSuitSetting" />
 		</classes>
 	</test>
 	<test name="test">
 		<classes>
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.BasicTest" />
 			<class
-				name="idv.hsiehpinghan.hibernateassistant.assistant.AssociationTest" />
+				name="idv.hsiehpinghan.querydsljpaassistant.service.BasicTypeEntityServiceTest" />
 		</classes>
 	</test>
 </suite>

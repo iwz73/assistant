@@ -8,6 +8,6 @@ jpa.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 jpa.hibernate.format_sql=true
 # none, validate, update, create, create-drop
 jpa.hibernate.hbm2ddl.auto=update
-jpa.hibernate.show_sql=true
-jpa.hibernate.generate_statistics=true
+jpa.hibernate.show_sql=false
+jpa.hibernate.generate_statistics=false
 jpa.hibernate.use_sql_comments=true

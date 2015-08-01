@@ -9,10 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 @Entity
-//@Table(schema = "querydsl_jpa_assistant")
 public class ManyToManyBidirectionFromEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,8 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -61,26 +58,6 @@ public class SpringConfiguration {
 				.getObject());
 		return transactionManager;
 	}
-
-	@Bean
-	@Autowired
-	public HibernateTransactionManager transactionManager(
-			SessionFactory sessionFactory) {
-		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(sessionFactory);
-		return transactionManager;
-	}
-
-//	@Bean
-//	public LocalSessionFactoryBean sessionFactory()
-//			throws PropertyVetoException {
-//		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-//		sessionFactory.setDataSource(dataSource());
-//		sessionFactory.setPackagesToScan(new String[] { environment
-//				.getRequiredProperty("hibernate.packagesToScan") });
-//		sessionFactory.setHibernateProperties(getHibernateProperties());
-//		return sessionFactory;
-//	}
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory()

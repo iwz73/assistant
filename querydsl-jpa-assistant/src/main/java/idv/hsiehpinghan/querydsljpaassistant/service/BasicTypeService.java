@@ -2,7 +2,7 @@ package idv.hsiehpinghan.querydsljpaassistant.service;
 
 import idv.hsiehpinghan.querydsljpaassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.querydsljpaassistant.entity.QBasicTypeEntity;
-import idv.hsiehpinghan.querydsljpaassistant.repository.BasicTypeEntityRepository;
+import idv.hsiehpinghan.querydsljpaassistant.repository.BasicTypeRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class BasicTypeEntityService {
+public class BasicTypeService {
 	private final int SIZE = 2;
 
 	@Autowired
-	private BasicTypeEntityRepository repository;
+	private BasicTypeRepository repository;
 
 	public BasicTypeEntity save(BasicTypeEntity entity) {
 		return repository.save(entity);

@@ -69,13 +69,13 @@ public class BasicTypeEntityServiceTest {
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
 	private Integer id;
 	private Integer newId;
-	private BasicTypeEntityService service;
+	private BasicTypeService service;
 
 	@BeforeClass
 	public void beforeClass() {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
-		service = applicationContext.getBean(BasicTypeEntityService.class);
+		service = applicationContext.getBean(BasicTypeService.class);
 	}
 
 	@Test

@@ -7,7 +7,7 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BasicTypeEntityRepository extends
+public interface BasicTypeRepository extends
 		JpaRepository<BasicTypeEntity, Integer>,
 		QueryDslPredicateExecutor<BasicTypeEntity> {
 

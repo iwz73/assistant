@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +26,16 @@ public class ReturnTypeController {
 
 	@RequestMapping(value = "/fileSystemResource/{fileSystemResource:.+}", method = RequestMethod.GET)
 	@ResponseBody
-	public FileSystemResource file(
+	public FileSystemResource fileSystemResource(
 			@PathVariable("fileSystemResource") String fileSystemResource) {
 		return new FileSystemResource("/home/thank/" + fileSystemResource);
+	}
+
+	@RequestMapping(value = "/classPathResource/{classPathResource:.+}", method = RequestMethod.GET)
+	@ResponseBody
+	public ClassPathResource classPathResource(
+			@PathVariable("classPathResource") String classPathResource) {
+		return new ClassPathResource(classPathResource);
 	}
 
 	private Collection<Data> generateList() {

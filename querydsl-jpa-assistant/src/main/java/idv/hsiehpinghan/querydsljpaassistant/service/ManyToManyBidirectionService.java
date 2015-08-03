@@ -35,13 +35,14 @@ public class ManyToManyBidirectionService {
 
 	public List<Tuple> where(Integer id, Expression<?>... columns) {
 		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
-		return jpaQueryFactory.from(qFrom).where(qFrom.id.eq(id)).list(columns);
+		return jpaQueryFactory.query().from(qFrom).where(qFrom.id.eq(id))
+				.list(columns);
 	}
 
 	public List<Tuple> leftJoin(Integer id, Expression<?>... columns) {
 		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
 		QManyToManyBidirectionToEntity qTo = QManyToManyBidirectionToEntity.manyToManyBidirectionToEntity;
-		return jpaQueryFactory.from(qFrom).leftJoin(qFrom.tos, qTo)
+		return jpaQueryFactory.query().from(qFrom).leftJoin(qFrom.tos, qTo)
 				.where(qFrom.id.eq(id)).list(columns);
 	}
 

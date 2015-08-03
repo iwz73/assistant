@@ -3,6 +3,8 @@ package idv.hsiehpinghan.querydsljpaassistant.configuration;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mysema.query.jpa.impl.JPAQueryFactory;
 
 @EnableTransactionManagement
 @Configuration("queryAssistantSpringConfiguration")
@@ -75,6 +78,17 @@ public class SpringConfiguration {
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
+	@Bean
+	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+		Provider<EntityManager> provider = new Provider<EntityManager>() {
+			@Override
+			public EntityManager get() {
+				return entityManager;
+			}
+		};
+		return new JPAQueryFactory(provider);
 	}
 
 	private Properties getHibernateProperties() {

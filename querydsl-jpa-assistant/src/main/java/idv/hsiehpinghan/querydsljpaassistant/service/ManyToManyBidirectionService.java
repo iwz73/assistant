@@ -7,14 +7,12 @@ import idv.hsiehpinghan.querydsljpaassistant.repository.ManyToManyBidirectionRep
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAQueryFactory;
 import com.mysema.query.types.Expression;
 
 @Service
@@ -24,7 +22,7 @@ public class ManyToManyBidirectionService {
 	@Autowired
 	private ManyToManyBidirectionRepository repository;
 	@Autowired
-	private EntityManager entityManager;
+	private JPAQueryFactory jpaQueryFactory;
 
 	public ManyToManyBidirectionFromEntity save(
 			ManyToManyBidirectionFromEntity entity) {
@@ -37,15 +35,13 @@ public class ManyToManyBidirectionService {
 
 	public List<Tuple> where(Integer id, Expression<?>... columns) {
 		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qFrom).where(qFrom.id.eq(id)).list(columns);
+		return jpaQueryFactory.from(qFrom).where(qFrom.id.eq(id)).list(columns);
 	}
 
 	public List<Tuple> leftJoin(Integer id, Expression<?>... columns) {
 		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
 		QManyToManyBidirectionToEntity qTo = QManyToManyBidirectionToEntity.manyToManyBidirectionToEntity;
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qFrom).leftJoin(qFrom.tos, qTo)
+		return jpaQueryFactory.from(qFrom).leftJoin(qFrom.tos, qTo)
 				.where(qFrom.id.eq(id)).list(columns);
 	}
 

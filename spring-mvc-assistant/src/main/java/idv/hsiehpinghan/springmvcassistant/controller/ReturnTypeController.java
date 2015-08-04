@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/returnType")
 public class ReturnTypeController {
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() {
+		return "returnType/index";
+	}
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public Collection<Data> list() {
 		return generateList();
@@ -28,7 +33,7 @@ public class ReturnTypeController {
 	@ResponseBody
 	public FileSystemResource fileSystemResource(
 			@PathVariable("fileSystemResource") String fileSystemResource) {
-		return new FileSystemResource("/home/thank/" + fileSystemResource);
+		return new FileSystemResource("/etc/init/" + fileSystemResource);
 	}
 
 	@RequestMapping(value = "/classPathResource/{classPathResource:.+}", method = RequestMethod.GET)

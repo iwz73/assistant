@@ -54,7 +54,7 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
 	@Bean(name = "/controller/parameterizableViewController")
 	public Controller parameterizableViewController() {
 		ParameterizableViewController controller = new ParameterizableViewController();
-		controller.setViewName("controller/parameterizableViewController");
+		controller.setViewName("/controller/parameterizableViewController");
 		return controller;
 	}
 

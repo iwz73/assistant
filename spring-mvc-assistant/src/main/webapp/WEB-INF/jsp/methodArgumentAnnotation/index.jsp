@@ -8,6 +8,10 @@
 <title>method argument annotation</title>
 </head>
 <body>
-	parameter:${parameter}<br>
+	parameter:${parameter}
+	<hr>
+	<a
+		href='<c:url value="/methodArgumentAnnotation/pathVariable/3"></c:url>'>path
+		variable</a>
 </body>
 </html>

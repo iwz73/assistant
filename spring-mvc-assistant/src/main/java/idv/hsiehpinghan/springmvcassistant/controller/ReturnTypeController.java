@@ -23,7 +23,7 @@ public class ReturnTypeController {
 	public String index() {
 		return "returnType/index";
 	}
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public Collection<Data> list() {
 		return generateList();
@@ -33,7 +33,7 @@ public class ReturnTypeController {
 	@ResponseBody
 	public FileSystemResource fileSystemResource(
 			@PathVariable("fileSystemResource") String fileSystemResource) {
-		return new FileSystemResource("/etc/init/" + fileSystemResource);
+		return new FileSystemResource("/etc/" + fileSystemResource);
 	}
 
 	@RequestMapping(value = "/classPathResource/{classPathResource:.+}", method = RequestMethod.GET)

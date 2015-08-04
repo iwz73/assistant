@@ -2,12 +2,12 @@ postgresql.driverClass=org.postgresql.Driver
 postgresql.jdbcUrl=jdbc:postgresql://localhost:5432/postgres
 postgresql.user=thank
 postgresql.password=!)09w5t43w1oJ
-jpa.packagesToScan=idv.hsiehpinghan.querydsljpaassistant.**.entity
-jpa.hibernate.default_schema=querydsl_jpa_assistant
-jpa.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-jpa.hibernate.format_sql=true
-# none, validate, update, create, create-drop
-jpa.hibernate.hbm2ddl.auto=update
-jpa.hibernate.show_sql=true
-jpa.hibernate.generate_statistics=true
-jpa.hibernate.use_sql_comments=true
+hibernate.packagesToScan=idv.hsiehpinghan.querydsljpaassistant.**.entity
+hibernate.default_schema=querydsl_jpa_assistant
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.format_sql=true
+# validate, update, create, create-drop
+hibernate.hbm2ddl.auto=update
+hibernate.show_sql=false
+hibernate.generate_statistics=false
+hibernate.use_sql_comments=true

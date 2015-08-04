@@ -3,6 +3,8 @@ package idv.hsiehpinghan.querydsljpaassistant.configuration;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mysema.query.jpa.impl.JPAQueryFactory;
 
 @EnableTransactionManagement
 @Configuration("queryAssistantSpringConfiguration")
@@ -67,29 +70,43 @@ public class SpringConfiguration {
 		entityManagerFactoryBean
 				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan(environment
-				.getRequiredProperty("jpa.packagesToScan"));
-		Properties jpaProperties = new Properties();
-		jpaProperties
-				.put("hibernate.default_schema", environment
-						.getRequiredProperty("jpa.hibernate.default_schema"));
-		jpaProperties.put("hibernate.dialect",
-				environment.getRequiredProperty("jpa.hibernate.dialect"));
-		jpaProperties.put("hibernate.format_sql",
-				environment.getRequiredProperty("jpa.hibernate.format_sql"));
-		jpaProperties.put("hibernate.hbm2ddl.auto",
-				environment.getRequiredProperty("jpa.hibernate.hbm2ddl.auto"));
-		jpaProperties.put("hibernate.show_sql",
-				environment.getRequiredProperty("jpa.hibernate.show_sql"));
-		jpaProperties.put("hibernate.generate_statistics", environment
-				.getRequiredProperty("jpa.hibernate.generate_statistics"));
-		jpaProperties.put("hibernate.use_sql_comments", environment
-				.getRequiredProperty("jpa.hibernate.use_sql_comments"));
-		entityManagerFactoryBean.setJpaProperties(jpaProperties);
+				.getRequiredProperty("hibernate.packagesToScan"));
+		entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
 		return entityManagerFactoryBean;
 	}
 
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
+	@Bean
+	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+		Provider<EntityManager> provider = new Provider<EntityManager>() {
+			@Override
+			public EntityManager get() {
+				return entityManager;
+			}
+		};
+		return new JPAQueryFactory(provider);
+	}
+
+	private Properties getHibernateProperties() {
+		Properties prop = new Properties();
+		prop.put("hibernate.default_schema",
+				environment.getRequiredProperty("hibernate.default_schema"));
+		prop.put("hibernate.dialect",
+				environment.getRequiredProperty("hibernate.dialect"));
+		prop.put("hibernate.format_sql",
+				environment.getRequiredProperty("hibernate.format_sql"));
+		prop.put("hibernate.hbm2ddl.auto",
+				environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+		prop.put("hibernate.show_sql",
+				environment.getRequiredProperty("hibernate.show_sql"));
+		prop.put("hibernate.generate_statistics", environment
+				.getRequiredProperty("hibernate.generate_statistics"));
+		prop.put("hibernate.use_sql_comments",
+				environment.getRequiredProperty("hibernate.use_sql_comments"));
+		return prop;
 	}
 }

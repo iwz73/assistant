@@ -10,6 +10,8 @@
 		<classes>
 			<class
 				name="idv.hsiehpinghan.querydsljpaassistant.service.BasicTypeEntityServiceTest" />
+			<class
+				name="idv.hsiehpinghan.querydsljpaassistant.service.ManyToManyBidirectionServiceTest" />
 		</classes>
 	</test>
 </suite>

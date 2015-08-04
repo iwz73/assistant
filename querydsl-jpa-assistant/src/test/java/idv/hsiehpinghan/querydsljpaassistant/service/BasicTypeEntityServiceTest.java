@@ -14,7 +14,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -65,24 +67,78 @@ public class BasicTypeEntityServiceTest {
 	private char[] lobCharArray = getCharArray();
 	private Enumeration stringEnumeration = Enumeration.ENUM_2;
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
-
-	private BasicTypeEntityService service;
+	private Integer id;
+	private Integer newId;
+	private BasicTypeService service;
 
 	@BeforeClass
 	public void beforeClass() {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
-		service = applicationContext.getBean(BasicTypeEntityService.class);
+		service = applicationContext.getBean(BasicTypeService.class);
 	}
 
 	@Test
-	public void crud() {
+	public void save() {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
-		Integer id = entity.getId();
+		id = entity.getId();
 		Assert.assertEquals(service.findOne(id).getString(), string);
-		service.delete(id);
-		Assert.assertNull(service.findOne(id));
+	}
+
+	@Test(dependsOnMethods = { "save" })
+	public void findOne1() {
+		Assert.assertEquals(service.findOne1(id).getString(), string);
+	}
+
+	@Test(dependsOnMethods = { "save" })
+	public void countByString() {
+		Assert.assertTrue(service.countByString(string) > 0);
+	}
+
+	@Test(dependsOnMethods = { "save" })
+	public void exists() {
+		Assert.assertTrue(service.exists(string));
+	}
+
+	@Test(dependsOnMethods = { "save" })
+	public void findAllDescentById() {
+		BasicTypeEntity newEntity = generateBasicTypeEntity();
+		service.save(newEntity);
+		newId = newEntity.getId();
+		Integer before = Integer.MAX_VALUE;
+		for (BasicTypeEntity entity : service.findAllDescentById(string)) {
+			Integer current = entity.getId();
+			Assert.assertTrue(before.intValue() > current.intValue());
+			before = current;
+		}
+	}
+
+	@Test(dependsOnMethods = { "findAllDescentById" })
+	public void delete() {
+		service.delete(newId);
+		Assert.assertNull(service.findOne(newId));
+	}
+
+	@Test
+	public void findAllWithPage() {
+		int totalSize = 10;
+		int sliceSize = 2;
+		for (int i = 0; i < totalSize; ++i) {
+			service.save(generateBasicTypeEntity());
+		}
+		int page = 0;
+		Page<BasicTypeEntity> entityPage = service
+				.findAllWithPage(string, page);
+		Assert.assertEquals(entityPage.getSize(), sliceSize);
+		Assert.assertTrue(entityPage.getTotalPages() >= (totalSize / sliceSize));
+	}
+
+	@AfterClass
+	public void afterClass() {
+		for (BasicTypeEntity entity : service.findAll()) {
+			service.delete(entity.getId());
+		}
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {

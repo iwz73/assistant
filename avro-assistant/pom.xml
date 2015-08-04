@@ -129,6 +129,15 @@
 						<configuration>
 							<sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+							<testSourceDirectory>${project.basedir}/src/test/avro/</testSourceDirectory>
+							<testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
+							<includes>
+								<include>**/*.avsc</include>
+							</includes>
+							<testIncludes>
+								<testInclude>**/*.avsc</testInclude>
+							</testIncludes>
+							<fieldVisibility>PRIVATE</fieldVisibility>
 						</configuration>
 					</execution>
 				</executions>

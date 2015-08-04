@@ -1,0 +1,33 @@
+
+
+
+http://avro.apache.org/docs/current/spec.html
+http://avro.apache.org/docs/current/gettingstartedjava.html
+http://tonymomo.pixnet.net/blog/post/139867926
+
+{
+	"type":"record",
+	"namespace":"idv.hsiehpinghan.avroassistant.assistant.avro",
+	"doc":"Avro test class.",
+	"name":"Avro",
+	"fields":[
+		{
+			"name":"name",
+			"type":"string"
+		},
+		{
+			"name":"favorite_number",
+			"type":[
+				"int",
+				"null"
+			]
+		},
+		{
+			"name":"favorite_color",
+			"type":[
+				"string",
+				"null"
+			]
+		}
+	]
+}

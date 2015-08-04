@@ -3,15 +3,16 @@
  * 
  * DO NOT EDIT DIRECTLY
  */
-package example.avro;  
+package idv.hsiehpinghan.avroassistant.assistant.Avro;  
 @SuppressWarnings("all")
+/** test doc */
 @org.apache.avro.specific.AvroGenerated
 public class User extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"example.avro\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favorite_color\",\"type\":[\"string\",\"null\"]}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"idv.hsiehpinghan.avroassistant.assistant.Avro\",\"doc\":\"test doc\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favorite_color\",\"type\":[\"string\",\"null\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  @Deprecated public java.lang.CharSequence name;
-  @Deprecated public java.lang.Integer favorite_number;
-  @Deprecated public java.lang.CharSequence favorite_color;
+   private java.lang.CharSequence name;
+   private java.lang.Integer favorite_number;
+   private java.lang.CharSequence favorite_color;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -96,18 +97,18 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
   }
 
   /** Creates a new User RecordBuilder */
-  public static example.avro.User.Builder newBuilder() {
-    return new example.avro.User.Builder();
+  public static idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder newBuilder() {
+    return new idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder();
   }
   
   /** Creates a new User RecordBuilder by copying an existing Builder */
-  public static example.avro.User.Builder newBuilder(example.avro.User.Builder other) {
-    return new example.avro.User.Builder(other);
+  public static idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder newBuilder(idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder other) {
+    return new idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder(other);
   }
   
   /** Creates a new User RecordBuilder by copying an existing User instance */
-  public static example.avro.User.Builder newBuilder(example.avro.User other) {
-    return new example.avro.User.Builder(other);
+  public static idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder newBuilder(idv.hsiehpinghan.avroassistant.assistant.Avro.User other) {
+    return new idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder(other);
   }
   
   /**
@@ -122,11 +123,11 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
 
     /** Creates a new Builder */
     private Builder() {
-      super(example.avro.User.SCHEMA$);
+      super(idv.hsiehpinghan.avroassistant.assistant.Avro.User.SCHEMA$);
     }
     
     /** Creates a Builder by copying an existing Builder */
-    private Builder(example.avro.User.Builder other) {
+    private Builder(idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
@@ -143,8 +144,8 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Creates a Builder by copying an existing User instance */
-    private Builder(example.avro.User other) {
-            super(example.avro.User.SCHEMA$);
+    private Builder(idv.hsiehpinghan.avroassistant.assistant.Avro.User other) {
+            super(idv.hsiehpinghan.avroassistant.assistant.Avro.User.SCHEMA$);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
         fieldSetFlags()[0] = true;
@@ -165,7 +166,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'name' field */
-    public example.avro.User.Builder setName(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder setName(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.name = value;
       fieldSetFlags()[0] = true;
@@ -178,7 +179,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'name' field */
-    public example.avro.User.Builder clearName() {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder clearName() {
       name = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -190,7 +191,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'favorite_number' field */
-    public example.avro.User.Builder setFavoriteNumber(java.lang.Integer value) {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder setFavoriteNumber(java.lang.Integer value) {
       validate(fields()[1], value);
       this.favorite_number = value;
       fieldSetFlags()[1] = true;
@@ -203,7 +204,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'favorite_number' field */
-    public example.avro.User.Builder clearFavoriteNumber() {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder clearFavoriteNumber() {
       favorite_number = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -215,7 +216,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Sets the value of the 'favorite_color' field */
-    public example.avro.User.Builder setFavoriteColor(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder setFavoriteColor(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.favorite_color = value;
       fieldSetFlags()[2] = true;
@@ -228,7 +229,7 @@ public class User extends org.apache.avro.specific.SpecificRecordBase implements
     }
     
     /** Clears the value of the 'favorite_color' field */
-    public example.avro.User.Builder clearFavoriteColor() {
+    public idv.hsiehpinghan.avroassistant.assistant.Avro.User.Builder clearFavoriteColor() {
       favorite_color = null;
       fieldSetFlags()[2] = false;
       return this;

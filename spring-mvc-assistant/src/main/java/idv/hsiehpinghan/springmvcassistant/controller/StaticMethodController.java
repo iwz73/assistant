@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/tag")
-public class TagController {
+@RequestMapping(value = "/staticMethod")
+public class StaticMethodController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index() {
-		ModelAndView modelAndView = new ModelAndView("/tag/index");
+		ModelAndView modelAndView = new ModelAndView("/staticMethod/index");
 		modelAndView.addObject("parameter", 3);
 		return modelAndView;
 	}

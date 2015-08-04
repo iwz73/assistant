@@ -12,9 +12,13 @@ import org.springframework.web.servlet.ModelAndView;
 @SessionAttributes("parameter")
 @RequestMapping(value = "/sessionAttributes")
 public class SessionAttributesController {
-
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView index(@RequestParam String parameter) {
+	public String index() {
+		return "/sessionAttributes/index";
+	}
+
+	@RequestMapping(value = "/setSessionParameter", method = RequestMethod.GET)
+	public ModelAndView setSessionParameter(@RequestParam String parameter) {
 		ModelAndView modelAndView = new ModelAndView("/sessionAttributes/index");
 		modelAndView.addObject("parameter", parameter);
 		return modelAndView;

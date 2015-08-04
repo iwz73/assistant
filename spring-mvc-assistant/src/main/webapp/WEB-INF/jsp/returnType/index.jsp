@@ -12,7 +12,7 @@
 	<h5>return type</h5>
 	<a href="list">list</a>
 	<br>
-	<a href="fileSystemResource/tty1.conf">file system resource</a>
+	<a href="fileSystemResource/passwd">file system resource</a>
 	<br>
 	<a href="classPathResource/log4j.properties">class path resource</a>
 	<br>

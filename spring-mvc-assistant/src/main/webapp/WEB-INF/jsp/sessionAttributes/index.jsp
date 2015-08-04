@@ -8,9 +8,11 @@
 <title>session attributes</title>
 </head>
 <body>
-	session scope parameter:${sessionScope.parameter}<br>
+	session scope parameter:${sessionScope.parameter}
 	<hr>
-	<a href="clearSession">session attributes index</a>
-	<hr>
+	<a href="setSessionParameter?parameter=parameter">set
+		session parameter</a>
+	<br>
+	<a href="clearSession">clear session</a>
 </body>
 </html>

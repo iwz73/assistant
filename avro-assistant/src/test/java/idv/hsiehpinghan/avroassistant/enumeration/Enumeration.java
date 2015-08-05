@@ -9,6 +9,6 @@ package idv.hsiehpinghan.avroassistant.enumeration;
 @org.apache.avro.specific.AvroGenerated
 public enum Enumeration { 
   ENUM_0, ENUM_1, ENUM_2  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.avroassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"],\"default\":\"ENUM_1\",\"order\":\"ignore\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.avroassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 }

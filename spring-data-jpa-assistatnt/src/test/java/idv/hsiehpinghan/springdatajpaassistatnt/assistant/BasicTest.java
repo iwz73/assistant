@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 
 public class BasicTest {
 	private ApplicationContext applicationContext;
+	private BasicTypeService service;
 	private boolean primativeBoolean = true;
 	private Boolean wrappedBoolean = true;
 	private byte primativeByte = 0x1;
@@ -78,22 +79,34 @@ public class BasicTest {
 		clob = new SerialClob(getCharArray());
 		blob = new SerialBlob(getByteArray());
 		applicationContext = TestngSuitSetting.getApplicationContext();
+		service = applicationContext.getBean(BasicTypeService.class);
 	}
 
-//	@Test
+	@Test
+	public void save() {
+		final String NEW_STRING = "new string";
+		BasicTypeEntity entity = generateBasicTypeEntity();
+		service.save(entity);
+		BasicTypeEntity newEntity = generateBasicTypeEntity();
+		newEntity.setId(entity.getId());
+		newEntity.setString(NEW_STRING);
+		newEntity.setWrappedInt(null);
+		service.save(newEntity);
+		BasicTypeEntity returnEntity = service.findById(entity.getId());
+		Assert.assertEquals(returnEntity.getString(), NEW_STRING);
+		Assert.assertEquals(returnEntity.getWrappedInt(), null);
+	}
+
+	@Test
 	public void annotationQuery() {
-		BasicTypeService service = applicationContext
-				.getBean(BasicTypeService.class);
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
 		List<BasicTypeEntity> entities = service.findByString(string);
 		Assert.assertTrue(entities.size() > 0);
 	}
 
-//	@Test
+	@Test
 	public void pageable() {
-		BasicTypeService service = applicationContext
-				.getBean(BasicTypeService.class);
 		for (int i = 0; i < 10; ++i) {
 			BasicTypeEntity entity = generateBasicTypeEntity();
 			service.save(entity);
@@ -105,8 +118,6 @@ public class BasicTest {
 
 	@Test
 	public void customerizedRepository() {
-		BasicTypeService service = applicationContext
-				.getBean(BasicTypeService.class);
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
 		Integer id = entity.getId();

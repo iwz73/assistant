@@ -1,33 +1,168 @@
-
-
-
-http://avro.apache.org/docs/current/spec.html
-http://avro.apache.org/docs/current/gettingstartedjava.html
-http://tonymomo.pixnet.net/blog/post/139867926
-
 {
-	"type":"record",
-	"namespace":"idv.hsiehpinghan.avroassistant.assistant.avro",
-	"doc":"Avro test class.",
-	"name":"Avro",
-	"fields":[
-		{
-			"name":"name",
-			"type":"string"
-		},
-		{
-			"name":"favorite_number",
-			"type":[
-				"int",
-				"null"
-			]
-		},
-		{
-			"name":"favorite_color",
-			"type":[
-				"string",
-				"null"
-			]
-		}
-	]
+    "type":"record",
+    "namespace":"idv.hsiehpinghan.avroassistant.avro",
+    "doc":"Avro doc.",
+    "name":"Avro",
+    "fields":[
+        {
+            "doc":"boolean doc",
+            "name":"_boolean",
+            "type":"boolean",
+            "default":true,
+            "order":"ignore"
+        },
+        {
+            "doc":"int doc",
+            "name":"_int",
+            "type":"int",
+            "default":1,
+            "order":"ignore"
+        },
+        {
+            "doc":"long doc",
+            "name":"_long",
+            "type":"long",
+            "default":1,
+            "order":"ignore"
+        },
+        {
+            "doc":"float doc",
+            "name":"_float",
+            "type":"float",
+            "default":1.1,
+            "order":"ignore"
+        },
+        {
+            "doc":"double doc",
+            "name":"_double",
+            "type":"double",
+            "default":1.1,
+            "order":"ignore"
+        },
+        {
+            "doc":"bytes doc",
+            "name":"_bytes",
+            "type":"bytes",
+            "default":"\u0041",
+            "order":"ignore"
+        },
+        {
+            "doc":"string doc",
+            "name":"_string",
+            "type":"string",
+            "default":"string",
+            "order":"ignore"
+        },
+        {
+            "doc":"record doc",
+            "name":"_record",
+            "type":{
+                "type":"record",
+                "name":"NestedRecord",
+                "fields":[
+                    {
+                        "doc":"boolean doc",
+                        "name":"_boolean",
+                        "type":"boolean",
+                        "default":true,
+                        "order":"ignore"
+                    },
+                    {
+                        "doc":"int doc",
+                        "name":"_int",
+                        "type":"int",
+                        "default":1,
+                        "order":"ignore"
+                    }
+                ]
+            },
+            "default":{
+                
+            },
+            "order":"ignore"
+        },
+        {
+            "doc":"enum doc",
+            "name":"_enum",
+            "type":{
+                "doc":"Enumeration doc",
+                "namespace":"idv.hsiehpinghan.avroassistant.enumeration",
+                "name":"Enumeration",
+                "type":"enum",
+                "symbols":[
+                    "ENUM_0",
+                    "ENUM_1",
+                    "ENUM_2"
+                ],
+                "default":"ENUM_1",
+                "order":"ignore"
+            }
+        },
+        {
+            "doc":"array doc",
+            "name":"_array",
+            "type":{
+                "type":"array",
+                "items":{
+                    "name":"ArrayItem",
+                    "type":"record",
+                    "fields":[
+                        {
+                            "name":"id",
+                            "type":"long"
+                        },
+                        {
+                            "name":"name",
+                            "type":"string"
+                        }
+                    ]
+                }
+            },
+            "order":"ignore"
+        },
+        {
+            "doc":"map doc",
+            "name":"_map",
+            "type":{
+                "type":"map",
+                "values":{
+                    "type":"record",
+                    "name":"MapValue",
+                    "fields":[
+                        {
+                            "name":"name",
+                            "type":"string"
+                        },
+                        {
+                            "name":"age",
+                            "type":"int"
+                        }
+                    ]
+                }
+            },
+            "default":{
+                
+            },
+            "order":"ignore"
+        },
+        {
+            "doc":"unions doc",
+            "name":"_unions",
+            "type":[
+                "null",
+                "string"
+            ],
+            "order":"ignore"
+        },
+        {
+            "doc":"fixed doc",
+            "name":"_fixed",
+            "type":{
+                "type":"fixed",
+                "name":"Fixed",
+                "size":16
+            },
+            "order":"ignore"
+        }
+    ]
 }

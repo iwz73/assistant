@@ -3,28 +3,23 @@ package idv.hsiehpinghan.springdatajpaassistatnt.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class ManyToManyBidirectionFromEntity {
+public class ManyToManyBidirectionNoCascadeToEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String name;
+	@ManyToMany(mappedBy = "tos")
+	private Collection<ManyToManyBidirectionNoCascadeFromEntity> froms;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Collection<ManyToManyBidirectionToEntity> tos;
-
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -36,19 +31,20 @@ public class ManyToManyBidirectionFromEntity {
 		this.name = name;
 	}
 
-	public Collection<ManyToManyBidirectionToEntity> getTos() {
-		return tos;
+	public Collection<ManyToManyBidirectionNoCascadeFromEntity> getFroms() {
+		return froms;
 	}
 
-	public void setTos(Collection<ManyToManyBidirectionToEntity> tos) {
-		this.tos = tos;
+	public void setFroms(
+			Collection<ManyToManyBidirectionNoCascadeFromEntity> froms) {
+		this.froms = froms;
 	}
 
-	public void addTo(ManyToManyBidirectionToEntity to) {
-		if (this.tos == null) {
-			this.tos = new ArrayList<ManyToManyBidirectionToEntity>();
+	public void addFrom(ManyToManyBidirectionNoCascadeFromEntity from) {
+		if (this.froms == null) {
+			this.froms = new ArrayList<ManyToManyBidirectionNoCascadeFromEntity>();
 		}
-		this.tos.add(to);
+		this.froms.add(from);
 	}
 
 	@Override
@@ -67,7 +63,7 @@ public class ManyToManyBidirectionFromEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ManyToManyBidirectionFromEntity other = (ManyToManyBidirectionFromEntity) obj;
+		ManyToManyBidirectionNoCascadeToEntity other = (ManyToManyBidirectionNoCascadeToEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

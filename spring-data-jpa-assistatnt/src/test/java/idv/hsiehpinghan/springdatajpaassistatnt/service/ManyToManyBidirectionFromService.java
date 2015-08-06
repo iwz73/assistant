@@ -24,4 +24,5 @@ public class ManyToManyBidirectionFromService {
 		entity.getTos().size();
 		return entity;
 	}
+
 }

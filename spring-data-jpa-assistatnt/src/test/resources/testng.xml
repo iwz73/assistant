@@ -10,8 +10,10 @@
 	<test name="test">
 		<classes>
 <!-- 			<class name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.BasicTest" /> -->
-			<class
-				name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.ManyToManyBidirectionTest" />
+<!-- 			<class -->
+<!-- 				name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.ManyToManyBidirectionTest" /> -->
+            <class
+                name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.ManyToManyBidirectionNoCascadeTest" />
 		</classes>
 	</test>
 </suite>

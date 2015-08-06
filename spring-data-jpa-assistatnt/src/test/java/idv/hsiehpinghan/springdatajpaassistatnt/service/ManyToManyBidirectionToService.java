@@ -19,4 +19,10 @@ public class ManyToManyBidirectionToService {
 		return repository.save(entity);
 	}
 
+	public ManyToManyBidirectionToEntity findOne(Long id) {
+		ManyToManyBidirectionToEntity entity = repository.findOne(id);
+		entity.getFroms().size();
+		return entity;
+	}
+
 }

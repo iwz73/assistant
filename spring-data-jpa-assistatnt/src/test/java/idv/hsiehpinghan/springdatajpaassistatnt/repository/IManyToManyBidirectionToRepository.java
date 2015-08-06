@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IManyToManyBidirectionToRepository extends
-		JpaRepository<ManyToManyBidirectionToEntity, Integer> {
+		JpaRepository<ManyToManyBidirectionToEntity, Long> {
 
 }

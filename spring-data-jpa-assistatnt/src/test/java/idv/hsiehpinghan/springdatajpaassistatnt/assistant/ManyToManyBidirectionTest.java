@@ -32,7 +32,7 @@ public class ManyToManyBidirectionTest {
 	}
 
 	@Test
-	public void updateCollection() {
+	public void updateCollection() throws InterruptedException {
 		ManyToManyBidirectionFromEntity from = saveAndFindManyToManyBidirectionFromEntity();
 		Assert.assertEquals(from.getTos().size(), 3);
 		ManyToManyBidirectionFromEntity updatedFrom = updateAndFindManyToManyBidirectionFromEntity(from);
@@ -40,35 +40,47 @@ public class ManyToManyBidirectionTest {
 	}
 
 	@Test
-	public void addCollection() {
+	public void addCollection() throws InterruptedException {
 		ManyToManyBidirectionFromEntity from = saveAndFindManyToManyBidirectionFromEntity();
 		Assert.assertEquals(from.getTos().size(), 3);
 		ManyToManyBidirectionFromEntity updatedFrom = addAndFindManyToManyBidirectionFromEntity(from);
 		Assert.assertEquals(updatedFrom.getTos().size(), 5);
 	}
 
+	@Test
+	public void toEntity() throws InterruptedException {
+		ManyToManyBidirectionFromEntity from = saveAndFindManyToManyBidirectionFromEntity();
+		for (ManyToManyBidirectionToEntity to : from.getTos()) {
+			ManyToManyBidirectionToEntity returnTo = toService.findOne(to
+					.getId());
+			Assert.assertTrue(returnTo.getFroms().contains(from));
+		}
+	}
+
 	private ManyToManyBidirectionFromEntity addAndFindManyToManyBidirectionFromEntity(
-			ManyToManyBidirectionFromEntity entity) {
+			ManyToManyBidirectionFromEntity entity) throws InterruptedException {
 		entity.getTos().addAll(
 				generateManyToManyBidirectionToEntities(entity, 2));
 		fromService.save(entity);
 		return fromService.findOne(entity.getId());
 	}
 
-	private ManyToManyBidirectionFromEntity saveAndFindManyToManyBidirectionFromEntity() {
+	private ManyToManyBidirectionFromEntity saveAndFindManyToManyBidirectionFromEntity()
+			throws InterruptedException {
 		ManyToManyBidirectionFromEntity from = generateManyToManyBidirectionFromEntity();
 		fromService.save(from);
 		return fromService.findOne(from.getId());
 	}
 
 	private ManyToManyBidirectionFromEntity updateAndFindManyToManyBidirectionFromEntity(
-			ManyToManyBidirectionFromEntity entity) {
+			ManyToManyBidirectionFromEntity entity) throws InterruptedException {
 		entity.setTos(generateManyToManyBidirectionToEntities(entity, 2));
 		fromService.save(entity);
 		return fromService.findOne(entity.getId());
 	}
 
-	private ManyToManyBidirectionFromEntity generateManyToManyBidirectionFromEntity() {
+	private ManyToManyBidirectionFromEntity generateManyToManyBidirectionFromEntity()
+			throws InterruptedException {
 		ManyToManyBidirectionFromEntity from = new ManyToManyBidirectionFromEntity();
 		from.setName(FROM_NAME);
 		from.setTos(generateManyToManyBidirectionToEntities(from, 3));
@@ -76,7 +88,8 @@ public class ManyToManyBidirectionTest {
 	}
 
 	private Collection<ManyToManyBidirectionToEntity> generateManyToManyBidirectionToEntities(
-			ManyToManyBidirectionFromEntity from, int size) {
+			ManyToManyBidirectionFromEntity from, int size)
+			throws InterruptedException {
 		Collection<ManyToManyBidirectionToEntity> tos = new HashSet<ManyToManyBidirectionToEntity>();
 		for (int i = 0; i < size; ++i) {
 			tos.add(generateManyToManyBidirectionToEntity(i, from));
@@ -92,4 +105,5 @@ public class ManyToManyBidirectionTest {
 		to.addFrom(from);
 		return to;
 	}
+
 }

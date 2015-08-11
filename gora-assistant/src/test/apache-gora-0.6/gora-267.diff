@@ -1,0 +1,4286 @@
+diff --git gora-cassandra/pom.xml gora-cassandra/pom.xml
+index a6529c6..91bfd92 100644
+--- gora-cassandra/pom.xml
++++ gora-cassandra/pom.xml
+@@ -146,6 +146,7 @@
+     		        <artifactId>cassandra-all</artifactId>
+                     </exclusion>
+             </exclusions>
++                <version>1.1-4</version>
+         </dependency>
+         
+         <!-- Misc Dependencies -->
+diff --git gora-cassandra/src/examples/avro/sensor.json gora-cassandra/src/examples/avro/sensor.json
+new file mode 100644
+index 0000000..33871a3
+--- /dev/null
++++ gora-cassandra/src/examples/avro/sensor.json
+@@ -0,0 +1,55 @@
++[
++		{
++			"type" : "record",
++			"name" : "SensorKey",
++			"namespace" : "org.apache.gora.examples.generated",
++			"fields" : [ {
++				"name" : "sensorId",
++				"type" : "string"
++			}, {
++				"name" : "year",
++				"type" : "int"
++			}, {
++				"name" : "date",
++				"type" : "long"
++			} ]
++		},
++		{
++			"type" : "record",
++			"name" : "SensorData",
++			"namespace" : "org.apache.gora.examples.generated",
++			"fields" : [
++					{
++						"name" : "reading",
++						"type" : "double"
++					},
++					{
++						"name" : "events",
++						"type" : {
++							"type" : "array",
++							"items" : "int"
++						}
++					},
++					{
++						"name" : "params",
++						"type" : {
++							"type" : "map",
++							"values" : "string"
++						}
++					},
++					{
++						"name" : "context",
++						"type" : {
++							"type" : "record",
++							"name" : "SensorContext",
++							"namespace" : "org.apache.gora.examples.generated",
++							"fields" : [ {
++								"name" : "mem",
++								"type" : "double"
++							}, {
++								"name" : "power",
++								"type" : "double"
++							} ]
++						}
++					} ]
++		} ]
+\ No newline at end of file
+diff --git gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorContext.java gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorContext.java
+new file mode 100644
+index 0000000..e48ab64
+--- /dev/null
++++ gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorContext.java
+@@ -0,0 +1,101 @@
++/**
++ *Licensed to the Apache Software Foundation (ASF) under one
++ *or more contributor license agreements.  See the NOTICE file
++ *distributed with this work for additional information
++ *regarding copyright ownership.  The ASF licenses this file
++ *to you under the Apache License, Version 2.0 (the"
++ *License"); you may not use this file except in compliance
++ *with the License.  You may obtain a copy of the License at
++ *
++  * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ *Unless required by applicable law or agreed to in writing, software
++ *distributed under the License is distributed on an "AS IS" BASIS,
++ *WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *See the License for the specific language governing permissions and
++ *limitations under the License.
++ */
++
++package org.apache.gora.examples.generated;
++
++import java.nio.ByteBuffer;
++import java.util.Map;
++import java.util.HashMap;
++import org.apache.avro.Protocol;
++import org.apache.avro.Schema;
++import org.apache.avro.AvroRuntimeException;
++import org.apache.avro.Protocol;
++import org.apache.avro.util.Utf8;
++import org.apache.avro.ipc.AvroRemoteException;
++import org.apache.avro.generic.GenericArray;
++import org.apache.avro.specific.FixedSize;
++import org.apache.avro.specific.SpecificExceptionBase;
++import org.apache.avro.specific.SpecificRecordBase;
++import org.apache.avro.specific.SpecificRecord;
++import org.apache.avro.specific.SpecificFixed;
++import org.apache.gora.persistency.StateManager;
++import org.apache.gora.persistency.impl.PersistentBase;
++import org.apache.gora.persistency.impl.StateManagerImpl;
++import org.apache.gora.persistency.StatefulHashMap;
++import org.apache.gora.persistency.ListGenericArray;
++
++@SuppressWarnings("all")
++public class SensorContext extends PersistentBase {
++  public static final Schema _SCHEMA = Schema.parse("{\"type\":\"record\",\"name\":\"SensorContext\",\"namespace\":\"org.apache.gora.examples.generated\",\"fields\":[{\"name\":\"mem\",\"type\":\"double\"},{\"name\":\"power\",\"type\":\"double\"}]}");
++  public static enum Field {
++    MEM(0,"mem"),
++    POWER(1,"power"),
++    ;
++    private int index;
++    private String name;
++    Field(int index, String name) {this.index=index;this.name=name;}
++    public int getIndex() {return index;}
++    public String getName() {return name;}
++    public String toString() {return name;}
++  };
++  public static final String[] _ALL_FIELDS = {"mem","power",};
++  static {
++    PersistentBase.registerFields(SensorContext.class, _ALL_FIELDS);
++  }
++  private double mem;
++  private double power;
++  public SensorContext() {
++    this(new StateManagerImpl());
++  }
++  public SensorContext(StateManager stateManager) {
++    super(stateManager);
++  }
++  public SensorContext newInstance(StateManager stateManager) {
++    return new SensorContext(stateManager);
++  }
++  public Schema getSchema() { return _SCHEMA; }
++  public Object get(int _field) {
++    switch (_field) {
++    case 0: return mem;
++    case 1: return power;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  @SuppressWarnings(value="unchecked")
++  public void put(int _field, Object _value) {
++    if(isFieldEqual(_field, _value)) return;
++    getStateManager().setDirty(this, _field);
++    switch (_field) {
++    case 0:mem = (Double)_value; break;
++    case 1:power = (Double)_value; break;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  public double getMem() {
++    return (Double) get(0);
++  }
++  public void setMem(double value) {
++    put(0, value);
++  }
++  public double getPower() {
++    return (Double) get(1);
++  }
++  public void setPower(double value) {
++    put(1, value);
++  }
++}
+diff --git gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorData.java gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorData.java
+new file mode 100644
+index 0000000..471abd9
+--- /dev/null
++++ gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorData.java
+@@ -0,0 +1,134 @@
++/**
++ *Licensed to the Apache Software Foundation (ASF) under one
++ *or more contributor license agreements.  See the NOTICE file
++ *distributed with this work for additional information
++ *regarding copyright ownership.  The ASF licenses this file
++ *to you under the Apache License, Version 2.0 (the"
++ *License"); you may not use this file except in compliance
++ *with the License.  You may obtain a copy of the License at
++ *
++  * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ *Unless required by applicable law or agreed to in writing, software
++ *distributed under the License is distributed on an "AS IS" BASIS,
++ *WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *See the License for the specific language governing permissions and
++ *limitations under the License.
++ */
++
++package org.apache.gora.examples.generated;
++
++import java.nio.ByteBuffer;
++import java.util.Map;
++import java.util.HashMap;
++import org.apache.avro.Protocol;
++import org.apache.avro.Schema;
++import org.apache.avro.AvroRuntimeException;
++import org.apache.avro.Protocol;
++import org.apache.avro.util.Utf8;
++import org.apache.avro.ipc.AvroRemoteException;
++import org.apache.avro.generic.GenericArray;
++import org.apache.avro.specific.FixedSize;
++import org.apache.avro.specific.SpecificExceptionBase;
++import org.apache.avro.specific.SpecificRecordBase;
++import org.apache.avro.specific.SpecificRecord;
++import org.apache.avro.specific.SpecificFixed;
++import org.apache.gora.persistency.StateManager;
++import org.apache.gora.persistency.impl.PersistentBase;
++import org.apache.gora.persistency.impl.StateManagerImpl;
++import org.apache.gora.persistency.StatefulHashMap;
++import org.apache.gora.persistency.ListGenericArray;
++
++@SuppressWarnings("all")
++public class SensorData extends PersistentBase {
++  public static final Schema _SCHEMA = Schema.parse("{\"type\":\"record\",\"name\":\"SensorData\",\"namespace\":\"org.apache.gora.examples.generated\",\"fields\":[{\"name\":\"reading\",\"type\":\"double\"},{\"name\":\"events\",\"type\":{\"type\":\"array\",\"items\":\"int\"}},{\"name\":\"params\",\"type\":{\"type\":\"map\",\"values\":\"string\"}},{\"name\":\"context\",\"type\":{\"type\":\"record\",\"name\":\"SensorContext\",\"fields\":[{\"name\":\"mem\",\"type\":\"double\"},{\"name\":\"power\",\"type\":\"double\"}]}}]}");
++  public static enum Field {
++    READING(0,"reading"),
++    EVENTS(1,"events"),
++    PARAMS(2,"params"),
++    CONTEXT(3,"context"),
++    ;
++    private int index;
++    private String name;
++    Field(int index, String name) {this.index=index;this.name=name;}
++    public int getIndex() {return index;}
++    public String getName() {return name;}
++    public String toString() {return name;}
++  };
++  public static final String[] _ALL_FIELDS = {"reading","events","params","context",};
++  static {
++    PersistentBase.registerFields(SensorData.class, _ALL_FIELDS);
++  }
++  private double reading;
++  private GenericArray<Integer> events;
++  private Map<Utf8,Utf8> params;
++  private SensorContext context;
++  public SensorData() {
++    this(new StateManagerImpl());
++  }
++  public SensorData(StateManager stateManager) {
++    super(stateManager);
++    events = new ListGenericArray<Integer>(getSchema().getField("events").schema());
++    params = new StatefulHashMap<Utf8,Utf8>();
++  }
++  public SensorData newInstance(StateManager stateManager) {
++    return new SensorData(stateManager);
++  }
++  public Schema getSchema() { return _SCHEMA; }
++  public Object get(int _field) {
++    switch (_field) {
++    case 0: return reading;
++    case 1: return events;
++    case 2: return params;
++    case 3: return context;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  @SuppressWarnings(value="unchecked")
++  public void put(int _field, Object _value) {
++    if(isFieldEqual(_field, _value)) return;
++    getStateManager().setDirty(this, _field);
++    switch (_field) {
++    case 0:reading = (Double)_value; break;
++    case 1:events = (GenericArray<Integer>)_value; break;
++    case 2:params = (Map<Utf8,Utf8>)_value; break;
++    case 3:context = (SensorContext)_value; break;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  public double getReading() {
++    return (Double) get(0);
++  }
++  public void setReading(double value) {
++    put(0, value);
++  }
++  public GenericArray<Integer> getEvents() {
++    return (GenericArray<Integer>) get(1);
++  }
++  public void addToEvents(int element) {
++    getStateManager().setDirty(this, 1);
++    events.add(element);
++  }
++  public Map<Utf8, Utf8> getParams() {
++    return (Map<Utf8, Utf8>) get(2);
++  }
++  public Utf8 getFromParams(Utf8 key) {
++    if (params == null) { return null; }
++    return params.get(key);
++  }
++  public void putToParams(Utf8 key, Utf8 value) {
++    getStateManager().setDirty(this, 2);
++    params.put(key, value);
++  }
++  public Utf8 removeFromParams(Utf8 key) {
++    if (params == null) { return null; }
++    getStateManager().setDirty(this, 2);
++    return params.remove(key);
++  }
++  public SensorContext getContext() {
++    return (SensorContext) get(3);
++  }
++  public void setContext(SensorContext value) {
++    put(3, value);
++  }
++}
+diff --git gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorKey.java gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorKey.java
+new file mode 100644
+index 0000000..b2af886
+--- /dev/null
++++ gora-cassandra/src/examples/java/org/apache/gora/examples/generated/SensorKey.java
+@@ -0,0 +1,111 @@
++/**
++ *Licensed to the Apache Software Foundation (ASF) under one
++ *or more contributor license agreements.  See the NOTICE file
++ *distributed with this work for additional information
++ *regarding copyright ownership.  The ASF licenses this file
++ *to you under the Apache License, Version 2.0 (the"
++ *License"); you may not use this file except in compliance
++ *with the License.  You may obtain a copy of the License at
++ *
++  * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ *Unless required by applicable law or agreed to in writing, software
++ *distributed under the License is distributed on an "AS IS" BASIS,
++ *WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *See the License for the specific language governing permissions and
++ *limitations under the License.
++ */
++
++package org.apache.gora.examples.generated;
++
++import java.nio.ByteBuffer;
++import java.util.Map;
++import java.util.HashMap;
++import org.apache.avro.Protocol;
++import org.apache.avro.Schema;
++import org.apache.avro.AvroRuntimeException;
++import org.apache.avro.Protocol;
++import org.apache.avro.util.Utf8;
++import org.apache.avro.ipc.AvroRemoteException;
++import org.apache.avro.generic.GenericArray;
++import org.apache.avro.specific.FixedSize;
++import org.apache.avro.specific.SpecificExceptionBase;
++import org.apache.avro.specific.SpecificRecordBase;
++import org.apache.avro.specific.SpecificRecord;
++import org.apache.avro.specific.SpecificFixed;
++import org.apache.gora.persistency.StateManager;
++import org.apache.gora.persistency.impl.PersistentBase;
++import org.apache.gora.persistency.impl.StateManagerImpl;
++import org.apache.gora.persistency.StatefulHashMap;
++import org.apache.gora.persistency.ListGenericArray;
++
++@SuppressWarnings("all")
++public class SensorKey extends PersistentBase {
++  public static final Schema _SCHEMA = Schema.parse("{\"type\":\"record\",\"name\":\"SensorKey\",\"namespace\":\"org.apache.gora.examples.generated\",\"fields\":[{\"name\":\"sensorId\",\"type\":\"string\"},{\"name\":\"year\",\"type\":\"int\"},{\"name\":\"date\",\"type\":\"long\"}]}");
++  public static enum Field {
++    SENSOR_ID(0,"sensorId"),
++    YEAR(1,"year"),
++    DATE(2,"date"),
++    ;
++    private int index;
++    private String name;
++    Field(int index, String name) {this.index=index;this.name=name;}
++    public int getIndex() {return index;}
++    public String getName() {return name;}
++    public String toString() {return name;}
++  };
++  public static final String[] _ALL_FIELDS = {"sensorId","year","date",};
++  static {
++    PersistentBase.registerFields(SensorKey.class, _ALL_FIELDS);
++  }
++  private Utf8 sensorId;
++  private int year;
++  private long date;
++  public SensorKey() {
++    this(new StateManagerImpl());
++  }
++  public SensorKey(StateManager stateManager) {
++    super(stateManager);
++  }
++  public SensorKey newInstance(StateManager stateManager) {
++    return new SensorKey(stateManager);
++  }
++  public Schema getSchema() { return _SCHEMA; }
++  public Object get(int _field) {
++    switch (_field) {
++    case 0: return sensorId;
++    case 1: return year;
++    case 2: return date;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  @SuppressWarnings(value="unchecked")
++  public void put(int _field, Object _value) {
++    if(isFieldEqual(_field, _value)) return;
++    getStateManager().setDirty(this, _field);
++    switch (_field) {
++    case 0:sensorId = (Utf8)_value; break;
++    case 1:year = (Integer)_value; break;
++    case 2:date = (Long)_value; break;
++    default: throw new AvroRuntimeException("Bad index");
++    }
++  }
++  public Utf8 getSensorId() {
++    return (Utf8) get(0);
++  }
++  public void setSensorId(Utf8 value) {
++    put(0, value);
++  }
++  public int getYear() {
++    return (Integer) get(1);
++  }
++  public void setYear(int value) {
++    put(1, value);
++  }
++  public long getDate() {
++    return (Long) get(2);
++  }
++  public void setDate(long value) {
++    put(2, value);
++  }
++}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraColumn.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraColumn.java
+index d41bf93..3b70987 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraColumn.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraColumn.java
+@@ -29,59 +29,64 @@ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+ /**
+- * Represents a unit of data: a key value pair tagged by a family name
++ * Represents an abstract name/value pair. Column name types are generic. Values might be atomic or composed.
++ *
++ * @param CN
++ *          column name type
+  */
+-public abstract class CassandraColumn {
+-  public static final Logger LOG = LoggerFactory.getLogger(CassandraColumn.class);
++public abstract class CassandraColumn<CN> {
++  private static final Logger LOG = LoggerFactory.getLogger(CassandraColumn.class);
+ 
+-  public static final int SUB = 0;
+-  public static final int SUPER = 1;
+-  
+   private String family;
+   private int type;
+   private Field field;
+   private int unionType;
+ 
+-  public void setUnionType(int pUnionType){
++  public abstract CN getName();
++
++  public abstract Object getValue();
++
++  protected Object fromByteBuffer(Schema schema, ByteBuffer byteBuffer) {
++    Object value = null;
++    Serializer<?> serializer = GoraSerializerTypeInferer.getSerializer(schema);
++    if (serializer == null) {
++      LOG.info("Schema is not supported: " + schema.toString());
++    } else {
++      value = serializer.fromByteBuffer(byteBuffer);
++    }
++    return value;
++  }
++
++  public void setUnionType(int pUnionType) {
+     this.unionType = pUnionType;
+   }
+ 
+-  public int getUnionType(){
++  public int getUnionType() {
+     return unionType;
+   }
+-  
++
+   public String getFamily() {
+     return family;
+   }
++
+   public void setFamily(String family) {
+     this.family = family;
+   }
++
+   public int getType() {
+     return type;
+   }
++
+   public void setType(int type) {
+     this.type = type;
+   }
++
+   public void setField(Field field) {
+     this.field = field;
+   }
+-  
++
+   protected Field getField() {
+     return this.field;
+   }
+-  
+-  public abstract ByteBuffer getName();
+-  public abstract Object getValue();
+-  
+-  protected Object fromByteBuffer(Schema schema, ByteBuffer byteBuffer) {
+-    Object value = null;
+-    Serializer<?> serializer = GoraSerializerTypeInferer.getSerializer(schema);
+-    if (serializer == null) {
+-      LOG.info("Schema is not supported: " + schema.toString());
+-    } else {
+-      value = serializer.fromByteBuffer(byteBuffer);
+-    }
+-    return value;
+-  }
+ 
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraMixedRow.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraMixedRow.java
+new file mode 100644
+index 0000000..ea6b02f
+--- /dev/null
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraMixedRow.java
+@@ -0,0 +1,47 @@
++/**
++ * Licensed to the Apache Software Foundation (ASF) under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership.  The ASF licenses this file
++ * to you under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package org.apache.gora.cassandra.query;
++
++import java.util.ArrayList;
++
++import me.prettyprint.hector.api.beans.DynamicComposite;
++
++/**
++ * List of key value pairs representing a row, tagged by a key.
++ *
++ * @param PK
++ *          the cassandra primary key base class
++ */
++public class CassandraMixedRow<PK> extends ArrayList<CassandraColumn<DynamicComposite>> {
++
++  /** field <code>serialVersionUID</code> */
++  private static final long serialVersionUID = 1L;
++
++  // the primary key identifying the result object
++  private PK key;
++
++  public PK getKey() {
++    return this.key;
++  }
++
++  public void setKey(PK key) {
++    this.key = key;
++  }
++
++}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraQuery.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraQuery.java
+index e51cf2a..24926b4 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraQuery.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraQuery.java
+@@ -26,48 +26,60 @@ import org.apache.gora.query.Query;
+ import org.apache.gora.query.impl.QueryBase;
+ import org.apache.gora.store.DataStore;
+ 
+-public class CassandraQuery<K, T extends PersistentBase> extends QueryBase<K, T> {
++/**
++ * Cassandra-specific Gora query
++ *
++ * @param PK
++ *          cassandra primary key base class
++ * @return T persistent class
++ */
++public class CassandraQuery<PK, T extends PersistentBase> extends QueryBase<PK, T> {
++
++  /** field <code>query</code> holds the gora query */
++  private Query<PK, T> query;
+ 
+-  private Query<K, T> query;
+-  
+   /**
+    * Maps Avro fields to Cassandra columns.
+    */
+   private Map<String, List<String>> familyMap;
+-  
++
+   public CassandraQuery() {
+     super(null);
+   }
+-  public CassandraQuery(DataStore<K, T> dataStore) {
++
++  public CassandraQuery(DataStore<PK, T> dataStore) {
+     super(dataStore);
+   }
++
+   public void setFamilyMap(Map<String, List<String>> familyMap) {
+     this.familyMap = familyMap;
+   }
++
+   public Map<String, List<String>> getFamilyMap() {
+     return familyMap;
+   }
+-  
++
+   /**
+-   * @param family the family name
+-   * @return an array of the query column names belonging to the family
++   * @param family
++   *          the family name
++   * @return an array of the query column qualifiers belonging to the family
+    */
+-  public String[] getColumns(String family) {
+-    
+-    List<String> columnList = familyMap.get(family);
+-    String[] columns = new String[columnList.size()];
+-    for (int i = 0; i < columns.length; ++i) {
+-      columns[i] = columnList.get(i);
++  public String[] getColumnQualifiers(String family) {
++
++    List<String> columnQualifierList = familyMap.get(family);
++    String[] columnQualifiers = new String[columnQualifierList.size()];
++    for (int i = 0; i < columnQualifiers.length; ++i) {
++      columnQualifiers[i] = columnQualifierList.get(i);
+     }
+-    return columns;
++    return columnQualifiers;
+   }
+-  public Query<K, T> getQuery() {
++
++  public Query<PK, T> getQuery() {
+     return query;
+   }
+-  public void setQuery(Query<K, T> query) {
++
++  public void setQuery(Query<PK, T> query) {
+     this.query = query;
+   }
+-  
+-  
+ 
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResult.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResult.java
+index cd17453..31600d9 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResult.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResult.java
+@@ -19,138 +19,163 @@
+ package org.apache.gora.cassandra.query;
+ 
+ import java.io.IOException;
++import java.util.Arrays;
++import java.util.HashSet;
+ import java.util.List;
+ import java.util.Map;
++import java.util.Set;
+ 
+-import me.prettyprint.cassandra.serializers.StringSerializer;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ 
+ import org.apache.avro.Schema;
+ import org.apache.avro.Schema.Field;
+ import org.apache.avro.Schema.Type;
++import org.apache.gora.cassandra.store.CassandraKeyMapper;
+ import org.apache.gora.cassandra.store.CassandraStore;
+ import org.apache.gora.persistency.impl.PersistentBase;
+ import org.apache.gora.query.Query;
+ import org.apache.gora.query.impl.ResultBase;
+-import org.apache.gora.store.DataStore;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+-public class CassandraResult<K, T extends PersistentBase> extends ResultBase<K, T> {
+-  public static final Logger LOG = LoggerFactory.getLogger(CassandraResult.class);
+-  
+-  private int rowNumber;
++/**
++ * Represents the result of a cassandra query
++ *
++ * @param PK
++ *          Cassandra primary key base type
++ * @param T
++ *          persistent type
++ */
++public class CassandraResult<PK, T extends PersistentBase> extends ResultBase<PK, T> {
++  private static final Logger LOG = LoggerFactory.getLogger(CassandraResult.class);
+ 
+-  private CassandraResultSet<K> cassandraResultSet;
+-  
+-  /**
+-   * Maps Cassandra columns to Avro fields.
+-   */
++  // pointer to current position in the result list
++  private int resultListIndex;
++
++  // the underlying result list holding slices (formerly named rows) of mixed columns
++  private CassandraResultList<PK> cassandraResultList;
++
++  // Maps Cassandra columns to Avro fields.
+   private Map<String, String> reverseMap;
+ 
+-  public CassandraResult(DataStore<K, T> dataStore, Query<K, T> query) {
++  private CassandraKeyMapper<PK, T> keyMapper;
++
++  public CassandraResult(CassandraStore<PK, T> dataStore, Query<PK, T> query) {
+     super(dataStore, query);
++    this.keyMapper = dataStore.getKeyMapper();
+   }
+ 
+   @Override
+   protected boolean nextInner() throws IOException {
+-    if (this.rowNumber < this.cassandraResultSet.size()) {
++    if (this.resultListIndex < this.cassandraResultList.size()) {
+       updatePersistent();
+     }
+-    ++this.rowNumber;
+-    return (this.rowNumber <= this.cassandraResultSet.size());
++    ++this.resultListIndex;
++    return (this.resultListIndex <= this.cassandraResultList.size());
+   }
+-  
++
+   /**
+    * Gets the column containing the type of the union type element stored.
+-   * TODO: This might seem too much of a overhead if we consider that N rows have M columns,
+-   *       this might have to be reviewed to get the specific column in O(1)
++   *
++   * TODO: This might seem too much of an overhead if we consider that N slices have M columns, this
++   * might have to be reviewed to get the specific column in O(1)
++   *
+    * @param pFieldName
+-   * @param pCassandraRow
++   * @param pColumns
+    * @return
+    */
+-  private CassandraColumn getUnionTypeColumn(String pFieldName, Object[] pCassandraRow){
+-    
+-    for (int iCnt = 0; iCnt < pCassandraRow.length; iCnt++){
+-      CassandraColumn cColumn = (CassandraColumn)pCassandraRow[iCnt];
+-      String columnName = StringSerializer.get().fromByteBuffer(cColumn.getName());
++  private CassandraColumn<DynamicComposite> getUnionTypeColumn(String pFieldName, CassandraColumn<DynamicComposite>[] pColumns) {
++    for (int iCnt = 0; iCnt < pColumns.length; iCnt++) {
++      CassandraColumn<DynamicComposite> cColumn = pColumns[iCnt];
++      String columnName = keyMapper.getFieldQualifier(cColumn.getName());
+       if (pFieldName.equals(columnName))
+         return cColumn;
+     }
+     return null;
+   }
+ 
+-
+   /**
+    * Load key/value pair from Cassandra row to Avro record.
++   *
+    * @throws IOException
+    */
+   private void updatePersistent() throws IOException {
+-    CassandraRow<K> cassandraRow = this.cassandraResultSet.get(this.rowNumber);
+-    
++    CassandraMixedRow<PK> mixedResultRow = this.cassandraResultList.get(this.resultListIndex);
++
+     // load key
+-    this.key = cassandraRow.getKey();
+-    
++    this.key = mixedResultRow.getKey();
++
+     // load value
+     Schema schema = this.persistent.getSchema();
+     List<Field> fields = schema.getFields();
+-    
+-    for (CassandraColumn cassandraColumn: cassandraRow) {
+-      
+-      // get field name
++
++    for (CassandraColumn<DynamicComposite> cassandraColumn : mixedResultRow) {
+       String family = cassandraColumn.getFamily();
+-      String fieldName = this.reverseMap.get(family + ":" + StringSerializer.get().fromByteBuffer(cassandraColumn.getName()));
+-      
+-      if (fieldName != null ){
+-        // get field
+-        int pos = this.persistent.getFieldIndex(fieldName);
+-        Field field = fields.get(pos);
+-        Type fieldType = field.schema().getType();
+-        System.out.println(StringSerializer.get().fromByteBuffer(cassandraColumn.getName()) + fieldName + " " + fieldType.name());
+-        if (fieldType == Type.UNION){
+-          // TODO getting UNION stored type
+-          // TODO get value of UNION stored type. This field does not need to be written back to the store
+-          cassandraColumn.setUnionType(getNonNullTypePos(field.schema().getTypes()));
+-        }
+-
+-        // get value
+-        cassandraColumn.setField(field);
+-        Object value = cassandraColumn.getValue();
+-
+-        this.persistent.put(pos, value);
+-        // this field does not need to be written back to the store
+-        this.persistent.clearDirty(pos);
++      DynamicComposite columnName = cassandraColumn.getName();
++      String qualifier = keyMapper.getFieldQualifier(columnName);
++      String fieldName = this.reverseMap.get(family + ":" + qualifier);
++
++      // filter columns with respect to query fields
++      // TODO look for some way to filter natively at query execution time
++      if (fieldName == null) {
++        continue;
+       }
+-      else
+-        LOG.debug("FieldName was null while iterating CassandraRow and using Avro Union type");
++
++      // get field
++      int pos = this.persistent.getFieldIndex(fieldName);
++      Field field = fields.get(pos);
++
++      if (field == null) {
++        LOG.debug("Field with name '" + fieldName + "' could not be matched to schema field.");
++        return;
++      }
++
++      Type fieldType = field.schema().getType();
++
++      if (fieldType == Type.UNION) {
++        // TODO getting UNION stored type
++        // TODO get value of UNION stored type. This field does not need to be written back to the
++        // store
++        cassandraColumn.setUnionType(getNonNullTypePos(field.schema().getTypes()));
++      }
++
++      // get value
++      cassandraColumn.setField(field);
++      Object value = cassandraColumn.getValue();
++
++      // adjust value schema
++
++      this.persistent.put(pos, value);
++      // this field does not need to be written back to the store
++      this.persistent.clearDirty(pos);
+     }
+ 
+   }
+ 
+-  private int getNonNullTypePos(List<Schema> pTypes){
++  // TODO review UNION handling
++  private int getNonNullTypePos(List<Schema> pTypes) {
+     int iCnt = 0;
+-    for (Schema sch :  pTypes)
++    for (Schema sch : pTypes)
+       if (!sch.getName().equals("null"))
+         return iCnt;
+-      else 
++      else
+         iCnt++;
+     return CassandraStore.DEFAULT_UNION_SCHEMA;
+   }
+ 
+   @Override
+   public void close() throws IOException {
+-    // TODO Auto-generated method stub
+-    
+   }
+ 
+   @Override
+   public float getProgress() throws IOException {
+-    return (((float) this.rowNumber) / this.cassandraResultSet.size());
++    return (((float) this.resultListIndex) / this.cassandraResultList.size());
+   }
+ 
+-  public void setResultSet(CassandraResultSet<K> cassandraResultSet) {
+-    this.cassandraResultSet = cassandraResultSet;
++  public void setResultSet(CassandraResultList<PK> cassandraResultList) {
++    this.cassandraResultList = cassandraResultList;
+   }
+-  
++
+   public void setReverseMap(Map<String, String> reverseMap) {
+     this.reverseMap = reverseMap;
+   }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultList.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultList.java
+new file mode 100644
+index 0000000..3609f54
+--- /dev/null
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultList.java
+@@ -0,0 +1,53 @@
++/**
++ * Licensed to the Apache Software Foundation (ASF) under one
++ * or more contributor license agreements.  See the NOTICE file
++ * distributed with this work for additional information
++ * regarding copyright ownership.  The ASF licenses this file
++ * to you under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance
++ * with the License.  You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package org.apache.gora.cassandra.query;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++
++/**
++ * List data structure to keep the order coming from the Cassandra selects.
++ *
++ * @param PK
++ *          Cassandra primary key base type
++ */
++public class CassandraResultList<PK> extends ArrayList<CassandraMixedRow<PK>> {
++  /** field <code>serialVersionUID</code> */
++  private static final long serialVersionUID = 1L;
++
++  /**
++   * Maps keys to indices in the list.
++   */
++  private HashMap<PK, Integer> indexMap = new HashMap<PK, Integer>();
++
++  public CassandraMixedRow<PK> getMixedRow(PK key) {
++    Integer integer = this.indexMap.get(key);
++    if (integer == null) {
++      return null;
++    }
++
++    return this.get(integer);
++  }
++
++  public void putMixedRow(PK key, CassandraMixedRow<PK> cassandraRow) {
++    this.add(cassandraRow);
++    this.indexMap.put(key, this.size() - 1);
++  }
++
++}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultSet.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultSet.java
+deleted file mode 100644
+index 5fc4e6c..0000000
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraResultSet.java
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/**
+- * Licensed to the Apache Software Foundation (ASF) under one
+- * or more contributor license agreements.  See the NOTICE file
+- * distributed with this work for additional information
+- * regarding copyright ownership.  The ASF licenses this file
+- * to you under the Apache License, Version 2.0 (the
+- * "License"); you may not use this file except in compliance
+- * with the License.  You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package org.apache.gora.cassandra.query;
+-
+-import java.util.ArrayList;
+-import java.util.HashMap;
+-
+-/**
+- * List data structure to keep the order coming from the Cassandra selects.
+- */
+-public class CassandraResultSet<K> extends ArrayList<CassandraRow<K>> {
+-
+-  /**
+-   * 
+-   */
+-  private static final long serialVersionUID = -7620939600192859652L;
+-
+-  /**
+-   * Maps keys to indices in the list.
+-   */
+-  private HashMap<K, Integer> indexMap = new HashMap<K, Integer>();
+-
+-  public CassandraRow<K> getRow(K key) {
+-    Integer integer = this.indexMap.get(key);
+-    if (integer == null) {
+-      return null;
+-    }
+-    
+-    return this.get(integer);
+-  }
+-
+-  public void putRow(K key, CassandraRow<K> cassandraRow) {
+-    this.add(cassandraRow);
+-    this.indexMap.put(key, this.size()-1);
+-  } 
+-  
+-
+-}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraRow.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraRow.java
+deleted file mode 100644
+index 685d8e4..0000000
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraRow.java
++++ /dev/null
+@@ -1,58 +0,0 @@
+-/**
+- * Licensed to the Apache Software Foundation (ASF) under one
+- * or more contributor license agreements.  See the NOTICE file
+- * distributed with this work for additional information
+- * regarding copyright ownership.  The ASF licenses this file
+- * to you under the Apache License, Version 2.0 (the
+- * "License"); you may not use this file except in compliance
+- * with the License.  You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package org.apache.gora.cassandra.query;
+-
+-import java.util.ArrayList;
+-
+-import me.prettyprint.cassandra.serializers.StringSerializer;
+-
+-
+-/**
+- * List of key value pairs representing a row, tagged by a key.
+- */
+-public class CassandraRow<K> extends ArrayList<CassandraColumn> {
+-
+-  /**
+-   * 
+-   */
+-  private static final long serialVersionUID = -7620939600192859652L;
+-  private K key;
+-
+-  public K getKey() {
+-    return this.key;
+-  }
+-
+-  public void setKey(K key) {
+-    this.key = key;
+-  }
+-  
+-  /**
+-   * Gets a specific CassandraColumn within a row using its name
+-   * @param pCassandraColumnName
+-   * @return CassandraColumn
+-   */
+-  public CassandraColumn getCassandraColumn(String pCassandraColumnName){
+-    for (CassandraColumn cColumn: this)
+-      if ( pCassandraColumnName.equals(StringSerializer.get().fromByteBuffer(cColumn.getName())) )
+-        return cColumn;
+-    
+-    return null;
+-  }
+-
+-}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSubColumn.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSubColumn.java
+index 135d47d..ff9d7bb 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSubColumn.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSubColumn.java
+@@ -19,62 +19,64 @@
+ package org.apache.gora.cassandra.query;
+ 
+ import java.nio.ByteBuffer;
+-import java.nio.CharBuffer;
+-import java.nio.charset.CharacterCodingException;
+-import java.nio.charset.Charset;
+-import java.nio.charset.CharsetEncoder;
+-
+-import me.prettyprint.cassandra.serializers.FloatSerializer;
+-import me.prettyprint.cassandra.serializers.DoubleSerializer;
+-import me.prettyprint.cassandra.serializers.IntegerSerializer;
+-import me.prettyprint.cassandra.serializers.LongSerializer;
+-import me.prettyprint.cassandra.serializers.StringSerializer;
++
+ import me.prettyprint.hector.api.beans.HColumn;
+ 
+ import org.apache.avro.Schema;
+ import org.apache.avro.Schema.Field;
+ import org.apache.avro.Schema.Type;
+ import org.apache.avro.generic.GenericArray;
+-import org.apache.avro.generic.GenericData;
+-import org.apache.avro.util.Utf8;
+ import org.apache.gora.cassandra.serializers.GenericArraySerializer;
+ import org.apache.gora.cassandra.serializers.StatefulHashMapSerializer;
+-import org.apache.gora.cassandra.serializers.TypeUtils;
+ import org.apache.gora.cassandra.store.CassandraStore;
+ import org.apache.gora.persistency.StatefulHashMap;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+-public class CassandraSubColumn extends CassandraColumn {
+-  public static final Logger LOG = LoggerFactory.getLogger(CassandraSubColumn.class);
++/**
++ * Represents an abstract name/value pair. Column name types are generic. Values are atomic.
++ *
++ * @param CN
++ *          column name type
++ */
++public class CassandraSubColumn<CN> extends CassandraColumn<CN> {
++  private static final Logger LOG = LoggerFactory.getLogger(CassandraSubColumn.class);
+ 
+-  private static final String ENCODING = "UTF-8";
+-  
+-  private static CharsetEncoder charsetEncoder = Charset.forName(ENCODING).newEncoder();;
++  // Hector column holding the data
++  private HColumn<CN, ByteBuffer> hColumn;
+ 
++  @Override
++  public CN getName() {
++    return hColumn.getName();
++  }
+ 
+-  /**
+-   * Key-value pair containing the raw data.
+-   */
+-  private HColumn<ByteBuffer, ByteBuffer> hColumn;
++  public void setValue(HColumn<CN, ByteBuffer> hColumn) {
++    this.hColumn = hColumn;
++  }
+ 
+-  public ByteBuffer getName() {
+-    return hColumn.getName();
++  protected ByteBuffer getBytes() {
++    return hColumn.getValue();
+   }
+ 
+   /**
+-   * Deserialize a String into an typed Object, according to the field schema.
++   * Deserialize byteBuffer into a typed Object, according to the field schema.
+    * @see org.apache.gora.cassandra.query.CassandraColumn#getValue()
+    */
++  @SuppressWarnings("rawtypes")
+   public Object getValue() {
+     Field field = getField();
+     Schema fieldSchema = field.schema();
+     Type type = fieldSchema.getType();
+-    ByteBuffer byteBuffer = hColumn.getValue();
++
++    ByteBuffer byteBuffer = getBytes();
++
+     if (byteBuffer == null) {
++      LOG.debug("Column " + toString() + " is null.");
+       return null;
+     }
++
+     Object value = null;
++
+     if (type == Type.ARRAY) {
+       GenericArraySerializer serializer = GenericArraySerializer.get(fieldSchema.getElementType());
+       GenericArray genericArray = serializer.fromByteBuffer(byteBuffer);
+@@ -94,14 +96,14 @@ public class CassandraSubColumn extends CassandraColumn {
+ 
+     return value;
+   }
+-  
++
+   /**
+    * Gets the specific schema for a union data type
+    * @param pSchemaPos
+    * @param pSchema
+    * @return
+    */
+-  private Schema getUnionSchema (int pSchemaPos, Schema pSchema){
++  protected Schema getUnionSchema (int pSchemaPos, Schema pSchema){
+     Schema unionSchema = pSchema.getTypes().get(pSchemaPos);
+     // default union element
+     if ( unionSchema == null )
+@@ -109,7 +111,4 @@ public class CassandraSubColumn extends CassandraColumn {
+     return unionSchema;
+   }
+ 
+-  public void setValue(HColumn<ByteBuffer, ByteBuffer> hColumn) {
+-    this.hColumn = hColumn;
+-  }
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSuperColumn.java gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSuperColumn.java
+index f944a3d..0b7be46 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSuperColumn.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/query/CassandraSuperColumn.java
+@@ -21,15 +21,14 @@ package org.apache.gora.cassandra.query;
+ import java.nio.ByteBuffer;
+ import java.util.Map;
+ 
+-import me.prettyprint.cassandra.serializers.IntegerSerializer;
+ import me.prettyprint.cassandra.serializers.StringSerializer;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ import me.prettyprint.hector.api.beans.HColumn;
+ import me.prettyprint.hector.api.beans.HSuperColumn;
+ 
+ import org.apache.avro.Schema;
+ import org.apache.avro.Schema.Field;
+ import org.apache.avro.Schema.Type;
+-import org.apache.avro.generic.GenericArray;
+ import org.apache.avro.util.Utf8;
+ import org.apache.gora.cassandra.serializers.Utf8Serializer;
+ import org.apache.gora.persistency.ListGenericArray;
+@@ -38,94 +37,113 @@ import org.apache.gora.persistency.impl.PersistentBase;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+-public class CassandraSuperColumn extends CassandraColumn {
+-  public static final Logger LOG = LoggerFactory.getLogger(CassandraSuperColumn.class);
++/**
++ * Represents a name/value pair. Column names are dynamic composites. Values are complex.
++ *
++ * @param CN
++ *          column name type
++ */
++public class CassandraSuperColumn extends CassandraColumn<DynamicComposite> {
++  private static final Logger LOG = LoggerFactory.getLogger(CassandraSuperColumn.class);
++
++  private HSuperColumn<DynamicComposite, ByteBuffer, ByteBuffer> hSuperColumn;
+ 
+-  private HSuperColumn<String, ByteBuffer, ByteBuffer> hSuperColumn;
+-  
+-  public ByteBuffer getName() {
+-    return StringSerializer.get().toByteBuffer(hSuperColumn.getName());
++  public DynamicComposite getName() {
++    return hSuperColumn.getName();
+   }
+ 
++  @SuppressWarnings({ "rawtypes", "unchecked" })
+   public Object getValue() {
+     Field field = getField();
+     Schema fieldSchema = field.schema();
+     Type type = fieldSchema.getType();
+-    
++
+     Object value = null;
+-    
++
+     switch (type) {
+-      case ARRAY:
+-        ListGenericArray array = new ListGenericArray(fieldSchema.getElementType());
+-        
+-        for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
+-          ByteBuffer memberByteBuffer = hColumn.getValue();
+-          Object memberValue = fromByteBuffer(fieldSchema.getElementType(), hColumn.getValue());
+-          // int i = IntegerSerializer().get().fromByteBuffer(hColumn.getName());
+-          array.add(memberValue);      
+-        }
+-        value = array;
+-        
++    case ARRAY:
++      // BUGfix: param was fieldSchema.getElementType() = wrong use of constructor
++      ListGenericArray array = new ListGenericArray(fieldSchema);
++
++      for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
++        ByteBuffer memberByteBuffer = hColumn.getValue();
++        Object memberValue = fromByteBuffer(fieldSchema.getElementType(), memberByteBuffer);
++        array.add(memberValue);
++      }
++      value = array;
++
++      break;
++    case MAP:
++      Map<Utf8, Object> map = new StatefulHashMap<Utf8, Object>();
++
++      for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
++        ByteBuffer memberByteBuffer = hColumn.getValue();
++        Object memberValue = null;
++        memberValue = fromByteBuffer(fieldSchema.getValueType(), memberByteBuffer);
++        Utf8 memberName = Utf8Serializer.get().fromByteBuffer(hColumn.getName());
++        map.put(memberName, memberValue);
++      }
++      value = map;
++
++      break;
++    case RECORD:
++      String fullName = fieldSchema.getFullName();
++
++      // load persistent class
++      Class<?> clazz = null;
++      try {
++        clazz = Class.forName(fullName);
++      } catch (ClassNotFoundException cnfe) {
++        LOG.warn("Unable to load class " + fullName, cnfe);
+         break;
+-      case MAP:
+-        Map<Utf8, Object> map = new StatefulHashMap<Utf8, Object>();
+-        
+-        for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
+-          ByteBuffer memberByteBuffer = hColumn.getValue();
+-          Object memberValue = null;
+-          memberValue = fromByteBuffer(fieldSchema.getValueType(), hColumn.getValue());
+-          map.put(Utf8Serializer.get().fromByteBuffer(hColumn.getName()), memberValue);      
+-        }
+-        value = map;
+-        
++      }
++
++      // instantiate persistent class
++      try {
++        value = clazz.newInstance();
++      } catch (InstantiationException ie) {
++        LOG.warn("Instantiation error", ie);
+         break;
+-      case RECORD:
+-        String fullName = fieldSchema.getFullName();
+-        
+-        Class<?> claz = null;
+-        try {
+-          claz = Class.forName(fullName);
+-        } catch (ClassNotFoundException cnfe) {
+-          LOG.warn("Unable to load class " + fullName, cnfe);
+-          break;
+-        }
++      } catch (IllegalAccessException iae) {
++        LOG.warn("Illegal access error", iae);
++        break;
++      }
+ 
+-        try {
+-          value = claz.newInstance();          
+-        } catch (InstantiationException ie) {
+-          LOG.warn("Instantiation error", ie);
+-          break;
+-        } catch (IllegalAccessException iae) {
+-          LOG.warn("Illegal access error", iae);
+-          break;
+-        }
+-        
+-        // we updated the value instance, now update its members
+-        if (value instanceof PersistentBase) {
+-          PersistentBase record = (PersistentBase) value;
+-
+-          for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
+-            String memberName = StringSerializer.get().fromByteBuffer(hColumn.getName());
+-            if (memberName == null || memberName.length() == 0) {
+-              LOG.warn("member name is null or empty.");
+-              continue;
+-            }
+-            Field memberField = fieldSchema.getField(memberName);
+-            CassandraSubColumn cassandraColumn = new CassandraSubColumn();
+-            cassandraColumn.setField(memberField);
+-            cassandraColumn.setValue(hColumn);
+-            record.put(record.getFieldIndex(memberName), cassandraColumn.getValue());
++      // we created the empty persistent object, now update its members
++      if (value instanceof PersistentBase) {
++        PersistentBase record = (PersistentBase) value;
++
++        for (HColumn<ByteBuffer, ByteBuffer> hColumn : this.hSuperColumn.getColumns()) {
++
++          String memberName = StringSerializer.get().fromByteBuffer(hColumn.getName());
++          if (memberName == null || memberName.length() == 0) {
++            LOG.warn("member name is null or empty.");
++            continue;
++          }
++
++          Field memberField = fieldSchema.getField(memberName);
++          if (memberField == null) {
++            LOG.warn("member name doesn't match the schema.");
++            continue;
+           }
++
++          // create a sub column in order to reuse the basic deserializer
++          CassandraSubColumn<ByteBuffer> cassandraColumn = new CassandraSubColumn<ByteBuffer>();
++          cassandraColumn.setField(memberField);
++          cassandraColumn.setValue(hColumn);
++
++          record.put(record.getFieldIndex(memberName), cassandraColumn.getValue());
+         }
+-        break;
+-      default:
+-        LOG.info("Type not supported: " + type);
++      }
++      break;
++    default:
++      LOG.info("Type not supported: " + type);
+     }
+-    
++
+     return value;
+   }
+ 
+-  public void setValue(HSuperColumn<String, ByteBuffer, ByteBuffer> hSuperColumn) {
++  public void setValue(HSuperColumn<DynamicComposite, ByteBuffer, ByteBuffer> hSuperColumn) {
+     this.hSuperColumn = hSuperColumn;
+   }
+ 
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraClient.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraClient.java
+index a9c1a4f..6b336d5 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraClient.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraClient.java
+@@ -20,82 +20,106 @@ package org.apache.gora.cassandra.store;
+ 
+ import java.nio.ByteBuffer;
+ import java.util.ArrayList;
+-import java.util.Arrays;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
+ 
+ import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
+ import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
++import me.prettyprint.cassandra.serializers.DynamicCompositeSerializer;
+ import me.prettyprint.cassandra.serializers.IntegerSerializer;
+ import me.prettyprint.cassandra.serializers.StringSerializer;
+ import me.prettyprint.cassandra.service.CassandraHostConfigurator;
+ import me.prettyprint.hector.api.Cluster;
++import me.prettyprint.hector.api.HConsistencyLevel;
+ import me.prettyprint.hector.api.Keyspace;
++import me.prettyprint.hector.api.Serializer;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ import me.prettyprint.hector.api.beans.OrderedRows;
+ import me.prettyprint.hector.api.beans.OrderedSuperRows;
+ import me.prettyprint.hector.api.beans.Row;
+ import me.prettyprint.hector.api.beans.SuperRow;
+ import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+-import me.prettyprint.hector.api.ddl.ComparatorType;
+ import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
+ import me.prettyprint.hector.api.factory.HFactory;
+ import me.prettyprint.hector.api.mutation.Mutator;
+ import me.prettyprint.hector.api.query.QueryResult;
+ import me.prettyprint.hector.api.query.RangeSlicesQuery;
+ import me.prettyprint.hector.api.query.RangeSuperSlicesQuery;
+-import me.prettyprint.hector.api.HConsistencyLevel;
+-import me.prettyprint.hector.api.Serializer;
+ 
+-import org.apache.avro.Schema;
+-import org.apache.avro.Schema.Type;
+ import org.apache.avro.generic.GenericArray;
+ import org.apache.avro.util.Utf8;
+ import org.apache.gora.cassandra.query.CassandraQuery;
+-import org.apache.gora.cassandra.serializers.GenericArraySerializer;
+ import org.apache.gora.cassandra.serializers.GoraSerializerTypeInferer;
+-import org.apache.gora.cassandra.serializers.TypeUtils;
+ import org.apache.gora.mapreduce.GoraRecordReader;
+-import org.apache.gora.persistency.Persistent;
+-import org.apache.gora.persistency.impl.PersistentBase;
+ import org.apache.gora.persistency.State;
+ import org.apache.gora.persistency.StatefulHashMap;
++import org.apache.gora.persistency.impl.PersistentBase;
+ import org.apache.gora.query.Query;
+-import org.apache.gora.util.ByteUtils;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+-public class CassandraClient<K, T extends PersistentBase> {
++public class CassandraClient<PK, T extends PersistentBase> {
+   public static final Logger LOG = LoggerFactory.getLogger(CassandraClient.class);
+-  
++
++  private static final String FIELD_SCAN_COLUMN_RANGE_DELIMITER_START = "!";
++  private static final String FIELD_SCAN_COLUMN_RANGE_DELIMITER_END = "~";
++
++  // define types of queries possible
++  private enum CassandraQueryType {
++    SINGLE, ROWSCAN, COLUMNSCAN, MULTISCAN, ROWSCAN_PRIMITIVE, SINGLE_PRIMITIVE;
++  }
++
++  // hector cluster representation
+   private Cluster cluster;
++
++  // hector keyspace representation (long lived)
+   private Keyspace keyspace;
+-  private Mutator<K> mutator;
+-  private Class<K> keyClass;
+-  private Class<T> persistentClass;
+-  
++
++  // mutator
++  private Mutator<DynamicComposite> mutator;
++
++  // general mapping registry
+   private CassandraMapping cassandraMapping = null;
+ 
+-  private Serializer<K> keySerializer;
+-  
+-  public void initialize(Class<K> keyClass, Class<T> persistentClass) throws Exception {
+-    this.keyClass = keyClass;
++  // key mapping functions
++  private CassandraKeyMapper<PK, T> keyMapper;
++
++  // primary key class (not to confuse with Cassandra row key)
++  private Class<PK> primaryKeyClass;
++
++  // persistent class
++  private Class<T> persistentClass;
++
++  public void initialize(Class<PK> keyClass, Class<T> persistentClass) throws Exception {
++    this.setPrimaryKeyClass(keyClass);
++    this.setPersistentClass(persistentClass);
+ 
+     // get cassandra mapping with persistent class
+-    this.persistentClass = persistentClass;
+     this.cassandraMapping = CassandraMappingManager.getManager().get(persistentClass);
+-    // LOG.info("persistentClass=" + persistentClass.getName() + " -> cassandraMapping=" + cassandraMapping);
+ 
++    // init hector represetation of cassandra cluster
+     this.cluster = HFactory.getOrCreateCluster(this.cassandraMapping.getClusterName(), new CassandraHostConfigurator(this.cassandraMapping.getHostName()));
+-    
++
+     // add keyspace to cluster
+     checkKeyspace();
+-    
+-    // Just create a Keyspace object on the client side, corresponding to an already existing keyspace with already created column families.
+-    this.keyspace = HFactory.createKeyspace(this.cassandraMapping.getKeyspaceName(), this.cluster);
+-    
+-    this.keySerializer = GoraSerializerTypeInferer.getSerializer(keyClass);
+-    this.mutator = HFactory.createMutator(this.keyspace, this.keySerializer);
++
++    // Set a client-side customized default Consistency Level for all column families
++    ConfigurableConsistencyLevel configurableConsistencyLevel = new ConfigurableConsistencyLevel();
++    Map<String, HConsistencyLevel> clmap = new HashMap<String, HConsistencyLevel>();
++    for (String familyName : this.cassandraMapping.getFamilies())
++      clmap.put(familyName, HConsistencyLevel.ONE);
++    configurableConsistencyLevel.setReadCfConsistencyLevels(clmap);
++    configurableConsistencyLevel.setWriteCfConsistencyLevels(clmap);
++
++    // initialize long-lived hector keyspace representation on client side
++    keyspace = HFactory.createKeyspace(this.getKeyspaceName(), this.cluster, configurableConsistencyLevel);
++
++    // initialize key mapper
++    keyMapper = new CassandraKeyMapper<PK, T>(primaryKeyClass, cassandraMapping);
++
++    // initialize mutator
++    mutator = HFactory.createMutator(this.keyspace, new DynamicCompositeSerializer());
+   }
+ 
+   /**
+@@ -105,66 +129,31 @@ public class CassandraClient<K, T extends PersistentBase> {
+     KeyspaceDefinition keyspaceDefinition = this.cluster.describeKeyspace(this.cassandraMapping.getKeyspaceName());
+     return (keyspaceDefinition != null);
+   }
+-  
++
+   /**
+-   * Check if keyspace already exists. If not, create it.
+-   * In this method, we also utilise Hector's {@ConfigurableConsistencyLevel}
+-   * logic. It is set by passing a ConfigurableConsistencyLevel object right 
+-   * when the Keyspace is created. Currently consistency level is .ONE which 
+-   * permits consistency to wait until one replica has responded. 
++   * Check if plausible keyspace already exists. If not, create it.
+    */
+   public void checkKeyspace() {
+-    // "describe keyspace <keyspaceName>;" query
+     KeyspaceDefinition keyspaceDefinition = this.cluster.describeKeyspace(this.cassandraMapping.getKeyspaceName());
+-    if (keyspaceDefinition == null) {
+-      List<ColumnFamilyDefinition> columnFamilyDefinitions = this.cassandraMapping.getColumnFamilyDefinitions();      
+ 
+-      // GORA-197
+-      for (ColumnFamilyDefinition cfDef : columnFamilyDefinitions) {
+-        cfDef.setComparatorType(ComparatorType.BYTESTYPE);
+-      }
++    if (keyspaceDefinition == null) {
++      // load keyspace definition
++      List<ColumnFamilyDefinition> columnFamilyDefinitions = this.cassandraMapping.getColumnFamilyDefinitions();
++      keyspaceDefinition = HFactory.createKeyspaceDefinition(this.cassandraMapping.getKeyspaceName(), this.cassandraMapping.getReplicationStrategy(),
++          this.cassandraMapping.getReplicationFactor(), columnFamilyDefinitions);
+ 
+-      keyspaceDefinition = HFactory.createKeyspaceDefinition(this.cassandraMapping.getKeyspaceName(), "org.apache.cassandra.locator.SimpleStrategy", 1, columnFamilyDefinitions);      
++      // create keyspace on server
+       this.cluster.addKeyspace(keyspaceDefinition, true);
+-      // LOG.info("Keyspace '" + this.cassandraMapping.getKeyspaceName() + "' in cluster '" + this.cassandraMapping.getClusterName() + "' was created on host '" + this.cassandraMapping.getHostName() + "'");
+-      
+-      // Create a customized Consistency Level
+-      ConfigurableConsistencyLevel configurableConsistencyLevel = new ConfigurableConsistencyLevel();
+-      Map<String, HConsistencyLevel> clmap = new HashMap<String, HConsistencyLevel>();
+-
+-      // Define CL.ONE for ColumnFamily "ColumnFamily"
+-      clmap.put("ColumnFamily", HConsistencyLevel.ONE);
+-
+-      // In this we use CL.ONE for read and writes. But you can use different CLs if needed.
+-      configurableConsistencyLevel.setReadCfConsistencyLevels(clmap);
+-      configurableConsistencyLevel.setWriteCfConsistencyLevels(clmap);
+-
+-      // Then let the keyspace know
+-      HFactory.createKeyspace("Keyspace", this.cluster, configurableConsistencyLevel);
+-
+-      keyspaceDefinition = null;
+-    }
+-    else {
++      LOG.info("Keyspace '" + this.cassandraMapping.getKeyspaceName() + "' in cluster '" + this.cassandraMapping.getClusterName() + "' was created on host '"
++          + this.cassandraMapping.getHostName() + "'");
++    } else {
++      // simple plausibility test for keyspace corruption
+       List<ColumnFamilyDefinition> cfDefs = keyspaceDefinition.getCfDefs();
+-      if (cfDefs == null || cfDefs.size() == 0) {
+-        LOG.warn(keyspaceDefinition.getName() + " does not have any column family.");
+-      }
+-      else {
+-        for (ColumnFamilyDefinition cfDef : cfDefs) {
+-          ComparatorType comparatorType = cfDef.getComparatorType();
+-          if (! comparatorType.equals(ComparatorType.BYTESTYPE)) {
+-            // GORA-197
+-            LOG.warn("The comparator type of " + cfDef.getName() + " column family is " + comparatorType.getTypeName()
+-                   + ", not BytesType. It may cause a fatal error on column validation later.");
+-          }
+-          else {
+-            // LOG.info("The comparator type of " + cfDef.getName() + " column family is " + comparatorType.getTypeName() + ".");
+-          }
+-        }
+-      }
+-    }
++      if (cfDefs == null || cfDefs.size() == 0)
++        LOG.warn(keyspaceDefinition.getName() + " does not contain any column families.");
++    }// if
+   }
+-  
++
+   /**
+    * Drop keyspace.
+    */
+@@ -175,127 +164,157 @@ public class CassandraClient<K, T extends PersistentBase> {
+ 
+   /**
+    * Insert a field in a column.
+-   * @param key the row key
+-   * @param fieldName the field name
+-   * @param value the field value.
++   *
++   * @param key
++   *          the row key
++   * @param fieldName
++   *          the field name
++   * @param value
++   *          the field value.
+    */
+-  public void addColumn(K key, String fieldName, Object value) {
++  public void addColumn(PK key, String fieldName, Object value) {
+     if (value == null) {
+       return;
+     }
+ 
+-    ByteBuffer byteBuffer = toByteBuffer(value);
+-    String columnFamily = this.cassandraMapping.getFamily(fieldName);
+-    String columnName = this.cassandraMapping.getColumn(fieldName);
+-
+-    if (columnName == null) {
+-      LOG.warn("Column name is null for field=" + fieldName + " with value=" + value.toString());
++    // map complex rowKey and ColumnName
++    DynamicComposite colKey;
++    DynamicComposite rowKey;
++    try {
++      colKey = this.keyMapper.getColumnName(key, fieldName, true);
++      rowKey = this.keyMapper.getRowKey(key);
++    } catch (RuntimeException re) {
++      LOG.error("Error while mapping keys. Value was not persisted.", re);
+       return;
+     }
+-    
+-    synchronized(mutator) {
+-      HectorUtils.insertColumn(mutator, key, columnFamily, columnName, byteBuffer);
++
++    String columnFamily = this.cassandraMapping.getFamily(fieldName);
++    ByteBuffer byteBuffer = toByteBuffer(value);
++
++    synchronized (mutator) {
++      HectorUtils.insertColumn(mutator, rowKey, columnFamily, colKey, byteBuffer);
+     }
+   }
+ 
+   /**
+-   * Insert a member in a super column. This is used for map and record Avro types.
+-   * @param key the row key
+-   * @param fieldName the field name
+-   * @param columnName the column name (the member name, or the index of array)
+-   * @param value the member value
++   * Insert a member in a super column. This might be used for map and record Avro types.
++   *
++   * @param key
++   *          the row key
++   * @param fieldName
++   *          the field name
++   * @param columnName
++   *          the column name (the member name, or the index of array)
++   * @param value
++   *          the member value
+    */
+-  @SuppressWarnings("unchecked")
+-  public void addSubColumn(K key, String fieldName, ByteBuffer columnName, Object value) {
++  public void addSubColumn(PK key, String fieldName, ByteBuffer columnName, Object value) {
+     if (value == null) {
+       return;
+     }
+ 
+-    ByteBuffer byteBuffer = toByteBuffer(value);
+-    
++    // map complex rowKey and ColumnName
++    DynamicComposite colKey;
++    DynamicComposite rowKey;
++    try {
++      colKey = this.keyMapper.getColumnName(key, fieldName, true);
++      rowKey = this.keyMapper.getRowKey(key);
++    } catch (RuntimeException re) {
++      LOG.error("Error while mapping keys. Value was not persisted.", re);
++      return;
++    }
++
+     String columnFamily = this.cassandraMapping.getFamily(fieldName);
+-    String superColumnName = this.cassandraMapping.getColumn(fieldName);
+-    
+-    synchronized(mutator) {
+-      HectorUtils.insertSubColumn(mutator, key, columnFamily, superColumnName, columnName, byteBuffer);
++    ByteBuffer byteBuffer = toByteBuffer(value);
++
++    synchronized (mutator) {
++      HectorUtils.insertSubColumn(mutator, rowKey, columnFamily, colKey, columnName, byteBuffer);
+     }
+   }
+ 
+   /**
+    * Adds an subColumn inside the cassandraMapping file when a String is serialized
++   *
+    * @param key
+    * @param fieldName
+    * @param columnName
+    * @param value
+    */
+-  public void addSubColumn(K key, String fieldName, String columnName, Object value) {
++  public void addSubColumn(PK key, String fieldName, String columnName, Object value) {
+     addSubColumn(key, fieldName, StringSerializer.get().toByteBuffer(columnName), value);
+   }
+ 
+   /**
+    * Adds an subColumn inside the cassandraMapping file when an Integer is serialized
++   *
+    * @param key
+    * @param fieldName
+    * @param columnName
+    * @param value
+    */
+-  public void addSubColumn(K key, String fieldName, Integer columnName, Object value) {
++  public void addSubColumn(PK key, String fieldName, Integer columnName, Object value) {
+     addSubColumn(key, fieldName, IntegerSerializer.get().toByteBuffer(columnName), value);
+   }
+ 
+-
+   /**
+    * Delete a member in a super column. This is used for map and record Avro types.
+-   * @param key the row key
+-   * @param fieldName the field name
+-   * @param columnName the column name (the member name, or the index of array)
++   *
++   * @param key
++   *          the row key
++   * @param fieldName
++   *          the field name
++   * @param columnName
++   *          the column name (the member name, or the index of array)
+    */
+-  @SuppressWarnings("unchecked")
+-  public void deleteSubColumn(K key, String fieldName, ByteBuffer columnName) {
++  public void deleteSubColumn(PK key, String fieldName, ByteBuffer columnName) {
++    // map complex rowKey and ColumnName
++    DynamicComposite colKey;
++    DynamicComposite rowKey;
++    try {
++      colKey = this.keyMapper.getColumnName(key, fieldName, true); // TODO check
++      rowKey = this.keyMapper.getRowKey(key);
++    } catch (RuntimeException re) {
++      LOG.error("Error while mapping keys. Value was not persisted.", re);
++      return;
++    }
+ 
+     String columnFamily = this.cassandraMapping.getFamily(fieldName);
+-    String superColumnName = this.cassandraMapping.getColumn(fieldName);
+-    
+-    synchronized(mutator) {
+-      HectorUtils.deleteSubColumn(mutator, key, columnFamily, superColumnName, columnName);
++
++    synchronized (mutator) {
++      HectorUtils.deleteSubColumn(mutator, rowKey, columnFamily, colKey, columnName);
+     }
+   }
+ 
+-  public void deleteSubColumn(K key, String fieldName, String columnName) {
++  public void deleteSubColumn(PK key, String fieldName, String columnName) {
+     deleteSubColumn(key, fieldName, StringSerializer.get().toByteBuffer(columnName));
+   }
+ 
+-
+-  @SuppressWarnings("unchecked")
+-  public void addGenericArray(K key, String fieldName, GenericArray array) {
+-    if (isSuper( cassandraMapping.getFamily(fieldName) )) {
+-      int i= 0;
+-      for (Object itemValue: array) {
++  public void addGenericArray(PK key, String fieldName, GenericArray array) {
++    if (isSuper(cassandraMapping.getFamily(fieldName))) {
++      int i = 0;
++      for (Object itemValue : array) {
+ 
+         // TODO: hack, do not store empty arrays
+         if (itemValue instanceof GenericArray<?>) {
+-          if (((GenericArray)itemValue).size() == 0) {
++          if (((GenericArray) itemValue).size() == 0) {
+             continue;
+           }
+-        } else if (itemValue instanceof StatefulHashMap<?,?>) {
+-          if (((StatefulHashMap)itemValue).size() == 0) {
++        } else if (itemValue instanceof StatefulHashMap<?, ?>) {
++          if (((StatefulHashMap) itemValue).size() == 0) {
+             continue;
+           }
+         }
+ 
+         addSubColumn(key, fieldName, i++, itemValue);
+       }
+-    }
+-    else {
++    } else {
+       addColumn(key, fieldName, array);
+     }
+   }
+ 
+-  @SuppressWarnings("unchecked")
+-  public void addStatefulHashMap(K key, String fieldName, StatefulHashMap<Utf8,Object> map) {
+-    if (isSuper( cassandraMapping.getFamily(fieldName) )) {
+-      int i= 0;
+-      for (Utf8 mapKey: map.keySet()) {
++  public void addStatefulHashMap(PK key, String fieldName, StatefulHashMap<Utf8, Object> map) {
++    if (isSuper(cassandraMapping.getFamily(fieldName))) {
++      for (Utf8 mapKey : map.keySet()) {
+         if (map.getState(mapKey) == State.DELETED) {
+           deleteSubColumn(key, fieldName, mapKey.toString());
+           continue;
+@@ -304,181 +323,297 @@ public class CassandraClient<K, T extends PersistentBase> {
+         // TODO: hack, do not store empty arrays
+         Object mapValue = map.get(mapKey);
+         if (mapValue instanceof GenericArray<?>) {
+-          if (((GenericArray)mapValue).size() == 0) {
++          if (((GenericArray) mapValue).size() == 0) {
+             continue;
+           }
+-        } else if (mapValue instanceof StatefulHashMap<?,?>) {
+-          if (((StatefulHashMap)mapValue).size() == 0) {
++        } else if (mapValue instanceof StatefulHashMap<?, ?>) {
++          if (((StatefulHashMap) mapValue).size() == 0) {
+             continue;
+           }
+         }
+ 
+         addSubColumn(key, fieldName, mapKey.toString(), mapValue);
+       }
+-    }
+-    else {
++    } else {
+       addColumn(key, fieldName, map);
+     }
+   }
+ 
+   /**
+    * Serialize value to ByteBuffer.
+-   * @param value the member value
++   *
++   * @param value
++   *          the member value
+    * @return ByteBuffer object
+    */
+   @SuppressWarnings("unchecked")
+   public ByteBuffer toByteBuffer(Object value) {
+     ByteBuffer byteBuffer = null;
++
++    @SuppressWarnings("rawtypes")
+     Serializer serializer = GoraSerializerTypeInferer.getSerializer(value);
+     if (serializer == null) {
+       LOG.info("Serializer not found for: " + value.toString());
+-    }
+-    else {
++    } else {
+       byteBuffer = serializer.toByteBuffer(value);
+     }
+ 
+     if (byteBuffer == null) {
+-      LOG.info("value class=" + value.getClass().getName() + " value=" + value + " -> null");
++      LOG.warn("value class=" + value.getClass().getName() + " value=" + value + " -> null");
+     }
+-    
++
+     return byteBuffer;
+   }
+ 
+-  /**
+-   * Select a family column in the keyspace.
+-   * @param cassandraQuery a wrapper of the query
+-   * @param family the family name to be queried
+-   * @return a list of family rows
+-   */
+-  public List<Row<K, ByteBuffer, ByteBuffer>> execute(CassandraQuery<K, T> cassandraQuery, String family) {
+-    
+-    String[] columnNames = cassandraQuery.getColumns(family);
+-    ByteBuffer[] columnNameByteBuffers = new ByteBuffer[columnNames.length];
+-    for (int i = 0; i < columnNames.length; i++) {
+-      columnNameByteBuffers[i] = StringSerializer.get().toByteBuffer(columnNames[i]);
++  private CassandraQueryType getQueryType(PK startKey, PK endKey) {
++    boolean isColScan = keyMapper.isCassandraColumnScan(startKey, endKey);
++    boolean isRowScan = keyMapper.isCassandraRowScan(startKey, endKey);
++
++    if (!keyMapper.isPersistentPrimaryKey()) {
++      if (isRowScan)
++        return CassandraQueryType.ROWSCAN_PRIMITIVE;
++      else
++        return CassandraQueryType.SINGLE_PRIMITIVE;
++    }
++
++    if (isColScan && isRowScan)
++      return CassandraQueryType.MULTISCAN;
++    if (isColScan)
++      return CassandraQueryType.COLUMNSCAN;
++    if (isRowScan)
++      return CassandraQueryType.ROWSCAN;
++    return CassandraQueryType.SINGLE;
++  }
++
++  private int[] getQueryLimits(CassandraQueryType qType, long qLimit) {
++    int[] result = new int[2];
++
++    // get num of fields
++    int numOfFields = 0;
++    try {
++      numOfFields = persistentClass.newInstance().getSchema().getFields().size();
++    } catch (Exception e) {
++      LOG.error("Unable to process persistent class.", e);
+     }
+-    Query<K, T> query = cassandraQuery.getQuery();
+-    int limit = (int) query.getLimit();
++
++    int limit = (int) qLimit;
+     if (limit < 1) {
+-      limit = Integer.MAX_VALUE;
++      limit = GoraRecordReader.BUFFER_LIMIT_READ_VALUE;
++    }
++
++    int columnCount = 0;
++    int rowCount = 0;
++    switch (qType) {
++    case MULTISCAN: // unlikely case
++      columnCount = limit * numOfFields;
++      rowCount = limit;
++      break;
++    case COLUMNSCAN:
++      columnCount = limit * numOfFields;
++      rowCount = 1;
++      break;
++    case ROWSCAN:
++      columnCount = numOfFields;
++      rowCount = limit;
++      break;
++    case SINGLE:
++      columnCount = numOfFields;
++      rowCount = 1;
++    case ROWSCAN_PRIMITIVE:
++      columnCount = numOfFields;
++      rowCount = limit;
++      break;
++    case SINGLE_PRIMITIVE:
++      columnCount = numOfFields;
++      rowCount = 1;
++      break;
++    default:
++      break;
+     }
+-    K startKey = query.getStartKey();
+-    K endKey = query.getEndKey();
+-    
+-    RangeSlicesQuery<K, ByteBuffer, ByteBuffer> rangeSlicesQuery = HFactory.createRangeSlicesQuery(this.keyspace, this.keySerializer, ByteBufferSerializer.get(), ByteBufferSerializer.get());
++
++    result[0] = columnCount;
++    result[1] = rowCount;
++
++    return result;
++  }
++
++  /**
++   * Create and execute hector query
++   *
++   * @param cassandraQuery
++   *          a wrapper of the query
++   * @param family
++   *          the family name to be queried
++   * @return a list of family rows
++   */
++  public List<Row<DynamicComposite, DynamicComposite, ByteBuffer>> execute(CassandraQuery<PK, T> cassandraQuery, String family) {
++    // analyze query
++    Query<PK, T> query = cassandraQuery.getQuery();
++    CassandraQueryType queryType = getQueryType(query.getStartKey(), query.getEndKey());
++
++    // deduce result counts
++    int[] counts = getQueryLimits(queryType, query.getLimit());
++
++    // set up row key range
++    DynamicComposite startKey = keyMapper.getRowKey(query.getStartKey());
++    DynamicComposite endKey = keyMapper.getRowKey(query.getEndKey());
++    int rowCount = counts[1];
++
++    // set up slice predicate
++    DynamicComposite startName = keyMapper.getColumnName(query.getStartKey(), FIELD_SCAN_COLUMN_RANGE_DELIMITER_START, false);
++    DynamicComposite endName = keyMapper.getColumnName(query.getEndKey(), FIELD_SCAN_COLUMN_RANGE_DELIMITER_END, false);
++    int columnCount = counts[0];
++
++    // set up cassandra query
++    RangeSlicesQuery<DynamicComposite, DynamicComposite, ByteBuffer> rangeSlicesQuery = HFactory.createRangeSlicesQuery(this.keyspace,
++        DynamicCompositeSerializer.get(), DynamicCompositeSerializer.get(), ByteBufferSerializer.get());
++
+     rangeSlicesQuery.setColumnFamily(family);
+     rangeSlicesQuery.setKeys(startKey, endKey);
+-    rangeSlicesQuery.setRange(ByteBuffer.wrap(new byte[0]), ByteBuffer.wrap(new byte[0]), false, GoraRecordReader.BUFFER_LIMIT_READ_VALUE);
+-    rangeSlicesQuery.setRowCount(limit);
+-    rangeSlicesQuery.setColumnNames(columnNameByteBuffers);
+-    
+-    QueryResult<OrderedRows<K, ByteBuffer, ByteBuffer>> queryResult = rangeSlicesQuery.execute();
+-    OrderedRows<K, ByteBuffer, ByteBuffer> orderedRows = queryResult.get();
+-    
+-    
++    rangeSlicesQuery.setRange(startName, endName, false, columnCount);
++    rangeSlicesQuery.setRowCount(rowCount);
++
++    // fire off the query
++    QueryResult<OrderedRows<DynamicComposite, DynamicComposite, ByteBuffer>> queryResult = rangeSlicesQuery.execute();
++    OrderedRows<DynamicComposite, DynamicComposite, ByteBuffer> orderedRows = queryResult.get();
++
+     return orderedRows.getList();
+   }
+-  
+-  private String getMappingFamily(String pField){
+-    String family = null;
+-    // TODO checking if it was a UNION field the one we are retrieving
+-      family = this.cassandraMapping.getFamily(pField);
+-    return family;
+-  }
+-  
+-  private String getMappingColumn(String pField){
+-    String column = null;
+-    // TODO checking if it was a UNION field the one we are retrieving e.g. column = pField;
+-      column = this.cassandraMapping.getColumn(pField);
+-    return column;
+-  }
+ 
+   /**
+    * Select the families that contain at least one column mapped to a query field.
+-   * @param query indicates the columns to select
+-   * @return a map which keys are the family names and values the corresponding column names required to get all the query fields.
++   *
++   * @param query
++   *          indicates the columns to select
++   * @return a map which keys are the family names and values the corresponding column names
++   *         required to get all the query fields.
+    */
+-  public Map<String, List<String>> getFamilyMap(Query<K, T> query) {
++  public Map<String, List<String>> getFamilyMap(Query<PK, T> query) {
+     Map<String, List<String>> map = new HashMap<String, List<String>>();
+-    for (String field: query.getFields()) {
++    for (String field : query.getFields()) {
+       String family = this.getMappingFamily(field);
+       String column = this.getMappingColumn(field);
+-      
+-      // check if the family value was already initialized 
++
++      // check if the family value was already initialized
+       List<String> list = map.get(family);
+       if (list == null) {
+         list = new ArrayList<String>();
+         map.put(family, list);
+       }
+-      
+-      if (column != null) {
++      if (column != null)
+         list.add(column);
+-      }
+-      
+-    }
+-    
++    }// for
+     return map;
+   }
+ 
++  public List<SuperRow<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer>> executeSuper(CassandraQuery<PK, T> cassandraQuery, String family) {
++    // analyze query
++    Query<PK, T> query = cassandraQuery.getQuery();
++    CassandraQueryType queryType = getQueryType(query.getStartKey(), query.getEndKey());
++
++    // deduce result counts
++    int[] counts = getQueryLimits(queryType, query.getLimit());
++
++    // set up row key range
++    DynamicComposite startKey = keyMapper.getRowKey(query.getStartKey());
++    DynamicComposite endKey = keyMapper.getRowKey(query.getEndKey());
++    int rowCount = counts[1];
++
++    // set up slice predicate
++    DynamicComposite startName = keyMapper.getColumnName(query.getStartKey(), FIELD_SCAN_COLUMN_RANGE_DELIMITER_START, false);
++    DynamicComposite endName = keyMapper.getColumnName(query.getEndKey(), FIELD_SCAN_COLUMN_RANGE_DELIMITER_END, false);
++    int columnCount = counts[0];
++
++    // set up cassandra query
++    RangeSuperSlicesQuery<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer> rangeSuperSlicesQuery = HFactory.createRangeSuperSlicesQuery(
++        this.keyspace, DynamicCompositeSerializer.get(), DynamicCompositeSerializer.get(), ByteBufferSerializer.get(), ByteBufferSerializer.get());
++
++    rangeSuperSlicesQuery.setColumnFamily(family);
++    rangeSuperSlicesQuery.setKeys(startKey, endKey);
++    rangeSuperSlicesQuery.setRange(startName, endName, false, columnCount);
++    rangeSuperSlicesQuery.setRowCount(rowCount);
++
++    // fire off the query
++    QueryResult<OrderedSuperRows<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer>> queryResult = rangeSuperSlicesQuery.execute();
++    OrderedSuperRows<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer> orderedRows = queryResult.get();
++
++    return orderedRows.getList();
++  }
++
++  private String getMappingFamily(String pField) {
++    String family = null;
++    // TODO checking if it was a UNION field the one we are retrieving
++    family = this.cassandraMapping.getFamily(pField);
++    return family;
++  }
++
++  private String getMappingColumn(String pField) {
++    String column = null;
++    // TODO checking if it was a UNION field the one we are retrieving e.g. column = pField;
++    column = this.cassandraMapping.getColumn(pField);
++    return column;
++  }
++
+   /**
+-   * Retrieves the cassandraMapping which holds whatever was mapped from the gora-cassandra-mapping.xml
++   * Retrieves the cassandraMapping which holds whatever was mapped from the
++   * gora-cassandra-mapping.xml
++   *
+    * @return
+    */
+-  public CassandraMapping getCassandraMapping(){
++  public CassandraMapping getCassandraMapping() {
+     return this.cassandraMapping;
+   }
+-  
++
+   /**
+-   * Select the field names according to the column names, which format if fully qualified: "family:column"
++   * Select the field names according to the column names, which format if fully qualified:
++   * "family:column"
++   *
++   * TODO needed?
++   *
+    * @param query
+    * @return a map which keys are the fully qualified column names and values the query fields
+    */
+-  public Map<String, String> getReverseMap(Query<K, T> query) {
++  public Map<String, String> getReverseMap(Query<PK, T> query) {
+     Map<String, String> map = new HashMap<String, String>();
+-    for (String field: query.getFields()) {
++    for (String field : query.getFields()) {
+       String family = this.getMappingFamily(field);
+       String column = this.getMappingColumn(field);
+-      
++
+       map.put(family + ":" + column, field);
+     }
+-    
++
+     return map;
+   }
+-  
++
+   public boolean isSuper(String family) {
+     return this.cassandraMapping.isSuper(family);
+   }
+ 
+-  public List<SuperRow<K, String, ByteBuffer, ByteBuffer>> executeSuper(CassandraQuery<K, T> cassandraQuery, String family) {
+-    String[] columnNames = cassandraQuery.getColumns(family);
+-    Query<K, T> query = cassandraQuery.getQuery();
+-    int limit = (int) query.getLimit();
+-    if (limit < 1) {
+-      limit = Integer.MAX_VALUE;
+-    }
+-    K startKey = query.getStartKey();
+-    K endKey = query.getEndKey();
+-    
+-    RangeSuperSlicesQuery<K, String, ByteBuffer, ByteBuffer> rangeSuperSlicesQuery = HFactory.createRangeSuperSlicesQuery(this.keyspace, this.keySerializer, StringSerializer.get(), ByteBufferSerializer.get(), ByteBufferSerializer.get());
+-    rangeSuperSlicesQuery.setColumnFamily(family);    
+-    rangeSuperSlicesQuery.setKeys(startKey, endKey);
+-    rangeSuperSlicesQuery.setRange("", "", false, GoraRecordReader.BUFFER_LIMIT_READ_VALUE);
+-    rangeSuperSlicesQuery.setRowCount(limit);
+-    rangeSuperSlicesQuery.setColumnNames(columnNames);
+-    
+-    
+-    QueryResult<OrderedSuperRows<K, String, ByteBuffer, ByteBuffer>> queryResult = rangeSuperSlicesQuery.execute();
+-    OrderedSuperRows<K, String, ByteBuffer, ByteBuffer> orderedRows = queryResult.get();
+-    return orderedRows.getList();
++  public String getKeyspaceName() {
++    return this.cassandraMapping.getKeyspaceName();
++  }
+ 
++  public CassandraKeyMapper<PK, T> getKeyMapper() {
++    return keyMapper;
++  }
+ 
++  public void setKeyMapper(CassandraKeyMapper<PK, T> keyMapper) {
++    this.keyMapper = keyMapper;
+   }
+ 
+-  /**
+-   * Obtain Schema/Keyspace name
+-   * @return Keyspace
+-   */
+-  public String getKeyspaceName() {
+-	return this.cassandraMapping.getKeyspaceName();
++  public Class<PK> getPrimaryKeyClass() {
++    return primaryKeyClass;
++  }
++
++  public void setPrimaryKeyClass(Class<PK> primaryKeyClass) {
++    this.primaryKeyClass = primaryKeyClass;
++  }
++
++  public Class<T> getPersistentClass() {
++    return persistentClass;
++  }
++
++  public void setPersistentClass(Class<T> persistentClass) {
++    this.persistentClass = persistentClass;
+   }
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraKeyMapper.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraKeyMapper.java
+new file mode 100644
+index 0000000..76131b9
+--- /dev/null
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraKeyMapper.java
+@@ -0,0 +1,428 @@
++package org.apache.gora.cassandra.store;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collection;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Map.Entry;
++
++import me.prettyprint.hector.api.beans.AbstractComposite;
++import me.prettyprint.hector.api.beans.DynamicComposite;
++import me.prettyprint.hector.api.ddl.ComparatorType;
++
++import org.apache.avro.Schema;
++import org.apache.avro.Schema.Field;
++import org.apache.avro.Schema.Type;
++import org.apache.avro.util.Utf8;
++import org.apache.gora.cassandra.serializers.GoraSerializerTypeInferer;
++import org.apache.gora.cassandra.serializers.Utf8Serializer;
++import org.apache.gora.persistency.impl.PersistentBase;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++
++import com.google.common.collect.Lists;
++
++/**
++ * Utility class transforming primary key data from/to cassandra dynamic composite row keys and
++ * column names based on the mapping specification.
++ *
++ * @author c.zirpins
++ *
++ */
++public class CassandraKeyMapper<PK, T extends PersistentBase> {
++  private static final Logger LOG = LoggerFactory.getLogger(CassandraClient.class);
++  private CassandraMapping cassandraMapping;
++  private Class<PK> primaryKeyClass;
++  private Schema schema;
++
++  public CassandraKeyMapper(Class<PK> keyClass, CassandraMapping mapping) {
++    this.primaryKeyClass = keyClass;
++    this.cassandraMapping = mapping;
++    setSchema();
++  }
++
++  public CassandraKeyMapper(Class<PK> keyClass, Class<T> persistentClass) {
++    this.primaryKeyClass = keyClass;
++    this.cassandraMapping = CassandraMappingManager.getManager().get(persistentClass);
++    setSchema();
++  }
++
++  private void setSchema() {
++    if (!isPersistentPrimaryKey())
++      schema = null;
++    else
++      schema = newKeyInstance().getSchema();
++  }
++
++  public Schema getSchema() {
++    return schema;
++  }
++
++  /**
++   * Get complex column name for member of complex field
++   *
++   * @param key
++   * @param fieldName
++   * @param memberQualifier
++   * @return
++   */
++  public DynamicComposite getColumnName(PK key, String fieldName, Object memberQualifier, boolean isRangeDelimiter) {
++    DynamicComposite dc = getColumnName(key, fieldName, isRangeDelimiter);
++    dc.add(memberQualifier);
++    return dc;
++  }
++
++  public DynamicComposite getColumnName(PK key, String fieldName, Integer memberQualifier, boolean isRangeDelimiter) {
++    DynamicComposite dc = getColumnName(key, fieldName, isRangeDelimiter);
++    dc.add(memberQualifier);
++    return dc;
++  }
++
++  public DynamicComposite getColumnName(PK key, String fieldName, String memberQualifier, boolean isRangeDelimiter) {
++    DynamicComposite dc = getColumnName(key, fieldName, isRangeDelimiter);
++    dc.add(memberQualifier);
++    return dc;
++  }
++
++  /**
++   * Extract field name from composite column name
++   *
++   * @param columnName
++   * @return
++   */
++  public String getFieldQualifier(DynamicComposite columnName) {
++    // get number of clustering components in composite name
++    int n = cassandraMapping.getColumnNameFieldsList().size();
++    // field name follows directly behind
++    Utf8 fieldName = columnName.get(n, Utf8Serializer.get());
++    return fieldName.toString();
++  }
++
++  /**
++   * Get complex column name for simple field
++   *
++   * @param key
++   *          the primary key
++   * @param fieldName
++   *          qualifier identifying a persistent field
++   * @param doFieldMapping
++   *          switch to translate qualifier as defined in cassandra mapping
++   * @return
++   */
++  public DynamicComposite getColumnName(PK key, String fieldName, boolean doFieldMapping) {
++    DynamicComposite dc = null;
++    if (fieldName == null)
++      throw new IllegalArgumentException("Field qualifier must not be null.");
++
++    // handle null keys which might come from a blank query
++    if (key == null)
++      return new DynamicComposite();
++
++    // create clustering components
++    if (key instanceof PersistentBase)
++      dc = buildComposite((PersistentBase) key, cassandraMapping.getColumnNameFieldsList(), cassandraMapping.getColumnNameTypesMap());
++    else
++      dc = new DynamicComposite();
++
++    // map field names to column name qualifiers (if requested)
++    String colName = null;
++    if (doFieldMapping)
++      colName = this.cassandraMapping.getColumn(fieldName);
++    else
++      colName = fieldName;
++
++    if (colName == null)
++      throw new RuntimeException("Mapping error: field qualifier could not be mapped to a column name.");
++
++    dc.addComponent(new Utf8(colName), Utf8Serializer.get(), ComparatorType.UTF8TYPE.getTypeName());
++
++    return dc;
++  }
++
++  /**
++   * Get complex row key for entity
++   *
++   * @param key
++   * @return
++   */
++  public DynamicComposite getRowKey(PK key) {
++    DynamicComposite dc = null;
++
++    // handle null keys which might come from a blank query
++    if (key == null)
++      return new DynamicComposite();
++
++    if (key instanceof PersistentBase) {
++      dc = buildComposite((PersistentBase) key, cassandraMapping.getRowKeyFieldsList(), cassandraMapping.getRowKeyTypesMap());
++    } else {
++      dc = new DynamicComposite();
++      dc.add(key);
++    }
++    return dc;
++  }
++
++  private DynamicComposite buildComposite(PersistentBase pKey, Collection<String> parts, Map<String, String> typeMap) {
++    if (pKey == null || parts == null)
++      throw new IllegalArgumentException();
++    DynamicComposite dc = new DynamicComposite();
++    Schema schema = pKey.getSchema();
++    for (String part : parts) {
++      Field field = schema.getField(part);
++      if (field == null)
++        throw new IllegalArgumentException("Key Mapping Error: Key field missing for part=" + part);
++      int pos = schema.getField(part).pos();
++      Type type = field.schema().getType();
++      Object value = pKey.get(pos);
++      if (value == null)
++        throw new IllegalArgumentException("Key Mapping Error: value missing for part=" + part);
++      dc.addComponent(value, GoraSerializerTypeInferer.getSerializer(type), typeMap.get(part));
++    }
++    return dc;
++  }
++
++  /**
++   * Extracts primary key information from dynamic composite row keys and column names
++   *
++   * @param compositeRowKey
++   * @param compositeColumnName
++   * @return associated primary key
++   */
++  @SuppressWarnings("unchecked")
++  public PK getPrimaryKey(DynamicComposite compositeRowKey, DynamicComposite compositeColumnName) {
++    // handle simple primary keys with fixed mapping
++    if (!isPersistentPrimaryKey()) {
++      assert compositeRowKey.size() == 1;
++      PK simplePrimaryKey = (PK) compositeRowKey.get(0, GoraSerializerTypeInferer.getSerializer(primaryKeyClass));
++      return simplePrimaryKey;
++    }
++    // handle persistent primary key with custom mapping
++    PersistentBase persistentPrimaryKey = newKeyInstance();
++    updatePersistentPrimaryKey(compositeRowKey, persistentPrimaryKey, cassandraMapping.getRowKeyFieldsList());
++    updatePersistentPrimaryKey(compositeColumnName, persistentPrimaryKey, cassandraMapping.getColumnNameFieldsList());
++    return (PK) persistentPrimaryKey;
++  }
++
++  private void updatePersistentPrimaryKey(AbstractComposite composite, PersistentBase persistentPrimaryKey, List<String> fieldList) {
++    Schema schema = persistentPrimaryKey.getSchema();
++    int index = 0;
++    for (String part : fieldList) {
++      Field field = schema.getField(part);
++      Type type = field.schema().getType();
++      Object value = composite.get(index, GoraSerializerTypeInferer.getSerializer(type));
++      persistentPrimaryKey.put(field.pos(), value);
++      index++;
++    }
++  }
++
++  protected boolean isPersistentPrimaryKey() {
++    return PersistentBase.class.isAssignableFrom(primaryKeyClass);
++  }
++
++  private PersistentBase newKeyInstance() {
++    PersistentBase primaryKey = null;
++    try {
++      primaryKey = (PersistentBase) primaryKeyClass.newInstance();
++    } catch (Exception e) {
++      LOG.error("Error creating primaryKey.", e);
++    }
++    return primaryKey;
++  }
++
++  /**
++   * Checks if the column name part of the primary key defines a range
++   *
++   * TODO only checks for inequality of corresponding parts
++   *
++   * @param startKey
++   * @param endKey
++   * @return
++   */
++  public boolean isCassandraColumnScan(PK startKey, PK endKey) {
++    if (startKey == null || endKey == null)
++      return true;
++    if (!isPersistentPrimaryKey())
++      return false;
++    else
++      return !partsAreEqual((PersistentBase) startKey, (PersistentBase) endKey, cassandraMapping.getColumnNameFieldsList());
++  }
++
++  /**
++   * Checks if the row key part of the primary key defines a range
++   *
++   * TODO only checks for inequality of corresponding parts
++   *
++   * @param startKey
++   * @param endKey
++   * @return
++   */
++  public boolean isCassandraRowScan(PK startKey, PK endKey) {
++    if (startKey == null || endKey == null)
++      return true;
++    if (!isPersistentPrimaryKey())
++      return !startKey.equals(endKey);
++    else
++      return !partsAreEqual((PersistentBase) startKey, (PersistentBase) endKey, cassandraMapping.getRowKeyFieldsList());
++  }
++
++  private boolean partsAreEqual(PersistentBase startKey, PersistentBase endKey, List<String> partList) {
++    Schema schema = startKey.getSchema();
++    boolean areEqual = true;
++    for (String part : partList) {
++      int pos = schema.getField(part).pos();
++      areEqual &= startKey.get(pos).equals(endKey.get(pos));
++    }
++    return areEqual;
++  }
++
++  /**
++   * Turns partition key ranges into sets of discrete partition keys.
++   *
++   * Cluster ranges will be preserved for each partition key pair.
++   *
++   * If decomposition is not possible, the original range will be returned. If the original keys do
++   * not specify a range, they will be returned w/o changes.
++   *
++   * @param startKey
++   * @param endKey
++   * @return a map holding a set of start/end key pairs. Map key = query start key. Map value =
++   *         query end key.
++   */
++  @SuppressWarnings("unchecked")
++  public Map<PK, PK> decomposePartionKeys(PK startKey, PK endKey) {
++    Map<PK, PK> result = new HashMap<PK, PK>();
++
++    // if not a row scan return keys as they are
++    if (!isCassandraRowScan(startKey, endKey)) {
++      result.put(startKey, endKey);
++      LOG.warn("The keys do not specify a partition key range. A single partition will be returned.");
++      return result;
++    }
++
++    // case of simple keys
++    if (!isPersistentPrimaryKey()) {
++      // try decomposing simple key
++      List<Object> keyRange = decomposeKeyRange(startKey, endKey);
++      // if not possible return original range
++      if (keyRange == null) {
++        // no decomposition at all
++        result.put(startKey, endKey);
++        LOG.warn("Key decomposition not possible. Resulting key range will require an order-preserving partitioner.");
++        return result;
++      }
++      for (Object o : keyRange) {
++        result.put((PK) o, (PK) o);
++      }
++      return result;
++    }
++
++    // case of composite primary keys
++    PersistentBase _startKey = (PersistentBase) startKey;
++    PersistentBase _endKey = (PersistentBase) endKey;
++
++    // 1 create decompose part ranges
++    Map<String, List<Object>> partRanges = new HashMap<String, List<Object>>();
++
++    // loop key parts
++    for (String part : cassandraMapping.getRowKeyFieldsList()) {
++      // compare key parts
++      Field partField = schema.getField(part);
++      Type partType = partField.schema().getType();
++      int pos = partField.pos();
++      boolean areEqual = _startKey.get(pos).equals(_endKey.get(pos));
++      // if different, try to decompose
++      List<Object> rangeList;
++      if (!areEqual) {
++        rangeList = decomposeKeyRange(partType, _startKey.get(pos), _endKey.get(pos));
++        if (rangeList == null) {
++          // no decomposition at all
++          result.put(startKey, endKey);
++          LOG.warn("Key decomposition not possible. Resulting key range will require an order-preserving partitioner.");
++          return result;
++        }
++      } else {
++        rangeList = Arrays.asList(_startKey.get(pos));
++      }
++      partRanges.put(part, rangeList);
++    }
++
++    // 2 recursively combine ranges
++    // The key set is extended from lowest-level to highest-level partition key parts
++    // Initially, the set contains the original range keys in order to preserve the cluster ranges
++    result.put(startKey, endKey);
++    List<String> reversedPartList = new ArrayList<String>(Lists.reverse(cassandraMapping.getRowKeyFieldsList()));
++    result = (Map<PK, PK>) extendKeySet(partRanges, reversedPartList, (Map<PersistentBase, PersistentBase>) result);
++
++    return result;
++  }
++
++  // recursive method to build a key set out of decomposed key parts
++  private Map<PersistentBase, PersistentBase> extendKeySet(Map<String, List<Object>> partRanges, List<String> remainingParts,
++      Map<PersistentBase, PersistentBase> lowerLevelKeys) {
++    Map<PersistentBase, PersistentBase> thisLevelKeys = new HashMap<PersistentBase, PersistentBase>();
++    String part = remainingParts.get(0);
++
++    for (Entry<PersistentBase, PersistentBase> keyPair : lowerLevelKeys.entrySet()) {
++      for (Object o : partRanges.get(part)) {
++        PersistentBase subStartkey = (PersistentBase) keyPair.getKey().clone();
++        PersistentBase subEndkey = (PersistentBase) keyPair.getValue().clone();
++        int pos = getSchema().getField(part).pos();
++        subStartkey.put(pos, o);
++        subEndkey.put(pos, o);
++        thisLevelKeys.put(subStartkey, subEndkey);
++      }
++    }
++
++    // decommission old keypairs
++    lowerLevelKeys.clear();
++
++    // recursion break condition
++    if (remainingParts.size() == 1)
++      return thisLevelKeys;
++
++    remainingParts.remove(part);
++    return extendKeySet(partRanges, remainingParts, thisLevelKeys);
++  }
++
++  // decomposition of non-avro key range
++  private List<Object> decomposeKeyRange(Object start, Object end) {
++    Type partType = Type.NULL;
++    if (start instanceof Integer)
++      partType = Type.INT;
++    else if (start instanceof Long)
++      partType = Type.LONG;
++    else if (start instanceof Boolean)
++      partType = Type.BOOLEAN;
++    else
++      partType = Type.NULL;
++    return decomposeKeyRange(partType, start, end);
++  }
++
++  // decomposition of key range for avro-typed parts
++  private List<Object> decomposeKeyRange(Type partType, Object start, Object end) {
++    List<Object> rangeList = new ArrayList<Object>();
++    switch (partType) {
++    case BOOLEAN:
++      rangeList.add(new Boolean(true));
++      rangeList.add(new Boolean(false));
++      break;
++    case INT:
++      Integer intStart = (Integer) start;
++      Integer intEnd = (Integer) end;
++      for (int i = intStart; i <= intEnd; i++)
++        rangeList.add(new Integer(i));
++      break;
++    case LONG:
++      Long longStart = (Long) start;
++      Long longEnd = (Long) end;
++      for (long i = longStart; i <= longEnd; i++)
++        rangeList.add(new Long(i));
++      break;
++    default:
++      return null;
++    }
++    return rangeList;
++  }
++
++}
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMapping.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMapping.java
+index 99c76a9..7350d72 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMapping.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMapping.java
+@@ -19,12 +19,14 @@
+ package org.apache.gora.cassandra.store;
+ 
+ import java.util.ArrayList;
++import java.util.Collection;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
+ 
+ import me.prettyprint.cassandra.model.BasicColumnFamilyDefinition;
+ import me.prettyprint.cassandra.service.ThriftCfDef;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
+ import me.prettyprint.hector.api.ddl.ColumnType;
+ import me.prettyprint.hector.api.ddl.ComparatorType;
+@@ -34,22 +36,38 @@ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+ public class CassandraMapping {
+-  
++
+   public static final Logger LOG = LoggerFactory.getLogger(CassandraMapping.class);
+-  
++
+   private static final String NAME_ATTRIBUTE = "name";
+   private static final String COLUMN_ATTRIBUTE = "qualifier";
+   private static final String FAMILY_ATTRIBUTE = "family";
+-  private static final String SUPER_ATTRIBUTE = "type";
+   private static final String CLUSTER_ATTRIBUTE = "cluster";
+   private static final String HOST_ATTRIBUTE = "host";
++  private static final String TYPE_ATTRIBUTE = "type";
++  private static final String REPLICATION_FACTOR_ATTRIBUTE = "replicationFactor";
++  private static final String REPLICATION_STRATEGY_ATTRIBUTE = "replicationStrategy";
++  private static final String KEYCLASS_ATTRIBUTE = "keyClass";
++  private static final String PARTITIONKEY_ELEMENT = "partitionKey";
++  private static final String CLUSTERKEY_ELEMENT = "clusterKey";
+ 
++  // cassandra dynamic column-name and row-key types
++  private final ComparatorType COMPARATOR_TYPE = ComparatorType.DYNAMICCOMPOSITETYPE;
++  private final String TYPE_ALIAS = DynamicComposite.DEFAULT_DYNAMIC_COMPOSITE_ALIASES;
++  private final String KEY_VALIDATION_CLASS = ComparatorType.DYNAMICCOMPOSITETYPE.getClassName();
+ 
++  // cassandra server attributes
+   private String hostName;
+   private String clusterName;
+   private String keyspaceName;
+-  
+-  
++  private String replicationFactor = "1";
++  private String replicationStrategy = "org.apache.cassandra.locator.SimpleStrategy";
++
++  // key mapping attributes
++  private String keyClassName;
++  private boolean keyMapping = false;
++
++
+   /**
+    * List of the super column families.
+    */
+@@ -59,7 +77,7 @@ public class CassandraMapping {
+    * Look up the column family associated to the Avro field.
+    */
+   private Map<String, String> familyMap = new HashMap<String, String>();
+-  
++
+   /**
+    * Look up the column associated to the Avro field.
+    */
+@@ -68,10 +86,29 @@ public class CassandraMapping {
+   /**
+    * Look up the column family from its name.
+    */
+-  private Map<String, BasicColumnFamilyDefinition> columnFamilyDefinitions = 
++  private Map<String, BasicColumnFamilyDefinition> columnFamilyDefinitions =
+ 		  new HashMap<String, BasicColumnFamilyDefinition>();
+ 
+-  
++  /**
++   * field <code>rowKeyFieldsList</code> holds ordered list of row key parts
++   */
++  private List<String> rowKeyFieldsList = new ArrayList<String>();
++
++  /**
++   * field <code>rowKeyTypesMap</code> maps key fields to row key parts
++   */
++  private Map<String, String> rowKeyTypesMap = new HashMap<String, String>();
++
++  /**
++   * field <code>columnNameFieldsList</code> holds ordered list of row key parts
++   */
++  private List<String> columnNameFieldsList = new ArrayList<String>();
++
++  /**
++   * field <code>columnNameTypesMap</code> maps key fields to column name parts
++   */
++  private Map<String, String> columnNameTypesMap = new HashMap<String, String>();
++
+   /**
+    * Simply gets the Cassandra host name.
+    * @return hostName
+@@ -79,11 +116,11 @@ public class CassandraMapping {
+   public String getHostName() {
+     return this.hostName;
+   }
+-  
++
+   /**
+-   * Simply gets the Cassandra cluster (the machines (nodes) 
++   * Simply gets the Cassandra cluster (the machines (nodes)
+    * in a logical Cassandra instance) name.
+-   * Clusters can contain multiple keyspaces. 
++   * Clusters can contain multiple keyspaces.
+    * @return clusterName
+    */
+   public String getClusterName() {
+@@ -99,14 +136,50 @@ public class CassandraMapping {
+   }
+ 
+   /**
++   * Simply gets the Cassandra replication factor for the keyspace.
++   *
++   * @return replicationFactor
++   */
++  public int getReplicationFactor() {
++    return Integer.valueOf(this.replicationFactor);
++  }
++
++  /**
++   * Simply gets the Cassandra replication strategy for the keyspace.
++   *
++   * @return replicationStrategy
++   */
++  public String getReplicationStrategy() {
++    return this.replicationStrategy;
++  }
++
++  /**
++   * Simply gets the name of the avro class representing the Cassandra complex key
++   *
++   * @return
++   */
++  public String getKeyClassName() {
++    return this.keyClassName;
++  }
++
++  /**
++   * Simply gets the key mapping flag
++   *
++   * @return
++   */
++  public boolean isKeyMapping() {
++    return keyMapping;
++  }
++
++  /**
+    * Primary class for loading Cassandra configuration from the 'MAPPING_FILE'.
+    * It should be noted that should the "qualifier" attribute and its associated
+-   * value be absent from class field definition, it will automatically be set to 
++   * value be absent from class field definition, it will automatically be set to
+    * the field name value.
+-   * 
++   *
+    */
+   @SuppressWarnings("unchecked")
+-  public CassandraMapping(Element keyspace, Element mapping) {
++  public CassandraMapping(Element keyspace, Element mapping, Element primaryKey) {
+     if (keyspace == null) {
+       LOG.error("Keyspace element should not be null!");
+       return;
+@@ -137,14 +210,44 @@ public class CassandraMapping {
+     } else {
+       if (LOG.isDebugEnabled()) {
+         LOG.debug("Located Cassandra Keyspace host: '" + hostName + "'");
+-      }  
++      }
+     }
+-    
++    String _replicationFactor = keyspace.getAttributeValue(REPLICATION_FACTOR_ATTRIBUTE);
++    if (_replicationFactor == null) {
++      if (LOG.isDebugEnabled()) {
++        LOG.debug("No Cassandra Keyspace replication factor attribute specified. Using default of '" + replicationFactor + "'.");
++      }
++    } else {
++      this.replicationFactor = _replicationFactor;
++      if (LOG.isDebugEnabled()) {
++        LOG.debug("Located Cassandra Keyspace replication factor: '" + replicationFactor + "'");
++      }
++    }
++    String _replicationStrategy = keyspace.getAttributeValue(REPLICATION_STRATEGY_ATTRIBUTE);
++    if (_replicationStrategy == null) {
++      if (LOG.isDebugEnabled()) {
++        LOG.debug("No Cassandra Keyspace replication strategy specified. Using default: '" + replicationStrategy + "'.");
++      }
++    } else {
++      this.replicationStrategy = _replicationStrategy;
++      if (LOG.isDebugEnabled()) {
++        LOG.debug("Located Cassandra Keyspace replication strategy: '" + replicationStrategy + "'");
++      }
++    }
++    this.keyClassName = mapping.getAttributeValue(KEYCLASS_ATTRIBUTE);
++    if (this.keyClassName == null) {
++      LOG.error("Error locating Cassandra keyClass name attribute!");
++    } else {
++      if (LOG.isDebugEnabled()) {
++        LOG.debug("Located Cassandra keyClass name: '" + keyClassName + "'");
++      }
++    }
++
+     // load column family definitions
+     List<Element> elements = keyspace.getChildren();
+     for (Element element: elements) {
+       BasicColumnFamilyDefinition cfDef = new BasicColumnFamilyDefinition();
+-      
++
+       String familyName = element.getAttributeValue(NAME_ATTRIBUTE);
+       if (familyName == null) {
+       	LOG.error("Error locating column family name attribute!");
+@@ -154,7 +257,7 @@ public class CassandraMapping {
+           LOG.debug("Located column family: '" + familyName + "'" );
+         }
+       }
+-      String superAttribute = element.getAttributeValue(SUPER_ATTRIBUTE);
++      String superAttribute = element.getAttributeValue(TYPE_ATTRIBUTE);
+       if (superAttribute != null) {
+         if (LOG.isDebugEnabled()) {
+           LOG.debug("Located super column family");
+@@ -166,17 +269,65 @@ public class CassandraMapping {
+         cfDef.setColumnType(ColumnType.SUPER);
+         cfDef.setSubComparatorType(ComparatorType.BYTESTYPE);
+       }
+-      
++
++      // set keyspace and family name
+       cfDef.setKeyspaceName(this.keyspaceName);
+       cfDef.setName(familyName);
+-      cfDef.setComparatorType(ComparatorType.BYTESTYPE);
++
++      // setting default dynamic comparator
++      cfDef.setComparatorType(COMPARATOR_TYPE);
++      cfDef.setComparatorTypeAlias(TYPE_ALIAS);
++
++      // setting default dynamic validation class
++      cfDef.setKeyValidationClass(KEY_VALIDATION_CLASS);
++      cfDef.setKeyValidationAlias(TYPE_ALIAS);
++
++      // default value type is BytesType
+       cfDef.setDefaultValidationClass(ComparatorType.BYTESTYPE.getClassName());
+-      
++
+       this.columnFamilyDefinitions.put(familyName, cfDef);
+ 
++    }//for
++
++    // load key mapping definition
++    if (primaryKey == null) {
++      if (LOG.isDebugEnabled())
++        LOG.debug("No primary key definition found, going to use defaults.");
++    } else {
++      this.keyMapping = true;
++
++      // load row key mapping (validation class is dynamic)
++      elements = primaryKey.getChild(PARTITIONKEY_ELEMENT).getChildren();
++      for (Element element : elements) {
++        String field = element.getAttributeValue(NAME_ATTRIBUTE);
++        String type = element.getAttributeValue(TYPE_ATTRIBUTE);
++        rowKeyTypesMap.put(field, type);
++        rowKeyFieldsList.add(field);
++      }
++      if (LOG.isDebugEnabled()) {
++        String types = " ";
++        for (String field : rowKeyFieldsList)
++          types += rowKeyTypesMap.get(field) + " ";
++        LOG.debug("Located types of dynamic composite key validation class (" + types + ")");
++      }
++
++      // load column name mapping (comparator type is dynamic)
++      elements = primaryKey.getChild(CLUSTERKEY_ELEMENT).getChildren();
++      for (Element element : elements) {
++        String field = element.getAttributeValue(NAME_ATTRIBUTE);
++        String type = element.getAttributeValue(TYPE_ATTRIBUTE);
++        columnNameTypesMap.put(field, type);
++        columnNameFieldsList.add(field);
++      }
++      if (LOG.isDebugEnabled()) {
++        String types = " ";
++        for (String field : columnNameFieldsList)
++          types += columnNameTypesMap.get(field) + " ";
++        LOG.debug("Located types of dynamic composite comparator (" + types + ")");
++      }
+     }
+-    
+-    // load column definitions    
++
++    // load column definitions
+     elements = mapping.getChildren();
+     for (Element element: elements) {
+       String fieldName = element.getAttributeValue(NAME_ATTRIBUTE);
+@@ -199,11 +350,11 @@ public class CassandraMapping {
+       if (columnFamilyDefinition == null) {
+         LOG.warn("Family " + familyName + " was not declared in the keyspace.");
+       }
+-      
++
+       this.familyMap.put(fieldName, familyName);
+       this.columnMap.put(fieldName, columnName);
+-      
+-    }    
++
++    }//for
+   }
+ 
+   /**
+@@ -221,6 +372,10 @@ public class CassandraMapping {
+     return this.familyMap.get(name);
+   }
+ 
++  public Collection<String> getFamilies() {
++    return this.familyMap.values();
++  }
++
+   public String getColumn(String name) {
+     return this.columnMap.get(name);
+   }
+@@ -241,8 +396,54 @@ public class CassandraMapping {
+       ThriftCfDef thriftCfDef = new ThriftCfDef(columnFamilyDefinition);
+       list.add(thriftCfDef);
+     }
+-    
++
+     return list;
+   }
+ 
++  /**
++   * @return ordered list of row key parts
++   */
++  public List<String> getRowKeyFieldsList() {
++    return rowKeyFieldsList;
++  }
++
++  /**
++   * @param fieldName
++   *          of key class
++   * @return the type name of the row key part
++   */
++  public String getRowKeyType(String fieldName) {
++    return rowKeyTypesMap.get(fieldName);
++  }
++
++  /**
++   * @return rowKeyTypesMap
++   */
++  public Map<String, String> getRowKeyTypesMap() {
++    return rowKeyTypesMap;
++  }
++
++  /**
++   * @return ordered list of column name parts
++   */
++  public List<String> getColumnNameFieldsList() {
++    return columnNameFieldsList;
++  }
++
++  /**
++   * @param fieldName
++   *          of key class
++   * @return the type name of the column name part
++   */
++  public String getColumnNameType(String fieldName) {
++    return columnNameTypesMap.get(fieldName);
++  }
++
++  /**
++   * @return columnNameTypesMap
++   */
++  public Map<String, String> getColumnNameTypesMap() {
++    return columnNameTypesMap;
++  }
++
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMappingManager.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMappingManager.java
+index 0c77abc..ad387c9 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMappingManager.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraMappingManager.java
+@@ -32,9 +32,9 @@ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+ public class CassandraMappingManager {
+-  
++
+   public static final Logger LOG = LoggerFactory.getLogger(CassandraMappingManager.class);
+-  
++
+   private static final String MAPPING_FILE = "gora-cassandra-mapping.xml";
+   private static final String KEYSPACE_ELEMENT = "keyspace";
+   private static final String NAME_ATTRIBUTE = "name";
+@@ -42,6 +42,7 @@ public class CassandraMappingManager {
+   private static final String KEYCLASS_ATTRIBUTE = "keyClass";
+   private static final String HOST_ATTRIBUTE = "host";
+   private static final String CLUSTER_ATTRIBUTE = "cluster";
++  private static final String PRIMARYKEY_ELEMENT = "primaryKey";
+   // singleton
+   private static CassandraMappingManager manager = new CassandraMappingManager();
+ 
+@@ -54,10 +55,12 @@ public class CassandraMappingManager {
+   */
+   private Map<String, Element> keyspaceMap = null;
+   private Map<String, Element>  mappingMap = null;
++  private Map<String, Element> primaryKeyMap = null;
+ 
+   private CassandraMappingManager() {
+     keyspaceMap = new HashMap<String, Element>();
+     mappingMap  = new HashMap<String, Element>();
++    primaryKeyMap  = new HashMap<String, Element>();
+     try {
+       loadConfiguration();
+     }
+@@ -85,12 +88,20 @@ public class CassandraMappingManager {
+       LOG.error("Keyspace element does not exist for keyspaceName=" + keyspaceName);
+       return null;
+     }
+-    return new CassandraMapping(keyspaceElement, mappingElement);
++    String keyClass = mappingElement.getAttributeValue(KEYCLASS_ATTRIBUTE);
++    if (LOG.isDebugEnabled()) {
++      LOG.debug("className=" + className + " -> keyClass=" + keyClass);
++    }
++    Element primaryKeyElement = primaryKeyMap.get(keyClass);
++    if (primaryKeyElement == null) {
++      LOG.info("PrimaryKey element does not exist for keyClass=" + keyClass);
++    }
++    return new CassandraMapping(keyspaceElement, mappingElement, primaryKeyElement);
+   }
+ 
+   /**
+    * Primary class for loading Cassandra configuration from the 'MAPPING_FILE'.
+-   * 
++   *
+    * @throws JDOMException
+    * @throws IOException
+    */
+@@ -120,7 +131,7 @@ public class CassandraMappingManager {
+         String clusterName = keyspace.getAttributeValue(CLUSTER_ATTRIBUTE);
+         String hostName = keyspace.getAttributeValue(HOST_ATTRIBUTE);
+         if (LOG.isDebugEnabled()) {
+-          LOG.debug("Located Cassandra Keyspace: '" + keyspaceName + "' in cluster '" + clusterName + 
++          LOG.debug("Located Cassandra Keyspace: '" + keyspaceName + "' in cluster '" + clusterName +
+           "' on host '" + hostName + "'.");
+         }
+         if (keyspaceName == null) {
+@@ -130,8 +141,8 @@ public class CassandraMappingManager {
+         keyspaceMap.put(keyspaceName, keyspace);
+       }
+     }
+-      
+-    // load column definitions    
++
++    // load column definitions
+     List<Element> mappings = root.getChildren(MAPPING_ELEMENT);
+     if (mappings == null || mappings.size() == 0) {
+       LOG.error("Error locating Cassandra Mapping class element!");
+@@ -143,7 +154,7 @@ public class CassandraMappingManager {
+         String keyClassName = mapping.getAttributeValue(KEYCLASS_ATTRIBUTE);
+         String keyspaceName = mapping.getAttributeValue(KEYSPACE_ELEMENT);
+         if (LOG.isDebugEnabled()) {
+-        LOG.debug("Located Cassandra Mapping: keyClass: '" + keyClassName + "' in storage class '" 
++        LOG.debug("Located Cassandra Mapping: keyClass: '" + keyClassName + "' in storage class '"
+           + className + "' for Keyspace '" + keyspaceName + "'.");
+         }
+         if (className == null) {
+@@ -153,5 +164,25 @@ public class CassandraMappingManager {
+         mappingMap.put(className, mapping);
+       }
+     }
++
++    // load primary key definitions
++    List<Element> primaryKeys = root.getChildren(PRIMARYKEY_ELEMENT);
++    if (primaryKeys == null || primaryKeys.size() == 0) {
++      LOG.error("Error locating Cassandra PrimaryKey element!");
++    }
++    else {
++      for (Element primaryKey : primaryKeys) {
++        // associate persistent and class names for keyspace(s)
++        String primaryKeyName = primaryKey.getAttributeValue(NAME_ATTRIBUTE);
++        if (LOG.isDebugEnabled()) {
++        LOG.debug("Located Cassandra PrimaryKey: name: '" + primaryKeyName + "'.");
++        }
++        if (primaryKeyName == null) {
++          LOG.error("Error locating Cassandra PrimaryKey name attribute!");
++          continue;
++        }
++        primaryKeyMap.put(primaryKeyName, primaryKey);
++      }
++    }
+   }
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraStore.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraStore.java
+index b8130dc..e3b9149 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraStore.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/CassandraStore.java
+@@ -21,15 +21,17 @@ package org.apache.gora.cassandra.store;
+ import java.io.IOException;
+ import java.nio.ByteBuffer;
+ import java.util.ArrayList;
++import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.LinkedHashMap;
+ import java.util.List;
+ import java.util.Map;
++import java.util.Map.Entry;
+ import java.util.Properties;
+ import java.util.Set;
+-import java.util.Collections;
+ 
+ import me.prettyprint.hector.api.beans.ColumnSlice;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ import me.prettyprint.hector.api.beans.HColumn;
+ import me.prettyprint.hector.api.beans.HSuperColumn;
+ import me.prettyprint.hector.api.beans.Row;
+@@ -43,9 +45,9 @@ import org.apache.avro.generic.GenericArray;
+ import org.apache.avro.util.Utf8;
+ import org.apache.gora.cassandra.query.CassandraQuery;
+ import org.apache.gora.cassandra.query.CassandraResult;
+-import org.apache.gora.cassandra.query.CassandraResultSet;
+-import org.apache.gora.cassandra.query.CassandraRow;
++import org.apache.gora.cassandra.query.CassandraResultList;
+ import org.apache.gora.cassandra.query.CassandraSubColumn;
++import org.apache.gora.cassandra.query.CassandraMixedRow;
+ import org.apache.gora.cassandra.query.CassandraSuperColumn;
+ import org.apache.gora.persistency.ListGenericArray;
+ import org.apache.gora.persistency.StatefulHashMap;
+@@ -56,21 +58,30 @@ import org.apache.gora.query.Query;
+ import org.apache.gora.query.Result;
+ import org.apache.gora.query.impl.PartitionQueryImpl;
+ import org.apache.gora.store.impl.DataStoreBase;
++import org.apache.gora.util.GoraException;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+ /**
+- * {@link org.apache.gora.cassandra.store.CassandraStore} is the primary class 
+- * responsible for directing Gora CRUD operations into Cassandra. We (delegate) rely 
+- * heavily on {@ link org.apache.gora.cassandra.store.CassandraClient} for many operations
+- * such as initialization, creating and deleting schemas (Cassandra Keyspaces), etc.  
++ * {@link org.apache.gora.cassandra.store.CassandraStore} is the primary class responsible for
++ * directing Gora CRUD operations into Cassandra. We (delegate) rely heavily on @ link
++ * org.apache.gora.cassandra.store.CassandraClient} for many operations such as initialization,
++ * creating and deleting schemas (Cassandra Keyspaces), etc.
++ *
++ * @param PK
++ *          primary key class (not cassandra row key)
++ * @param T
++ *          persistent class
++ *
+  */
+-public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K, T> {
+-  
++public class CassandraStore<PK, T extends PersistentBase> extends DataStoreBase<PK, T> {
++
+   /** Logging implementation */
+   public static final Logger LOG = LoggerFactory.getLogger(CassandraStore.class);
+ 
+-  private CassandraClient<K, T>  cassandraClient = new CassandraClient<K, T>();
++  private CassandraClient<PK, T> cassandraClient = new CassandraClient<PK, T>();
++
++  private CassandraKeyMapper<PK, T> keyMapper;
+ 
+   /**
+    * Default schema index used when AVRO Union data types are stored
+@@ -80,26 +91,25 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+   /**
+    * The values are Avro fields pending to be stored.
+    *
+-   * We want to iterate over the keys in insertion order.
+-   * We don't want to lock the entire collection before iterating over the keys, since in the meantime other threads are adding entries to the map.
++   * We want to iterate over the keys in insertion order. We don't want to lock the entire
++   * collection before iterating over the keys, since in the meantime other threads are adding
++   * entries to the map.
+    */
+-  private Map<K, T> buffer = Collections.synchronizedMap(new LinkedHashMap<K, T>());
+-  
+-  /** The default constructor for CassandraStore */
+-  public CassandraStore() throws Exception {
+-    // this.cassandraClient.initialize();
+-  }
+- 
+-  /** 
+-   * Initialize is called when then the call to 
+-   * {@link org.apache.gora.store.DataStoreFactory#createDataStore(Class<D> dataStoreClass, Class<K> keyClass, Class<T> persistent, org.apache.hadoop.conf.Configuration conf)}
+-   * is made. In this case, we merely delegate the store initialization to the 
+-   * {@link org.apache.gora.cassandra.store.CassandraClient#initialize(Class<K> keyClass, Class<T> persistentClass)}. 
++  private Map<PK, T> buffer = Collections.synchronizedMap(new LinkedHashMap<PK, T>());
++
++  /**
++   * Initialize is called when then the call to {@link
++   * org.apache.gora.store.DataStoreFactory#createDataStore(Class<D> dataStoreClass, Class<K>
++   * keyClass, Class<T> persistent, org.apache.hadoop.conf.Configuration conf)} is made. In this
++   * case, we merely delegate the store initialization to the {@link
++   * org.apache.gora.cassandra.store.CassandraClient#initialize(Class<K> keyClass, Class<T>
++   * persistentClass)}.
+    */
+-  public void initialize(Class<K> keyClass, Class<T> persistent, Properties properties) {
++  public void initialize(Class<PK> primaryKeyClass, Class<T> persistentClass, Properties properties) {
+     try {
+-      super.initialize(keyClass, persistent, properties);
+-      this.cassandraClient.initialize(keyClass, persistent);
++      super.initialize(primaryKeyClass, persistentClass, properties);
++      this.cassandraClient.initialize(primaryKeyClass, persistentClass);
++      this.keyMapper = cassandraClient.getKeyMapper();
+     } catch (Exception e) {
+       LOG.error(e.getMessage());
+       LOG.error(e.getStackTrace().toString());
+@@ -119,13 +129,13 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+   }
+ 
+   @Override
+-  public boolean delete(K key) {
++  public boolean delete(PK key) {
+     LOG.debug("delete " + key);
+     return false;
+   }
+ 
+   @Override
+-  public long deleteByQuery(Query<K, T> query) {
++  public long deleteByQuery(Query<PK, T> query) {
+     LOG.debug("delete by query " + query);
+     return 0;
+   }
+@@ -137,167 +147,235 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+   }
+ 
+   /**
+-   * When executing Gora Queries in Cassandra we query the Cassandra keyspace by families.
+-   * When add sub/supercolumns, Gora keys are mapped to Cassandra partition keys only. 
+-   * This is because we follow the Cassandra logic where column family data is 
+-   * partitioned across nodes based on row Key.
++   * When executing Gora Queries in Cassandra we query the Cassandra keyspace by families. When add
++   * sub/supercolumns, Gora keys are mapped to Cassandra composite primary keys.
+    */
+   @Override
+-  public Result<K, T> execute(Query<K, T> query) {
+-    
++  public Result<PK, T> execute(Query<PK, T> query) {
++
+     Map<String, List<String>> familyMap = this.cassandraClient.getFamilyMap(query);
+     Map<String, String> reverseMap = this.cassandraClient.getReverseMap(query);
+-    
+-    CassandraQuery<K, T> cassandraQuery = new CassandraQuery<K, T>();
++
++    CassandraQuery<PK, T> cassandraQuery = new CassandraQuery<PK, T>();
+     cassandraQuery.setQuery(query);
+     cassandraQuery.setFamilyMap(familyMap);
+-    
+-    CassandraResult<K, T> cassandraResult = new CassandraResult<K, T>(this, query);
++
++    CassandraResult<PK, T> cassandraResult = new CassandraResult<PK, T>(this, query);
+     cassandraResult.setReverseMap(reverseMap);
+ 
+-    CassandraResultSet<K> cassandraResultSet = new CassandraResultSet<K>();
+-    
++    CassandraResultList<PK> cassandraResultList = new CassandraResultList<PK>();
++
+     // We query Cassandra keyspace by families.
+     for (String family : familyMap.keySet()) {
+       if (family == null) {
+         continue;
+       }
+       if (this.cassandraClient.isSuper(family)) {
+-        addSuperColumns(family, cassandraQuery, cassandraResultSet);
+-         
++        addSuperColumns(family, cassandraQuery, cassandraResultList);
++
+       } else {
+-        addSubColumns(family, cassandraQuery, cassandraResultSet);
++        addSubColumns(family, cassandraQuery, cassandraResultList);
+       }
+     }
+-    
+-    cassandraResult.setResultSet(cassandraResultSet);
+-    
++
++    cassandraResult.setResultSet(cassandraResultList);
++
+     return cassandraResult;
+   }
+-  
++
+   /**
+-   * When we add subcolumns, Gora keys are mapped to Cassandra partition keys only. 
+-   * This is because we follow the Cassandra logic where column family data is 
+-   * partitioned across nodes based on row Key.
++   * When querying for columns, Gora keys are mapped to Cassandra Primary Keys consisting of
++   * partition keys and column names. The Cassandra Primary Keys resulting from the query are mapped
++   * back to Gora Keys. Each result row might contain clustered fields associated with multiple
++   * persistent entities. Row columns are mapped to persistent entities by means of the clustering
++   * information contained in their Gora key.
+    */
+-  private void addSubColumns(String family, CassandraQuery<K, T> cassandraQuery,
+-      CassandraResultSet cassandraResultSet) {
+-    // select family columns that are included in the query
+-    List<Row<K, ByteBuffer, ByteBuffer>> rows = this.cassandraClient.execute(cassandraQuery, family);
+-    
+-    for (Row<K, ByteBuffer, ByteBuffer> row : rows) {
+-      K key = row.getKey();
+-      
+-      // find associated row in the resultset
+-      CassandraRow<K> cassandraRow = cassandraResultSet.getRow(key);
+-      if (cassandraRow == null) {
+-        cassandraRow = new CassandraRow<K>();
+-        cassandraResultSet.putRow(key, cassandraRow);
+-        cassandraRow.setKey(key);
+-      }
+-      
+-      ColumnSlice<ByteBuffer, ByteBuffer> columnSlice = row.getColumnSlice();
+-      
+-      for (HColumn<ByteBuffer, ByteBuffer> hColumn : columnSlice.getColumns()) {
+-        CassandraSubColumn cassandraSubColumn = new CassandraSubColumn();
+-        cassandraSubColumn.setValue(hColumn);
+-        cassandraSubColumn.setFamily(family);
+-        cassandraRow.add(cassandraSubColumn);
+-      }
+-      
+-    }
++  private void addSubColumns(String family, CassandraQuery<PK, T> cassandraQuery, CassandraResultList<PK> cassandraResultList) {
++    // retrieve key range corresponding to the query parameters (triggers cassandra call)
++    List<Row<DynamicComposite, DynamicComposite, ByteBuffer>> rows = this.cassandraClient.execute(cassandraQuery, family);
++
++    // loop result rows
++    for (Row<DynamicComposite, DynamicComposite, ByteBuffer> row : rows) {
++      DynamicComposite compositeRowKey = row.getKey();
++      ColumnSlice<DynamicComposite, ByteBuffer> columnSlice = row.getColumnSlice();
++
++      // loop result columns
++      for (HColumn<DynamicComposite, ByteBuffer> hColumn : columnSlice.getColumns()) {
++        // extract complex primary key
++        DynamicComposite compositeColumnName = hColumn.getName();
++        PK partKey = cassandraClient.getKeyMapper().getPrimaryKey(compositeRowKey, compositeColumnName);
++
++        // find associated slice in the result list
++        CassandraMixedRow<PK> mixedRow = cassandraResultList.getMixedRow(partKey);
++        if (mixedRow == null) {
++          mixedRow = new CassandraMixedRow<PK>();
++          cassandraResultList.putMixedRow(partKey, mixedRow);
++          mixedRow.setKey(partKey);
++        }
++
++        // create column representation
++        CassandraSubColumn<DynamicComposite> compositeColumn = new CassandraSubColumn<DynamicComposite>();
++        compositeColumn.setValue(hColumn);
++        compositeColumn.setFamily(family);
++
++        // add column to slice
++        mixedRow.add(compositeColumn);
++
++      }// loop columns
++
++    }// loop rows
+   }
+ 
+   /**
+-   * When we add supercolumns, Gora keys are mapped to Cassandra partition keys only. 
+-   * This is because we follow the Cassandra logic where column family data is 
+-   * partitioned across nodes based on row Key.
++   * When querying for superColumns, Gora keys are mapped to Cassandra Primary Keys consisting of
++   * partition keys and column names. The Cassandra Primary Keys resulting from the query are mapped
++   * back to Gora Keys. Each result row might contain clustered fields associated with multiple
++   * persistent entities. Row columns are mapped to persistent entities by means of the clustering
++   * information contained in their Gora key.
+    */
+-  private void addSuperColumns(String family, CassandraQuery<K, T> cassandraQuery, 
+-      CassandraResultSet cassandraResultSet) {
+-    
+-    List<SuperRow<K, String, ByteBuffer, ByteBuffer>> superRows = this.cassandraClient.executeSuper(cassandraQuery, family);
+-    for (SuperRow<K, String, ByteBuffer, ByteBuffer> superRow: superRows) {
+-      K key = superRow.getKey();
+-      CassandraRow<K> cassandraRow = cassandraResultSet.getRow(key);
+-      if (cassandraRow == null) {
+-        cassandraRow = new CassandraRow();
+-        cassandraResultSet.putRow(key, cassandraRow);
+-        cassandraRow.setKey(key);
+-      }
+-      
+-      SuperSlice<String, ByteBuffer, ByteBuffer> superSlice = superRow.getSuperSlice();
+-      for (HSuperColumn<String, ByteBuffer, ByteBuffer> hSuperColumn: superSlice.getSuperColumns()) {
++  private void addSuperColumns(String family, CassandraQuery<PK, T> cassandraQuery, CassandraResultList<PK> cassandraResultList) {
++    // retrieve key range corresponding to the query parameters (triggers cassandra call)
++    List<SuperRow<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer>> superRows = this.cassandraClient.executeSuper(cassandraQuery, family);
++
++    // loop result rows
++    for (SuperRow<DynamicComposite, DynamicComposite, ByteBuffer, ByteBuffer> superRow : superRows) {
++      DynamicComposite compositeSuperRowKey = superRow.getKey();
++      SuperSlice<DynamicComposite, ByteBuffer, ByteBuffer> superSlice = superRow.getSuperSlice();
++
++      // loop result columns
++      for (HSuperColumn<DynamicComposite, ByteBuffer, ByteBuffer> hSuperColumn : superSlice.getSuperColumns()) {
++        // extract complex primary key
++        DynamicComposite compositeSuperColumnName = hSuperColumn.getName();
++        PK partKey = cassandraClient.getKeyMapper().getPrimaryKey(compositeSuperRowKey, compositeSuperColumnName);
++
++        // find associated slice in the result list
++        CassandraMixedRow<PK> mixedRow = cassandraResultList.getMixedRow(partKey);
++        if (mixedRow == null) {
++          mixedRow = new CassandraMixedRow<PK>();
++          cassandraResultList.putMixedRow(partKey, mixedRow);
++          mixedRow.setKey(partKey);
++        }
++
++        // create column representation
+         CassandraSuperColumn cassandraSuperColumn = new CassandraSuperColumn();
+         cassandraSuperColumn.setValue(hSuperColumn);
+         cassandraSuperColumn.setFamily(family);
+-        cassandraRow.add(cassandraSuperColumn);
+-      }
+-    }
++
++        // add column to slice
++        mixedRow.add(cassandraSuperColumn);
++
++      }// loop superColumns
++
++    }// loop superROws
+   }
+ 
+   /**
+    * Flush the buffer. Write the buffered rows.
++   *
+    * @see org.apache.gora.store.DataStore#flush()
+    */
+   @Override
+   public void flush() {
+-    
+-    Set<K> keys = this.buffer.keySet();
+-    
++    Set<PK> keys = this.buffer.keySet();
++
+     // this duplicates memory footprint
+-    K[] keyArray = (K[]) keys.toArray();
+-    
+-    // iterating over the key set directly would throw ConcurrentModificationException with java.util.HashMap and subclasses
+-    for (K key: keyArray) {
++    @SuppressWarnings("unchecked")
++    PK[] keyArray = (PK[]) keys.toArray();
++
++    // iterating over the key set directly would throw ConcurrentModificationException with
++    // java.util.HashMap and subclasses
++    for (PK key : keyArray) {
+       T value = this.buffer.get(key);
+       if (value == null) {
+         LOG.info("Value to update is null for key " + key);
+         continue;
+       }
+       Schema schema = value.getSchema();
+-      for (Field field: schema.getFields()) {
++      for (Field field : schema.getFields()) {
+         if (value.isDirty(field.pos())) {
+           addOrUpdateField(key, field, value.get(field.pos()));
+         }
+       }
+     }
+-    
++
+     // remove flushed rows
+-    for (K key: keyArray) {
++    for (PK key : keyArray) {
+       this.buffer.remove(key);
+     }
+   }
+ 
+   @Override
+-  public T get(K key, String[] fields) {
+-    CassandraQuery<K,T> query = new CassandraQuery<K,T>();
++  public T get(PK key, String[] fields) {
++    CassandraQuery<PK, T> query = new CassandraQuery<PK, T>();
+     query.setDataStore(this);
+     query.setKeyRange(key, key);
+     query.setFields(fields);
+     query.setLimit(1);
+-    Result<K,T> result = execute(query);
++    Result<PK, T> result = execute(query);
+     boolean hasResult = false;
+     try {
+       hasResult = result.next();
+     } catch (Exception e) {
+-      // TODO Auto-generated catch block
+-      e.printStackTrace();
++      LOG.error("Error processing query result", e);
+     }
+     return hasResult ? result.get() : null;
+   }
+ 
++  /**
++   * @see org.apache.gora.store.DataStore#getPartitions(org.apache.gora.query.Query)
++   *
++   *      the cassandra interpretation of this method relates to the partition components of the
++   *      primary key. Queries with ranges in any part of the complex partition key would possibly
++   *      need to traverse multiple nodes and are generally not possible with non order-preserving
++   *      partitioners.
++   *
++   *      The method will check for partition key ranges and try to decompose them into a set of key
++   *      pairs with absolute partition keys (preserving possible cluster key ranges). Such a
++   *      decomposition is generally only feasible if the size of the associated key set is not too
++   *      big. Therefore, only a few key types are supported including integer, boolean and long
++   *      types.
++   *
++   *      Furthermore, for multi-dimensional partition keys, the range semantics differs from the
++   *      default cassandra behavior. In cassandra, composite keys are stored in lexical order. This
++   *      means that ranges of higher-level keys include the complete value ranges of lower-level
++   *      keys (possibly slightly reduced by ranges of lower-level keys). Because this would result
++   *      in far too many absolute keys (and associated queries), only the specified lower-level
++   *      keys (absolute value or range) are considered. This means that rows with a lower-level key
++   *      outside the specified range are not part of the query result, whereas with default
++   *      cassandra behavior they would be included.
++   *
++   *      As a consequence, the automatic partitioning function is practically restricted to cases,
++   *      where the data model is explicitly designed for it. For instance this works quite well for
++   *      queries that consider modestly wide ranges of single components within a composite
++   *      partition key.
++   *
++   *      If there is no partition key range or decomposition of partition keys is not possible, a
++   *      single partition query will be returned with a warning.
++   *
++   *      Locations are not really relevant from a cassandra point of view, because performance
++   *      gains from local queries are not likely to be significant. As a possible TODO, the default
++   *      node (and possibly also replica nodes) associated with a partition key could be computed.
++   *
++   */
+   @Override
+-  public List<PartitionQuery<K, T>> getPartitions(Query<K, T> query)
+-      throws IOException {
+-    // just a single partition
+-    List<PartitionQuery<K,T>> partitions = new ArrayList<PartitionQuery<K,T>>();
+-    partitions.add(new PartitionQueryImpl<K,T>(query));
++  public List<PartitionQuery<PK, T>> getPartitions(Query<PK, T> query) throws IOException {
++    // result list
++    List<PartitionQuery<PK, T>> partitions = new ArrayList<PartitionQuery<PK, T>>();
++
++    // a map holding key pairs for distinct partitions
++    Map<PK, PK> keyMap = keyMapper.decomposePartionKeys(query.getStartKey(), query.getEndKey());
++
++    // create a partition query for each partition key pair.
++    for (Entry<PK, PK> e : keyMap.entrySet()) {
++      partitions.add(new PartitionQueryImpl<PK, T>(query, e.getKey(), e.getValue()));
++    }
++
+     return partitions;
+   }
+-  
++
+   /**
+    * In Cassandra Schemas are referred to as Keyspaces
++   *
+    * @return Keyspace
+    */
+   @Override
+@@ -306,154 +384,172 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+   }
+ 
+   @Override
+-  public Query<K, T> newQuery() {
+-    Query<K,T> query = new CassandraQuery<K, T>(this);
++  public Query<PK, T> newQuery() {
++    Query<PK, T> query = new CassandraQuery<PK, T>(this);
+     query.setFields(getFieldsToQuery(null));
+     return query;
+   }
+ 
+   /**
+    * Duplicate instance to keep all the objects in memory till flushing.
+-   * @see org.apache.gora.store.DataStore#put(java.lang.Object, org.apache.gora.persistency.Persistent)
++   *
++   * @see org.apache.gora.store.DataStore#put(java.lang.Object,
++   *      org.apache.gora.persistency.Persistent)
+    */
+   @Override
+-  public void put(K key, T value) {
++  @SuppressWarnings({ "rawtypes", "unchecked", "incomplete-switch" })
++  public void put(PK key, T value) {
+     T p = (T) value.newInstance(new StateManagerImpl());
+     Schema schema = value.getSchema();
+-    for (Field field: schema.getFields()) {
++
++    for (Field field : schema.getFields()) {
+       int fieldPos = field.pos();
++
+       if (value.isDirty(fieldPos)) {
+         Object fieldValue = value.get(fieldPos);
+-        
++
+         // check if field has a nested structure (array, map, or record)
+         Schema fieldSchema = field.schema();
+         Type type = fieldSchema.getType();
+-        switch(type) {
+-          case RECORD:
+-            PersistentBase persistent = (PersistentBase) fieldValue;
+-            PersistentBase newRecord = (PersistentBase) persistent.newInstance(new StateManagerImpl());
+-            for (Field member: fieldSchema.getFields()) {
+-              newRecord.put(member.pos(), persistent.get(member.pos()));
+-            }
+-            fieldValue = newRecord;
+-            break;
+-          case MAP:
+-            StatefulHashMap map = (StatefulHashMap) fieldValue;
+-            StatefulHashMap newMap = new StatefulHashMap();
+-            for (Object mapKey : map.keySet()) {
+-              newMap.put(mapKey, map.get(mapKey));
+-              newMap.putState(mapKey, map.getState(mapKey));
+-            }
+-            fieldValue = newMap;
+-            break;
+-          case ARRAY:
+-            GenericArray array = (GenericArray) fieldValue;
+-            ListGenericArray newArray = new ListGenericArray(fieldSchema.getElementType());
+-            Iterator iter = array.iterator();
+-            while (iter.hasNext()) {
+-              newArray.add(iter.next());
+-            }
+-            fieldValue = newArray;
+-            break;
+-          case UNION:
+-            // storing the union selected schema, the actual value will be stored as soon as getting out of here
+-            // TODO determine which schema we are using: int schemaPos = getUnionSchema(fieldValue,fieldSchema);
+-            // and save it p.put( p.getFieldIndex(field.name() + CassandraStore.UNION_COL_SUFIX), schemaPos);
+-            break;
++
++        switch (type) {
++        case RECORD:
++          PersistentBase persistent = (PersistentBase) fieldValue;
++          PersistentBase newRecord = (PersistentBase) persistent.newInstance(new StateManagerImpl());
++          for (Field member : fieldSchema.getFields()) {
++            newRecord.put(member.pos(), persistent.get(member.pos()));
++          }
++          fieldValue = newRecord;
++          break;
++        case MAP:
++          StatefulHashMap map = (StatefulHashMap) fieldValue;
++          StatefulHashMap newMap = new StatefulHashMap();
++          for (Object mapKey : map.keySet()) {
++            newMap.put(mapKey, map.get(mapKey));
++            newMap.putState(mapKey, map.getState(mapKey));
++          }
++          fieldValue = newMap;
++          break;
++        case ARRAY:
++          GenericArray array = (GenericArray) fieldValue;
++          ListGenericArray newArray = new ListGenericArray(fieldSchema.getElementType());
++          Iterator iter = array.iterator();
++          while (iter.hasNext()) {
++            newArray.add(iter.next());
++          }
++          fieldValue = newArray;
++          break;
++        case UNION:
++          // XXX review UNION handling
++          // storing the union selected schema, the actual value will be stored as soon as getting
++          // out of here
++          // TODO determine which schema we are using: int schemaPos =
++          // getUnionSchema(fieldValue,fieldSchema);
++          // and save it p.put( p.getFieldIndex(field.name() + CassandraStore.UNION_COL_SUFIX),
++          // schemaPos);
++          break;
+         }
+-        
++
+         p.put(fieldPos, fieldValue);
+-      }
+-    }
+-    
++
++      }// if field dirty
++    }// loop fields
++
+     // this performs a structural modification of the map
+     this.buffer.put(key, p);
+- }
++  }
+ 
+   /**
+    * Add a field to Cassandra according to its type.
+-   * @param key     the key of the row where the field should be added
+-   * @param field   the Avro field representing a datum
+-   * @param value   the field value
++   *
++   * @param key
++   *          the key of the row where the field should be added
++   * @param field
++   *          the Avro field representing a datum
++   * @param value
++   *          the field value
+    */
+-  private void addOrUpdateField(K key, Field field, Object value) {
++  private void addOrUpdateField(PK key, Field field, Object value) {
+     Schema schema = field.schema();
+     Type type = schema.getType();
+-      switch (type) {
+-        case STRING:
+-        case BOOLEAN:
+-        case INT:
+-        case LONG:
+-        case BYTES:
+-        case FLOAT:
+-        case DOUBLE:
+-        case FIXED:
+-          this.cassandraClient.addColumn(key, field.name(), value);
+-          break;
+-        case RECORD:
+-          if (value != null) {
+-            if (value instanceof PersistentBase) {
+-              PersistentBase persistentBase = (PersistentBase) value;
+-              for (Field member: schema.getFields()) {
+-                
+-                // TODO: hack, do not store empty arrays
+-                Object memberValue = persistentBase.get(member.pos());
+-                if (memberValue instanceof GenericArray<?>) {
+-                  if (((GenericArray)memberValue).size() == 0) {
+-                    continue;
+-                  }
+-                }
+-                this.cassandraClient.addSubColumn(key, field.name(), member.name(), memberValue);
++    switch (type) {
++    case STRING:
++    case BOOLEAN:
++    case INT:
++    case LONG:
++    case BYTES:
++    case FLOAT:
++    case DOUBLE:
++    case FIXED:
++      this.cassandraClient.addColumn(key, field.name(), value);
++      break;
++    case RECORD:
++      if (value != null) {
++        if (value instanceof PersistentBase) {
++          PersistentBase persistentBase = (PersistentBase) value;
++          for (Field member : schema.getFields()) {
++
++            // TODO: hack, do not store empty arrays
++            Object memberValue = persistentBase.get(member.pos());
++            if (memberValue instanceof GenericArray<?>) {
++              if (((GenericArray) memberValue).size() == 0) {
++                continue;
+               }
+-          } else {
+-            LOG.info("Record not supported: " + value.toString());
+-            
++            }
++            this.cassandraClient.addSubColumn(key, field.name(), member.name(), memberValue);
+           }
++        } else {
++          LOG.info("Record not supported: " + value.toString());
++
+         }
+-        break;
+-      case MAP:
+-        if (value != null) {
+-          if (value instanceof StatefulHashMap<?, ?>) {
+-            this.cassandraClient.addStatefulHashMap(key, field.name(), (StatefulHashMap<Utf8,Object>)value);
+-          } else {
+-            LOG.info("Map not supported: " + value.toString());
+-          }
++      }
++      break;
++    case MAP:
++      if (value != null) {
++        if (value instanceof StatefulHashMap<?, ?>) {
++          this.cassandraClient.addStatefulHashMap(key, field.name(), (StatefulHashMap<Utf8, Object>) value);
++        } else {
++          LOG.info("Map not supported: " + value.toString());
+         }
+-        break;
+-      case ARRAY:
+-        if (value != null) {
+-          if (value instanceof GenericArray<?>) {
+-            this.cassandraClient.addGenericArray(key, field.name(), (GenericArray)value);
+-          } else {
+-            LOG.info("Array not supported: " + value.toString());
+-          }
++      }
++      break;
++    case ARRAY:
++      if (value != null) {
++        if (value instanceof GenericArray<?>) {
++          this.cassandraClient.addGenericArray(key, field.name(), (GenericArray) value);
++        } else {
++          LOG.info("Array not supported: " + value.toString());
+         }
+-        break;
+-       case UNION:
+-         if(value != null) {
+-           LOG.info("Union being supported with value: " + value.toString());
+-           // TODO add union schema index used
+-           // adding union value
+-           this.cassandraClient.addColumn(key, field.name(), value);
+-         } else {
+-           LOG.info("Union not supported: " + value.toString());
+-         }
+-      default:
+-        LOG.info("Type not considered: " + type.name());      
++      }
++      break;
++    case UNION:
++      if (value != null) {
++        LOG.info("Union being supported with value: " + value.toString());
++        // XXX review UNION handling
++        // TODO add union schema index used
++        // adding union value
++        this.cassandraClient.addColumn(key, field.name(), value);
++      } else {
++        LOG.info("Union not supported: " + value.toString());
++      }
++    default:
++      LOG.info("Type not considered: " + type.name());
+     }
+   }
+ 
+   /**
+    * Gets the position within the schema of the type used
++   *
+    * @param pValue
+    * @param pUnionSchema
+    * @return
+    */
+-  private int getUnionSchema(Object pValue, Schema pUnionSchema){
++  // XXX review UNION handling
++  private int getUnionSchema(Object pValue, Schema pUnionSchema) {
+     int unionSchemaPos = 0;
+     String valueType = pValue.getClass().getSimpleName();
+     Iterator<Schema> it = pUnionSchema.getTypes().iterator();
+-    while ( it.hasNext() ){
++    while (it.hasNext()) {
+       String schemaName = it.next().getName();
+       if (valueType.equals("Utf8") && schemaName.equals(Type.STRING.name().toLowerCase()))
+         return unionSchemaPos;
+@@ -469,7 +565,7 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+         return unionSchemaPos;
+       else if (valueType.equals("Boolean") && schemaName.equals(Type.BOOLEAN.name().toLowerCase()))
+         return unionSchemaPos;
+-      unionSchemaPos ++;
++      unionSchemaPos++;
+     }
+     // if we weren't able to determine which data type it is, then we return the default
+     return 0;
+@@ -481,4 +577,7 @@ public class CassandraStore<K, T extends PersistentBase> extends DataStoreBase<K
+     return cassandraClient.keyspaceExists();
+   }
+ 
++  public CassandraKeyMapper<PK, T> getKeyMapper() {
++    return this.keyMapper;
++  }
+ }
+diff --git gora-cassandra/src/main/java/org/apache/gora/cassandra/store/HectorUtils.java gora-cassandra/src/main/java/org/apache/gora/cassandra/store/HectorUtils.java
+index 7e690e3..2e16284 100644
+--- gora-cassandra/src/main/java/org/apache/gora/cassandra/store/HectorUtils.java
++++ gora-cassandra/src/main/java/org/apache/gora/cassandra/store/HectorUtils.java
+@@ -22,78 +22,83 @@ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+ 
+ import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
++import me.prettyprint.cassandra.serializers.DynamicCompositeSerializer;
+ import me.prettyprint.cassandra.serializers.IntegerSerializer;
+ import me.prettyprint.cassandra.serializers.StringSerializer;
++import me.prettyprint.hector.api.beans.DynamicComposite;
+ import me.prettyprint.hector.api.beans.HColumn;
+ import me.prettyprint.hector.api.beans.HSuperColumn;
+ import me.prettyprint.hector.api.factory.HFactory;
+ import me.prettyprint.hector.api.mutation.Mutator;
+-import me.prettyprint.hector.api.Serializer;
+ 
+ import org.apache.gora.persistency.Persistent;
+-
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+ /**
+- * This class it not thread safe.
+- * According to Hector's JavaDoc a Mutator isn't thread safe, too.
++ * This class it not thread safe. According to Hector's JavaDoc a Mutator isn't thread safe, too.
+  * Take a look at {@CassandraClient} for safe usage.
+  */
+-public class HectorUtils<K,T extends Persistent> {
++public class HectorUtils<K, T extends Persistent> {
+ 
+   public static final Logger LOG = LoggerFactory.getLogger(HectorUtils.class);
+-  
+-  public static<K> void insertColumn(Mutator<K> mutator, K key, String columnFamily, ByteBuffer columnName, ByteBuffer columnValue) {
+-    mutator.insert(key, columnFamily, createColumn(columnName, columnValue));
+-  }
+ 
+-  public static<K> void insertColumn(Mutator<K> mutator, K key, String columnFamily, String columnName, ByteBuffer columnValue) {
++  public static void insertColumn(Mutator<DynamicComposite> mutator, DynamicComposite key, String columnFamily, DynamicComposite columnName,
++      ByteBuffer columnValue) {
+     mutator.insert(key, columnFamily, createColumn(columnName, columnValue));
+   }
+ 
++  public static HColumn<DynamicComposite, ByteBuffer> createColumn(DynamicComposite name, ByteBuffer value) {
++    return HFactory.createColumn(name, value, DynamicCompositeSerializer.get(), ByteBufferSerializer.get());
++  }
+ 
+-  public static<K> HColumn<ByteBuffer,ByteBuffer> createColumn(ByteBuffer name, ByteBuffer value) {
++  public static HColumn<ByteBuffer, ByteBuffer> createColumn(ByteBuffer name, ByteBuffer value) {
+     return HFactory.createColumn(name, value, ByteBufferSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-  public static<K> HColumn<String,ByteBuffer> createColumn(String name, ByteBuffer value) {
++  public static HColumn<String, ByteBuffer> createColumn(String name, ByteBuffer value) {
+     return HFactory.createColumn(name, value, StringSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-  public static<K> HColumn<Integer,ByteBuffer> createColumn(Integer name, ByteBuffer value) {
++  public static HColumn<Integer, ByteBuffer> createColumn(Integer name, ByteBuffer value) {
+     return HFactory.createColumn(name, value, IntegerSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-
+-  public static<K> void insertSubColumn(Mutator<K> mutator, K key, String columnFamily, String superColumnName, ByteBuffer columnName, ByteBuffer columnValue) {
++  public static void insertSubColumn(Mutator<DynamicComposite> mutator, DynamicComposite key, String columnFamily, DynamicComposite superColumnName,
++      ByteBuffer columnName, ByteBuffer columnValue) {
+     mutator.insert(key, columnFamily, createSuperColumn(superColumnName, columnName, columnValue));
+   }
+ 
+-  public static<K> void insertSubColumn(Mutator<K> mutator, K key, String columnFamily, String superColumnName, String columnName, ByteBuffer columnValue) {
++  public static void insertSubColumn(Mutator<DynamicComposite> mutator, DynamicComposite key, String columnFamily, DynamicComposite superColumnName,
++      String columnName, ByteBuffer columnValue) {
+     mutator.insert(key, columnFamily, createSuperColumn(superColumnName, columnName, columnValue));
+   }
+ 
+-  public static<K> void insertSubColumn(Mutator<K> mutator, K key, String columnFamily, String superColumnName, Integer columnName, ByteBuffer columnValue) {
++  public static void insertSubColumn(Mutator<DynamicComposite> mutator, DynamicComposite key, String columnFamily, DynamicComposite superColumnName,
++      Integer columnName, ByteBuffer columnValue) {
+     mutator.insert(key, columnFamily, createSuperColumn(superColumnName, columnName, columnValue));
+   }
+ 
+-
+-  public static<K> void deleteSubColumn(Mutator<K> mutator, K key, String columnFamily, String superColumnName, ByteBuffer columnName) {
+-    mutator.subDelete(key, columnFamily, superColumnName, columnName, StringSerializer.get(), ByteBufferSerializer.get());
++  public static void deleteSubColumn(Mutator<DynamicComposite> mutator, DynamicComposite key, String columnFamily, DynamicComposite superColumnName,
++      ByteBuffer columnName) {
++    mutator.subDelete(key, columnFamily, superColumnName, columnName, DynamicCompositeSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-
+-  public static<K> HSuperColumn<String,ByteBuffer,ByteBuffer> createSuperColumn(String superColumnName, ByteBuffer columnName, ByteBuffer columnValue) {
+-    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), StringSerializer.get(), ByteBufferSerializer.get(), ByteBufferSerializer.get());
++  public static HSuperColumn<DynamicComposite, ByteBuffer, ByteBuffer> createSuperColumn(DynamicComposite superColumnName, ByteBuffer columnName,
++      ByteBuffer columnValue) {
++    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), DynamicCompositeSerializer.get(),
++        ByteBufferSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-  public static<K> HSuperColumn<String,String,ByteBuffer> createSuperColumn(String superColumnName, String columnName, ByteBuffer columnValue) {
+-    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), StringSerializer.get(), StringSerializer.get(), ByteBufferSerializer.get());
++  public static HSuperColumn<DynamicComposite, String, ByteBuffer> createSuperColumn(DynamicComposite superColumnName, String columnName, ByteBuffer columnValue) {
++    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), DynamicCompositeSerializer.get(),
++        StringSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+-  public static<K> HSuperColumn<String,Integer,ByteBuffer> createSuperColumn(String superColumnName, Integer columnName, ByteBuffer columnValue) {
+-    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), StringSerializer.get(), IntegerSerializer.get(), ByteBufferSerializer.get());
++  public static HSuperColumn<DynamicComposite, Integer, ByteBuffer> createSuperColumn(DynamicComposite superColumnName, Integer columnName,
++      ByteBuffer columnValue) {
++    return HFactory.createSuperColumn(superColumnName, Arrays.asList(createColumn(columnName, columnValue)), DynamicCompositeSerializer.get(),
++        IntegerSerializer.get(), ByteBufferSerializer.get());
+   }
+ 
+ }
+diff --git gora-cassandra/src/test/conf/gora-cassandra-mapping.xml gora-cassandra/src/test/conf/gora-cassandra-mapping.xml
+index 5109d40..492c156 100644
+--- gora-cassandra/src/test/conf/gora-cassandra-mapping.xml
++++ gora-cassandra/src/test/conf/gora-cassandra-mapping.xml
+@@ -54,4 +54,31 @@
+     <field name="count"  family="p" qualifier="common:count"/>
+   </class>
+ 
++  <keyspace name="Sensor" cluster="Gora Cassandra Test Cluster" host="localhost" replicationFactor="1"
++      replicationStrategy="org.apache.cassandra.locator.SimpleStrategy">
++      <family name="readings" />
++      <family name="params" type="super"/>
++      <family name="context" type="super"/>
++      <family name="events"  type="super"/>
++  </keyspace>
++
++  <class name="org.apache.gora.examples.generated.SensorData" keyspace="Sensor"
++      keyClass="org.apache.gora.examples.generated.SensorKey">
++      <field name="reading" family="readings" qualifier="dat" />
++      <!-- complex field types go into separate CFs -->
++      <field name="events" family="events" qualifier="evt" />
++      <field name="params" type="complex" family="params" qualifier="prm" />
++      <field name="context" family="context" qualifier="ctx"/>
++  </class>
++
++  <primaryKey name="org.apache.gora.examples.generated.SensorKey">
++      <partitionKey>
++          <field name="sensorId" type="UTF8Type" />
++          <field name="year" type="IntegerType" />
++      </partitionKey>
++      <clusterKey>
++          <field name="date" type="LongType" />
++      </clusterKey>
++  </primaryKey>
++  
+ </gora-orm>
+diff --git gora-cassandra/src/test/java/org/apache/gora/cassandra/store/TestGoraCassandraComplexKeys.java gora-cassandra/src/test/java/org/apache/gora/cassandra/store/TestGoraCassandraComplexKeys.java
+new file mode 100644
+index 0000000..4f538d4
+--- /dev/null
++++ gora-cassandra/src/test/java/org/apache/gora/cassandra/store/TestGoraCassandraComplexKeys.java
+@@ -0,0 +1,200 @@
++package org.apache.gora.cassandra.store;
++
++import static org.junit.Assert.*;
++
++import java.io.IOException;
++import java.util.ArrayList;
++import java.util.Date;
++import java.util.GregorianCalendar;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Random;
++
++import org.apache.avro.util.Utf8;
++import org.apache.gora.GoraTestDriver;
++import org.apache.gora.cassandra.GoraCassandraTestDriver;
++import org.apache.gora.examples.generated.SensorContext;
++import org.apache.gora.examples.generated.SensorData;
++import org.apache.gora.examples.generated.SensorKey;
++import org.apache.gora.query.Query;
++import org.apache.gora.query.Result;
++import org.apache.gora.store.DataStore;
++import org.junit.After;
++import org.junit.AfterClass;
++import org.junit.Before;
++import org.junit.BeforeClass;
++import org.junit.Test;
++
++/**
++ * Unit tests for Gora Cassandra composite primary key feature
++ *
++ * @author c.zirpins
++ */
++public class TestGoraCassandraComplexKeys {
++  final String host = "localhost:9160";
++  final String cluster = "Gora Cassandra Test Cluster";
++  final String keyspace = "Sensor";
++  final int replicationFactor = 1;
++
++  private boolean dataCreated;
++
++  private Map<SensorKey, SensorData> readings = new HashMap<SensorKey, SensorData>();
++  private List<SensorKey> orderedKeys = new ArrayList<SensorKey>();
++
++  private SensorKey startKey;
++  private SensorKey endKey;
++
++  private static GoraTestDriver testDriver = new GoraCassandraTestDriver();
++  private static DataStore<SensorKey, SensorData> sensorDataStore;
++
++  @BeforeClass
++  public static void setUpClass() throws Exception {
++    testDriver.setUpClass();
++  }
++
++  @Before
++  public void setUp() throws Exception {
++    sensorDataStore = testDriver.createDataStore(SensorKey.class, SensorData.class);
++    testDriver.setUp();
++  }
++
++  @After
++  public void tearDown() throws Exception {
++    testDriver.tearDown();;
++  }
++
++  @AfterClass
++  public static void tearDownClass() throws Exception {
++    testDriver.tearDownClass();;
++  }
++
++  @Test
++  public void testCreate() {
++    if (dataCreated)
++      return;
++
++    // write readings
++    Date date = new Date();
++    long datebase = date.getTime();
++
++    for (int i = 0; i < 1000; i++) {
++      Random rand = new Random();
++      // sample reading
++      SensorData reading = new SensorData();
++      reading.setReading(rand.nextDouble());
++      reading.putToParams(new Utf8("itchy-" + i), new Utf8("foo-" + i));
++      reading.putToParams(new Utf8("scratchy-" + i), new Utf8("bar-" + i));
++      SensorContext ctx = new SensorContext();
++      ctx.setMem(rand.nextDouble());
++      ctx.setPower(rand.nextDouble());
++      reading.setContext(ctx);
++      int ne = rand.nextInt(10) + 1;
++      for (int s = 0; s < ne; s++)
++        reading.addToEvents(rand.nextInt(100));
++      // sample key
++      SensorKey key = new SensorKey();
++      key.setSensorId(new Utf8("foo"));
++      GregorianCalendar gc = new GregorianCalendar();
++      gc.setTime(date);
++      key.setDate(datebase++);
++      key.setYear(gc.get(GregorianCalendar.YEAR));
++      // keep for testing
++      readings.put(key, reading);
++      orderedKeys.add(key);
++      // put in store
++      sensorDataStore.put(key, reading);
++      // save start/end keys for query test
++      if (i == 0)
++        startKey = key;
++      if (i == 999)
++        endKey = key;
++    }
++    sensorDataStore.flush();
++    dataCreated = true;
++  }
++
++  @Test
++  public void testSingleRead() {
++    if (!dataCreated) {
++      testCreate();
++      dataCreated = true;
++    }
++    // SINGLE get
++    for (SensorKey key : readings.keySet()) {
++      SensorData read = sensorDataStore.get(key);
++      Double oldR = readings.get(key).getReading();
++      Double newR = read.getReading();
++      assertEquals(newR, oldR, 0.001);
++    }
++  }
++
++  @Test
++  public void testColumnScan() throws IOException, Exception {
++    if (!dataCreated) {
++      testCreate();
++      dataCreated = true;
++    }
++    // COLUMNSCAN
++    Query<SensorKey, SensorData> query = sensorDataStore.newQuery();
++    query.setStartKey(startKey);
++    query.setEndKey(endKey);
++    query.setLimit(1000);
++    Result<SensorKey, SensorData> result = sensorDataStore.execute(query);
++
++    // check correctness and completeness
++    int count = 0;
++    while (result.next()) {
++      count++;
++      Double oldR = readings.get(result.getKey()).getReading();
++      SensorData nextRead = result.get();
++      Double newR = nextRead.getReading();
++      assertEquals(newR, oldR, 0.001);
++    }
++    assertEquals(count, 1000);
++
++    // this one checks for order too
++    result = sensorDataStore.execute(query);
++    for (SensorKey key : orderedKeys) {
++      result.next();
++      Double oldR = readings.get(key).getReading();
++      SensorData nextRead = result.get();
++      Double newR = nextRead.getReading();
++      assertEquals(newR, oldR, 0.001);
++    }
++  }
++
++  @Test
++  public void testBlankQuery() {
++    if (!dataCreated) {
++      testCreate();
++      dataCreated = true;
++    }
++    Query<SensorKey, SensorData> query = sensorDataStore.newQuery();
++    Result<SensorKey, SensorData> result = sensorDataStore.execute(query);
++    assertNotNull(result);
++  }
++
++//  @Test
++//  public void testSchema() {
++//    if (!sensorDataStore.schemaExists())
++//      sensorDataStore.createSchema();
++//
++//    Cluster c = HFactory.getOrCreateCluster(cluster, new CassandraHostConfigurator(host));
++//    KeyspaceDefinition kd = c.describeKeyspace(keyspace);
++//    assertNotNull(kd);
++//
++//    assertTrue(kd.getReplicationFactor() == replicationFactor);
++//
++//    for (ColumnFamilyDefinition def : kd.getCfDefs())
++//      if (def.getName().equals("meterReading")) {
++//        assertEquals(
++//            def.getComparatorType().getTypeName(),
++//            "DynamicCompositeType(b=>org.apache.cassandra.db.marshal.BytesType,A=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.AsciiType),B=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.BytesType),a=>org.apache.cassandra.db.marshal.AsciiType,L=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.LongType),l=>org.apache.cassandra.db.marshal.LongType,I=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.IntegerType),i=>org.apache.cassandra.db.marshal.IntegerType,U=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.UUIDType),T=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.TimeUUIDType),u=>org.apache.cassandra.db.marshal.UUIDType,t=>org.apache.cassandra.db.marshal.TimeUUIDType,s=>org.apache.cassandra.db.marshal.UTF8Type,S=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.UTF8Type),X=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.LexicalUUIDType),x=>org.apache.cassandra.db.marshal.LexicalUUIDType)");
++//        assertEquals(
++//            def.getKeyValidationClass(),
++//            "org.apache.cassandra.db.marshal.DynamicCompositeType(b=>org.apache.cassandra.db.marshal.BytesType,A=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.AsciiType),B=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.BytesType),a=>org.apache.cassandra.db.marshal.AsciiType,L=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.LongType),l=>org.apache.cassandra.db.marshal.LongType,I=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.IntegerType),i=>org.apache.cassandra.db.marshal.IntegerType,U=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.UUIDType),T=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.TimeUUIDType),u=>org.apache.cassandra.db.marshal.UUIDType,t=>org.apache.cassandra.db.marshal.TimeUUIDType,s=>org.apache.cassandra.db.marshal.UTF8Type,S=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.UTF8Type),X=>org.apache.cassandra.db.marshal.ReversedType(org.apache.cassandra.db.marshal.LexicalUUIDType),x=>org.apache.cassandra.db.marshal.LexicalUUIDType)");
++//      }
++//  }
++
++}
+\ No newline at end of file

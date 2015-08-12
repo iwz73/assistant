@@ -3,10 +3,10 @@
  * 
  * DO NOT EDIT DIRECTLY
  */
-package idv.hsiehpinghan.goraassistant.gora;  
+package idv.hsiehpinghan.goraassistant.entity;  
 @SuppressWarnings("all")
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.gora\",\"fields\":[{\"name\":\"url\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"httpMethod\",\"type\":\"string\"},{\"name\":\"httpStatusCode\",\"type\":\"int\"},{\"name\":\"responseSize\",\"type\":\"int\"},{\"name\":\"referrer\",\"type\":\"string\"},{\"name\":\"userAgent\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"fields\":[{\"name\":\"url\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"httpMethod\",\"type\":\"string\"},{\"name\":\"httpStatusCode\",\"type\":\"int\"},{\"name\":\"responseSize\",\"type\":\"int\"},{\"name\":\"referrer\",\"type\":\"string\"},{\"name\":\"userAgent\",\"type\":\"string\"}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -307,18 +307,18 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   }
 
   /** Creates a new Gora RecordBuilder */
-  public static idv.hsiehpinghan.goraassistant.gora.Gora.Builder newBuilder() {
-    return new idv.hsiehpinghan.goraassistant.gora.Gora.Builder();
+  public static idv.hsiehpinghan.goraassistant.entity.Gora.Builder newBuilder() {
+    return new idv.hsiehpinghan.goraassistant.entity.Gora.Builder();
   }
   
   /** Creates a new Gora RecordBuilder by copying an existing Builder */
-  public static idv.hsiehpinghan.goraassistant.gora.Gora.Builder newBuilder(idv.hsiehpinghan.goraassistant.gora.Gora.Builder other) {
-    return new idv.hsiehpinghan.goraassistant.gora.Gora.Builder(other);
+  public static idv.hsiehpinghan.goraassistant.entity.Gora.Builder newBuilder(idv.hsiehpinghan.goraassistant.entity.Gora.Builder other) {
+    return new idv.hsiehpinghan.goraassistant.entity.Gora.Builder(other);
   }
   
   /** Creates a new Gora RecordBuilder by copying an existing Gora instance */
-  public static idv.hsiehpinghan.goraassistant.gora.Gora.Builder newBuilder(idv.hsiehpinghan.goraassistant.gora.Gora other) {
-    return new idv.hsiehpinghan.goraassistant.gora.Gora.Builder(other);
+  public static idv.hsiehpinghan.goraassistant.entity.Gora.Builder newBuilder(idv.hsiehpinghan.goraassistant.entity.Gora other) {
+    return new idv.hsiehpinghan.goraassistant.entity.Gora.Builder(other);
   }
   
   private static java.nio.ByteBuffer deepCopyToReadOnlyBuffer(
@@ -361,17 +361,17 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 
     /** Creates a new Builder */
     private Builder() {
-      super(idv.hsiehpinghan.goraassistant.gora.Gora.SCHEMA$);
+      super(idv.hsiehpinghan.goraassistant.entity.Gora.SCHEMA$);
     }
     
     /** Creates a Builder by copying an existing Builder */
-    private Builder(idv.hsiehpinghan.goraassistant.gora.Gora.Builder other) {
+    private Builder(idv.hsiehpinghan.goraassistant.entity.Gora.Builder other) {
       super(other);
     }
     
     /** Creates a Builder by copying an existing Gora instance */
-    private Builder(idv.hsiehpinghan.goraassistant.gora.Gora other) {
-            super(idv.hsiehpinghan.goraassistant.gora.Gora.SCHEMA$);
+    private Builder(idv.hsiehpinghan.goraassistant.entity.Gora other) {
+            super(idv.hsiehpinghan.goraassistant.entity.Gora.SCHEMA$);
       if (isValidValue(fields()[0], other.url)) {
         this.url = (java.lang.CharSequence) data().deepCopy(fields()[0].schema(), other.url);
         fieldSetFlags()[0] = true;
@@ -412,7 +412,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'url' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setUrl(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setUrl(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.url = value;
       fieldSetFlags()[0] = true;
@@ -425,7 +425,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'url' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearUrl() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearUrl() {
       url = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -437,7 +437,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'timestamp' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setTimestamp(long value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setTimestamp(long value) {
       validate(fields()[1], value);
       this.timestamp = value;
       fieldSetFlags()[1] = true;
@@ -450,7 +450,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'timestamp' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearTimestamp() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearTimestamp() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -461,7 +461,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'ip' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setIp(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setIp(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.ip = value;
       fieldSetFlags()[2] = true;
@@ -474,7 +474,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'ip' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearIp() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearIp() {
       ip = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -486,7 +486,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'httpMethod' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setHttpMethod(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setHttpMethod(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.httpMethod = value;
       fieldSetFlags()[3] = true;
@@ -499,7 +499,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'httpMethod' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearHttpMethod() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearHttpMethod() {
       httpMethod = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -511,7 +511,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'httpStatusCode' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setHttpStatusCode(int value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setHttpStatusCode(int value) {
       validate(fields()[4], value);
       this.httpStatusCode = value;
       fieldSetFlags()[4] = true;
@@ -524,7 +524,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'httpStatusCode' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearHttpStatusCode() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearHttpStatusCode() {
       fieldSetFlags()[4] = false;
       return this;
     }
@@ -535,7 +535,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'responseSize' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setResponseSize(int value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setResponseSize(int value) {
       validate(fields()[5], value);
       this.responseSize = value;
       fieldSetFlags()[5] = true;
@@ -548,7 +548,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'responseSize' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearResponseSize() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearResponseSize() {
       fieldSetFlags()[5] = false;
       return this;
     }
@@ -559,7 +559,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'referrer' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setReferrer(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setReferrer(java.lang.CharSequence value) {
       validate(fields()[6], value);
       this.referrer = value;
       fieldSetFlags()[6] = true;
@@ -572,7 +572,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'referrer' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearReferrer() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearReferrer() {
       referrer = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -584,7 +584,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Sets the value of the 'userAgent' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder setUserAgent(java.lang.CharSequence value) {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setUserAgent(java.lang.CharSequence value) {
       validate(fields()[7], value);
       this.userAgent = value;
       fieldSetFlags()[7] = true;
@@ -597,7 +597,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     }
     
     /** Clears the value of the 'userAgent' field */
-    public idv.hsiehpinghan.goraassistant.gora.Gora.Builder clearUserAgent() {
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearUserAgent() {
       userAgent = null;
       fieldSetFlags()[7] = false;
       return this;

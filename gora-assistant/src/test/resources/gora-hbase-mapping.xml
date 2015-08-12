@@ -4,8 +4,8 @@
 		<family name="http" />
 		<family name="misc" />
 	</table>
-	<class name="idv.hsiehpinghan.goraassistant.gora.Gora"
-		keyClass="java.lang.Long" table="AccessLog">
+	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
+		keyClass="java.lang.Long" table="HbaseTable">
 		<field name="url" family="common" qualifier="url" />
 		<field name="timestamp" family="common" qualifier="timestamp" />
 		<field name="ip" family="common" qualifier="ip" />

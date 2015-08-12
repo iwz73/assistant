@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.goraassistant.manager;
 
-import idv.hsiehpinghan.goraassistant.gora.Gora;
+import idv.hsiehpinghan.goraassistant.entity.Gora;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

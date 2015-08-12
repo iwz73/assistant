@@ -1,6 +1,6 @@
 {
 	"type":"record",
-	"namespace":"idv.hsiehpinghan.goraassistant.gora",
+	"namespace":"idv.hsiehpinghan.goraassistant.entity",
 	"name":"Gora",
 	"fields":[
 		{

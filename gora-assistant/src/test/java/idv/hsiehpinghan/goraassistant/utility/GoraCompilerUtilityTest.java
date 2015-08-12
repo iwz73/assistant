@@ -11,18 +11,17 @@ public class GoraCompilerUtilityTest {
 	public void compile() {
 		String inputFolderPath = "/home/thank/git/assistant/gora-assistant/src/test/avro";
 		String outputFolderPath = "/home/thank/git/assistant/gora-assistant/src/test/java/";
-		File outputEntityFolder = new File("/home/thank/git/assistant/gora-assistant/src/test/java/idv/hsiehpinghan/goraassistant/gora");
-		Assert.assertTrue(deleteSubFile(outputEntityFolder));
-		Assert.assertTrue(outputEntityFolder.list().length == 0);
+		File outputEntity = new File(
+				"/home/thank/git/assistant/gora-assistant/src/test/java/idv/hsiehpinghan/goraassistant/gora/Gora.java");
+		Assert.assertTrue(deleteFile(outputEntity));
+		Assert.assertFalse(outputEntity.exists());
 		GoraCompilerUtility.compile(inputFolderPath, outputFolderPath);
-		Assert.assertTrue(outputEntityFolder.list().length > 0);
+		Assert.assertTrue(outputEntity.exists());
 	}
 
-	private boolean deleteSubFile(File beforeFile) {
-		for (File subFile : beforeFile.listFiles()) {
-			if (subFile.delete() == false) {
-				return false;
-			}
+	private boolean deleteFile(File outputEntity) {
+		if (outputEntity.exists()) {
+			return outputEntity.delete();
 		}
 		return true;
 	}

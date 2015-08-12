@@ -1,7 +1,7 @@
 {
 	"type":"record",
-	"name":"Pageview",
-	"namespace":"idv.hsiehpinghan.goraassistant.utility.gora",
+	"namespace":"idv.hsiehpinghan.goraassistant.gora",
+	"name":"Gora",
 	"fields":[
 		{
 			"name":"url",
@@ -35,5 +35,6 @@
 			"name":"userAgent",
 			"type":"string"
 		}
+		
 	]
 }

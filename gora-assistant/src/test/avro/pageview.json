@@ -1,7 +1,7 @@
 {
 	"type":"record",
 	"name":"Pageview",
-	"namespace":"org.apache.gora.tutorial.log.generated",
+	"namespace":"idv.hsiehpinghan.goraassistant.utility.gora",
 	"fields":[
 		{
 			"name":"url",

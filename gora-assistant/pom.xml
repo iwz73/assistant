@@ -71,6 +71,11 @@
 		<!-- gora -->
 		<dependency>
 			<groupId>org.apache.gora</groupId>
+			<artifactId>gora-compiler-cli</artifactId>
+			<version>${gora.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.gora</groupId>
 			<artifactId>gora-hbase</artifactId>
 			<version>${gora.version}</version>
 		</dependency>

@@ -13,5 +13,6 @@ public class GoraRepository {
 
 	public void put(Long key, Gora entity) {
 		dataStore.put(key, entity);
+		dataStore.flush();
 	}
 }

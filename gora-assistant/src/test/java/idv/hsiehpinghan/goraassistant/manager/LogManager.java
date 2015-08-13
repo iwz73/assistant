@@ -72,18 +72,23 @@ public class LogManager {
 		BufferedReader reader = new BufferedReader(new FileReader(input));
 		long lineCount = 0;
 		try {
-			String line = reader.readLine();
-			do {
-				Gora pageview = parseLine(line);
-
-				if (pageview != null) {
-					// store the pageview
-					storePageview(lineCount++, pageview);
-				}
-
-				line = reader.readLine();
-			} while (line != null);
-
+//			String line = reader.readLine();
+//			do {
+//				Gora pageview = parseLine(line);
+//
+//				if (pageview != null) {
+//					// store the pageview
+//					storePageview(lineCount++, pageview);
+//				}
+//
+//				line = reader.readLine();
+//			} while (line != null);
+			
+//			Gora pageview = Gora.newBuilder().build();
+			Gora pageview = Gora.newBuilder().build();
+			pageview.setBoolean$1(true);
+			pageview.setString$1("vvv");
+			dataStore.put(0L, pageview);
 		} finally {
 			reader.close();
 		}
@@ -92,40 +97,40 @@ public class LogManager {
 	}
 
 	/** Parses a single log line in combined log format using StringTokenizers */
-	private Gora parseLine(String line) throws ParseException {
-		StringTokenizer matcher = new StringTokenizer(line);
-		// parse the log line
-		String ip = matcher.nextToken();
-		matcher.nextToken(); // discard
-		matcher.nextToken();
-		long timestamp = dateFormat.parse(matcher.nextToken("]").substring(2))
-				.getTime();
-		matcher.nextToken("\"");
-		String request = matcher.nextToken("\"");
-		String[] requestParts = request.split(" ");
-		String httpMethod = requestParts[0];
-		String url = requestParts[1];
-		matcher.nextToken(" ");
-		int httpStatusCode = Integer.parseInt(matcher.nextToken());
-		int responseSize = Integer.parseInt(matcher.nextToken());
-		matcher.nextToken("\"");
-		String referrer = matcher.nextToken("\"");
-		matcher.nextToken("\"");
-		String userAgent = matcher.nextToken("\"");
-
-		// construct and return pageview object
-		Gora pageview = new Gora();
-		pageview.setIp(new Utf8(ip));
-		pageview.setTimestamp(timestamp);
-		pageview.setHttpMethod(new Utf8(httpMethod));
-		pageview.setUrl(new Utf8(url));
-		pageview.setHttpStatusCode(httpStatusCode);
-		pageview.setResponseSize(responseSize);
-		pageview.setReferrer(new Utf8(referrer));
-		pageview.setUserAgent(new Utf8(userAgent));
-
-		return pageview;
-	}
+//	private Gora parseLine(String line) throws ParseException {
+//		StringTokenizer matcher = new StringTokenizer(line);
+//		// parse the log line
+//		String ip = matcher.nextToken();
+//		matcher.nextToken(); // discard
+//		matcher.nextToken();
+//		long timestamp = dateFormat.parse(matcher.nextToken("]").substring(2))
+//				.getTime();
+//		matcher.nextToken("\"");
+//		String request = matcher.nextToken("\"");
+//		String[] requestParts = request.split(" ");
+//		String httpMethod = requestParts[0];
+//		String url = requestParts[1];
+//		matcher.nextToken(" ");
+//		int httpStatusCode = Integer.parseInt(matcher.nextToken());
+//		int responseSize = Integer.parseInt(matcher.nextToken());
+//		matcher.nextToken("\"");
+//		String referrer = matcher.nextToken("\"");
+//		matcher.nextToken("\"");
+//		String userAgent = matcher.nextToken("\"");
+//
+//		// construct and return pageview object
+//		Gora pageview = new Gora();
+//		pageview.setIp(new Utf8(ip));
+//		pageview.setTimestamp(timestamp);
+//		pageview.setHttpMethod(new Utf8(httpMethod));
+//		pageview.setUrl(new Utf8(url));
+//		pageview.setHttpStatusCode(httpStatusCode);
+//		pageview.setResponseSize(responseSize);
+//		pageview.setReferrer(new Utf8(referrer));
+//		pageview.setUserAgent(new Utf8(userAgent));
+//
+//		return pageview;
+//	}
 
 	/** Stores the pageview object with the given key */
 	private void storePageview(long key, Gora pageview) throws IOException,

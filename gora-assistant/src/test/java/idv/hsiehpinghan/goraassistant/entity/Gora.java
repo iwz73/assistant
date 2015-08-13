@@ -5,19 +5,18 @@
  */
 package idv.hsiehpinghan.goraassistant.entity;  
 @SuppressWarnings("all")
+/** Gora doc. */
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"fields\":[{\"name\":\"url\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"httpMethod\",\"type\":\"string\"},{\"name\":\"httpStatusCode\",\"type\":\"int\"},{\"name\":\"responseSize\",\"type\":\"int\"},{\"name\":\"referrer\",\"type\":\"string\"},{\"name\":\"userAgent\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
-    URL(0, "url"),
-    TIMESTAMP(1, "timestamp"),
-    IP(2, "ip"),
-    HTTP_METHOD(3, "httpMethod"),
-    HTTP_STATUS_CODE(4, "httpStatusCode"),
-    RESPONSE_SIZE(5, "responseSize"),
-    REFERRER(6, "referrer"),
-    USER_AGENT(7, "userAgent"),
+    _BOOLEAN(0, "_boolean"),
+    _INT(1, "_int"),
+    _LONG(2, "_long"),
+    _FLOAT(3, "_float"),
+    _DOUBLE(4, "_double"),
+    _STRING(5, "_string"),
     ;
     /**
      * Field's index.
@@ -56,14 +55,12 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   };
 
   public static final String[] _ALL_FIELDS = {
-  "url",
-  "timestamp",
-  "ip",
-  "httpMethod",
-  "httpStatusCode",
-  "responseSize",
-  "referrer",
-  "userAgent",
+  "_boolean",
+  "_int",
+  "_long",
+  "_float",
+  "_double",
+  "_string",
   };
 
   /**
@@ -74,26 +71,28 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     return Gora._ALL_FIELDS.length;
   }
 
-  private java.lang.CharSequence url;
-  private long timestamp;
-  private java.lang.CharSequence ip;
-  private java.lang.CharSequence httpMethod;
-  private int httpStatusCode;
-  private int responseSize;
-  private java.lang.CharSequence referrer;
-  private java.lang.CharSequence userAgent;
+  /** boolean doc */
+  private boolean _boolean;
+  /** int doc */
+  private int _int;
+  /** long doc */
+  private long _long;
+  /** float doc */
+  private float _float;
+  /** double doc */
+  private double _double;
+  /** string doc */
+  private java.lang.CharSequence _string;
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return url;
-    case 1: return timestamp;
-    case 2: return ip;
-    case 3: return httpMethod;
-    case 4: return httpStatusCode;
-    case 5: return responseSize;
-    case 6: return referrer;
-    case 7: return userAgent;
+    case 0: return _boolean;
+    case 1: return _int;
+    case 2: return _long;
+    case 3: return _float;
+    case 4: return _double;
+    case 5: return _string;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -102,208 +101,158 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value) {
     switch (field$) {
-    case 0: url = (java.lang.CharSequence)(value); break;
-    case 1: timestamp = (java.lang.Long)(value); break;
-    case 2: ip = (java.lang.CharSequence)(value); break;
-    case 3: httpMethod = (java.lang.CharSequence)(value); break;
-    case 4: httpStatusCode = (java.lang.Integer)(value); break;
-    case 5: responseSize = (java.lang.Integer)(value); break;
-    case 6: referrer = (java.lang.CharSequence)(value); break;
-    case 7: userAgent = (java.lang.CharSequence)(value); break;
+    case 0: _boolean = (java.lang.Boolean)(value); break;
+    case 1: _int = (java.lang.Integer)(value); break;
+    case 2: _long = (java.lang.Long)(value); break;
+    case 3: _float = (java.lang.Float)(value); break;
+    case 4: _double = (java.lang.Double)(value); break;
+    case 5: _string = (java.lang.CharSequence)(value); break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
 
   /**
-   * Gets the value of the 'url' field.
-   */
-  public java.lang.CharSequence getUrl() {
-    return url;
+   * Gets the value of the '_boolean' field.
+   * boolean doc   */
+  public java.lang.Boolean getBoolean$1() {
+    return _boolean;
   }
 
   /**
-   * Sets the value of the 'url' field.
-   * @param value the value to set.
+   * Sets the value of the '_boolean' field.
+   * boolean doc   * @param value the value to set.
    */
-  public void setUrl(java.lang.CharSequence value) {
-    this.url = value;
+  public void setBoolean$1(java.lang.Boolean value) {
+    this._boolean = value;
     setDirty(0);
   }
   
   /**
-   * Checks the dirty status of the 'url' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_boolean' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * boolean doc   * @param value the value to set.
    */
-  public boolean isUrlDirty() {
+  public boolean isBoolean$1Dirty() {
     return isDirty(0);
   }
 
   /**
-   * Gets the value of the 'timestamp' field.
-   */
-  public java.lang.Long getTimestamp() {
-    return timestamp;
+   * Gets the value of the '_int' field.
+   * int doc   */
+  public java.lang.Integer getInt$1() {
+    return _int;
   }
 
   /**
-   * Sets the value of the 'timestamp' field.
-   * @param value the value to set.
+   * Sets the value of the '_int' field.
+   * int doc   * @param value the value to set.
    */
-  public void setTimestamp(java.lang.Long value) {
-    this.timestamp = value;
+  public void setInt$1(java.lang.Integer value) {
+    this._int = value;
     setDirty(1);
   }
   
   /**
-   * Checks the dirty status of the 'timestamp' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_int' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * int doc   * @param value the value to set.
    */
-  public boolean isTimestampDirty() {
+  public boolean isInt$1Dirty() {
     return isDirty(1);
   }
 
   /**
-   * Gets the value of the 'ip' field.
-   */
-  public java.lang.CharSequence getIp() {
-    return ip;
+   * Gets the value of the '_long' field.
+   * long doc   */
+  public java.lang.Long getLong$1() {
+    return _long;
   }
 
   /**
-   * Sets the value of the 'ip' field.
-   * @param value the value to set.
+   * Sets the value of the '_long' field.
+   * long doc   * @param value the value to set.
    */
-  public void setIp(java.lang.CharSequence value) {
-    this.ip = value;
+  public void setLong$1(java.lang.Long value) {
+    this._long = value;
     setDirty(2);
   }
   
   /**
-   * Checks the dirty status of the 'ip' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_long' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * long doc   * @param value the value to set.
    */
-  public boolean isIpDirty() {
+  public boolean isLong$1Dirty() {
     return isDirty(2);
   }
 
   /**
-   * Gets the value of the 'httpMethod' field.
-   */
-  public java.lang.CharSequence getHttpMethod() {
-    return httpMethod;
+   * Gets the value of the '_float' field.
+   * float doc   */
+  public java.lang.Float getFloat$1() {
+    return _float;
   }
 
   /**
-   * Sets the value of the 'httpMethod' field.
-   * @param value the value to set.
+   * Sets the value of the '_float' field.
+   * float doc   * @param value the value to set.
    */
-  public void setHttpMethod(java.lang.CharSequence value) {
-    this.httpMethod = value;
+  public void setFloat$1(java.lang.Float value) {
+    this._float = value;
     setDirty(3);
   }
   
   /**
-   * Checks the dirty status of the 'httpMethod' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_float' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * float doc   * @param value the value to set.
    */
-  public boolean isHttpMethodDirty() {
+  public boolean isFloat$1Dirty() {
     return isDirty(3);
   }
 
   /**
-   * Gets the value of the 'httpStatusCode' field.
-   */
-  public java.lang.Integer getHttpStatusCode() {
-    return httpStatusCode;
+   * Gets the value of the '_double' field.
+   * double doc   */
+  public java.lang.Double getDouble$1() {
+    return _double;
   }
 
   /**
-   * Sets the value of the 'httpStatusCode' field.
-   * @param value the value to set.
+   * Sets the value of the '_double' field.
+   * double doc   * @param value the value to set.
    */
-  public void setHttpStatusCode(java.lang.Integer value) {
-    this.httpStatusCode = value;
+  public void setDouble$1(java.lang.Double value) {
+    this._double = value;
     setDirty(4);
   }
   
   /**
-   * Checks the dirty status of the 'httpStatusCode' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_double' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * double doc   * @param value the value to set.
    */
-  public boolean isHttpStatusCodeDirty() {
+  public boolean isDouble$1Dirty() {
     return isDirty(4);
   }
 
   /**
-   * Gets the value of the 'responseSize' field.
-   */
-  public java.lang.Integer getResponseSize() {
-    return responseSize;
+   * Gets the value of the '_string' field.
+   * string doc   */
+  public java.lang.CharSequence getString$1() {
+    return _string;
   }
 
   /**
-   * Sets the value of the 'responseSize' field.
-   * @param value the value to set.
+   * Sets the value of the '_string' field.
+   * string doc   * @param value the value to set.
    */
-  public void setResponseSize(java.lang.Integer value) {
-    this.responseSize = value;
+  public void setString$1(java.lang.CharSequence value) {
+    this._string = value;
     setDirty(5);
   }
   
   /**
-   * Checks the dirty status of the 'responseSize' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
+   * Checks the dirty status of the '_string' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * string doc   * @param value the value to set.
    */
-  public boolean isResponseSizeDirty() {
+  public boolean isString$1Dirty() {
     return isDirty(5);
-  }
-
-  /**
-   * Gets the value of the 'referrer' field.
-   */
-  public java.lang.CharSequence getReferrer() {
-    return referrer;
-  }
-
-  /**
-   * Sets the value of the 'referrer' field.
-   * @param value the value to set.
-   */
-  public void setReferrer(java.lang.CharSequence value) {
-    this.referrer = value;
-    setDirty(6);
-  }
-  
-  /**
-   * Checks the dirty status of the 'referrer' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
-   */
-  public boolean isReferrerDirty() {
-    return isDirty(6);
-  }
-
-  /**
-   * Gets the value of the 'userAgent' field.
-   */
-  public java.lang.CharSequence getUserAgent() {
-    return userAgent;
-  }
-
-  /**
-   * Sets the value of the 'userAgent' field.
-   * @param value the value to set.
-   */
-  public void setUserAgent(java.lang.CharSequence value) {
-    this.userAgent = value;
-    setDirty(7);
-  }
-  
-  /**
-   * Checks the dirty status of the 'userAgent' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * @param value the value to set.
-   */
-  public boolean isUserAgentDirty() {
-    return isDirty(7);
   }
 
   /** Creates a new Gora RecordBuilder */
@@ -350,14 +299,12 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Gora>
     implements org.apache.avro.data.RecordBuilder<Gora> {
 
-    private java.lang.CharSequence url;
-    private long timestamp;
-    private java.lang.CharSequence ip;
-    private java.lang.CharSequence httpMethod;
-    private int httpStatusCode;
-    private int responseSize;
-    private java.lang.CharSequence referrer;
-    private java.lang.CharSequence userAgent;
+    private boolean _boolean;
+    private int _int;
+    private long _long;
+    private float _float;
+    private double _double;
+    private java.lang.CharSequence _string;
 
     /** Creates a new Builder */
     private Builder() {
@@ -372,234 +319,174 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     /** Creates a Builder by copying an existing Gora instance */
     private Builder(idv.hsiehpinghan.goraassistant.entity.Gora other) {
             super(idv.hsiehpinghan.goraassistant.entity.Gora.SCHEMA$);
-      if (isValidValue(fields()[0], other.url)) {
-        this.url = (java.lang.CharSequence) data().deepCopy(fields()[0].schema(), other.url);
+      if (isValidValue(fields()[0], other._boolean)) {
+        this._boolean = (java.lang.Boolean) data().deepCopy(fields()[0].schema(), other._boolean);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.timestamp)) {
-        this.timestamp = (java.lang.Long) data().deepCopy(fields()[1].schema(), other.timestamp);
+      if (isValidValue(fields()[1], other._int)) {
+        this._int = (java.lang.Integer) data().deepCopy(fields()[1].schema(), other._int);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.ip)) {
-        this.ip = (java.lang.CharSequence) data().deepCopy(fields()[2].schema(), other.ip);
+      if (isValidValue(fields()[2], other._long)) {
+        this._long = (java.lang.Long) data().deepCopy(fields()[2].schema(), other._long);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.httpMethod)) {
-        this.httpMethod = (java.lang.CharSequence) data().deepCopy(fields()[3].schema(), other.httpMethod);
+      if (isValidValue(fields()[3], other._float)) {
+        this._float = (java.lang.Float) data().deepCopy(fields()[3].schema(), other._float);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.httpStatusCode)) {
-        this.httpStatusCode = (java.lang.Integer) data().deepCopy(fields()[4].schema(), other.httpStatusCode);
+      if (isValidValue(fields()[4], other._double)) {
+        this._double = (java.lang.Double) data().deepCopy(fields()[4].schema(), other._double);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.responseSize)) {
-        this.responseSize = (java.lang.Integer) data().deepCopy(fields()[5].schema(), other.responseSize);
+      if (isValidValue(fields()[5], other._string)) {
+        this._string = (java.lang.CharSequence) data().deepCopy(fields()[5].schema(), other._string);
         fieldSetFlags()[5] = true;
-      }
-      if (isValidValue(fields()[6], other.referrer)) {
-        this.referrer = (java.lang.CharSequence) data().deepCopy(fields()[6].schema(), other.referrer);
-        fieldSetFlags()[6] = true;
-      }
-      if (isValidValue(fields()[7], other.userAgent)) {
-        this.userAgent = (java.lang.CharSequence) data().deepCopy(fields()[7].schema(), other.userAgent);
-        fieldSetFlags()[7] = true;
       }
     }
 
-    /** Gets the value of the 'url' field */
-    public java.lang.CharSequence getUrl() {
-      return url;
+    /** Gets the value of the '_boolean' field */
+    public java.lang.Boolean getBoolean$1() {
+      return _boolean;
     }
     
-    /** Sets the value of the 'url' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setUrl(java.lang.CharSequence value) {
+    /** Sets the value of the '_boolean' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setBoolean$1(boolean value) {
       validate(fields()[0], value);
-      this.url = value;
+      this._boolean = value;
       fieldSetFlags()[0] = true;
       return this; 
     }
     
-    /** Checks whether the 'url' field has been set */
-    public boolean hasUrl() {
+    /** Checks whether the '_boolean' field has been set */
+    public boolean hasBoolean$1() {
       return fieldSetFlags()[0];
     }
     
-    /** Clears the value of the 'url' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearUrl() {
-      url = null;
+    /** Clears the value of the '_boolean' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearBoolean$1() {
       fieldSetFlags()[0] = false;
       return this;
     }
     
-    /** Gets the value of the 'timestamp' field */
-    public java.lang.Long getTimestamp() {
-      return timestamp;
+    /** Gets the value of the '_int' field */
+    public java.lang.Integer getInt$1() {
+      return _int;
     }
     
-    /** Sets the value of the 'timestamp' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setTimestamp(long value) {
+    /** Sets the value of the '_int' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setInt$1(int value) {
       validate(fields()[1], value);
-      this.timestamp = value;
+      this._int = value;
       fieldSetFlags()[1] = true;
       return this; 
     }
     
-    /** Checks whether the 'timestamp' field has been set */
-    public boolean hasTimestamp() {
+    /** Checks whether the '_int' field has been set */
+    public boolean hasInt$1() {
       return fieldSetFlags()[1];
     }
     
-    /** Clears the value of the 'timestamp' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearTimestamp() {
+    /** Clears the value of the '_int' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearInt$1() {
       fieldSetFlags()[1] = false;
       return this;
     }
     
-    /** Gets the value of the 'ip' field */
-    public java.lang.CharSequence getIp() {
-      return ip;
+    /** Gets the value of the '_long' field */
+    public java.lang.Long getLong$1() {
+      return _long;
     }
     
-    /** Sets the value of the 'ip' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setIp(java.lang.CharSequence value) {
+    /** Sets the value of the '_long' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setLong$1(long value) {
       validate(fields()[2], value);
-      this.ip = value;
+      this._long = value;
       fieldSetFlags()[2] = true;
       return this; 
     }
     
-    /** Checks whether the 'ip' field has been set */
-    public boolean hasIp() {
+    /** Checks whether the '_long' field has been set */
+    public boolean hasLong$1() {
       return fieldSetFlags()[2];
     }
     
-    /** Clears the value of the 'ip' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearIp() {
-      ip = null;
+    /** Clears the value of the '_long' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearLong$1() {
       fieldSetFlags()[2] = false;
       return this;
     }
     
-    /** Gets the value of the 'httpMethod' field */
-    public java.lang.CharSequence getHttpMethod() {
-      return httpMethod;
+    /** Gets the value of the '_float' field */
+    public java.lang.Float getFloat$1() {
+      return _float;
     }
     
-    /** Sets the value of the 'httpMethod' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setHttpMethod(java.lang.CharSequence value) {
+    /** Sets the value of the '_float' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setFloat$1(float value) {
       validate(fields()[3], value);
-      this.httpMethod = value;
+      this._float = value;
       fieldSetFlags()[3] = true;
       return this; 
     }
     
-    /** Checks whether the 'httpMethod' field has been set */
-    public boolean hasHttpMethod() {
+    /** Checks whether the '_float' field has been set */
+    public boolean hasFloat$1() {
       return fieldSetFlags()[3];
     }
     
-    /** Clears the value of the 'httpMethod' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearHttpMethod() {
-      httpMethod = null;
+    /** Clears the value of the '_float' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearFloat$1() {
       fieldSetFlags()[3] = false;
       return this;
     }
     
-    /** Gets the value of the 'httpStatusCode' field */
-    public java.lang.Integer getHttpStatusCode() {
-      return httpStatusCode;
+    /** Gets the value of the '_double' field */
+    public java.lang.Double getDouble$1() {
+      return _double;
     }
     
-    /** Sets the value of the 'httpStatusCode' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setHttpStatusCode(int value) {
+    /** Sets the value of the '_double' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setDouble$1(double value) {
       validate(fields()[4], value);
-      this.httpStatusCode = value;
+      this._double = value;
       fieldSetFlags()[4] = true;
       return this; 
     }
     
-    /** Checks whether the 'httpStatusCode' field has been set */
-    public boolean hasHttpStatusCode() {
+    /** Checks whether the '_double' field has been set */
+    public boolean hasDouble$1() {
       return fieldSetFlags()[4];
     }
     
-    /** Clears the value of the 'httpStatusCode' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearHttpStatusCode() {
+    /** Clears the value of the '_double' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearDouble$1() {
       fieldSetFlags()[4] = false;
       return this;
     }
     
-    /** Gets the value of the 'responseSize' field */
-    public java.lang.Integer getResponseSize() {
-      return responseSize;
+    /** Gets the value of the '_string' field */
+    public java.lang.CharSequence getString$1() {
+      return _string;
     }
     
-    /** Sets the value of the 'responseSize' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setResponseSize(int value) {
+    /** Sets the value of the '_string' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setString$1(java.lang.CharSequence value) {
       validate(fields()[5], value);
-      this.responseSize = value;
+      this._string = value;
       fieldSetFlags()[5] = true;
       return this; 
     }
     
-    /** Checks whether the 'responseSize' field has been set */
-    public boolean hasResponseSize() {
+    /** Checks whether the '_string' field has been set */
+    public boolean hasString$1() {
       return fieldSetFlags()[5];
     }
     
-    /** Clears the value of the 'responseSize' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearResponseSize() {
+    /** Clears the value of the '_string' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearString$1() {
+      _string = null;
       fieldSetFlags()[5] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'referrer' field */
-    public java.lang.CharSequence getReferrer() {
-      return referrer;
-    }
-    
-    /** Sets the value of the 'referrer' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setReferrer(java.lang.CharSequence value) {
-      validate(fields()[6], value);
-      this.referrer = value;
-      fieldSetFlags()[6] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'referrer' field has been set */
-    public boolean hasReferrer() {
-      return fieldSetFlags()[6];
-    }
-    
-    /** Clears the value of the 'referrer' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearReferrer() {
-      referrer = null;
-      fieldSetFlags()[6] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'userAgent' field */
-    public java.lang.CharSequence getUserAgent() {
-      return userAgent;
-    }
-    
-    /** Sets the value of the 'userAgent' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setUserAgent(java.lang.CharSequence value) {
-      validate(fields()[7], value);
-      this.userAgent = value;
-      fieldSetFlags()[7] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'userAgent' field has been set */
-    public boolean hasUserAgent() {
-      return fieldSetFlags()[7];
-    }
-    
-    /** Clears the value of the 'userAgent' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearUserAgent() {
-      userAgent = null;
-      fieldSetFlags()[7] = false;
       return this;
     }
     
@@ -607,14 +494,12 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     public Gora build() {
       try {
         Gora record = new Gora();
-        record.url = fieldSetFlags()[0] ? this.url : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.timestamp = fieldSetFlags()[1] ? this.timestamp : (java.lang.Long) defaultValue(fields()[1]);
-        record.ip = fieldSetFlags()[2] ? this.ip : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.httpMethod = fieldSetFlags()[3] ? this.httpMethod : (java.lang.CharSequence) defaultValue(fields()[3]);
-        record.httpStatusCode = fieldSetFlags()[4] ? this.httpStatusCode : (java.lang.Integer) defaultValue(fields()[4]);
-        record.responseSize = fieldSetFlags()[5] ? this.responseSize : (java.lang.Integer) defaultValue(fields()[5]);
-        record.referrer = fieldSetFlags()[6] ? this.referrer : (java.lang.CharSequence) defaultValue(fields()[6]);
-        record.userAgent = fieldSetFlags()[7] ? this.userAgent : (java.lang.CharSequence) defaultValue(fields()[7]);
+        record._boolean = fieldSetFlags()[0] ? this._boolean : (java.lang.Boolean) defaultValue(fields()[0]);
+        record._int = fieldSetFlags()[1] ? this._int : (java.lang.Integer) defaultValue(fields()[1]);
+        record._long = fieldSetFlags()[2] ? this._long : (java.lang.Long) defaultValue(fields()[2]);
+        record._float = fieldSetFlags()[3] ? this._float : (java.lang.Float) defaultValue(fields()[3]);
+        record._double = fieldSetFlags()[4] ? this._double : (java.lang.Double) defaultValue(fields()[4]);
+        record._string = fieldSetFlags()[5] ? this._string : (java.lang.CharSequence) defaultValue(fields()[5]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
@@ -637,186 +522,140 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
       private Tombstone() { }
   
 	  		  /**
-	   * Gets the value of the 'url' field.
-		   */
-	  public java.lang.CharSequence getUrl() {
+	   * Gets the value of the '_boolean' field.
+	   * boolean doc	   */
+	  public java.lang.Boolean getBoolean$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'url' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_boolean' field.
+	   * boolean doc	   * @param value the value to set.
 	   */
-	  public void setUrl(java.lang.CharSequence value) {
+	  public void setBoolean$1(java.lang.Boolean value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'url' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_boolean' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * boolean doc	   * @param value the value to set.
 	   */
-	  public boolean isUrlDirty() {
+	  public boolean isBoolean$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
 				  /**
-	   * Gets the value of the 'timestamp' field.
-		   */
-	  public java.lang.Long getTimestamp() {
+	   * Gets the value of the '_int' field.
+	   * int doc	   */
+	  public java.lang.Integer getInt$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'timestamp' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_int' field.
+	   * int doc	   * @param value the value to set.
 	   */
-	  public void setTimestamp(java.lang.Long value) {
+	  public void setInt$1(java.lang.Integer value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'timestamp' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_int' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * int doc	   * @param value the value to set.
 	   */
-	  public boolean isTimestampDirty() {
+	  public boolean isInt$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
 				  /**
-	   * Gets the value of the 'ip' field.
-		   */
-	  public java.lang.CharSequence getIp() {
+	   * Gets the value of the '_long' field.
+	   * long doc	   */
+	  public java.lang.Long getLong$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'ip' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_long' field.
+	   * long doc	   * @param value the value to set.
 	   */
-	  public void setIp(java.lang.CharSequence value) {
+	  public void setLong$1(java.lang.Long value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'ip' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_long' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * long doc	   * @param value the value to set.
 	   */
-	  public boolean isIpDirty() {
+	  public boolean isLong$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
 				  /**
-	   * Gets the value of the 'httpMethod' field.
-		   */
-	  public java.lang.CharSequence getHttpMethod() {
+	   * Gets the value of the '_float' field.
+	   * float doc	   */
+	  public java.lang.Float getFloat$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'httpMethod' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_float' field.
+	   * float doc	   * @param value the value to set.
 	   */
-	  public void setHttpMethod(java.lang.CharSequence value) {
+	  public void setFloat$1(java.lang.Float value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'httpMethod' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_float' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * float doc	   * @param value the value to set.
 	   */
-	  public boolean isHttpMethodDirty() {
+	  public boolean isFloat$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
 				  /**
-	   * Gets the value of the 'httpStatusCode' field.
-		   */
-	  public java.lang.Integer getHttpStatusCode() {
+	   * Gets the value of the '_double' field.
+	   * double doc	   */
+	  public java.lang.Double getDouble$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'httpStatusCode' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_double' field.
+	   * double doc	   * @param value the value to set.
 	   */
-	  public void setHttpStatusCode(java.lang.Integer value) {
+	  public void setDouble$1(java.lang.Double value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'httpStatusCode' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_double' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * double doc	   * @param value the value to set.
 	   */
-	  public boolean isHttpStatusCodeDirty() {
+	  public boolean isDouble$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
 				  /**
-	   * Gets the value of the 'responseSize' field.
-		   */
-	  public java.lang.Integer getResponseSize() {
+	   * Gets the value of the '_string' field.
+	   * string doc	   */
+	  public java.lang.CharSequence getString$1() {
 	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
 	  }
 	
 	  /**
-	   * Sets the value of the 'responseSize' field.
-		   * @param value the value to set.
+	   * Sets the value of the '_string' field.
+	   * string doc	   * @param value the value to set.
 	   */
-	  public void setResponseSize(java.lang.Integer value) {
+	  public void setString$1(java.lang.CharSequence value) {
 	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
 	  }
 	  
 	  /**
-	   * Checks the dirty status of the 'responseSize' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
+	   * Checks the dirty status of the '_string' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * string doc	   * @param value the value to set.
 	   */
-	  public boolean isResponseSizeDirty() {
-	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
-	  }
-	
-				  /**
-	   * Gets the value of the 'referrer' field.
-		   */
-	  public java.lang.CharSequence getReferrer() {
-	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
-	  }
-	
-	  /**
-	   * Sets the value of the 'referrer' field.
-		   * @param value the value to set.
-	   */
-	  public void setReferrer(java.lang.CharSequence value) {
-	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
-	  }
-	  
-	  /**
-	   * Checks the dirty status of the 'referrer' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
-	   */
-	  public boolean isReferrerDirty() {
-	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
-	  }
-	
-				  /**
-	   * Gets the value of the 'userAgent' field.
-		   */
-	  public java.lang.CharSequence getUserAgent() {
-	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
-	  }
-	
-	  /**
-	   * Sets the value of the 'userAgent' field.
-		   * @param value the value to set.
-	   */
-	  public void setUserAgent(java.lang.CharSequence value) {
-	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
-	  }
-	  
-	  /**
-	   * Checks the dirty status of the 'userAgent' field. A field is dirty if it represents a change that has not yet been written to the database.
-		   * @param value the value to set.
-	   */
-	  public boolean isUserAgentDirty() {
+	  public boolean isString$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	

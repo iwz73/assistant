@@ -1,18 +1,16 @@
 <gora-otd>
 	<table name="Gora">
-		<family name="common" />
-		<family name="http" />
-		<family name="misc" />
+		<family name="primary" />
+		<family name="object" />
 	</table>
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
-		keyClass="java.lang.Long" table="HbaseTable">
-		<field name="url" family="common" qualifier="url" />
-		<field name="timestamp" family="common" qualifier="timestamp" />
-		<field name="ip" family="common" qualifier="ip" />
-		<field name="httpMethod" family="http" qualifier="httpMethod" />
-		<field name="httpStatusCode" family="http" qualifier="httpStatusCode" />
-		<field name="responseSize" family="http" qualifier="responseSize" />
-		<field name="referrer" family="misc" qualifier="referrer" />
-		<field name="userAgent" family="misc" qualifier="userAgent" />
+		keyClass="java.lang.Long" table="Gora">
+		<field name="_boolean" family="primary" qualifier="_boolean" />
+		<field name="_int" family="primary" qualifier="_int" />
+		<field name="_long" family="primary" qualifier="_long" />
+		<field name="_float" family="primary" qualifier="_float" />
+		<field name="_double" family="primary" qualifier="_double" />
+		<field name="_bytes" family="primary" qualifier="_bytes" />
+		<field name="_string" family="object" qualifier="_string" />
 	</class>
 </gora-otd>

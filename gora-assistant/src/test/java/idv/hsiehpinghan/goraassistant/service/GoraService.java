@@ -14,4 +14,8 @@ public class GoraService {
 	public void put(Long key, Gora entity) {
 		repository.put(key, entity);
 	}
+
+	public Gora get(Long key) {
+		return repository.get(key);
+	}
 }

@@ -1,14 +1,18 @@
 package idv.hsiehpinghan.goraassistant.test;
 
+import java.util.Calendar;
+
 import idv.hsiehpinghan.goraassistant.entity.Gora;
 import idv.hsiehpinghan.goraassistant.service.GoraService;
 import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 
+import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class GoraServiceTest {
+	private final long KEY = Calendar.getInstance().getTimeInMillis();
 	private boolean _boolean = true;
 	private int _int = 1;
 	private long _long = 2;
@@ -26,7 +30,13 @@ public class GoraServiceTest {
 
 	@Test
 	public void put() {
-		service.put(0L, generateGora());
+		service.put(KEY, generateGora());
+	}
+
+	@Test(dependsOnMethods = { "put" })
+	public void get() {
+		Gora returnGora = service.get(KEY);
+		Assert.assertNotNull(returnGora);
 	}
 
 	private Gora generateGora() {

@@ -17,6 +17,8 @@ public class GoraRepository {
 	}
 
 	public Gora get(Long key) {
-		return dataStore.get(key);
+		Gora entity = dataStore.get(key);
+		dataStore.flush();
+		return entity;
 	}
 }

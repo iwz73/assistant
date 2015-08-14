@@ -9,6 +9,7 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 import java.util.Calendar;
 
 import org.apache.avro.util.Utf8;
+import org.apache.gora.query.Result;
 import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
@@ -42,6 +43,25 @@ public class GoraServiceTest {
 	@Test(dependsOnMethods = { "put" })
 	public void get() {
 		Gora returnGora = service.get(KEY);
+		assertReturnGora(returnGora);
+	}
+
+	@Test(dependsOnMethods = { "get" })
+	public void query() throws Exception {
+		Result<Long, Gora> result = service.query(KEY);
+		while (result.next()) {
+			Gora returnGora = result.get();
+			assertReturnGora(returnGora);
+		}
+	}
+
+	@Test(dependsOnMethods = { "query" })
+	public void delete() {
+		Assert.assertTrue(service.delete(KEY));
+		Assert.assertNull(service.get(KEY));
+	}
+
+	private void assertReturnGora(Gora returnGora) {
 		Assert.assertEquals(Boolean.valueOf(_boolean),
 				returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());

@@ -2,6 +2,8 @@ package idv.hsiehpinghan.goraassistant.repository;
 
 import idv.hsiehpinghan.goraassistant.entity.Gora;
 
+import org.apache.gora.query.Query;
+import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,18 @@ public class GoraRepository {
 
 	public Gora get(Long key) {
 		Gora entity = dataStore.get(key);
-		dataStore.flush();
 		return entity;
+	}
+
+	public Result<Long, Gora> query(Long key) {
+		Query<Long, Gora> query = dataStore.newQuery();
+		query.setKey(key);
+		return query.execute();
+	}
+
+	public boolean delete(Long key) {
+		boolean result = dataStore.delete(key);
+		dataStore.flush();
+		return result;
 	}
 }

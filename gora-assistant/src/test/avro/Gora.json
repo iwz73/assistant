@@ -1,39 +1,98 @@
 {
 	"type":"record",
-	"namespace":"idv.hsiehpinghan.goraassistant.gora",
+	"namespace":"idv.hsiehpinghan.goraassistant.entity",
+	"doc":"Gora doc.",
 	"name":"Gora",
 	"fields":[
 		{
-			"name":"url",
-			"type":"string"
+			"doc":"boolean doc",
+			"name":"_boolean",
+			"type":"boolean",
+			"default":true,
+			"order":"ignore"
 		},
 		{
-			"name":"timestamp",
-			"type":"long"
+			"doc":"int doc",
+			"name":"_int",
+			"type":"int",
+			"default":1,
+			"order":"ignore"
 		},
 		{
-			"name":"ip",
-			"type":"string"
+			"doc":"long doc",
+			"name":"_long",
+			"type":"long",
+			"default":2,
+			"order":"ignore"
 		},
 		{
-			"name":"httpMethod",
-			"type":"string"
+			"doc":"float doc",
+			"name":"_float",
+			"type":"float",
+			"default":1.1,
+			"order":"ignore"
 		},
 		{
-			"name":"httpStatusCode",
-			"type":"int"
+			"doc":"double doc",
+			"name":"_double",
+			"type":"double",
+			"default":2.2,
+			"order":"ignore"
 		},
 		{
-			"name":"responseSize",
-			"type":"int"
+			"doc":"string doc",
+			"name":"_string",
+			"type":"string",
+			"default":"string",
+			"order":"ignore"
 		},
 		{
-			"name":"referrer",
-			"type":"string"
+			"doc":"record doc",
+			"name":"_record",
+			"type":{
+				"type":"record",
+				"name":"NestedRecord",
+				"fields":[
+					{
+						"doc":"boolean doc",
+						"name":"_boolean",
+						"type":"boolean",
+						"default":true,
+						"order":"ignore"
+					},
+					{
+						"doc":"int doc",
+						"name":"_int",
+						"type":"int",
+						"default":1,
+						"order":"ignore"
+					}
+					
+				]
+				
+			},
+			"default":{
+				
+			},
+			"order":"ignore"
 		},
 		{
-			"name":"userAgent",
-			"type":"string"
+			"doc":"enum doc",
+			"name":"_enum",
+			"type":{
+				"doc":"Enumeration doc",
+				"namespace":"idv.hsiehpinghan.goraassistant.enumeration",
+				"name":"Enumeration",
+				"type":"enum",
+				"symbols":[
+					"ENUM_0",
+					"ENUM_1",
+					"ENUM_2"
+				]
+				
+			},
+			"default":"ENUM_1",
+			"order":"ignore"
 		}
 		
 	]

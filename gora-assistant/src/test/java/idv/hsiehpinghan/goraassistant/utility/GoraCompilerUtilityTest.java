@@ -9,10 +9,10 @@ public class GoraCompilerUtilityTest {
 
 	@Test
 	public void compile() {
-		String inputFolderPath = "/home/thank/git/assistant/gora-assistant/src/test/avro";
-		String outputFolderPath = "/home/thank/git/assistant/gora-assistant/src/test/java/";
+		String inputFolderPath = "/home/hsiehpinghan/git/assistant/gora-assistant/src/test/avro";
+		String outputFolderPath = "/home/hsiehpinghan/git/assistant/gora-assistant/src/test/java/";
 		File outputEntity = new File(
-				"/home/thank/git/assistant/gora-assistant/src/test/java/idv/hsiehpinghan/goraassistant/gora/Gora.java");
+				"/home/hsiehpinghan/git/assistant/gora-assistant/src/test/java/idv/hsiehpinghan/goraassistant/entity/Gora.java");
 		Assert.assertTrue(deleteFile(outputEntity));
 		Assert.assertFalse(outputEntity.exists());
 		GoraCompilerUtility.compile(inputFolderPath, outputFolderPath);

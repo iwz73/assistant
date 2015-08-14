@@ -7,7 +7,7 @@ package idv.hsiehpinghan.goraassistant.entity;
 @SuppressWarnings("all")
 /** Gora doc. */
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]},\"doc\":\"record doc\",\"default\":{},\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]},\"doc\":\"enum doc\",\"default\":\"ENUM_1\",\"order\":\"ignore\"},{\"name\":\"_array\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\"},{\"name\":\"name\",\"type\":\"string\"}]}},\"doc\":\"array doc\",\"default\":[],\"order\":\"ignore\"},{\"name\":\"_map\",\"type\":{\"type\":\"map\",\"values\":{\"type\":\"record\",\"name\":\"MapValue\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"age\",\"type\":\"int\"}]}},\"doc\":\"map doc\",\"default\":{},\"order\":\"ignore\"},{\"name\":\"_unions\",\"type\":[\"string\",\"null\"],\"doc\":\"unions doc\",\"default\":\"\",\"order\":\"ignore\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]},\"doc\":\"record doc\",\"default\":{},\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]},\"doc\":\"enum doc\",\"default\":\"ENUM_1\",\"order\":\"ignore\"}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -19,9 +19,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     _STRING(5, "_string"),
     _RECORD(6, "_record"),
     _ENUM(7, "_enum"),
-    _ARRAY(8, "_array"),
-    _MAP(9, "_map"),
-    _UNIONS(10, "_unions"),
     ;
     /**
      * Field's index.
@@ -68,9 +65,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   "_string",
   "_record",
   "_enum",
-  "_array",
-  "_map",
-  "_unions",
   };
 
   /**
@@ -97,12 +91,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   private idv.hsiehpinghan.goraassistant.entity.NestedRecord _record;
   /** enum doc */
   private idv.hsiehpinghan.goraassistant.enumeration.Enumeration _enum;
-  /** array doc */
-  private java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> _array;
-  /** map doc */
-  private java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> _map;
-  /** unions doc */
-  private java.lang.CharSequence _unions;
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
@@ -115,9 +103,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 5: return _string;
     case 6: return _record;
     case 7: return _enum;
-    case 8: return _array;
-    case 9: return _map;
-    case 10: return _unions;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -134,9 +119,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 5: _string = (java.lang.CharSequence)(value); break;
     case 6: _record = (idv.hsiehpinghan.goraassistant.entity.NestedRecord)(value); break;
     case 7: _enum = (idv.hsiehpinghan.goraassistant.enumeration.Enumeration)(value); break;
-    case 8: _array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>)((value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyListWrapper((java.util.List)value)); break;
-    case 9: _map = (java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue>)((value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyMapWrapper((java.util.Map)value)); break;
-    case 10: _unions = (java.lang.CharSequence)(value); break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -333,78 +315,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     return isDirty(7);
   }
 
-  /**
-   * Gets the value of the '_array' field.
-   * array doc   */
-  public java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> getArray$1() {
-    return _array;
-  }
-
-  /**
-   * Sets the value of the '_array' field.
-   * array doc   * @param value the value to set.
-   */
-  public void setArray$1(java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> value) {
-    this._array = (value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyListWrapper(value);
-    setDirty(8);
-  }
-  
-  /**
-   * Checks the dirty status of the '_array' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * array doc   * @param value the value to set.
-   */
-  public boolean isArray$1Dirty() {
-    return isDirty(8);
-  }
-
-  /**
-   * Gets the value of the '_map' field.
-   * map doc   */
-  public java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> getMap$1() {
-    return _map;
-  }
-
-  /**
-   * Sets the value of the '_map' field.
-   * map doc   * @param value the value to set.
-   */
-  public void setMap$1(java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> value) {
-    this._map = (value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyMapWrapper(value);
-    setDirty(9);
-  }
-  
-  /**
-   * Checks the dirty status of the '_map' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * map doc   * @param value the value to set.
-   */
-  public boolean isMap$1Dirty() {
-    return isDirty(9);
-  }
-
-  /**
-   * Gets the value of the '_unions' field.
-   * unions doc   */
-  public java.lang.CharSequence getUnions$1() {
-    return _unions;
-  }
-
-  /**
-   * Sets the value of the '_unions' field.
-   * unions doc   * @param value the value to set.
-   */
-  public void setUnions$1(java.lang.CharSequence value) {
-    this._unions = value;
-    setDirty(10);
-  }
-  
-  /**
-   * Checks the dirty status of the '_unions' field. A field is dirty if it represents a change that has not yet been written to the database.
-   * unions doc   * @param value the value to set.
-   */
-  public boolean isUnions$1Dirty() {
-    return isDirty(10);
-  }
-
   /** Creates a new Gora RecordBuilder */
   public static idv.hsiehpinghan.goraassistant.entity.Gora.Builder newBuilder() {
     return new idv.hsiehpinghan.goraassistant.entity.Gora.Builder();
@@ -457,9 +367,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     private java.lang.CharSequence _string;
     private idv.hsiehpinghan.goraassistant.entity.NestedRecord _record;
     private idv.hsiehpinghan.goraassistant.enumeration.Enumeration _enum;
-    private java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> _array;
-    private java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> _map;
-    private java.lang.CharSequence _unions;
 
     /** Creates a new Builder */
     private Builder() {
@@ -505,18 +412,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
       if (isValidValue(fields()[7], other._enum)) {
         this._enum = (idv.hsiehpinghan.goraassistant.enumeration.Enumeration) data().deepCopy(fields()[7].schema(), other._enum);
         fieldSetFlags()[7] = true;
-      }
-      if (isValidValue(fields()[8], other._array)) {
-        this._array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) data().deepCopy(fields()[8].schema(), other._array);
-        fieldSetFlags()[8] = true;
-      }
-      if (isValidValue(fields()[9], other._map)) {
-        this._map = (java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue>) data().deepCopy(fields()[9].schema(), other._map);
-        fieldSetFlags()[9] = true;
-      }
-      if (isValidValue(fields()[10], other._unions)) {
-        this._unions = (java.lang.CharSequence) data().deepCopy(fields()[10].schema(), other._unions);
-        fieldSetFlags()[10] = true;
       }
     }
 
@@ -715,81 +610,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
       return this;
     }
     
-    /** Gets the value of the '_array' field */
-    public java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> getArray$1() {
-      return _array;
-    }
-    
-    /** Sets the value of the '_array' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setArray$1(java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> value) {
-      validate(fields()[8], value);
-      this._array = value;
-      fieldSetFlags()[8] = true;
-      return this; 
-    }
-    
-    /** Checks whether the '_array' field has been set */
-    public boolean hasArray$1() {
-      return fieldSetFlags()[8];
-    }
-    
-    /** Clears the value of the '_array' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearArray$1() {
-      _array = null;
-      fieldSetFlags()[8] = false;
-      return this;
-    }
-    
-    /** Gets the value of the '_map' field */
-    public java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> getMap$1() {
-      return _map;
-    }
-    
-    /** Sets the value of the '_map' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setMap$1(java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> value) {
-      validate(fields()[9], value);
-      this._map = value;
-      fieldSetFlags()[9] = true;
-      return this; 
-    }
-    
-    /** Checks whether the '_map' field has been set */
-    public boolean hasMap$1() {
-      return fieldSetFlags()[9];
-    }
-    
-    /** Clears the value of the '_map' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearMap$1() {
-      _map = null;
-      fieldSetFlags()[9] = false;
-      return this;
-    }
-    
-    /** Gets the value of the '_unions' field */
-    public java.lang.CharSequence getUnions$1() {
-      return _unions;
-    }
-    
-    /** Sets the value of the '_unions' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setUnions$1(java.lang.CharSequence value) {
-      validate(fields()[10], value);
-      this._unions = value;
-      fieldSetFlags()[10] = true;
-      return this; 
-    }
-    
-    /** Checks whether the '_unions' field has been set */
-    public boolean hasUnions$1() {
-      return fieldSetFlags()[10];
-    }
-    
-    /** Clears the value of the '_unions' field */
-    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearUnions$1() {
-      _unions = null;
-      fieldSetFlags()[10] = false;
-      return this;
-    }
-    
     @Override
     public Gora build() {
       try {
@@ -802,9 +622,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
         record._string = fieldSetFlags()[5] ? this._string : (java.lang.CharSequence) defaultValue(fields()[5]);
         record._record = fieldSetFlags()[6] ? this._record : (idv.hsiehpinghan.goraassistant.entity.NestedRecord) NestedRecord.newBuilder().build();
         record._enum = fieldSetFlags()[7] ? this._enum : (idv.hsiehpinghan.goraassistant.enumeration.Enumeration) defaultValue(fields()[7]);
-        record._array = fieldSetFlags()[8] ? this._array : (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) new org.apache.gora.persistency.impl.DirtyListWrapper((java.util.List)defaultValue(fields()[8]));
-        record._map = fieldSetFlags()[9] ? this._map : (java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue>) new org.apache.gora.persistency.impl.DirtyMapWrapper((java.util.Map)defaultValue(fields()[9]));
-        record._unions = fieldSetFlags()[10] ? this._unions : (java.lang.CharSequence) defaultValue(fields()[10]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
@@ -1007,75 +824,6 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * enum doc	   * @param value the value to set.
 	   */
 	  public boolean isEnum$1Dirty() {
-	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
-	  }
-	
-				  /**
-	   * Gets the value of the '_array' field.
-	   * array doc	   */
-	  public java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> getArray$1() {
-	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
-	  }
-	
-	  /**
-	   * Sets the value of the '_array' field.
-	   * array doc	   * @param value the value to set.
-	   */
-	  public void setArray$1(java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> value) {
-	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
-	  }
-	  
-	  /**
-	   * Checks the dirty status of the '_array' field. A field is dirty if it represents a change that has not yet been written to the database.
-	   * array doc	   * @param value the value to set.
-	   */
-	  public boolean isArray$1Dirty() {
-	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
-	  }
-	
-				  /**
-	   * Gets the value of the '_map' field.
-	   * map doc	   */
-	  public java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> getMap$1() {
-	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
-	  }
-	
-	  /**
-	   * Sets the value of the '_map' field.
-	   * map doc	   * @param value the value to set.
-	   */
-	  public void setMap$1(java.util.Map<java.lang.CharSequence,idv.hsiehpinghan.goraassistant.entity.MapValue> value) {
-	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
-	  }
-	  
-	  /**
-	   * Checks the dirty status of the '_map' field. A field is dirty if it represents a change that has not yet been written to the database.
-	   * map doc	   * @param value the value to set.
-	   */
-	  public boolean isMap$1Dirty() {
-	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
-	  }
-	
-				  /**
-	   * Gets the value of the '_unions' field.
-	   * unions doc	   */
-	  public java.lang.CharSequence getUnions$1() {
-	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
-	  }
-	
-	  /**
-	   * Sets the value of the '_unions' field.
-	   * unions doc	   * @param value the value to set.
-	   */
-	  public void setUnions$1(java.lang.CharSequence value) {
-	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
-	  }
-	  
-	  /**
-	   * Checks the dirty status of the '_unions' field. A field is dirty if it represents a change that has not yet been written to the database.
-	   * unions doc	   * @param value the value to set.
-	   */
-	  public boolean isUnions$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	

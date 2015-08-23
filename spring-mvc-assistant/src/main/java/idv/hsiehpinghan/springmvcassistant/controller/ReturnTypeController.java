@@ -29,20 +29,26 @@ public class ReturnTypeController {
 		return generateList();
 	}
 
-	@RequestMapping(value = "/fileSystemResource/{fileSystemResource:.+}", method = RequestMethod.GET)
 	@ResponseBody
+	@RequestMapping(value = "/fileSystemResource/{fileSystemResource:.+}", method = RequestMethod.GET)
 	public FileSystemResource fileSystemResource(
 			@PathVariable("fileSystemResource") String fileSystemResource) {
 		return new FileSystemResource("/etc/" + fileSystemResource);
 	}
 
-	@RequestMapping(value = "/classPathResource/{classPathResource:.+}", method = RequestMethod.GET)
 	@ResponseBody
+	@RequestMapping(value = "/classPathResource/{classPathResource:.+}", method = RequestMethod.GET)
 	public ClassPathResource classPathResource(
 			@PathVariable("classPathResource") String classPathResource) {
 		return new ClassPathResource(classPathResource);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/json", method = RequestMethod.GET, produces={"application/json"})
+	public Collection<Data> json() {
+		return generateList();
+	}
+	
 	private Collection<Data> generateList() {
 		return generateList(3);
 	}

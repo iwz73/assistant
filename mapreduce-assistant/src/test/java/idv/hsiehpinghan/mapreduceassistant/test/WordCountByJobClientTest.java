@@ -6,14 +6,12 @@ import idv.hsiehpinghan.mapreduceassistant.suit.TestngSuitSetting;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class WordTest {
+public class WordCountByJobClientTest {
 	private ApplicationContext applicationContext;
 	
 	@BeforeClass
@@ -24,11 +22,11 @@ public class WordTest {
 	
 	@Test
 	public void test() throws Exception {
-		String inputPath = "/home/hsiehpinghan/workspace/mapreduce-assistant/src/test/file/WordTest.txt";
-		String outputPath = "/tmp/WordTest";
+		String inputPath = "/home/thank/git/assistant/mapreduce-assistant/src/test/file/WordCount_*.txt";
+		String outputPath = "/tmp/WordCountByJobClient";
 		FileUtils.deleteDirectory(new File(outputPath));
-		WordCount wordCount = applicationContext.getBean(WordCount.class);
-		Assert.assertTrue(wordCount.count(inputPath, outputPath));
+		WordCountByJobClient wordCount = applicationContext.getBean(WordCountByJobClient.class);
+		wordCount.count(inputPath, outputPath);
 	}
 
 }

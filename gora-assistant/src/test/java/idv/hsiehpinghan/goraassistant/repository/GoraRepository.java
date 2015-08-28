@@ -29,6 +29,13 @@ public class GoraRepository {
 		return query.execute();
 	}
 
+	public Result<Long, Gora> query(Long startKey, long limit) {
+		Query<Long, Gora> query = dataStore.newQuery();
+		query.setStartKey(startKey);
+		query.setLimit(limit);
+		return query.execute();
+	}
+
 	public boolean delete(Long key) {
 		boolean result = dataStore.delete(key);
 		dataStore.flush();

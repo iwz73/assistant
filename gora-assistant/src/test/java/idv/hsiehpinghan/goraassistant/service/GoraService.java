@@ -24,6 +24,10 @@ public class GoraService {
 		return repository.query(key);
 	}
 
+	public Result<Long, Gora> query(Long startKey, long limit) {
+		return repository.query(startKey, limit);
+	}
+
 	public boolean delete(Long key) {
 		return repository.delete(key);
 	}

@@ -2,7 +2,7 @@ package idv.hsiehpinghan.goraassistant.utility;
 
 import java.io.File;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GoraCompilerUtilityTest {

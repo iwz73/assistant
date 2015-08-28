@@ -10,8 +10,8 @@ import java.util.Calendar;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.query.Result;
-import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -46,6 +46,10 @@ public class GoraServiceTest {
 		assertReturnGora(returnGora);
 	}
 
+	/**
+	 * test query(Long key)
+	 * @throws Exception
+	 */
 	@Test(dependsOnMethods = { "get" })
 	public void query() throws Exception {
 		Result<Long, Gora> result = service.query(KEY);
@@ -55,6 +59,30 @@ public class GoraServiceTest {
 		}
 	}
 
+	/**
+	 * test query(Long key, long limit)
+	 * @throws Exception
+	 */
+	@Test(dependsOnMethods = { "query" })
+	public void queryWithLimit() throws Exception {
+		final long SIZE = 3;
+		Long lastValue = null;
+		for(long i = 0; i < SIZE; ++i) {
+			lastValue = Long.MAX_VALUE - i;
+			service.put(lastValue , generateGora());			
+		}
+		Result<Long, Gora> result = service.query(lastValue, Long.MAX_VALUE);
+		int amt = 0;
+		while (result.next()) {
+			++amt;
+			Gora returnGora = result.get();
+			assertReturnGora(returnGora);
+			service.delete(result.getKey());
+		}
+		Assert.assertEquals(amt, SIZE);
+		
+	}
+	
 	@Test(dependsOnMethods = { "query" })
 	public void delete() {
 		Assert.assertTrue(service.delete(KEY));

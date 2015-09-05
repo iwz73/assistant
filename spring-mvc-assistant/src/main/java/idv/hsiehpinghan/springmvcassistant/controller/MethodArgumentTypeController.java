@@ -3,6 +3,9 @@ package idv.hsiehpinghan.springmvcassistant.controller;
 import idv.hsiehpinghan.springmvcassistant.criteria.Criteria;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -132,14 +135,18 @@ public class MethodArgumentTypeController {
 		return "redirect:/methodArgumentType/index";
 	}
 
-	@RequestMapping(value = "/criteria", method = RequestMethod.POST)
+	@RequestMapping(value = "/criteria", method = RequestMethod.GET)
 	public ModelAndView criteria(Criteria criteria) {
 		ModelAndView modelAndView = new ModelAndView("/methodArgumentType/index");
 		Integer integerValue = criteria.getIntegerValue();
 		Float floatValue = criteria.getFloatValue();
 		String stringValue = criteria.getStringValue();
 		Date dateValue = criteria.getDateValue();
-		modelAndView.addObject("parameter", "integerValue:" + integerValue + "; floatValue:" + floatValue + "; stringValue:" + stringValue + "; dateValue:" + dateValue);
+		LocalDate localDate = criteria.getLocalDate();
+		LocalTime localTime = criteria.getLocalTime();
+		LocalDateTime localDateTime = criteria.getLocalDateTime();
+		modelAndView.addObject("parameter", "integerValue:" + integerValue + "; floatValue:" + floatValue + "; stringValue:" + stringValue + 
+			"; dateValue:" + dateValue + "; localDate:" + localDate + "; localTime:" + localTime + "; localDateTime:" + localDateTime);
 		return modelAndView;
 	}
 }

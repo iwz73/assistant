@@ -42,12 +42,15 @@
 			type="submit" value="redirectAttributes submit">
 	</form>
 	<br>
-	<form action="criteria" method="post">
+	<form action="criteria" method="get">
 		<input type="number" name="integerValue" value="1"> <input
 			type="number" name="floatValue" value="2.2"> <input
 			type="text" name="stringValue" value="stringValue"> <input
 			type="date" name="dateValue" value="2015/06/01"> <input
-			type="submit" value="criteria submit">
+			type="date" name="localDate" value="2015-06-01"> <input
+			type="date" name="localTime" value="18:30:45"> <input
+			type="date" name="localDateTime" value="2015-06-01T18:30:45">
+		<input type="submit" value="criteria submit">
 	</form>
 </body>
 </html>

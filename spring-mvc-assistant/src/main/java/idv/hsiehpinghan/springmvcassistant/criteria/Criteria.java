@@ -8,16 +8,21 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Criteria {
 	private Integer integerValue;
 	private Float floatValue;
 	private String stringValue;
 	private Date dateValue;
 	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
 	private LocalDate localDate;
 	@DateTimeFormat(iso = ISO.TIME)
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
 	private LocalTime localTime;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
 	private LocalDateTime localDateTime;
 
 	public Integer getIntegerValue() {

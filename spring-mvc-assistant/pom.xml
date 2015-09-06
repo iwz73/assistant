@@ -72,7 +72,7 @@
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
 		</dependency>
-	
+
 		<!-- tomcat-servlet-api -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -87,7 +87,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

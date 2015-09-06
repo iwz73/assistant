@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -148,5 +149,11 @@ public class MethodArgumentTypeController {
 		modelAndView.addObject("parameter", "integerValue:" + integerValue + "; floatValue:" + floatValue + "; stringValue:" + stringValue + 
 			"; dateValue:" + dateValue + "; localDate:" + localDate + "; localTime:" + localTime + "; localDateTime:" + localDateTime);
 		return modelAndView;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
+	public Criteria json(Criteria criteria) {
+		return criteria;
 	}
 }

@@ -43,14 +43,25 @@
 	</form>
 	<br>
 	<form action="criteria" method="get">
-		<input type="number" name="integerValue" value="1"> <input
-			type="number" name="floatValue" value="2.2"> <input
-			type="text" name="stringValue" value="stringValue"> <input
-			type="date" name="dateValue" value="2015/06/01"> <input
-			type="date" name="localDate" value="2015-06-01"> <input
-			type="date" name="localTime" value="18:30:45"> <input
-			type="date" name="localDateTime" value="2015-06-01T18:30:45">
+		<input type="number" name="integerValue" value="1"><br>
+		<input type="number" name="floatValue" value="2.2"><br> 
+		<input type="text" name="stringValue" value="stringValue"><br>
+		<input type="date" name="dateValue" value="2015/06/01"><br>
+		<input type="date" name="localDate" value="2015-06-01"><br>
+		<input type="date" name="localTime" value="18:30:45"><br>
+		<input type="date" name="localDateTime" value="2015-06-01T18:30:45"><br>
 		<input type="submit" value="criteria submit">
+	</form>
+	<br>
+	<form action="json" method="get">
+		<input type="number" name="integerValue" value="1"><br>
+		<input type="number" name="floatValue" value="2.2"><br> 
+		<input type="text" name="stringValue" value="stringValue"><br>
+		<input type="date" name="dateValue" value="2015/06/01"><br>
+		<input type="date" name="localDate" value="2015-06-01"><br>
+		<input type="date" name="localTime" value="18:30:45"><br>
+		<input type="date" name="localDateTime" value="2015-06-01T18:30:45"><br>
+		<input type="submit" value="json submit">
 	</form>
 </body>
 </html>

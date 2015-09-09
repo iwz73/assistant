@@ -81,4 +81,12 @@ public class Criteria {
 		this.localDateTime = localDateTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Criteria [integerValue=" + integerValue + ", floatValue="
+				+ floatValue + ", stringValue=" + stringValue + ", dateValue="
+				+ dateValue + ", localDate=" + localDate + ", localTime="
+				+ localTime + ", localDateTime=" + localDateTime + "]";
+	}
+
 }

@@ -45,7 +45,7 @@ public class GoraServiceTest {
 		Gora returnGora = service.get(KEY);
 		assertReturnGora(returnGora);
 	}
-
+	
 	/**
 	 * test query(Long key)
 	 * @throws Exception
@@ -59,6 +59,20 @@ public class GoraServiceTest {
 		}
 	}
 
+	/**
+	 * test query(Long key, String... fields)
+	 * @throws Exception
+	 */
+	@Test(dependsOnMethods = { "query" })
+	public void queryWithFields() throws Exception {
+		CharSequence testStr = new Utf8("test");
+		Gora gora = generateGora();
+		gora.setString$1(testStr);
+		service.put(KEY, gora);
+		testStringField(testStr);
+		testNoStringField(testStr);
+	}
+	
 	/**
 	 * test query(Long key, long limit)
 	 * @throws Exception
@@ -124,4 +138,28 @@ public class GoraServiceTest {
 		return entity;
 	}
 
+	private void testStringField(CharSequence testStr) throws Exception {
+		String[] fields = new String[] {Gora.Field._STRING.getName()};
+		Result<Long, Gora> result = service.query(KEY, fields);
+		int amt = 0;
+		while (result.next()) {
+			Gora returnGora = result.get();
+			Assert.assertEquals(returnGora.getString$1(), testStr);
+			++amt;
+		}
+		Assert.assertEquals(amt, 1);
+	}
+	
+	private void testNoStringField(CharSequence testStr) throws Exception {
+		String[] fields = new String[] {Gora.Field._BOOLEAN.getName()};
+		Result<Long, Gora> result = service.query(KEY, fields);
+		int amt = 0;
+		while (result.next()) {
+			Gora returnGora = result.get();
+			Assert.assertNotEquals(returnGora.getString$1(), testStr);
+			++amt;
+		}
+		Assert.assertEquals(amt, 1);
+	}
+	
 }

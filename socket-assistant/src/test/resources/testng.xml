@@ -3,12 +3,12 @@
 <suite name="suite" verbose="1">
 	<test name="suit">
 		<classes>
-			<class name="idv.hsiehpinghan.mailassistant.suit.TestngSuitSetting" />
+			<class name="idv.hsiehpinghan.socketassistant.suit.TestngSuitSetting" />
 		</classes>
 	</test>
 	<test name="test">
 		<classes>
-			<class name="idv.hsiehpinghan.mailassistant.assistant.MailAssistantTest" />
+			<class name="idv.hsiehpinghan.socketassistant.server.EchoServerTest" />
 		</classes>
 	</test>
 </suite>

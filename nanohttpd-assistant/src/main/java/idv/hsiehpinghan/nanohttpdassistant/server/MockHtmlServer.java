@@ -4,11 +4,11 @@ import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.kevoree.library.nanohttp.NanoHTTPD;
 import org.springframework.stereotype.Component;
+
+import fi.iki.elonen.NanoHTTPD;
 
 @Component
 public class MockHtmlServer extends NanoHTTPD {
@@ -17,23 +17,26 @@ public class MockHtmlServer extends NanoHTTPD {
 
 	public MockHtmlServer() throws IOException {
 		super(DEFAULT_PORT);
+		start();
 	}
 
 	/**
 	 * Serve request.
 	 */
 	@Override
-	public Response serve(String uri, String method, Properties header,
-			Properties parms, Properties files, InputStream body) {
-		logger.debug("uri : " + uri);
-		logger.debug("method : " + method);
-		logger.debug("header : " + header);
-		logger.debug("parms : " + parms);
-		logger.debug("files : " + files);
+	public Response serve(IHTTPSession session) {
+		logger.debug("uri : " + session.getUri());
+		logger.debug("method : " + session.getMethod());
+		logger.debug("queryParameterString : "
+				+ session.getQueryParameterString());
+		logger.debug("headers : " + session.getHeaders());
+		logger.debug("parms : " + session.getParms());
+		logger.debug("cookies : " + session.getCookies());
+		logger.debug("inputStream : " + session.getInputStream());
 		InputStream mockFile = null;
 		try {
-			mockFile = getMockFile(uri);
-			return new NanoHTTPD.Response(NanoHTTPD.HTTP_OK,
+			mockFile = getMockFile(session.getUri());
+			return new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK,
 					NanoHTTPD.MIME_HTML, mockFile);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

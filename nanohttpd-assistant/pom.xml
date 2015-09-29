@@ -28,9 +28,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<log4j.version>1.2.17</log4j.version>
-		<testng.version>6.1.1</testng.version>
+		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<nanohttpd.version>2.0.5</nanohttpd.version>
+		<nanohttpd.version>2.1.1</nanohttpd.version>
 		<commons-io.version>2.4</commons-io.version>
 		<selenium-java.version>2.45.0</selenium-java.version>
 		<resource-utility.version>1.0.0</resource-utility.version>
@@ -62,8 +62,8 @@
 
 		<!-- nanohttpd -->
 		<dependency>
-			<groupId>org.kevoree.corelibrary.javase</groupId>
-			<artifactId>org.kevoree.library.javase.nanohttp</artifactId>
+			<groupId>com.nanohttpd</groupId>
+			<artifactId>nanohttpd</artifactId>
 			<version>${nanohttpd.version}</version>
 		</dependency>
 

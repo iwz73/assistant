@@ -4,11 +4,10 @@ import idv.hsiehpinghan.nanohttpdassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.context.ApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,7 +18,7 @@ public class MockHtmlServerTest {
 	private FirefoxDriver firefox;
 
 	@BeforeClass
-	public void beforeClass() throws IOException {
+	public void beforeClass() throws Exception {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		server = applicationContext.getBean(MockHtmlServer.class);
@@ -28,11 +27,11 @@ public class MockHtmlServerTest {
 	}
 
 	@Test
-	public void serveHtml() throws IOException {
+	public void serveHtml() throws Exception {
 		htmlUnit.get("http://127.0.0.1:8080/html/nanohttpd_index.html");
-		Assert.assertEquals("Index page", htmlUnit.getTitle());
+		Assert.assertEquals(htmlUnit.getTitle(), "Index page");
 		firefox.get("http://127.0.0.1:8080/html/nanohttpd_index.html");
-		Assert.assertEquals("Index page", firefox.getTitle());
+		Assert.assertEquals(firefox.getTitle(), "Index page");
 	}
 
 	@AfterClass

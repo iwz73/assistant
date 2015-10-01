@@ -246,4 +246,5 @@ public abstract class BrowserBase {
 	 * Clean browser.
 	 */
 	public abstract void clean();
+
 }

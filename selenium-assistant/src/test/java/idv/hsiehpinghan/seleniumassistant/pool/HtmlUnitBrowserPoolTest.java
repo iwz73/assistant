@@ -2,9 +2,9 @@ package idv.hsiehpinghan.seleniumassistant.pool;
 
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 import idv.hsiehpinghan.seleniumassistant.suit.TestngSuitSetting;
-import junit.framework.Assert;
 
 import org.springframework.context.ApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

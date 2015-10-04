@@ -1,7 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.utility;
 
 import idv.hsiehpinghan.datatypeutility.utility.VoidUtility;
-import idv.hsiehpinghan.seleniumassistant.browser.BrowserBase;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select;
 import idv.hsiehpinghan.seleniumassistant.webelement.Select.Option;
 import idv.hsiehpinghan.seleniumassistant.webelement.Table;
@@ -178,29 +177,29 @@ public class AjaxWaitUtility {
 		});
 	}
 
-	/**
-	 * Wait until first child window content-disposition not null.
-	 * 
-	 * @param browser
-	 * @return
-	 */
-	public static boolean waitUntilFirstChildWindowContentDispositionNotNull(
-			final BrowserBase browser) {
-		return wait(new Function<Void, Boolean>() {
-			@Override
-			public Boolean apply(Void v) {
-				try {
-					browser.switchToFirstChildWindow();
-					return browser.getContentDisposition() != null;
-				} catch (Exception e) {
-					logger.trace("Exception : ", e);
-					return false;
-				} finally {
-					browser.switchToParentWindow();
-				}
-			}
-		});
-	}
+	// /**
+	// * Wait until first child window content-disposition not null.
+	// *
+	// * @param browser
+	// * @return
+	// */
+	// public static boolean waitUntilFirstChildWindowContentDispositionNotNull(
+	// final BrowserBase browser) {
+	// return wait(new Function<Void, Boolean>() {
+	// @Override
+	// public Boolean apply(Void v) {
+	// try {
+	// browser.switchToFirstChildWindow();
+	// return browser.getContentDisposition() != null;
+	// } catch (Exception e) {
+	// logger.trace("Exception : ", e);
+	// return false;
+	// } finally {
+	// browser.switchToParentWindow();
+	// }
+	// }
+	// });
+	// }
 
 	private static boolean wait(final Function<Void, Boolean> function) {
 		FluentWait<Void> fluentWait = new FluentWait<Void>(VoidUtility.VOID);

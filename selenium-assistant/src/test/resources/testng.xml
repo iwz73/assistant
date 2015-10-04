@@ -8,9 +8,10 @@
 	<test name="browser">
 		<classes>
 			<class
-				name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" />
-			<class
 				name="idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowserTest" />
+			<class
+				name="idv.hsiehpinghan.seleniumassistant.browser.FirefoxBrowserTest" />
+			<class name="idv.hsiehpinghan.seleniumassistant.browser.ChromeBrowserTest" />
 		</classes>
 	</test>
 	<test name="webelement">

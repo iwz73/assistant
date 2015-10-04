@@ -16,20 +16,20 @@ import org.testng.annotations.Test;
 public class SelectTest {
 	private HtmlUnitBrowser browser;
 
-	@BeforeClass
-	public void beforeClass() throws IOException {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		browser = applicationContext.getBean(HtmlUnitBrowser.class);
-		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
-
-	}
-
-	@Test
-	public void getOptions() {
-		Select select = browser.getSelect(By.cssSelector("#selectId"));
-		List<Option> options = select.getOptions();
-		Assert.assertEquals(3, options.size());
-	}
+//	@BeforeClass
+//	public void beforeClass() throws IOException {
+//		ApplicationContext applicationContext = TestngSuitSetting
+//				.getApplicationContext();
+//		browser = applicationContext.getBean(HtmlUnitBrowser.class);
+//		browser.browse(TestngSuitSetting.URL_BASE + "html/selenium_index.html");
+//
+//	}
+//
+//	@Test
+//	public void getOptions() {
+//		Select select = browser.getSelect(By.cssSelector("#selectId"));
+//		List<Option> options = select.getOptions();
+//		Assert.assertEquals(3, options.size());
+//	}
 
 }

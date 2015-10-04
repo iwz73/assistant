@@ -4,6 +4,7 @@ import idv.hsiehpinghan.resourceutility.utility.ResourceUtility;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -24,18 +25,17 @@ public class MockHtmlServer extends NanoHTTPD {
 	 * Serve request.
 	 */
 	@Override
-	public Response serve(IHTTPSession session) {
-		logger.debug("uri : " + session.getUri());
-		logger.debug("method : " + session.getMethod());
-		logger.debug("queryParameterString : "
-				+ session.getQueryParameterString());
-		logger.debug("headers : " + session.getHeaders());
-		logger.debug("parms : " + session.getParms());
-		logger.debug("cookies : " + session.getCookies());
-		logger.debug("inputStream : " + session.getInputStream());
+	public Response serve(String uri, Method method,
+			Map<String, String> headers, Map<String, String> parms,
+			Map<String, String> files) {
+		logger.debug("uri : " + uri);
+		logger.debug("method : " + method);
+		logger.debug("headers : " + headers);
+		logger.debug("parms : " + parms);
+		logger.debug("files : " + files);
 		InputStream mockFile = null;
 		try {
-			mockFile = getMockFile(session.getUri());
+			mockFile = getMockFile(uri);
 			return new NanoHTTPD.Response(NanoHTTPD.Response.Status.OK,
 					NanoHTTPD.MIME_HTML, mockFile);
 		} catch (IOException e) {

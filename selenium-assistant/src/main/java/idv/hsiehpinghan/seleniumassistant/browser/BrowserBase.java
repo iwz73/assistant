@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.seleniumassistant.browser;
 
+import idv.hsiehpinghan.seleniumassistant.property.BrowserProperty;
 import idv.hsiehpinghan.seleniumassistant.webelement.A;
 import idv.hsiehpinghan.seleniumassistant.webelement.Button;
 import idv.hsiehpinghan.seleniumassistant.webelement.Div;
@@ -11,16 +12,26 @@ import idv.hsiehpinghan.seleniumassistant.webelement.Table;
 import idv.hsiehpinghan.seleniumassistant.webelement.Td;
 import idv.hsiehpinghan.seleniumassistant.webelement.TextInput;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public abstract class BrowserBase {
-	private String parentWindowHandle;
+
+	/**
+	 * Get title.
+	 * 
+	 * @return
+	 */
+	public String getTitle() {
+		return getWebDriver().getTitle();
+	}
 
 	/**
 	 * Go to target url.
@@ -143,7 +154,7 @@ public abstract class BrowserBase {
 	 */
 	public void closeAllChildWindow() {
 		WebDriver webDriver = getWebDriver();
-		parentWindowHandle = webDriver.getWindowHandle();
+		String parentWindowHandle = webDriver.getWindowHandle();
 		Iterator<String> iter = webDriver.getWindowHandles().iterator();
 		while (iter.hasNext()) {
 			String windowHandle = iter.next();
@@ -170,7 +181,7 @@ public abstract class BrowserBase {
 	 */
 	public void switchToFirstChildWindow() {
 		WebDriver webDriver = getWebDriver();
-		parentWindowHandle = webDriver.getWindowHandle();
+		String parentWindowHandle = webDriver.getWindowHandle();
 		Iterator<String> iter = webDriver.getWindowHandles().iterator();
 		while (iter.hasNext()) {
 			String windowHandle = iter.next();
@@ -182,69 +193,41 @@ public abstract class BrowserBase {
 	}
 
 	/**
-	 * Switch to parent window.
+	 * Clean browser.
 	 */
-	public void switchToParentWindow() {
-		getWebDriver().switchTo().window(parentWindowHandle);
+	public void clean() {
+		browse("about:blank");
+		closeAllChildWindow();
+		getWebDriver().manage().deleteAllCookies();
 	}
 
 	/**
-	 * Get download page content to filePath.
+	 * set browser property.
 	 * 
-	 * @param file
-	 * @throws UnsupportedEncodingException
+	 * @param property
 	 */
-	public abstract void download(File file)
-			throws UnsupportedEncodingException;
+	public abstract void setBrowserProperty(BrowserProperty property);
+
+	/**
+	 * Generate capabilities.
+	 * 
+	 * @param properties
+	 * @return
+	 */
+	protected Capabilities generateCapabilities(Properties properties) {
+		String supportsJavascript = properties
+				.getProperty(CapabilityType.SUPPORTS_JAVASCRIPT);
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,
+				Boolean.valueOf(supportsJavascript));
+		return capabilities;
+	}
 
 	/**
 	 * Get webDriver for test.
 	 * 
 	 * @return
 	 */
-	public abstract WebDriver getWebDriver();
-
-	/**
-	 * Get attachment of response's Content-disposition.
-	 * 
-	 * @return
-	 */
-	public abstract String getContentDisposition();
-
-	/**
-	 * Check if has attachment.
-	 * 
-	 * @return
-	 */
-	public abstract boolean hasContentDisposition();
-
-	/**
-	 * Get attachment file name.
-	 * 
-	 * @return
-	 */
-	public abstract String getAttachmentFileName();
-
-	/**
-	 * Cache current page for ajax page backward.
-	 */
-	public abstract void cacheCurrentPage();
-
-	/**
-	 * Restore cacheCurrentPage's page.
-	 */
-	public abstract void restorePage();
-
-	/**
-	 * Get content type.
-	 * 
-	 * @return
-	 */
-	public abstract String getContentType();
-
-	/**
-	 * Clean browser.
-	 */
-	public abstract void clean();
+	protected abstract WebDriver getWebDriver();
 
 }

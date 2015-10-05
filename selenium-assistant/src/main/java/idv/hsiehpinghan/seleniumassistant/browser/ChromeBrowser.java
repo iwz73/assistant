@@ -1,10 +1,10 @@
 package idv.hsiehpinghan.seleniumassistant.browser;
 
+import idv.hsiehpinghan.seleniumassistant.factory.DesiredCapabilitiesFactory;
 import idv.hsiehpinghan.seleniumassistant.property.BrowserProperty;
 import idv.hsiehpinghan.seleniumassistant.webdriver.ChromeDriverExtension;
 
 import java.io.File;
-import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 
@@ -23,7 +23,8 @@ public class ChromeBrowser extends BrowserBase {
 
 	@Override
 	public void setBrowserProperty(BrowserProperty property) {
-		throw new  RuntimeException();
+		webDriver.startSession(DesiredCapabilitiesFactory
+				.generateDesiredCapabilities(property));
 	}
 
 	private void initEnvironment() {

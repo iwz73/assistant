@@ -5,19 +5,15 @@ import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HtmlUnitBrowserFactory extends
 		BasePooledObjectFactory<HtmlUnitBrowser> {
-	@Autowired
-	private ApplicationContext applicationContext;
 
 	@Override
 	public HtmlUnitBrowser create() throws Exception {
-		return applicationContext.getBean(HtmlUnitBrowser.class);
+		return new HtmlUnitBrowser();
 	}
 
 	@Override

@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>idv.hsiehpinghan</groupId>
-	<artifactId>htmlunit-assistant</artifactId>
+	<artifactId>poi-assistant</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>htmlunit-assistant</name>
+	<name>poi-assistant</name>
 	<url>http://maven.apache.org</url>
 
 	<build>
@@ -32,8 +32,7 @@
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<htmlunit.version>2.18</htmlunit.version>
-		<!-- <data-type-utility.version>1.0.0</data-type-utility.version> -->
+		<poi.version>3.13</poi.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -52,7 +51,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		
+
 		<!-- testng -->
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -68,19 +67,12 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- htmlunit -->
+		<!-- poi -->
 		<dependency>
-			<groupId>net.sourceforge.htmlunit</groupId>
-			<artifactId>htmlunit</artifactId>
-			<version>${htmlunit.version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
 		</dependency>
-
-		<!-- data-type-utility -->
-		<!-- <dependency> -->
-		<!-- <groupId>idv.hsiehpinghan</groupId> -->
-		<!-- <artifactId>data-type-utility</artifactId> -->
-		<!-- <version>${data-type-utility.version}</version> -->
-		<!-- </dependency> -->
 
 		<!-- object-utility -->
 		<dependency>

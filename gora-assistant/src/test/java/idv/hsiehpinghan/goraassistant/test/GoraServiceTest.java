@@ -45,9 +45,15 @@ public class GoraServiceTest {
 		Gora returnGora = service.get(KEY);
 		assertReturnGora(returnGora);
 	}
-	
+
+	@Test(dependsOnMethods = { "put" })
+	public void exists() {
+		Assert.assertTrue(service.exist(KEY));
+	}
+
 	/**
 	 * test query(Long key)
+	 * 
 	 * @throws Exception
 	 */
 	@Test(dependsOnMethods = { "get" })
@@ -61,6 +67,7 @@ public class GoraServiceTest {
 
 	/**
 	 * test query(Long key, String... fields)
+	 * 
 	 * @throws Exception
 	 */
 	@Test(dependsOnMethods = { "query" })
@@ -72,18 +79,19 @@ public class GoraServiceTest {
 		testStringField(testStr);
 		testNoStringField(testStr);
 	}
-	
+
 	/**
 	 * test query(Long key, long limit)
+	 * 
 	 * @throws Exception
 	 */
 	@Test(dependsOnMethods = { "query" })
 	public void queryWithLimit() throws Exception {
 		final long SIZE = 3;
 		Long lastValue = null;
-		for(long i = 0; i < SIZE; ++i) {
+		for (long i = 0; i < SIZE; ++i) {
 			lastValue = Long.MAX_VALUE - i;
-			service.put(lastValue , generateGora());			
+			service.put(lastValue, generateGora());
 		}
 		Result<Long, Gora> result = service.query(lastValue, Long.MAX_VALUE);
 		int amt = 0;
@@ -94,9 +102,9 @@ public class GoraServiceTest {
 			service.delete(result.getKey());
 		}
 		Assert.assertEquals(amt, SIZE);
-		
+
 	}
-	
+
 	@Test(dependsOnMethods = { "query" })
 	public void delete() {
 		Assert.assertTrue(service.delete(KEY));
@@ -139,7 +147,7 @@ public class GoraServiceTest {
 	}
 
 	private void testStringField(CharSequence testStr) throws Exception {
-		String[] fields = new String[] {Gora.Field._STRING.getName()};
+		String[] fields = new String[] { Gora.Field._STRING.getName() };
 		Result<Long, Gora> result = service.query(KEY, fields);
 		int amt = 0;
 		while (result.next()) {
@@ -149,9 +157,9 @@ public class GoraServiceTest {
 		}
 		Assert.assertEquals(amt, 1);
 	}
-	
+
 	private void testNoStringField(CharSequence testStr) throws Exception {
-		String[] fields = new String[] {Gora.Field._BOOLEAN.getName()};
+		String[] fields = new String[] { Gora.Field._BOOLEAN.getName() };
 		Result<Long, Gora> result = service.query(KEY, fields);
 		int amt = 0;
 		while (result.next()) {
@@ -161,5 +169,5 @@ public class GoraServiceTest {
 		}
 		Assert.assertEquals(amt, 1);
 	}
-	
+
 }

@@ -143,7 +143,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_boolean' field. A field is dirty if it represents a change that has not yet been written to the database.
    * boolean doc   * @param value the value to set.
    */
-  public boolean isBoolean$1Dirty() {
+  public boolean isBoolean$1Dirty(java.lang.Boolean value) {
     return isDirty(0);
   }
 
@@ -167,7 +167,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_int' field. A field is dirty if it represents a change that has not yet been written to the database.
    * int doc   * @param value the value to set.
    */
-  public boolean isInt$1Dirty() {
+  public boolean isInt$1Dirty(java.lang.Integer value) {
     return isDirty(1);
   }
 
@@ -191,7 +191,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_long' field. A field is dirty if it represents a change that has not yet been written to the database.
    * long doc   * @param value the value to set.
    */
-  public boolean isLong$1Dirty() {
+  public boolean isLong$1Dirty(java.lang.Long value) {
     return isDirty(2);
   }
 
@@ -215,7 +215,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_float' field. A field is dirty if it represents a change that has not yet been written to the database.
    * float doc   * @param value the value to set.
    */
-  public boolean isFloat$1Dirty() {
+  public boolean isFloat$1Dirty(java.lang.Float value) {
     return isDirty(3);
   }
 
@@ -239,7 +239,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_double' field. A field is dirty if it represents a change that has not yet been written to the database.
    * double doc   * @param value the value to set.
    */
-  public boolean isDouble$1Dirty() {
+  public boolean isDouble$1Dirty(java.lang.Double value) {
     return isDirty(4);
   }
 
@@ -263,7 +263,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_string' field. A field is dirty if it represents a change that has not yet been written to the database.
    * string doc   * @param value the value to set.
    */
-  public boolean isString$1Dirty() {
+  public boolean isString$1Dirty(java.lang.CharSequence value) {
     return isDirty(5);
   }
 
@@ -287,7 +287,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_record' field. A field is dirty if it represents a change that has not yet been written to the database.
    * record doc   * @param value the value to set.
    */
-  public boolean isRecord$1Dirty() {
+  public boolean isRecord$1Dirty(idv.hsiehpinghan.goraassistant.entity.NestedRecord value) {
     return isDirty(6);
   }
 
@@ -311,7 +311,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * Checks the dirty status of the '_enum' field. A field is dirty if it represents a change that has not yet been written to the database.
    * enum doc   * @param value the value to set.
    */
-  public boolean isEnum$1Dirty() {
+  public boolean isEnum$1Dirty(idv.hsiehpinghan.goraassistant.enumeration.Enumeration value) {
     return isDirty(7);
   }
 
@@ -662,7 +662,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_boolean' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * boolean doc	   * @param value the value to set.
 	   */
-	  public boolean isBoolean$1Dirty() {
+	  public boolean isBoolean$1Dirty(java.lang.Boolean value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -685,7 +685,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_int' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * int doc	   * @param value the value to set.
 	   */
-	  public boolean isInt$1Dirty() {
+	  public boolean isInt$1Dirty(java.lang.Integer value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -708,7 +708,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_long' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * long doc	   * @param value the value to set.
 	   */
-	  public boolean isLong$1Dirty() {
+	  public boolean isLong$1Dirty(java.lang.Long value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -731,7 +731,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_float' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * float doc	   * @param value the value to set.
 	   */
-	  public boolean isFloat$1Dirty() {
+	  public boolean isFloat$1Dirty(java.lang.Float value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -754,7 +754,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_double' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * double doc	   * @param value the value to set.
 	   */
-	  public boolean isDouble$1Dirty() {
+	  public boolean isDouble$1Dirty(java.lang.Double value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -777,7 +777,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_string' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * string doc	   * @param value the value to set.
 	   */
-	  public boolean isString$1Dirty() {
+	  public boolean isString$1Dirty(java.lang.CharSequence value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -800,7 +800,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_record' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * record doc	   * @param value the value to set.
 	   */
-	  public boolean isRecord$1Dirty() {
+	  public boolean isRecord$1Dirty(idv.hsiehpinghan.goraassistant.entity.NestedRecord value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	
@@ -823,7 +823,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * Checks the dirty status of the '_enum' field. A field is dirty if it represents a change that has not yet been written to the database.
 	   * enum doc	   * @param value the value to set.
 	   */
-	  public boolean isEnum$1Dirty() {
+	  public boolean isEnum$1Dirty(idv.hsiehpinghan.goraassistant.enumeration.Enumeration value) {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	

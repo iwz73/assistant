@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoraService {
 	@Autowired
-	private GoraRepository repository;
+	private GoraRepository<Long, Gora> repository;
 
 	public void put(Long key, Gora entity) {
 		repository.put(key, entity);
@@ -31,8 +31,12 @@ public class GoraService {
 	public Result<Long, Gora> query(Long key, String... fields) {
 		return repository.query(key, fields);
 	}
-	
+
 	public boolean delete(Long key) {
 		return repository.delete(key);
+	}
+
+	public boolean exist(Long key) {
+		return repository.exist(key);
 	}
 }

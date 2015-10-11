@@ -8,8 +8,8 @@
 	</test>
 	<test name="test">
 		<classes>
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.goraassistant.utility.GoraCompilerUtilityTest" /> -->
+			<class
+				name="idv.hsiehpinghan.goraassistant.utility.GoraCompilerUtilityTest" />
 			<class name="idv.hsiehpinghan.goraassistant.test.GoraServiceTest" />
 		</classes>
 	</test>

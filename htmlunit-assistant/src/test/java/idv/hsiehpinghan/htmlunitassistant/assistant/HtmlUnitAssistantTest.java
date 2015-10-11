@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.springframework.context.ApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,7 +24,7 @@ public class HtmlUnitAssistantTest {
 		assistant = applicationContext.getBean(HtmlUnitAssistant.class);
 	}
 
-//	@Test
+	// @Test
 	public void post() throws Exception {
 		List<NameValuePair> requestParameters = new ArrayList<NameValuePair>();
 		requestParameters.add(new NameValuePair("encodeURIComponent", "1"));
@@ -38,7 +37,7 @@ public class HtmlUnitAssistantTest {
 				requestParameters);
 		Assert.assertNotNull(page);
 	}
-	
+
 	@Test
 	public void getWebRequest() throws Exception {
 		assistant.getWebRequest();

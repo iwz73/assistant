@@ -209,6 +209,13 @@ public abstract class BrowserBase {
 	public abstract void setBrowserProperty(BrowserProperty property);
 
 	/**
+	 * Get webDriver for test.
+	 * 
+	 * @return
+	 */
+	public abstract WebDriver getWebDriver();
+	
+	/**
 	 * Generate capabilities.
 	 * 
 	 * @param properties
@@ -222,12 +229,5 @@ public abstract class BrowserBase {
 				Boolean.valueOf(supportsJavascript));
 		return capabilities;
 	}
-
-	/**
-	 * Get webDriver for test.
-	 * 
-	 * @return
-	 */
-	protected abstract WebDriver getWebDriver();
 
 }

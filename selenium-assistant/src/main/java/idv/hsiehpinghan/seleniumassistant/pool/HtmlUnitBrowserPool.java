@@ -2,6 +2,7 @@ package idv.hsiehpinghan.seleniumassistant.pool;
 
 import idv.hsiehpinghan.seleniumassistant.browser.HtmlUnitBrowser;
 import idv.hsiehpinghan.seleniumassistant.factory.HtmlUnitBrowserFactory;
+import idv.hsiehpinghan.seleniumassistant.property.BrowserProperty;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HtmlUnitBrowserPool implements InitializingBean {
+	private BrowserProperty browserProperty = new BrowserProperty(true, null);
 	private GenericObjectPool<HtmlUnitBrowser> pool;
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -23,7 +25,9 @@ public class HtmlUnitBrowserPool implements InitializingBean {
 	}
 
 	public HtmlUnitBrowser borrowObject() throws Exception {
-		return pool.borrowObject();
+		HtmlUnitBrowser browser = pool.borrowObject();
+		browser.setBrowserProperty(browserProperty);
+		return browser;
 	}
 
 	public void returnObject(HtmlUnitBrowser browser) {

@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.goraassistant.service;
 
+import java.io.IOException;
+
 import idv.hsiehpinghan.goraassistant.entity.Gora;
 import idv.hsiehpinghan.goraassistant.repository.GoraRepository;
 
@@ -36,7 +38,7 @@ public class GoraService {
 		return repository.delete(key);
 	}
 
-	public boolean exist(Long key) {
+	public boolean exist(Long key) throws IOException, Exception {
 		return repository.exist(key);
 	}
 }

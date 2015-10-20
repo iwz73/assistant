@@ -6,6 +6,7 @@ import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.goraassistant.service.GoraService;
 import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import org.apache.avro.util.Utf8;
@@ -47,7 +48,8 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "put" })
-	public void exists() {
+	public void exists() throws IOException, Exception {
+		Assert.assertFalse(service.exist(Long.MAX_VALUE));
 		Assert.assertTrue(service.exist(KEY));
 	}
 

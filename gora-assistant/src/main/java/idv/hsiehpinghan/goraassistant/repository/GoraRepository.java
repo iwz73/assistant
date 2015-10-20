@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.goraassistant.repository;
 
+import java.io.IOException;
+
 import org.apache.gora.persistency.Persistent;
 import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
@@ -48,9 +50,9 @@ public class GoraRepository<K, T extends Persistent> {
 		return result;
 	}
 
-	public boolean exist(K key) {
+	public boolean exist(K key) throws IOException, Exception {
 		String[] fields = new String[] {};
 		Result<K, T> result = query(key, fields);
-		return result != null;
+		return result.next();
 	}
 }

@@ -64,4 +64,16 @@ public class JsoupTest {
 		String actual = doc.toString().replaceAll("\\s+", "");
 		Assert.assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void post() throws Exception {
+		Document doc = Jsoup.connect("http://mops.twse.com.tw/mops/web/ajax_t51sb01")
+				.data("code", "01")
+				.data("step", "1")
+				.data("firstin", "1")
+				.data("encodeURIComponent", "1")
+				.data("TYPEK", "sii")
+				.userAgent("Mozilla").post();
+		Assert.assertEquals("公開資訊觀測站", doc.title());
+	}
 }

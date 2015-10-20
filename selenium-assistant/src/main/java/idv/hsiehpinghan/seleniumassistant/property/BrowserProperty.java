@@ -6,8 +6,8 @@ public class BrowserProperty {
 
 	public BrowserProperty(boolean javascriptEnabled, String httpProxy) {
 		super();
-		this.javascriptEnabled = javascriptEnabled;
-		this.httpProxy = httpProxy;
+		setJavascriptEnabled(javascriptEnabled);
+		setHttpProxy(httpProxy);
 	}
 
 	public boolean isJavascriptEnabled() {
@@ -23,7 +23,11 @@ public class BrowserProperty {
 	}
 
 	public void setHttpProxy(String httpProxy) {
-		this.httpProxy = httpProxy;
+		if(httpProxy == null) {
+			this.httpProxy = ":";
+		} else {
+			this.httpProxy = httpProxy;	
+		}
 	}
 
 }

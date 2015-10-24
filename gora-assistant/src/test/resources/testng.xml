@@ -11,6 +11,7 @@
 			<class
 				name="idv.hsiehpinghan.goraassistant.utility.GoraCompilerUtilityTest" />
 			<class name="idv.hsiehpinghan.goraassistant.test.GoraServiceTest" />
+			<class name="idv.hsiehpinghan.goraassistant.test.WebPageServiceTest" />
 		</classes>
 	</test>
 </suite>

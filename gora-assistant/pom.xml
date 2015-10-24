@@ -34,6 +34,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<gora.version>0.5</gora.version>
+		<nutch.version>2.3</nutch.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -80,6 +81,14 @@
 			<version>${gora.version}</version>
 		</dependency>
 
+		<!-- nutch -->
+		<dependency>
+			<groupId>org.apache.nutch</groupId>
+			<artifactId>nutch</artifactId>
+			<version>${nutch.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<!-- object-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>

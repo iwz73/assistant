@@ -1,0 +1,217 @@
+mongod -dbpath /tmp/ --journal
+mongo
+show dbs
+db
+
+db.collection.insert({
+   '_id':'document_id',
+   'field_0':'field',
+   'field_1':30
+},{
+   writeConcern:{
+       'w':1,
+       'j':1
+   }
+})
+
+db.collection.insert([
+	{'_id':'document_id_0', 'field_0':'field_0_0', 'field_1':0},
+	{'_id':'document_id_1', 'field_0':'field_1_0', 'field_1':1},
+	{'_id':'document_id_2', 'field_0':'field_2_0', 'field_1':2}
+])
+
+db.collection.save({
+   '_id':'document_id_3',
+   'field_0':'save'
+})
+
+db.collection.save({
+   '_id':'document_id_3',
+   'field_0':'save again'
+})
+
+db.collection.remove({
+   '_id':'document_id_3'
+})
+
+db.collection.find({
+   '_id':'document_id_1'
+})
+
+db.collection.find({
+   '_id':'document_id_1'
+}, {
+   '_id':0
+})
+
+db.collection.find().count()
+db.collection.find().pretty()
+db.collection.find().skip(2)
+db.collection.find().limit(2)
+
+# comparison
+db.collection.find({
+   'field_1': { $gt:1 }
+})
+
+db.collection.find({
+   'field_1': { $gte:1 }
+})
+
+db.collection.find({
+   'field_1': { $lt:1 }
+})
+
+db.collection.find({
+   'field_1': { $lte:1 }
+})
+
+db.collection.find({
+   'field_0': { $in:['field_1_0'] }
+})
+
+db.collection.find({
+   'field_0': { $nin:['field_1_0'] }
+})
+
+db.collection.find({
+   'field_0': { $ne:'field_1_0' }
+})
+
+# logical
+db.collection.find({
+   $and: [
+      {'field_0': 'field_1_0' },
+      {'field_1': 1 }
+   ]
+})
+
+db.collection.find({
+   $or: [
+      {'field_0': 'field_1_0' },
+      {'field_1': 0 }
+   ]
+})
+
+db.collection.find({
+   $nor: [
+      {'field_0': 'field_1_0' },
+      {'field_1': 0 }
+   ]
+})
+
+db.collection.find({
+   'field_1' : {
+      $mod: [10, 1]
+   }
+})
+
+db.collection.find({
+   'field_0': { $not: /^field/i }
+})
+
+# evaluation
+db.collection.find({
+   $where: function() {
+      if(this['field_0'] == 'field_1_0' || this['field_1'] == 2) {
+         return true;
+      }
+      return false;
+   }
+})
+
+db.collection.update({
+   '_id':'document_id_1',
+}, {
+   $set: {
+      'field_2': ['field_1_2_a', 'field_1_2_b', 'field_1_2_c']
+   }
+})
+db.collection.find({
+   'field_2': { $exists: 1 }
+})
+
+db.collection.find({
+   'field_2': {
+      $all: ['field_1_2_b', 'field_1_2_c']
+   }
+})
+
+db.collection.find({
+   'field_2': {
+      $size: 3
+   }
+})
+
+db.collection.update({
+   '_id':'document_id_1',
+}, {
+   $set: {
+      'field_3': [
+         {'sub_field_0': 'a', 'sub_field_1': 0},
+         {'sub_field_0': 'b', 'sub_field_1': 1},
+         {'sub_field_0': 'c', 'sub_field_1': 2}
+      ]
+   }
+})
+db.collection.find({
+   'field_3': {
+      $elemMatch: {
+         'sub_field_1': { $gte:1 }
+      }
+   }
+})
+
+# option
+db.collection.find({}, {
+   'field_2': {
+      $slice: [1, 1]
+   }
+})
+
+# type
+// Double	1	 
+// String	2	 
+// Object	3	 
+// Array	4	 
+// Binary data	5	 
+// Undefined	6	Deprecated.
+// Object id	7	 
+// Boolean	8	 
+// Date	9	 
+// Null	10	 
+// Regular Expression	11	 
+// JavaScript	13	 
+// Symbol	14	 
+// JavaScript (with scope)	15	 
+// 32-bit integer	16	 
+// Timestamp	17	 
+// 64-bit integer	18	 
+// Min key	255	Query with -1.
+// Max key	127
+db.collection.find({
+   'field_0': {
+      $type: 2
+   }
+})
+
+# backup
+use admin
+db.runCommand({
+   fsync: 1,
+   lock: 1
+})
+db.currentOp()
+<<!!!new console>> mongodump -d test -o /tmp/backup/
+db.fsyncUnlock()
+
+# restore
+<<!!!new console>> mongorestore -d test --drop /tmp/backup/test/
+
+# exit
+db.collection.drop()
+exit
+
+# shutdown mongodb
+use admin
+db.shutdownServer()

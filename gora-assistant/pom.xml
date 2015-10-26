@@ -75,12 +75,17 @@
 			<artifactId>gora-compiler-cli</artifactId>
 			<version>${gora.version}</version>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.gora</groupId> -->
+<!-- 			<artifactId>gora-hbase</artifactId> -->
+<!-- 			<version>${gora.version}</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.apache.gora</groupId>
-			<artifactId>gora-hbase</artifactId>
+			<artifactId>gora-mongodb</artifactId>
 			<version>${gora.version}</version>
 		</dependency>
-
+		
 		<!-- nutch -->
 		<dependency>
 			<groupId>org.apache.nutch</groupId>

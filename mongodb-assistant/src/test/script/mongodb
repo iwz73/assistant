@@ -1,4 +1,4 @@
-mongod -dbpath /tmp/ --journal
+mongod --dbpath /tmp/ --journal
 mongo
 show dbs
 db

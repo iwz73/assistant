@@ -18,7 +18,6 @@ public class SpringConfigurationTest {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Bean
-	@Profile("hbase")
 	public DataStore<Long, Gora> goraDataStore(
 			org.apache.hadoop.conf.Configuration configuration)
 			throws GoraException {

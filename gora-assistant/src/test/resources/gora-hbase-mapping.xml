@@ -11,13 +11,9 @@
 		<field name="_long" family="primary" qualifier="_long" />
 		<field name="_float" family="primary" qualifier="_float" />
 		<field name="_double" family="primary" qualifier="_double" />
-		<field name="_bytes" family="primary" qualifier="_bytes" />
 		<field name="_string" family="object" qualifier="_string" />
 		<field name="_record" family="object" qualifier="_record" />
 		<field name="_enum" family="object" qualifier="_enum" />
-		<field name="_array" family="object" qualifier="_array" />
-		<field name="_map" family="object" qualifier="_map" />
-		<field name="_unions" family="object" qualifier="_unions" />
 	</class>
 
 	<!-- webpage -->

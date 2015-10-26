@@ -8,11 +8,9 @@ import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("hbase")
 public class GoraRepository {
 	@Autowired
 	private DataStore<Long, Gora> dataStore;

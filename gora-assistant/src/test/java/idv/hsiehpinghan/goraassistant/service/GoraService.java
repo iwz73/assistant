@@ -7,9 +7,11 @@ import java.io.IOException;
 
 import org.apache.gora.query.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile("hbase")
 public class GoraService {
 	@Autowired
 	private GoraRepository repository;

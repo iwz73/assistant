@@ -3,8 +3,10 @@ package org.jsoup;
 import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
 
 import java.io.File;
+import java.util.Iterator;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -39,6 +41,24 @@ public class JsoupTest {
 		
 		String divInner = doc.select("div.divOutter > div.divInner").get(0).text();
 		Assert.assertEquals("div inner", divInner);
+	}
+	
+	@Test
+	public void table() throws Exception {
+		Element table = doc.getElementById("tableId");
+		Iterator<Element> trIter = table.select("tbody>tr").iterator();
+		int row = 0;
+		while (trIter.hasNext()) {
+			Element tr = trIter.next();
+			Iterator<Element> tdIter = tr.select("td").iterator();
+			int column = 0;
+			while (tdIter.hasNext()) {
+				Assert.assertEquals("tbody/tr/td/" + row + "-" + column, tdIter
+						.next().text());
+				++column;
+			}
+			++row;
+		}	
 	}
 	
 	@Test

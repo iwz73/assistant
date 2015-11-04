@@ -18,8 +18,34 @@ public class LifeCycleService {
 	private SessionFactory sessionFactory;
 
 	public void save(LifeCycleEntity entity) {
+		Statistics stat = sessionFactory.getStatistics();
+		stat.clear();
 		Session session = sessionFactory.getCurrentSession();
 		session.save(entity);
+		Assert.assertEquals(stat.getEntityInsertCount(), 0);
+		Assert.assertEquals(stat.getFlushCount(), 0);
+	}
+
+	public void update(LifeCycleEntity entity) {
+		Statistics stat = sessionFactory.getStatistics();
+		stat.clear();
+		Session session = sessionFactory.getCurrentSession();
+		session.update(entity);
+		Assert.assertEquals(stat.getEntityUpdateCount(), 0);
+		Assert.assertEquals(stat.getFlushCount(), 0);
+	}
+
+	public void updateAndSelect(LifeCycleEntity entity) {
+		Statistics stat = sessionFactory.getStatistics();
+		stat.clear();
+		Session session = sessionFactory.getCurrentSession();
+		session.update(entity);
+		Assert.assertEquals(stat.getEntityUpdateCount(), 0);
+		Assert.assertEquals(stat.getFlushCount(), 0);
+		session.createQuery("from LifeCycleEntity").list();
+		Assert.assertEquals(stat.getEntityUpdateCount(), 1);
+		Assert.assertEquals(stat.getQueryExecutionCount(), 1);
+		Assert.assertEquals(stat.getFlushCount(), 1);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
@@ -34,5 +60,4 @@ public class LifeCycleService {
 		Assert.assertTrue(entity_0 == entity_1);
 		Assert.assertEquals(stat.getEntityLoadCount(), 1);
 	}
-
 }

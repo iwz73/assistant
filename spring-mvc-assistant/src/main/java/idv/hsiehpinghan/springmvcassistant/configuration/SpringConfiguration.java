@@ -20,21 +20,18 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-@EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springmvcassistant" })
-public class SpringConfiguration extends WebMvcConfigurerAdapter {
-
+public class SpringConfiguration extends WebMvcConfigurationSupport {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/index.html").addResourceLocations("/");
@@ -61,6 +58,7 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {
 		converters.add(new TsvHttpMessageConverter());
+		super.addDefaultHttpMessageConverters(converters);
 	}
 
 	@Bean

@@ -53,7 +53,7 @@
 		<input type="submit" value="criteria submit">
 	</form>
 	<br>
-	<form action="json" method="get">
+	<form action="json.json" method="get">
 		<input type="number" name="integerValue" value="1"><br>
 		<input type="number" name="floatValue" value="2.2"><br> 
 		<input type="text" name="stringValue" value="stringValue"><br>

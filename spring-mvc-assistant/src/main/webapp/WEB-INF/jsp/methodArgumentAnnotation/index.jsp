@@ -12,7 +12,7 @@
 	$(function() {
 		$("#requestBody").on("click", function() {
 			$.ajax({
-				url : '<c:url value="/methodArgumentAnnotation/requestBody"></c:url>',
+				url : '<c:url value="/methodArgumentAnnotation/requestBody.json"></c:url>',
 				method : 'POST',
 				contentType : 'application/json; charset=UTF-8',
 				data: JSON.stringify({ 

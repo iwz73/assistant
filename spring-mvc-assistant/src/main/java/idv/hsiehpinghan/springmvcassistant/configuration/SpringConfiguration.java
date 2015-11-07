@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.springmvcassistant.configuration;
 
+import idv.hsiehpinghan.springmvcassistant.converter.TsvHttpMessageConverter;
 import idv.hsiehpinghan.springmvcassistant.view.XlsExcelView;
 import idv.hsiehpinghan.springmvcassistant.viewresolver.MapViewResolver;
 
@@ -13,26 +14,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-@EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springmvcassistant" })
-public class SpringConfiguration extends WebMvcConfigurerAdapter {
-
+public class SpringConfiguration extends WebMvcConfigurationSupport {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/index.html").addResourceLocations("/");
@@ -48,17 +47,6 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
 				.setViewName("/controller/addViewControllers");
 	}
 
-//	@Bean
-//	@Autowired
-//	public ContentNegotiatingViewResolver contentNegotiatingViewResolver() {
-//		ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
-//		List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
-//		viewResolvers.add(xlsViewResolver());
-//		viewResolvers.add(urlBasedViewResolver());
-//		contentNegotiatingViewResolver.setViewResolvers(viewResolvers);
-//		return contentNegotiatingViewResolver;
-//	}
-
 	@Override
 	public void configureContentNegotiation(
 			ContentNegotiationConfigurer configurer) {
@@ -66,18 +54,25 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
 				MediaType.TEXT_HTML);
 	}
 
-    @Bean
-    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-        resolver.setContentNegotiationManager(manager);
-        List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
-        resolvers.add(xlsViewResolver());
-        resolvers.add(urlBasedViewResolver());        
-        resolver.setViewResolvers(resolvers);
-        return resolver;
-    }
- 
-    
+	@Override
+	public void configureMessageConverters(
+			List<HttpMessageConverter<?>> converters) {
+		converters.add(new TsvHttpMessageConverter());
+		super.addDefaultHttpMessageConverters(converters);
+	}
+
+	@Bean
+	public ViewResolver contentNegotiatingViewResolver(
+			ContentNegotiationManager manager) {
+		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+		resolver.setContentNegotiationManager(manager);
+		List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
+		resolvers.add(xlsViewResolver());
+		resolvers.add(urlBasedViewResolver());
+		resolver.setViewResolvers(resolvers);
+		return resolver;
+	}
+
 	@Bean
 	public MultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();

@@ -1,9 +1,10 @@
 package idv.hsiehpinghan.hibernateassistant.service;
 
 import idv.hsiehpinghan.hibernateassistant.entity.LifeCycleEntity;
+import idv.hsiehpinghan.hibernateassistant.repository.LifeCycleRepository;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import java.util.List;
+
 import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,50 +15,49 @@ import org.testng.Assert;
 @Service
 @Transactional
 public class LifeCycleService {
+	private Statistics statistics;
 	@Autowired
-	private SessionFactory sessionFactory;
+	private LifeCycleRepository repository;
 
-	public void save(LifeCycleEntity entity) {
-		Statistics stat = sessionFactory.getStatistics();
-		stat.clear();
-		Session session = sessionFactory.getCurrentSession();
-		session.save(entity);
-		Assert.assertEquals(stat.getEntityInsertCount(), 0);
-		Assert.assertEquals(stat.getFlushCount(), 0);
+	public Long save(LifeCycleEntity entity) {
+		clearStatistics();
+		Long id = repository.save(entity);
+		Assert.assertEquals(statistics.getEntityInsertCount(), 0);
+		Assert.assertEquals(statistics.getFlushCount(), 0);
+		return id;
 	}
 
 	public void update(LifeCycleEntity entity) {
-		Statistics stat = sessionFactory.getStatistics();
-		stat.clear();
-		Session session = sessionFactory.getCurrentSession();
-		session.update(entity);
-		Assert.assertEquals(stat.getEntityUpdateCount(), 0);
-		Assert.assertEquals(stat.getFlushCount(), 0);
+		clearStatistics();
+		repository.update(entity);
+		Assert.assertEquals(statistics.getEntityUpdateCount(), 0);
+		Assert.assertEquals(statistics.getFlushCount(), 0);
 	}
 
-	public void updateAndSelect(LifeCycleEntity entity) {
-		Statistics stat = sessionFactory.getStatistics();
-		stat.clear();
-		Session session = sessionFactory.getCurrentSession();
-		session.update(entity);
-		Assert.assertEquals(stat.getEntityUpdateCount(), 0);
-		Assert.assertEquals(stat.getFlushCount(), 0);
-		session.createQuery("from LifeCycleEntity").list();
-		Assert.assertEquals(stat.getEntityUpdateCount(), 1);
-		Assert.assertEquals(stat.getQueryExecutionCount(), 1);
-		Assert.assertEquals(stat.getFlushCount(), 1);
+	public List<LifeCycleEntity> updateAndSelect(LifeCycleEntity entity) {
+		clearStatistics();
+		repository.update(entity);
+		Assert.assertEquals(statistics.getEntityUpdateCount(), 0);
+		Assert.assertEquals(statistics.getFlushCount(), 0);
+		List<LifeCycleEntity> entities = repository.findAll();
+		Assert.assertEquals(statistics.getEntityUpdateCount(), 1);
+		Assert.assertEquals(statistics.getQueryExecutionCount(), 1);
+		Assert.assertEquals(statistics.getFlushCount(), 1);
+		return entities;
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public void getTwice(long id) {
-		Statistics stat = sessionFactory.getStatistics();
-		stat.clear();
-		Session session = sessionFactory.getCurrentSession();
-		LifeCycleEntity entity_0 = (LifeCycleEntity) session.get(
-				LifeCycleEntity.class, id);
-		LifeCycleEntity entity_1 = (LifeCycleEntity) session.get(
-				LifeCycleEntity.class, id);
+	public LifeCycleEntity getTwice(long id) {
+		clearStatistics();
+		LifeCycleEntity entity_0 = repository.get(id);
+		LifeCycleEntity entity_1 = repository.get(id);
 		Assert.assertTrue(entity_0 == entity_1);
-		Assert.assertEquals(stat.getEntityLoadCount(), 1);
+		Assert.assertEquals(statistics.getEntityLoadCount(), 1);
+		return entity_0;
+	}
+
+	private void clearStatistics() {
+		statistics = repository.getSessionFactory().getStatistics();
+		statistics.clear();
 	}
 }

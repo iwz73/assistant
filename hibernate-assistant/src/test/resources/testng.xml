@@ -11,7 +11,8 @@
 <!-- 			<class name="idv.hsiehpinghan.hibernateassistant.assistant.BasicTest" /> -->
 <!-- 			<class -->
 <!-- 				name="idv.hsiehpinghan.hibernateassistant.assistant.AssociationTest" /> -->
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.LifeCycleTest" />
+<!-- 			<class name="idv.hsiehpinghan.hibernateassistant.assistant.LifeCycleTest" /> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.SelectBeforeUpdateTest" />
 		</classes>
 	</test>
 </suite>

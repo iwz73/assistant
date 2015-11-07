@@ -15,7 +15,7 @@ public class LifeCycleTest {
 	private LifeCycleEntity entity;
 
 	@BeforeClass
-	public void beforeClass() throws Exception {
+	public void beforeClass() {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		service = applicationContext.getBean(LifeCycleService.class);
@@ -39,11 +39,11 @@ public class LifeCycleTest {
 	}
 
 	@Test(dependsOnMethods = { "save" })
-	public void updateAndSelect() throws Exception {
+	public void updateAndSelect() {
 		entity.setString("updateAndSelect");
 		service.updateAndSelect(entity);
 	}
-	
+
 	private LifeCycleEntity generateLifeCycleEntity() {
 		LifeCycleEntity entity = new LifeCycleEntity();
 		entity.setId(System.nanoTime());

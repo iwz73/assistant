@@ -5,6 +5,8 @@ import idv.hsiehpinghan.hibernateassistant.service.LifeCycleService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DuplicateKeyException;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -42,6 +44,20 @@ public class LifeCycleTest {
 	public void updateAndSelect() {
 		entity.setString("updateAndSelect");
 		service.updateAndSelect(entity);
+	}
+
+	@Test(dependsOnMethods = { "updateAndSelect" }, expectedExceptions = { DuplicateKeyException.class })
+	public void nonUniqueObjectUpdate() {
+		entity.setString("nonUniqueObjectUpdate");
+		service.nonUniqueObjectUpdate(entity);
+	}
+
+	@Test(dependsOnMethods = { "nonUniqueObjectUpdate" })
+	public void merge() {
+		entity.setString("merge");
+		LifeCycleEntity mergeEntity = service.merge(entity);
+		Assert.assertTrue(entity.getString().equals(mergeEntity.getString()));
+		Assert.assertFalse(entity == mergeEntity);
 	}
 
 	private LifeCycleEntity generateLifeCycleEntity() {

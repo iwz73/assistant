@@ -24,6 +24,11 @@ public class LifeCycleRepository {
 		session.update(entity);
 	}
 
+	public LifeCycleEntity merge(LifeCycleEntity entity) {
+		Session session = sessionFactory.getCurrentSession();
+		return (LifeCycleEntity) session.merge(entity);
+	}
+
 	public LifeCycleEntity get(long id) {
 		Session session = sessionFactory.getCurrentSession();
 		return (LifeCycleEntity) session.get(LifeCycleEntity.class, id);

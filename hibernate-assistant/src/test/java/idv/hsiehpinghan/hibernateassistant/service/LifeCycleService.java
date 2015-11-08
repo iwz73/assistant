@@ -46,6 +46,22 @@ public class LifeCycleService {
 		return entities;
 	}
 
+	public void nonUniqueObjectUpdate(LifeCycleEntity entity) {
+		repository.get(entity.getId());
+		repository.update(entity);
+	}
+
+	public LifeCycleEntity merge(LifeCycleEntity entity) {
+		LifeCycleEntity returnEntity = repository.get(entity.getId());
+		Assert.assertFalse(entity.getString().equals(returnEntity.getString()));
+		return repository.merge(entity);
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public LifeCycleEntity get(long id) {
+		return repository.get(id);
+	}
+
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public LifeCycleEntity getTwice(long id) {
 		clearStatistics();

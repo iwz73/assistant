@@ -23,7 +23,9 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.ClearTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.ReadOnlyTest" />
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.ReadOnlyTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.FlushModeTest" />
 		</classes>
 	</test>
 </suite>

@@ -13,11 +13,17 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.hibernateassistant.assistant.AssociationTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.LifeCycleTest" />
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.LifeCycleTest" 
+				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.SelectBeforeUpdateTest" 
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.LockTest" 
 				/> -->
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.EvictTest" 
+				/> -->
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.ClearTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.ReadOnlyTest" />
 		</classes>
 	</test>
 </suite>

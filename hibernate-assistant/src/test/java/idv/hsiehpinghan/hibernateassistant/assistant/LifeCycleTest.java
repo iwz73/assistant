@@ -4,6 +4,7 @@ import idv.hsiehpinghan.hibernateassistant.entity.LifeCycleEntity;
 import idv.hsiehpinghan.hibernateassistant.service.LifeCycleService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
 
+import org.hibernate.LazyInitializationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.testng.Assert;
@@ -58,6 +59,13 @@ public class LifeCycleTest {
 		LifeCycleEntity mergeEntity = service.merge(entity);
 		Assert.assertTrue(entity.getString().equals(mergeEntity.getString()));
 		Assert.assertFalse(entity == mergeEntity);
+	}
+
+	@Test(dependsOnMethods = { "merge" }, expectedExceptions = { LazyInitializationException.class })
+	public void load() {
+		LifeCycleEntity loadEntity = service.load(entity.getId());
+		Assert.assertNotNull(loadEntity);
+		loadEntity.getString();
 	}
 
 	private LifeCycleEntity generateLifeCycleEntity() {

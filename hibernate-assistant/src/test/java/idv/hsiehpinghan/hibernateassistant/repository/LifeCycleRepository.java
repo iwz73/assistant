@@ -34,6 +34,11 @@ public class LifeCycleRepository {
 		return (LifeCycleEntity) session.get(LifeCycleEntity.class, id);
 	}
 
+	public LifeCycleEntity load(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		return (LifeCycleEntity) session.load(LifeCycleEntity.class, id);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<LifeCycleEntity> findAll() {
 		Session session = sessionFactory.getCurrentSession();

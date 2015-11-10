@@ -63,6 +63,12 @@ public class LifeCycleService {
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public LifeCycleEntity load(long id) {
+		LifeCycleEntity entity = repository.load(id);
+		return entity;
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public LifeCycleEntity getTwice(long id) {
 		clearStatistics();
 		LifeCycleEntity entity_0 = repository.get(id);
@@ -70,6 +76,10 @@ public class LifeCycleService {
 		Assert.assertTrue(entity_0 == entity_1);
 		Assert.assertEquals(statistics.getEntityLoadCount(), 1);
 		return entity_0;
+	}
+
+	public Statistics getStatistics() {
+		return statistics;
 	}
 
 	private void clearStatistics() {

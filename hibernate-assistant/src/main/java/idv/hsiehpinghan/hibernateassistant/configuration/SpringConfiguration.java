@@ -83,6 +83,8 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.generate_statistics"));
 		prop.put("hibernate.use_sql_comments",
 				environment.getRequiredProperty("hibernate.use_sql_comments"));
+		prop.put("hibernate.use_sql_comments",
+				environment.getRequiredProperty("hibernate.connection.isolation"));
 		return prop;
 	}
 

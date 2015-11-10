@@ -7,16 +7,26 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class LockOneEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	@Version
+	private Long version;
 	@Id
 	private Long id;
 	private String string;
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<LockManyEntity> many;
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 
 	public Long getId() {
 		return id;

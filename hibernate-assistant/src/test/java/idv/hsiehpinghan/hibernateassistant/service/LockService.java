@@ -35,6 +35,12 @@ public class LockService {
 		Assert.assertEquals(entity.getMany().size(), 3);
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public void lockModeRead(LockOneEntity entity) {
+		clearStatistics();
+		repository.lock(entity, LockOptions.READ);
+	}
+
 	public Statistics getStatistics() {
 		return statistics;
 	}

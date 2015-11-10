@@ -17,15 +17,15 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.SelectBeforeUpdateTest" 
 				/> -->
-			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.LockTest" 
-				/> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.LockTest" />
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.EvictTest" 
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.ClearTest" 
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.ReadOnlyTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.FlushModeTest" />
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.FlushModeTest" 
+				/> -->
 		</classes>
 	</test>
 </suite>

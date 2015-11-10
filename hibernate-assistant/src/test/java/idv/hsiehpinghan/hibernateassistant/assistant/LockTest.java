@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -37,6 +38,13 @@ public class LockTest {
 		returnEntity.setString("lockModeNone");
 		service.lockModeNone(returnEntity);
 		Assert.assertEquals(service.getStatistics().getEntityUpdateCount(), 0);
+	}
+
+	@Test(dependsOnMethods = { "lockModeNone" }, expectedExceptions = { HibernateOptimisticLockingFailureException.class })
+	public void lockModeRead() throws Exception {
+		LockOneEntity returnEntity = service.findOne(entity.getId());
+		returnEntity.setVersion(returnEntity.getVersion() - 1);
+		service.lockModeRead(returnEntity);
 	}
 
 	private LockOneEntity generateLockOneEntity() {

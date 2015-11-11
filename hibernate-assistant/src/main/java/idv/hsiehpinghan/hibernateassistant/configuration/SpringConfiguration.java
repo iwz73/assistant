@@ -54,7 +54,6 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	@Autowired
 	public HibernateTransactionManager transactionManager(
 			SessionFactory sessionFactory) {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
@@ -83,8 +82,12 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.generate_statistics"));
 		prop.put("hibernate.use_sql_comments",
 				environment.getRequiredProperty("hibernate.use_sql_comments"));
-		prop.put("hibernate.use_sql_comments",
-				environment.getRequiredProperty("hibernate.connection.isolation"));
+		prop.put("hibernate.use_sql_comments", environment
+				.getRequiredProperty("hibernate.connection.isolation"));
+		prop.put("hibernate.jdbc.fetch_size",
+				environment.getRequiredProperty("hibernate.jdbc.fetch_size"));
+		prop.put("hibernate.jdbc.batch_size",
+				environment.getRequiredProperty("hibernate.jdbc.batch_size"));
 		return prop;
 	}
 

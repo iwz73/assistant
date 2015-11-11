@@ -13,3 +13,5 @@ hibernate.generate_statistics=true
 hibernate.use_sql_comments=true
 # 1:READ UNCOMMITTED;2:READ COMMITTED;4:REPEATABLE READ;8:SERIALIZABLE
 hibernate.connection.isolation=2
+hibernate.jdbc.fetch_size=5
+hibernate.jdbc.batch_size=5

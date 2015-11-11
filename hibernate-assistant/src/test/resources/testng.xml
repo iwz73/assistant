@@ -27,7 +27,9 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.FlushModeTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.hibernateassistant.assistant.CascadeTest" />
+			<!-- <class name="idv.hsiehpinghan.hibernateassistant.assistant.CascadeTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.hibernateassistant.assistant.BatchTest" />
 		</classes>
 	</test>
 </suite>

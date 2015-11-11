@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -70,38 +69,39 @@ public class BasicTypeEntityServiceTest {
 	private Integer id;
 	private Integer newId;
 	private BasicTypeService service;
+	private BasicTypeEntity entity;
 
 	@BeforeClass
 	public void beforeClass() {
 		ApplicationContext applicationContext = TestngSuitSetting
 				.getApplicationContext();
 		service = applicationContext.getBean(BasicTypeService.class);
+		entity = generateBasicTypeEntity();
+		service.save(entity);
 	}
 
 	@Test
-	public void save() {
-		BasicTypeEntity entity = generateBasicTypeEntity();
-		service.save(entity);
+	public void findOne() {
 		id = entity.getId();
 		Assert.assertEquals(service.findOne(id).getString(), string);
 	}
 
-	@Test(dependsOnMethods = { "save" })
-	public void findOne1() {
-		Assert.assertEquals(service.findOne1(id).getString(), string);
-	}
-
-	@Test(dependsOnMethods = { "save" })
+	@Test(dependsOnMethods = { "findOne" })
 	public void countByString() {
 		Assert.assertTrue(service.countByString(string) > 0);
 	}
 
-	@Test(dependsOnMethods = { "save" })
+	@Test
 	public void exists() {
 		Assert.assertTrue(service.exists(string));
 	}
 
-	@Test(dependsOnMethods = { "save" })
+	@Test
+	public void findAll() {
+		Assert.assertTrue(service.findAll().size() > 0);
+	}
+
+	@Test(dependsOnMethods = { "findAll" })
 	public void findAllDescentById() {
 		BasicTypeEntity newEntity = generateBasicTypeEntity();
 		service.save(newEntity);
@@ -120,25 +120,9 @@ public class BasicTypeEntityServiceTest {
 		Assert.assertNull(service.findOne(newId));
 	}
 
-	@Test
-	public void findAllWithPage() {
-		int totalSize = 10;
-		int sliceSize = 2;
-		for (int i = 0; i < totalSize; ++i) {
-			service.save(generateBasicTypeEntity());
-		}
-		int page = 0;
-		Page<BasicTypeEntity> entityPage = service
-				.findAllWithPage(string, page);
-		Assert.assertEquals(entityPage.getSize(), sliceSize);
-		Assert.assertTrue(entityPage.getTotalPages() >= (totalSize / sliceSize));
-	}
-
 	@AfterClass
 	public void afterClass() {
-		for (BasicTypeEntity entity : service.findAll()) {
-			service.delete(entity.getId());
-		}
+		service.deleteAll();
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {

@@ -3,47 +3,52 @@ package idv.hsiehpinghan.querydsljpaassistant.service;
 import idv.hsiehpinghan.querydsljpaassistant.entity.ManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.querydsljpaassistant.entity.QManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.querydsljpaassistant.entity.QManyToManyBidirectionToEntity;
-import idv.hsiehpinghan.querydsljpaassistant.repository.ManyToManyBidirectionRepository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.impl.JPAQueryFactory;
-import com.mysema.query.types.Expression;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 @Transactional
 public class ManyToManyBidirectionService {
+	private QManyToManyBidirectionFromEntity qFromEntity = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
+	private QManyToManyBidirectionToEntity qToEntity = QManyToManyBidirectionToEntity.manyToManyBidirectionToEntity;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-	@Autowired
-	private ManyToManyBidirectionRepository repository;
-	@Autowired
-	private JPAQueryFactory jpaQueryFactory;
-
-	public ManyToManyBidirectionFromEntity save(
-			ManyToManyBidirectionFromEntity entity) {
-		return repository.save(entity);
+	public void save(ManyToManyBidirectionFromEntity entity) {
+		entityManager.persist(entity);
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public boolean exists(Integer id) {
-		return repository.exists(id);
+		return getJpaQueryFactory().select(qFromEntity.count())
+				.from(qFromEntity).where(qFromEntity.id.eq(id)).fetchCount() > 0;
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<Tuple> where(Integer id, Expression<?>... columns) {
-		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
-		return jpaQueryFactory.query().from(qFrom).where(qFrom.id.eq(id))
-				.list(columns);
+		return getJpaQueryFactory().select(columns).from(qFromEntity)
+				.where(qFromEntity.id.eq(id)).fetch();
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<Tuple> leftJoin(Integer id, Expression<?>... columns) {
-		QManyToManyBidirectionFromEntity qFrom = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
-		QManyToManyBidirectionToEntity qTo = QManyToManyBidirectionToEntity.manyToManyBidirectionToEntity;
-		return jpaQueryFactory.query().from(qFrom).leftJoin(qFrom.tos, qTo)
-				.where(qFrom.id.eq(id)).list(columns);
+		return getJpaQueryFactory().select(columns).from(qFromEntity)
+				.leftJoin(qFromEntity.tos, qToEntity)
+				.where(qFromEntity.id.eq(id)).fetch();
 	}
 
+	private JPAQueryFactory getJpaQueryFactory() {
+		return new JPAQueryFactory(entityManager);
+	}
 }

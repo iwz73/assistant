@@ -16,11 +16,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.mysema.query.Tuple;
-import com.mysema.query.types.Expression;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 
 public class ManyToManyBidirectionServiceTest {
-	private final Integer FROM_ID = 0;
 	private final String FROM_NAME = "from_name";
 	private final String TO_NAME = "to_name";
 	private Integer id;
@@ -37,8 +36,8 @@ public class ManyToManyBidirectionServiceTest {
 	@Test
 	public void save() {
 		ManyToManyBidirectionFromEntity entity = generateManyToManyBidirectionFromEntity();
-		ManyToManyBidirectionFromEntity returnEntity = service.save(entity);
-		id = returnEntity.getId();
+		service.save(entity);
+		id = entity.getId();
 		Assert.assertTrue(service.exists(id));
 	}
 
@@ -72,7 +71,6 @@ public class ManyToManyBidirectionServiceTest {
 
 	private ManyToManyBidirectionFromEntity generateManyToManyBidirectionFromEntity() {
 		ManyToManyBidirectionFromEntity from = new ManyToManyBidirectionFromEntity();
-		from.setId(FROM_ID);
 		from.setName(FROM_NAME);
 		from.setTos(generateManyToManyBidirectionToEntities(from));
 		return from;

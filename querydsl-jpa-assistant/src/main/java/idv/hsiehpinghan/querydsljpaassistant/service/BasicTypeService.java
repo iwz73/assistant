@@ -2,68 +2,68 @@ package idv.hsiehpinghan.querydsljpaassistant.service;
 
 import idv.hsiehpinghan.querydsljpaassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.querydsljpaassistant.entity.QBasicTypeEntity;
-import idv.hsiehpinghan.querydsljpaassistant.repository.BasicTypeRepository;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QSort;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 @Transactional
 public class BasicTypeService {
-	private final int SIZE = 2;
+	private QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-	@Autowired
-	private BasicTypeRepository repository;
-
-	public BasicTypeEntity save(BasicTypeEntity entity) {
-		return repository.save(entity);
+	public void save(BasicTypeEntity entity) {
+		entityManager.persist(entity);
 	}
 
+	public long delete(Integer id) {
+		return getJpaQueryFactory().delete(qEntity).where(qEntity.id.eq(id))
+				.execute();
+	}
+
+	public long deleteAll() {
+		return getJpaQueryFactory().delete(qEntity).execute();
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public BasicTypeEntity findOne(Integer id) {
-		return repository.findOne(id);
+		return getJpaQueryFactory().selectFrom(qEntity)
+				.where(qEntity.id.eq(id)).fetchOne();
 	}
 
-	public BasicTypeEntity findOne1(Integer id) {
-		QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
-		return repository.findOne(qEntity.id.eq(id));
-
-	}
-
-	public long countByString(String string) {
-		QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
-		return repository.count(qEntity.string.eq(string));
-	}
-
-	public boolean exists(String string) {
-		QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
-		return repository.exists(qEntity.string.eq(string));
-	}
-
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<BasicTypeEntity> findAll() {
-		return repository.findAll();
+		return getJpaQueryFactory().selectFrom(qEntity).fetch();
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public Iterable<BasicTypeEntity> findAllDescentById(String string) {
-		QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
-		QSort sort = new QSort(qEntity.id.desc());
-		return repository.findAll(qEntity.string.eq(string), sort);
+		return getJpaQueryFactory().selectFrom(qEntity)
+				.orderBy(qEntity.id.desc()).fetch();
 	}
 
-	public Page<BasicTypeEntity> findAllWithPage(String string, int page) {
-		QBasicTypeEntity qEntity = QBasicTypeEntity.basicTypeEntity;
-		Pageable pageable = new PageRequest(page, SIZE);
-		return repository.findAll(qEntity.string.eq(string), pageable);
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public long countByString(String string) {
+		return getJpaQueryFactory().select(qEntity.count()).from(qEntity)
+				.where(qEntity.string.eq(string)).fetchCount();
 	}
 
-	public void delete(Integer id) {
-		repository.delete(id);
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public boolean exists(String string) {
+		return getJpaQueryFactory().select(qEntity.count()).from(qEntity)
+				.where(qEntity.string.eq(string)).fetchCount() > 0;
 	}
 
+	private JPAQueryFactory getJpaQueryFactory() {
+		return new JPAQueryFactory(entityManager);
+	}
 }

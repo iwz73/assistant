@@ -3,8 +3,6 @@ package idv.hsiehpinghan.querydsljpaassistant.configuration;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
-import javax.inject.Provider;
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -22,15 +19,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mysema.query.jpa.impl.JPAQueryFactory;
 
 @EnableTransactionManagement
 @Configuration("queryAssistantSpringConfiguration")
 @PropertySource("classpath:/querydsl_jpa_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.querydsljpaassistant" })
-@EnableJpaRepositories(basePackages = { "idv.hsiehpinghan.querydsljpaassistant.repository" })
 public class SpringConfiguration {
-
 	@Autowired
 	private Environment environment;
 
@@ -52,7 +46,6 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	@Autowired
 	public PlatformTransactionManager transactionManager(
 			LocalContainerEntityManagerFactoryBean entityManagerFactory)
 			throws PropertyVetoException {
@@ -78,17 +71,6 @@ public class SpringConfiguration {
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
-	}
-
-	@Bean
-	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
-		Provider<EntityManager> provider = new Provider<EntityManager>() {
-			@Override
-			public EntityManager get() {
-				return entityManager;
-			}
-		};
-		return new JPAQueryFactory(provider);
 	}
 
 	private Properties getHibernateProperties() {

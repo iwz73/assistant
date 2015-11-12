@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -54,14 +52,6 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public HibernateTransactionManager transactionManager(
-			SessionFactory sessionFactory) {
-		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(sessionFactory);
-		return transactionManager;
-	}
-
-	@Bean
 	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
@@ -82,7 +72,7 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.generate_statistics"));
 		prop.put("hibernate.use_sql_comments",
 				environment.getRequiredProperty("hibernate.use_sql_comments"));
-		prop.put("hibernate.use_sql_comments", environment
+		prop.put("hibernate.connection.isolation", environment
 				.getRequiredProperty("hibernate.connection.isolation"));
 		prop.put("hibernate.jdbc.fetch_size",
 				environment.getRequiredProperty("hibernate.jdbc.fetch_size"));

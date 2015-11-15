@@ -9,11 +9,11 @@
 	</test>
 	<test name="test">
 		<classes>
-<!-- 			<class name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.BasicTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.ManyToManyBidirectionTest" /> -->
-            <class
-                name="idv.hsiehpinghan.springdatajpaassistatnt.assistant.ManyToManyBidirectionNoCascadeTest" />
+			<class name="idv.hsiehpinghan.springdatajpaassistatnt.test.BasicTest" />
+			<class
+				name="idv.hsiehpinghan.springdatajpaassistatnt.test.ManyToManyBidirectionTest" />
+			<class
+				name="idv.hsiehpinghan.springdatajpaassistatnt.test.ManyToManyBidirectionNoCascadeTest" />
 		</classes>
 	</test>
 </suite>

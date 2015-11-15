@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springdatajpaassistatnt.assistant;
+package idv.hsiehpinghan.springdatajpaassistatnt.test;
 
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.BasicTypeEntity;
 import idv.hsiehpinghan.springdatajpaassistatnt.enumeration.Enumeration;

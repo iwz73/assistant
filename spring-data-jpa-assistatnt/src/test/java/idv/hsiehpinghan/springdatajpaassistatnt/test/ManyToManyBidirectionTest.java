@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springdatajpaassistatnt.assistant;
+package idv.hsiehpinghan.springdatajpaassistatnt.test;
 
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.ManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.ManyToManyBidirectionToEntity;
@@ -55,6 +55,14 @@ public class ManyToManyBidirectionTest {
 					.getId());
 			Assert.assertTrue(returnTo.getFroms().contains(from));
 		}
+	}
+	
+	@Test
+	public void findOneByQueryDsl() throws InterruptedException {
+		ManyToManyBidirectionFromEntity from = generateManyToManyBidirectionFromEntity();
+		fromService.save(from);
+		ManyToManyBidirectionFromEntity returnFrom = fromService.findOneByQueryDsl(from.getId());
+		Assert.assertEquals(returnFrom.getTos().size(), 3);
 	}
 
 	private ManyToManyBidirectionFromEntity addAndFindManyToManyBidirectionFromEntity(

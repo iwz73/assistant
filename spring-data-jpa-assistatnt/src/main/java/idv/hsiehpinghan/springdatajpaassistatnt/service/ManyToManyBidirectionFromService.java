@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.springdatajpaassistatnt.service;
 
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.ManyToManyBidirectionFromEntity;
+import idv.hsiehpinghan.springdatajpaassistatnt.entity.QManyToManyBidirectionFromEntity;
 import idv.hsiehpinghan.springdatajpaassistatnt.repository.IManyToManyBidirectionFromRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,11 @@ public class ManyToManyBidirectionFromService {
 		return entity;
 	}
 
+	public ManyToManyBidirectionFromEntity findOneByQueryDsl(Integer id) {
+		QManyToManyBidirectionFromEntity qEntity = QManyToManyBidirectionFromEntity.manyToManyBidirectionFromEntity;
+		ManyToManyBidirectionFromEntity entity = repository.findOne(qEntity.id
+				.eq(id));
+		entity.getTos().size();
+		return entity;
+	}
 }

@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springdatajpaassistatnt.assistant;
+package idv.hsiehpinghan.springdatajpaassistatnt.test;
 
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.ManyToManyBidirectionNoCascadeFromEntity;
 import idv.hsiehpinghan.springdatajpaassistatnt.entity.ManyToManyBidirectionNoCascadeToEntity;

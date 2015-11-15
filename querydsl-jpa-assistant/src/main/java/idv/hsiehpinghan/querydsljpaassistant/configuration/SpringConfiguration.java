@@ -89,6 +89,16 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.generate_statistics"));
 		prop.put("hibernate.use_sql_comments",
 				environment.getRequiredProperty("hibernate.use_sql_comments"));
+		prop.put("hibernate.cache.region.factory_class", environment
+				.getRequiredProperty("hibernate.cache.region.factory_class"));
+		prop.put("hibernate.cache.use_second_level_cache", environment
+				.getRequiredProperty("hibernate.cache.use_second_level_cache"));
+		prop.put("hibernate.cache.use_query_cache", environment
+				.getRequiredProperty("hibernate.cache.use_query_cache"));
+		prop.put(
+				"net.sf.ehcache.configurationResourceName",
+				environment
+						.getRequiredProperty("net.sf.ehcache.configurationResourceName"));
 		return prop;
 	}
 }

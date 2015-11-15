@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+	<diskStore path="java.io.tmpdir/ehcache" />
+
+	<defaultCache maxElementsInMemory="10000" eternal="false"
+		timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="true"
+		diskPersistent="true">
+	</defaultCache>
+
+	<cache name="otherCache" maxElementsInMemory="10000" eternal="false"
+		timeToIdleSeconds="5" timeToLiveSeconds="10" overflowToDisk="true"
+		diskPersistent="true">
+	</cache>
+
+</ehcache>

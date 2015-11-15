@@ -87,6 +87,17 @@ public class BasicTypeEntityServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "findOne" })
+	public void saveRollback() {
+		BasicTypeEntity entity = generateBasicTypeEntity();
+		try {
+			service.saveRollback(entity);
+		} catch (RuntimeException e) {
+			// do nothing.
+		}
+		Assert.assertNull(service.findOne(entity.getId()));
+	}
+
+	@Test(dependsOnMethods = { "findOne" })
 	public void countByString() {
 		Assert.assertTrue(service.countByString(string) > 0);
 	}

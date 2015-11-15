@@ -25,6 +25,11 @@ public class BasicTypeService {
 		entityManager.persist(entity);
 	}
 
+	public void saveRollback(BasicTypeEntity entity) {
+		entityManager.persist(entity);
+		throw new RuntimeException();
+	}
+
 	public long delete(Integer id) {
 		return getJpaQueryFactory().delete(qEntity).where(qEntity.id.eq(id))
 				.execute();

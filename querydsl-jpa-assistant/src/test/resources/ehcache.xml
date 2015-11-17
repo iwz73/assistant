@@ -9,9 +9,10 @@
 		diskPersistent="true">
 	</defaultCache>
 
-	<cache name="otherCache" maxElementsInMemory="10000" eternal="false"
-		timeToIdleSeconds="5" timeToLiveSeconds="10" overflowToDisk="true"
-		diskPersistent="true">
+	<cache
+		name="idv.hsiehpinghan.querydsljpaassistant.entity.CacheModeOneEntity"
+		maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="2"
+		timeToLiveSeconds="3" overflowToDisk="true" diskPersistent="true">
 	</cache>
 
 </ehcache>

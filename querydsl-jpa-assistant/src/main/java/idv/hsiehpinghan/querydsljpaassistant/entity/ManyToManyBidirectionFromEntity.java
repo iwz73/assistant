@@ -3,6 +3,7 @@ package idv.hsiehpinghan.querydsljpaassistant.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ManyToManyBidirectionFromEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

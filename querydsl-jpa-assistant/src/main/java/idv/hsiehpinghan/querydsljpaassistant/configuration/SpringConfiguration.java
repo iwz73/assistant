@@ -3,10 +3,8 @@ package idv.hsiehpinghan.querydsljpaassistant.configuration;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,13 +19,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @EnableTransactionManagement
 @Configuration("queryAssistantSpringConfiguration")
 @PropertySource("classpath:/querydsl_jpa_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.querydsljpaassistant" })
 public class SpringConfiguration {
+
 	@Autowired
 	private Environment environment;
 
@@ -50,16 +48,16 @@ public class SpringConfiguration {
 
 	@Bean
 	public PlatformTransactionManager transactionManager(
-			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean)
+			LocalContainerEntityManagerFactoryBean entityManagerFactory)
 			throws PropertyVetoException {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactoryBean
+		transactionManager.setEntityManagerFactory(entityManagerFactory
 				.getObject());
 		return transactionManager;
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean()
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory()
 			throws PropertyVetoException {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource());
@@ -69,23 +67,6 @@ public class SpringConfiguration {
 				.getRequiredProperty("hibernate.packagesToScan"));
 		entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
 		return entityManagerFactoryBean;
-	}
-
-	@Bean
-	public EntityManager entityManager(
-			LocalContainerEntityManagerFactoryBean entityManagerFactoryBean) {
-		return entityManagerFactoryBean.getObject().createEntityManager();
-	}
-
-	@Bean
-	public SessionFactory sessionFactory(EntityManager entityManager) {
-		return entityManager.getEntityManagerFactory().unwrap(
-				SessionFactory.class);
-	}
-
-	@Bean
-	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
-		return new JPAQueryFactory(entityManager);
 	}
 
 	@Bean

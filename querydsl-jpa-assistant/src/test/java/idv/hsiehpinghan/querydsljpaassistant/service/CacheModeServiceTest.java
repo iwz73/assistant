@@ -32,36 +32,42 @@ public class CacheModeServiceTest {
 		service.cacheModePut(one.getId());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "cacheModePut" })
 	public void cacheModeNormal() {
 		service.cacheModeNormal(one.getId());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "cacheModeNormal" })
 	public void cacheModeIgnore() {
 		service.cacheModeIgnore(one.getId());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "cacheModeIgnore" })
 	public void cacheModeGet() {
 		service.cacheModeGet(one.getId());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "cacheModeGet" })
 	public void cacheModeRefresh() {
 		service.cacheModeRefresh(one.getId());
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "cacheModeRefresh" })
 	public void timeToLiveSeconds_0() {
 		service.timeToLiveSeconds_0(one.getId());
 	}
 
-	@Test(dependsOnMethods={"timeToLiveSeconds_0"})
+	@Test(dependsOnMethods = { "timeToLiveSeconds_0" })
 	public void timeToLiveSeconds_1() {
 		service.timeToLiveSeconds_1(one.getId());
 	}
-	
+
+	@Test(dependsOnMethods = { "timeToLiveSeconds_1" })
+	public void timeToLiveSeconds_2() {
+		sleep(5);
+		service.timeToLiveSeconds_2(one.getId());
+	}
+
 	private void sleep(int seconeds) {
 		try {
 			Thread.sleep(seconeds * 1000);

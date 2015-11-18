@@ -68,6 +68,26 @@ public class CacheModeServiceTest {
 		service.timeToLiveSeconds_2(one.getId());
 	}
 
+	@Test(dependsOnMethods = { "timeToLiveSeconds_2" })
+	public void queryDslCache_0() {
+		service.queryDslCache_0(one.getId());
+	}
+
+	@Test(dependsOnMethods = { "queryDslCache_0" })
+	public void queryDslCache_1() {
+		service.queryDslCache_1(one.getId());
+	}
+
+	@Test(dependsOnMethods = { "queryDslCache_1" })
+	public void queryCache_0() {
+		service.queryCache_0(one.getId());
+	}
+
+	@Test(dependsOnMethods = { "queryCache_0" })
+	public void queryCache_1() {
+		service.queryCache_1(one.getId());
+	}
+
 	private void sleep(int seconeds) {
 		try {
 			Thread.sleep(seconeds * 1000);

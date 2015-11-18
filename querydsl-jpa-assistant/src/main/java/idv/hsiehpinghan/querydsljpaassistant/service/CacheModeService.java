@@ -1,11 +1,13 @@
 package idv.hsiehpinghan.querydsljpaassistant.service;
 
 import idv.hsiehpinghan.querydsljpaassistant.entity.CacheModeOneEntity;
+import idv.hsiehpinghan.querydsljpaassistant.entity.QCacheModeOneEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.CacheMode;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
@@ -14,9 +16,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
 @Service
 @Transactional
 public class CacheModeService {
+	private QCacheModeOneEntity qEntity = QCacheModeOneEntity.cacheModeOneEntity;
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -121,6 +126,94 @@ public class CacheModeService {
 				secondLevelCachePutCount);
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public void queryDslCache_0(Long id) {
+		SessionFactory sessionFactory = getSessionFactory();
+		sessionFactory.getCache().evictEntityRegion(CacheModeOneEntity.class);
+		long entityLoadCount_0 = 1;
+		long secondLevelCacheMissCount_0 = 0;
+		long secondLevelCacheHitCount_0 = 0;
+		long secondLevelCachePutCount_0 = 1;
+		assertQueryDslCache(sessionFactory, id, entityLoadCount_0,
+				secondLevelCacheMissCount_0, secondLevelCacheHitCount_0,
+				secondLevelCachePutCount_0);
+		long entityLoadCount_1 = 0;
+		long secondLevelCacheMissCount_1 = 0;
+		long secondLevelCacheHitCount_1 = 0;
+		long secondLevelCachePutCount_1 = 0;
+		assertQueryDslCache(sessionFactory, id, entityLoadCount_1,
+				secondLevelCacheMissCount_1, secondLevelCacheHitCount_1,
+				secondLevelCachePutCount_1);
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public void queryDslCache_1(Long id) {
+		SessionFactory sessionFactory = getSessionFactory();
+		long entityLoadCount = 1;
+		long secondLevelCacheMissCount = 0;
+		long secondLevelCacheHitCount = 0;
+		long secondLevelCachePutCount = 0;
+		assertQueryDslCache(sessionFactory, id, entityLoadCount,
+				secondLevelCacheMissCount, secondLevelCacheHitCount,
+				secondLevelCachePutCount);
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public void queryCache_0(Long id) {
+		SessionFactory sessionFactory = getSessionFactory();
+		sessionFactory.getCache().evictEntityRegion(CacheModeOneEntity.class);
+		long prepareStatementCount = 1;
+		long queryCacheMissCount = 1;
+		long queryCacheHitCount = 0;
+		long queryCachePutCount = 1;
+		assertQueryCache(sessionFactory, id, prepareStatementCount,
+				queryCacheMissCount, queryCacheHitCount, queryCachePutCount);
+	}
+
+	public void queryCache_1(Long id) {
+		SessionFactory sessionFactory = getSessionFactory();
+		long prepareStatementCount = 0;
+		long queryCacheMissCount = 0;
+		long queryCacheHitCount = 1;
+		long queryCachePutCount = 0;
+		assertQueryCache(sessionFactory, id, prepareStatementCount,
+				queryCacheMissCount, queryCacheHitCount, queryCachePutCount);
+	}
+
+	private void assertQueryCache(SessionFactory sessionFactory, Long id,
+			long prepareStatementCount, long queryCacheMissCount,
+			long queryCacheHitCount, long queryCachePutCount) {
+		Statistics statistics = clearAndGetStatistics(sessionFactory);
+		Session session = sessionFactory.openSession();
+		Query query = session
+				.createQuery("from CacheModeOneEntity e where e.id = :id");
+		query.setLong("id", id);
+		query.setCacheable(true);
+		query.uniqueResult();
+		Assert.assertEquals(statistics.getPrepareStatementCount(),
+				prepareStatementCount);
+		Assert.assertEquals(statistics.getQueryCacheMissCount(),
+				queryCacheMissCount);
+		Assert.assertEquals(statistics.getQueryCacheHitCount(),
+				queryCacheHitCount);
+		Assert.assertEquals(statistics.getQueryCachePutCount(),
+				queryCachePutCount);
+	}
+
+	private void assertQueryDslCache(SessionFactory sessionFactory, Long id,
+			long entityLoadCount, long secondLevelCacheMissCount,
+			long secondLevelCacheHitCount, long secondLevelCachePutCount) {
+		Statistics statistics = clearAndGetStatistics(sessionFactory);
+		getJpaQueryFactory().from(qEntity).where(qEntity.id.eq(id)).fetchOne();
+		Assert.assertEquals(statistics.getEntityLoadCount(), entityLoadCount);
+		Assert.assertEquals(statistics.getSecondLevelCacheMissCount(),
+				secondLevelCacheMissCount);
+		Assert.assertEquals(statistics.getSecondLevelCacheHitCount(),
+				secondLevelCacheHitCount);
+		Assert.assertEquals(statistics.getSecondLevelCachePutCount(),
+				secondLevelCachePutCount);
+	}
+
 	private void assertTimeToLiveSeconds(SessionFactory sessionFactory,
 			Long id, long entityLoadCount, long secondLevelCacheMissCount,
 			long secondLevelCacheHitCount, long secondLevelCachePutCount) {
@@ -170,4 +263,7 @@ public class CacheModeService {
 				SessionFactory.class);
 	}
 
+	private JPAQueryFactory getJpaQueryFactory() {
+		return new JPAQueryFactory(entityManager);
+	}
 }

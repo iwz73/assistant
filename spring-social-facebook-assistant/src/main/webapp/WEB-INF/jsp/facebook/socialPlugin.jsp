@@ -6,13 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>facebook index</title>
+<title>facebook social plugin</title>
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
 			appId : '1596227047295405',
 			xfbml : true,
-			version : 'v2.5'
+			version : 'v2.3'
 		});
 	};
 </script>

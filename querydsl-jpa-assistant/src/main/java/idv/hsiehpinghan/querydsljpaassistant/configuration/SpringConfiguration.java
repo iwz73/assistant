@@ -57,10 +57,10 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory()
-			throws PropertyVetoException {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+			DataSource dataSource) throws PropertyVetoException {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource());
+		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean
 				.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan(environment

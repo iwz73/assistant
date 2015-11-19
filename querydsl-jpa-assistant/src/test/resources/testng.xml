@@ -8,10 +8,10 @@
 	</test>
 	<test name="test">
 		<classes>
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.querydsljpaassistant.service.BasicTypeEntityServiceTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.querydsljpaassistant.service.ManyToManyBidirectionServiceTest" /> -->
+			<class
+				name="idv.hsiehpinghan.querydsljpaassistant.service.BasicTypeEntityServiceTest" />
+			<class
+				name="idv.hsiehpinghan.querydsljpaassistant.service.ManyToManyBidirectionServiceTest" />
 			<class
 				name="idv.hsiehpinghan.querydsljpaassistant.service.CacheModeServiceTest" />
 		</classes>

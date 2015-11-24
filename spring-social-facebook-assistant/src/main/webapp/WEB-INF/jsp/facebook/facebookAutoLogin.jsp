@@ -33,7 +33,7 @@
 	function statusChangeCallback(response) {
 		var info = document.getElementById('info');
 		if (response.status === 'connected') {
-			showInfo();
+			showInfo(response);
 		} else if (response.status === 'not_authorized') {
 			info.innerHTML = 'not authorized !!!';
 		} else {
@@ -41,10 +41,16 @@
 		}
 	}
 
-	function showInfo() {
+	function showInfo(response) {
+		var info = document.getElementById('info');
+		info.innerHTML = "";
+		var auth = response.authResponse;
+		for (k in auth) {
+			info.innerHTML = info.innerHTML + k + " : " + auth[k]
+					+ "<br>";
+		}
+		info.innerHTML = info.innerHTML + "<hr>";
 		FB.api('/me', function(response) {
-			var info = document.getElementById('info');
-			info.innerHTML = "";
 			for (k in response) {
 				info.innerHTML = info.innerHTML + k + " : " + response[k]
 						+ "<br>";

@@ -21,9 +21,9 @@
 
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId : '540425866119684',
+			appId : '1596227047295405',
 			xfbml : true,
-			version : 'v2.5'
+			version : 'v2.3'
 		});
 
 		FB.login(function(response) {
@@ -40,7 +40,7 @@
 	function statusChangeCallback(response) {
 		var info = document.getElementById('info');
 		if (response.status === 'connected') {
-			showInfo(response);
+			showInfo(info, response);
 		} else if (response.status === 'not_authorized') {
 			info.innerHTML = 'not authorized !!!';
 		} else {
@@ -48,8 +48,7 @@
 		}
 	}
 
-	function showInfo(response) {
-		var info = document.getElementById('info');
+	function showInfo(info, response) {
 		info.innerHTML = "";
 		var auth = response.authResponse;
 		for (k in auth) {

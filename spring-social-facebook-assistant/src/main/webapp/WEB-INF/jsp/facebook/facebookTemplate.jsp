@@ -6,8 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>facebook facebook auto login</title>
+<title>facebook facebook template</title>
 <script>
+	var accessToken;
+
 	(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id)) {
@@ -31,10 +33,17 @@
 		});
 	};
 
+	function checkLoginState() {
+		FB.getLoginStatus(function(response) {
+			statusChangeCallback(response);
+		});
+	}
+
 	function statusChangeCallback(response) {
 		var info = document.getElementById('info');
 		if (response.status === 'connected') {
-			showInfo(info, response);
+			accessToken = response.authResponse['accessToken'];
+			info.innerHTML = 'connected.';
 		} else if (response.status === 'not_authorized') {
 			info.innerHTML = 'not authorized !!!';
 		} else {
@@ -42,30 +51,36 @@
 		}
 	}
 
-	function showInfo(info, response) {
-		info.innerHTML = "";
-		var auth = response.authResponse;
-		for (k in auth) {
-			info.innerHTML = info.innerHTML + k + " : " + auth[k] + "<br>";
-		}
-		info.innerHTML = info.innerHTML + "<hr>";
-		showPersonalInfo(auth['accessToken']);
-	}
-
-	function showPersonalInfo(accessToken) {
+	function facebookTemplate(loc) {
 		var info = document.getElementById('info');
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				info.innerHTML = info.innerHTML + xhttp.responseText + "<br>";
+				info.innerHTML = xhttp.responseText;
 			}
 		};
-		xhttp.open("GET", "loginInfo?accessToken=" + accessToken, true);
+		xhttp.open("GET", generateUrl(loc), true);
 		xhttp.send();
+	}
+
+	function generateUrl(loc) {
+		var url = loc + "?accessToken=" + accessToken;
+		if (loc === 'facebookTemplateOtherUser') {
+			url = url + "&otherUserId=10203958109832579";
+		}
+		return url;
 	}
 </script>
 </head>
 <body>
+	<div class="fb-login-button" data-auto-logout-link="true"
+		onlogin="checkLoginState();"></div>
+	<br>
+	<input type="button" value="facebook template user"
+		onclick="facebookTemplate('facebookTemplateUser');">
+	<input type="button" value="facebook template user"
+		onclick="facebookTemplate('facebookTemplateOtherUser');">
+	<hr>
 	<div id="info"></div>
 </body>
 

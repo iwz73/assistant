@@ -1,0 +1,4 @@
+# create schema
+su - postgres
+psql
+CREATE SCHEMA my_schema AUTHORIZATION thank;

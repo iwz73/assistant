@@ -10,8 +10,9 @@
 <script>
 	(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id))
+		if (d.getElementById(id)) {
 			return;
+		}
 		js = d.createElement(s);
 		js.id = id;
 		js.src = "//connect.facebook.net/en_US/sdk.js";
@@ -20,12 +21,12 @@
 
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId : '1596227047295405',
+			appId : '540425866119684',
 			xfbml : true,
-			version : 'v2.3'
+			version : 'v2.5'
 		});
 
-		FB.getLoginStatus(function(response) {
+		FB.login(function(response) {
 			statusChangeCallback(response);
 		});
 	};
@@ -52,16 +53,22 @@
 		info.innerHTML = "";
 		var auth = response.authResponse;
 		for (k in auth) {
-			info.innerHTML = info.innerHTML + k + " : " + auth[k]
-					+ "<br>";
+			info.innerHTML = info.innerHTML + k + " : " + auth[k] + "<br>";
 		}
 		info.innerHTML = info.innerHTML + "<hr>";
-		FB.api('/me', function(response) {
-			for (k in response) {
-				info.innerHTML = info.innerHTML + k + " : " + response[k]
-						+ "<br>";
+		showPersonalInfo(auth['accessToken']);
+	}
+	
+	function showPersonalInfo(accessToken) {
+		var info = document.getElementById('info');
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				info.innerHTML = info.innerHTML + xhttp.responseText + "<br>";
 			}
-		});
+		};
+		xhttp.open("GET", "loginInfo?accessToken=" + accessToken, true);
+		xhttp.send();
 	}
 </script>
 </head>

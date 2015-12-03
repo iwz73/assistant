@@ -14,9 +14,9 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import jcx.xbrl.taxonomy.XbrlTaxonomy;
-import junit.framework.Assert;
 
 import org.springframework.context.ApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;

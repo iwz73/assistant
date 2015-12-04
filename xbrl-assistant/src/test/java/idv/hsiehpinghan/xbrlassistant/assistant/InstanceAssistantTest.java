@@ -44,7 +44,6 @@ public class InstanceAssistantTest {
 		ids.add(Presentation.Id.StatementOfComprehensiveIncome);
 		ids.add(Presentation.Id.StatementOfCashFlows);
 		ids.add(Presentation.Id.StatementOfChangesInEquity);
-
 		ObjectNode actual = instanceAssistant
 				.getInstanceJson(instanceFile, ids);
 		JsonNode expected = objectMapper
@@ -53,7 +52,7 @@ public class InstanceAssistantTest {
 		Assert.assertEquals(expected.toString().length(), actual.toString().length());
 	}
 
-	@Test
+//	@Test
 	public void getContexts() throws Exception {
 		// BalanceSheet
 		Map<String, Set<String>> balanceSheetMap = instanceAssistant

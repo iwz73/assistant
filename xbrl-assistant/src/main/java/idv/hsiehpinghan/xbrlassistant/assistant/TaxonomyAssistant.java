@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class TaxonomyAssistant implements InitializingBean {
-	// private Logger logger = Logger.getLogger(this.getClass().getName());
+	// private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String EN = "en";
 	private File taxonomyDir;
 
@@ -56,6 +56,10 @@ public class TaxonomyAssistant implements InitializingBean {
 		File tifrs20140331Dir = new File(taxonomyDir, "tifrs-20140331");
 		if (tifrs20140331Dir.exists() == false) {
 			throw new RuntimeException(tifrs20140331Dir + " not exists !!!");
+		}
+		File tifrs20150331Dir = new File(taxonomyDir, "tifrs-20150331");
+		if (tifrs20150331Dir.exists() == false) {
+			throw new RuntimeException(tifrs20150331Dir + " not exists !!!");
 		}
 	}
 
@@ -197,9 +201,6 @@ public class TaxonomyAssistant implements InitializingBean {
 			XbrlPresentationTreeNode childPresentNode = (XbrlPresentationTreeNode) presentationNode
 					.getFirstChild();
 			do {
-				// ObjectNode childObjNode = objectMapper.createObjectNode();
-				// String childElementId = childTreeNode.getID();
-				// objNode.set(childElementId, childObjNode);
 				generatePresentationJsonObjectContent(objNode,
 						childPresentNode, taxonomy);
 				childPresentNode = (XbrlPresentationTreeNode) childPresentNode

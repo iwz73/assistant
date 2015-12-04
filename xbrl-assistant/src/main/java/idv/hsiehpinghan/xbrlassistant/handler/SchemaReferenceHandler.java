@@ -3,10 +3,13 @@ package idv.hsiehpinghan.xbrlassistant.handler;
 import idv.hsiehpinghan.xbrlassistant.enumeration.XbrlTaxonomyVersion;
 import idv.hsiehpinghan.xbrlassistant.exception.SaxParserBreakException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SchemaReferenceHandler extends DefaultHandler {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private static final String ELEMENT_QNAME = "link:schemaRef";
 	private static final String ATTRIBUTE_QNAME = "xlink:href";
 
@@ -87,8 +90,43 @@ public class SchemaReferenceHandler extends DefaultHandler {
 			case "tifrs-mim-2014-03-31.xsd":
 				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_MIM_2014_03_31;
 				break;
+			case "tifrs-basi-cr-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_BASI_CR_2015_03_31;
+				break;
+			case "tifrs-basi-ir-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_BASI_IR_2015_03_31;
+				break;
+			case "tifrs-bd-cr-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_BD_CR_2015_03_31;
+				break;
+			case "tifrs-bd-er-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_BD_ER_2015_03_31;
+				break;
+			case "tifrs-bd-ir-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_BD_IR_2015_03_31;
+				break;
+			case "tifrs-ci-cr-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_CI_CR_2015_03_31;
+				break;
+			case "tifrs-ci-ir-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_CI_IR_2015_03_31;
+				break;
+			case "tifrs-fh-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_FH_2015_03_31;
+				break;
+			case "tifrs-ins-cr-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_INS_CR_2015_03_31;
+				break;
+			case "tifrs-ins-ir-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_INS_IR_2015_03_31;
+				break;
+			case "tifrs-mim-2015-03-31.xsd":
+				xbrlTaxonomyVersion = XbrlTaxonomyVersion.TIFRS_MIM_2015_03_31;
+				break;
 			default:
-				throw new RuntimeException("Not implement !!!");
+				String message = "XbrlTaxonomyVersion(" + value + ") not implements !!!";
+				logger.error(message);
+				throw new RuntimeException(message);
 			}
 			throw new SaxParserBreakException();
 		}

@@ -161,14 +161,9 @@ public class SocketAssistant {
 			request.append(ent.getKey() + ": " + ent.getValue() + "\r\n");
 		}
 		request.append("\r\n");
-		request.append("\r\n");
 		if (criteriaMap != null) {
 			addRequestBody(request, criteriaMap);
 		}
-		
-		
-		System.err.println(request.toString());
-		
 		return request.toString().getBytes();
 	}
 

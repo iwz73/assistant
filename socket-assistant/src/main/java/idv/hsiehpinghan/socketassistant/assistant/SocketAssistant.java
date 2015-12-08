@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.socketassistant.assistant;
 
+import idv.hsiehpinghan.socketassistant.enumeration.HttpMethod;
 import idv.hsiehpinghan.socketassistant.enumeration.Protocol;
 
 import java.io.IOException;
@@ -94,10 +95,25 @@ public class SocketAssistant {
 
 	public String getContent(Protocol protocol, String host, int port,
 			String path, Map<String, String> headerMap) throws IOException {
+		return getContent(HttpMethod.GET, protocol, host, port, path,
+				headerMap, null);
+	}
+
+	public String getContent(Protocol protocol, String host, int port,
+			String path, Map<String, String> headerMap,
+			Map<String, String> criteriaMap) throws IOException {
+		return getContent(HttpMethod.POST, protocol, host, port, path,
+				headerMap, criteriaMap);
+	}
+
+	private String getContent(HttpMethod httpMethod, Protocol protocol,
+			String host, int port, String path, Map<String, String> headerMap,
+			Map<String, String> criteriaMap) throws IOException {
 		Socket socket = null;
 		InputStream inputStream = null;
 		try {
-			socket = generateSocket(protocol, host, port, path, headerMap);
+			socket = generateSocket(httpMethod, protocol, host, port, path,
+					headerMap, criteriaMap);
 			inputStream = socket.getInputStream();
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(inputStream, writer, Charsets.UTF_8);
@@ -113,8 +129,9 @@ public class SocketAssistant {
 	}
 
 	@SuppressWarnings("resource")
-	private Socket generateSocket(Protocol protocol, String host, int port,
-			String path, Map<String, String> headerMap) throws IOException {
+	private Socket generateSocket(HttpMethod httpMethod, Protocol protocol,
+			String host, int port, String path, Map<String, String> headerMap,
+			Map<String, String> criteriaMap) throws IOException {
 		Socket socket = null;
 		socket = new Socket();
 		socket.setSoTimeout(TIMEOUT);
@@ -124,35 +141,47 @@ public class SocketAssistant {
 			socket = generateSSLSocket(socket, host, port);
 		}
 		OutputStream socketOutputStream = socket.getOutputStream();
-		byte[] request = generateRequest(host, port, path, headerMap);
+		byte[] request = generateRequest(httpMethod, host, port, path,
+				headerMap, criteriaMap);
 		socketOutputStream.write(request);
 		socketOutputStream.flush();
 		return socket;
 
 	}
 
-	private byte[] generateRequest(String host, int port, String path,
-			Map<String, String> headerMap) {
+	private byte[] generateRequest(HttpMethod httpMethod, String host,
+			int port, String path, Map<String, String> headerMap,
+			Map<String, String> criteriaMap) {
 		StringBuffer request = new StringBuffer();
-		request.append("GET").append(" ").append(path).append(" ")
+		request.append(httpMethod).append(" ").append(path).append(" ")
 				.append("HTTP/1.0").append("\r\n");
 		request.append("Host:").append(" ").append(host).append(":")
 				.append(port).append("\r\n");
 		for (Map.Entry<String, String> ent : headerMap.entrySet()) {
 			request.append(ent.getKey() + ": " + ent.getValue() + "\r\n");
 		}
-		// request.append("Accept-Encoding: x-gzip, gzip\r\n");
-		// request.append("Accept:")
-		// .append(" ")
-		// .append("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-		// .append("\r\n");
-		// request.append("User-Agent:").append(" ")
-		// .append("My Nutch Spider/Nutch-2.3").append("\r\n");
-		// request.append("If-Modified-Since:").append(" ")
-		// .append("Thu, 01 Jan 1970 00:00:00 GMT").append("\r\n");
 		request.append("\r\n");
 		request.append("\r\n");
+		if (criteriaMap != null) {
+			addRequestBody(request, criteriaMap);
+		}
+		
+		
+		System.err.println(request.toString());
+		
 		return request.toString().getBytes();
+	}
+
+	private void addRequestBody(StringBuffer request,
+			Map<String, String> criteriaMap) {
+		int i = 0;
+		for (Map.Entry<String, String> ent : criteriaMap.entrySet()) {
+			if (i != 0) {
+				request.append("&");
+			}
+			request.append(ent.getKey()).append("=").append(ent.getValue());
+			++i;
+		}
 	}
 
 	private SSLSocket generateSSLSocket(Socket socket, String host, int port)

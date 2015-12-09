@@ -42,8 +42,8 @@
 		info.innerHTML = "";
 		if (response.status === 'connected') {
 			longLivedToken(info, response);
-			tokenInfo(info);
-			
+			appAccessToken(info);
+			tokenInfo(info, response);
 		} else if (response.status === 'not_authorized') {
 			info.innerHTML = 'not authorized !!!';
 		} else {
@@ -51,14 +51,28 @@
 		}
 	}
 
-	function longLivedToken(info) {
+	function longLivedToken(info, response) {
+		var accessToken = response.authResponse['accessToken'];
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				info.innerHTML = info.innerHTML + xhttp.responseText + "<br><hr>";
+				info.innerHTML = info.innerHTML + xhttp.responseText
+						+ "<br><hr>";
 			}
 		};
-		xhttp.open("GET", "tokenInfo", true);
+		xhttp.open("GET", "longLivedToken?accessToken=" + accessToken, true);
+		xhttp.send();
+	}
+
+	function appAccessToken(info) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				info.innerHTML = info.innerHTML + xhttp.responseText
+						+ "<br><hr>";
+			}
+		};
+		xhttp.open("GET", "appAccessToken", true);
 		xhttp.send();
 	}
 	
@@ -67,17 +81,16 @@
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				info.innerHTML = info.innerHTML + xhttp.responseText + "<br><hr>";
+				info.innerHTML = info.innerHTML + xhttp.responseText
+						+ "<br><hr>";
 			}
 		};
-		xhttp.open("GET", "longLivedToken?accessToken=" + accessToken, true);
+		xhttp.open("GET", "tokenInfo?accessToken=" + accessToken, true);
 		xhttp.send();
 	}
 </script>
 </head>
 <body>
-	<!-- 	<div class="fb-login-button" data-auto-logout-link="true" -->
-	<!-- 		onlogin="checkLoginState();"></div> -->
 	<div class="fb-login-button" data-auto-logout-link="true"
 		onlogin="checkLoginState();"></div>
 	<hr>

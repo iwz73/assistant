@@ -2,6 +2,7 @@ package idv.hsiehpinghan.springsocialfacebookassistant.controller;
 
 import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LoginInfoCriteria;
 import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LongLivedTokenCriteria;
+import idv.hsiehpinghan.springsocialfacebookassistant.criteria.TokenInfoCriteria;
 import idv.hsiehpinghan.springsocialfacebookassistant.service.InfoService;
 import idv.hsiehpinghan.springsocialfacebookassistant.service.TokenService;
 
@@ -45,8 +46,8 @@ public class FacebookController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/tokenInfo", method = RequestMethod.GET)
-	public String tokenInfo() throws IOException {
+	@RequestMapping(value = "/appAccessToken", method = RequestMethod.GET)
+	public String appAccessToken() throws IOException {
 		return tokenService.getAppAccessToken();
 	}
 
@@ -55,6 +56,13 @@ public class FacebookController {
 	public String loginInfo(LoginInfoCriteria criteria) throws IOException {
 		String accessToken = criteria.getAccessToken();
 		return infoService.getLoginInfo(accessToken);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/tokenInfo", method = RequestMethod.GET)
+	public String tokenInfo(TokenInfoCriteria criteria) throws IOException {
+		String accessToken = criteria.getAccessToken();
+		return infoService.getTokenInfo(accessToken);
 	}
 
 	@RequestMapping(value = "/socialPlugin", method = RequestMethod.GET)

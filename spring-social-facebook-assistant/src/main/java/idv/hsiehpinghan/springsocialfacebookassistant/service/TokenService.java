@@ -14,6 +14,7 @@ public class TokenService implements InitializingBean {
 	// private String appNamespace;
 	private String appId;
 	private String appSecret;
+	private String siteUrl;
 	@Autowired
 	private Environment environment;
 
@@ -22,14 +23,15 @@ public class TokenService implements InitializingBean {
 		// appNamespace = environment.getRequiredProperty("appNamespace");
 		appId = environment.getRequiredProperty("appId");
 		appSecret = environment.getRequiredProperty("appSecret");
+		siteUrl = environment.getRequiredProperty("siteUrl");
 	}
 
 	public String getAppAccessToken() throws IOException {
 		String httpsUrl = "https://graph.facebook.com/oauth/access_token?client_id="
 				+ appId
-				+ "&amp;client_secret="
+				+ "&client_secret="
 				+ appSecret
-				+ "&amp;grant_type=client_credentials";
+				+ "&grant_type=client_credentials" + "&redirect_uri=" + siteUrl;
 		return UrlUtility.getContent(httpsUrl);
 	}
 

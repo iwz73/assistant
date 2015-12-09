@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -35,6 +36,7 @@ public class UrlUtility {
 		char[] cbuf = new char[SIZE];
 		while (reader.read(cbuf) != -1) {
 			sb.append(cbuf);
+			Arrays.fill(cbuf, '\0');
 		}
 		reader.close();
 		return sb.toString();

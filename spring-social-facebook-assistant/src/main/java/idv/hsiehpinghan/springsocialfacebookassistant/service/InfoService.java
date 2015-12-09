@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.springsocialfacebookassistant.service;
 
+import idv.hsiehpinghan.springsocialfacebookassistant.utility.UrlUtility;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,29 +14,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class InfoService {
 	public String getLoginInfo(String accessToken) throws IOException {
-		final String HTTPS_URL = "https://graph.facebook.com/me?access_token="
+		final String httpsUrl = "https://graph.facebook.com/me?access_token="
 				+ accessToken;
-		URL url = new URL(HTTPS_URL);
-		HttpsURLConnection connection = (HttpsURLConnection) url
-				.openConnection();
-		int responseCode = connection.getResponseCode();
-		if (responseCode != 200) {
-			throw new RuntimeException("responseCode(" + responseCode
-					+ ") not equals to 200 !!!");
-		}
-		return getContent(connection);
+		return UrlUtility.getContent(httpsUrl);
 	}
 
-	private String getContent(HttpsURLConnection connection) throws IOException {
-		final int SIZE = 64;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		StringBuilder sb = new StringBuilder();
-		char[] cbuf = new char[SIZE];
-		while (reader.read(cbuf) != -1) {
-			sb.append(cbuf);
-		}
-		reader.close();
-		return sb.toString();
-	}
+	public String getTokenInfo(String accessToken) throws IOException {
+//		final String HTTPS_URL = "https://graph.facebook.com/oauth/access_token?client_id="
+//				+ appId
+//				+ "&client_secret="
+//				+ appSecret
+//				+ "&grant_type=fb_exchange_token&fb_exchange_token="
+//				+ shortLivedToken;
+//		
+//		GET /debug_token?
+//				  input_token={input-token}&amp;
+//				  access_token={access-token}
+//				  
+//		URL url = new URL(HTTPS_URL);
+//		HttpsURLConnection connection = (HttpsURLConnection) url
+//				.openConnection();
+//		int responseCode = connection.getResponseCode();
+//		if (responseCode != 200) {
+//			throw new RuntimeException("responseCode(" + responseCode
+//					+ ") not equals to 200 !!!");
+//		}
+//		return getContent(connection);
+		return null;
+	}		  
+		
 }

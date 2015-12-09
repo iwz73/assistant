@@ -45,6 +45,12 @@ public class FacebookController {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "/tokenInfo", method = RequestMethod.GET)
+	public String tokenInfo() throws IOException {
+		return tokenService.getAppAccessToken();
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/loginInfo", method = RequestMethod.GET)
 	public String loginInfo(LoginInfoCriteria criteria) throws IOException {
 		String accessToken = criteria.getAccessToken();
@@ -54,11 +60,6 @@ public class FacebookController {
 	@RequestMapping(value = "/socialPlugin", method = RequestMethod.GET)
 	public String socialPlugin() {
 		return "/facebook/socialPlugin";
-	}
-
-	@RequestMapping(value = "/facebookTemplate", method = RequestMethod.GET)
-	public String facebookTemplate() {
-		return "/facebook/facebookTemplate";
 	}
 
 }

@@ -1,36 +1,25 @@
 package idv.hsiehpinghan.solrassistant.configuration;
 
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.solr.core.SolrTemplate;
-import org.springframework.data.solr.repository.config.EnableSolrRepositories;
-import org.springframework.data.solr.server.support.HttpSolrServerFactoryBean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 @Configuration
+@PropertySource("classpath:/solr_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.solrassistant" })
-@EnableSolrRepositories("idv.hsiehpinghan.solrassistant.repository")
 public class SpringConfiguration {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
-	@Bean
-	public HttpSolrServerFactoryBean solrServerFactoryBean() {
-		HttpSolrServerFactoryBean factory = new HttpSolrServerFactoryBean();
-		factory.setUrl("http://localhost:8983/solr");
-		return factory;
-	}
+	@Autowired
+	private Environment environment;
 
 	@Bean
-	public SolrTemplate solrTemplate() throws Exception {
-		return new SolrTemplate(solrServerFactoryBean().getObject());
+	public HttpSolrServer httpSolrServer() {
+		String solrUrl = environment.getRequiredProperty("solrUrl");
+		HttpSolrServer httpSolrServer = new HttpSolrServer(solrUrl);
+		return httpSolrServer;
 	}
-
-	// @Bean
-	// public SolrServer solrServer() {
-	// return new HttpSolrServer("http://localhost:8983/solr");
-	// }
-	//
-	// @Bean
-	// public SolrTemplate solrTemplate(SolrServer server) throws Exception {
-	// return new SolrTemplate(server);
-	// }
 }

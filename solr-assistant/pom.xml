@@ -30,9 +30,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.12</slf4j.version>
-		<testng.version>6.1.1</testng.version>
+		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<spring-data-solr.version>1.4.0.RELEASE</spring-data-solr.version>
+		<solr-solrj.version>4.10.3</solr-solrj.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -67,11 +67,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- spring-data-solr -->
+		<!-- solr-solrj -->
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-solr</artifactId>
-			<version>${spring-data-solr.version}</version>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>${solr-solrj.version}</version>
 		</dependency>
 
 		<!-- object-utility -->

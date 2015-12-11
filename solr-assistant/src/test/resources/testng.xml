@@ -6,11 +6,9 @@
 			<class name="idv.hsiehpinghan.solrassistant.suit.TestngSuitSetting" />
 		</classes>
 	</test>
-	<test name="repository">
+	<test name="test">
 		<classes>
-			<class
-				name="idv.hsiehpinghan.solrassistant.repository.ISolrEntityRepositoryTest" />
-			<class name="idv.hsiehpinghan.solrassistant.repository.SolrRepositoryTest" />
+			<class name="idv.hsiehpinghan.solrassistant.assistant.SolrAssistantTest" />
 		</classes>
 	</test>
 </suite>

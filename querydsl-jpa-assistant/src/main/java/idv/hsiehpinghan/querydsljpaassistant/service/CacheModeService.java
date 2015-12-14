@@ -3,30 +3,29 @@ package idv.hsiehpinghan.querydsljpaassistant.service;
 import idv.hsiehpinghan.querydsljpaassistant.entity.CacheModeOneEntity;
 import idv.hsiehpinghan.querydsljpaassistant.entity.QCacheModeOneEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
 @Service
 @Transactional
 public class CacheModeService {
 	private QCacheModeOneEntity qEntity = QCacheModeOneEntity.cacheModeOneEntity;
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public void save(CacheModeOneEntity entity) {
-		entityManager.persist(entity);
+		Session session = sessionFactory.getCurrentSession();
+		session.persist(entity);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
@@ -91,7 +90,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void timeToLiveSeconds_0(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		sessionFactory.getCache().evictEntityRegion(CacheModeOneEntity.class);
 		long entityLoadCount = 1;
 		long secondLevelCacheMissCount = 1;
@@ -104,7 +102,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void timeToLiveSeconds_1(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		long entityLoadCount = 0;
 		long secondLevelCacheMissCount = 0;
 		long secondLevelCacheHitCount = 1;
@@ -116,7 +113,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void timeToLiveSeconds_2(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		long entityLoadCount = 1;
 		long secondLevelCacheMissCount = 1;
 		long secondLevelCacheHitCount = 0;
@@ -128,7 +124,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void queryDslCache_0(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		sessionFactory.getCache().evictEntityRegion(CacheModeOneEntity.class);
 		long entityLoadCount_0 = 1;
 		long secondLevelCacheMissCount_0 = 0;
@@ -148,7 +143,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void queryDslCache_1(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		long entityLoadCount = 1;
 		long secondLevelCacheMissCount = 0;
 		long secondLevelCacheHitCount = 0;
@@ -160,7 +154,6 @@ public class CacheModeService {
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public void queryCache_0(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		sessionFactory.getCache().evictEntityRegion(CacheModeOneEntity.class);
 		long prepareStatementCount = 1;
 		long queryCacheMissCount = 1;
@@ -171,7 +164,6 @@ public class CacheModeService {
 	}
 
 	public void queryCache_1(Long id) {
-		SessionFactory sessionFactory = getSessionFactory();
 		long prepareStatementCount = 0;
 		long queryCacheMissCount = 0;
 		long queryCacheHitCount = 1;
@@ -204,7 +196,9 @@ public class CacheModeService {
 			long entityLoadCount, long secondLevelCacheMissCount,
 			long secondLevelCacheHitCount, long secondLevelCachePutCount) {
 		Statistics statistics = clearAndGetStatistics(sessionFactory);
-		getJpaQueryFactory().from(qEntity).where(qEntity.id.eq(id)).fetchOne();
+		Session session = sessionFactory.getCurrentSession();
+		getHibernateQueryFactory(session).from(qEntity)
+				.where(qEntity.id.eq(id)).fetchOne();
 		Assert.assertEquals(statistics.getEntityLoadCount(), entityLoadCount);
 		Assert.assertEquals(statistics.getSecondLevelCacheMissCount(),
 				secondLevelCacheMissCount);
@@ -218,7 +212,8 @@ public class CacheModeService {
 			Long id, long entityLoadCount, long secondLevelCacheMissCount,
 			long secondLevelCacheHitCount, long secondLevelCachePutCount) {
 		Statistics statistics = clearAndGetStatistics(sessionFactory);
-		entityManager.find(CacheModeOneEntity.class, id);
+		Session session = sessionFactory.getCurrentSession();
+		session.get(CacheModeOneEntity.class, id);
 		Assert.assertEquals(statistics.getEntityLoadCount(), entityLoadCount);
 		Assert.assertEquals(statistics.getSecondLevelCacheMissCount(),
 				secondLevelCacheMissCount);
@@ -231,7 +226,6 @@ public class CacheModeService {
 	private void assertCacheMode(Long id, CacheMode cacheMode,
 			long entityLoadCount, long secondLevelCacheMissCount,
 			long secondLevelCacheHitCount, long secondLevelCachePutCount) {
-		SessionFactory sessionFactory = getSessionFactory();
 		Statistics statistics = clearAndGetStatistics(sessionFactory);
 		Session session = evictAndGetSession(sessionFactory);
 		session.setCacheMode(cacheMode);
@@ -258,12 +252,7 @@ public class CacheModeService {
 		return statistics;
 	}
 
-	private SessionFactory getSessionFactory() {
-		return entityManager.getEntityManagerFactory().unwrap(
-				SessionFactory.class);
-	}
-
-	private JPAQueryFactory getJpaQueryFactory() {
-		return new JPAQueryFactory(entityManager);
+	private HibernateQueryFactory getHibernateQueryFactory(Session session) {
+		return new HibernateQueryFactory(session);
 	}
 }

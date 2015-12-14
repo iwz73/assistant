@@ -41,10 +41,10 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public LocalSessionFactoryBean sessionFactory()
+	public LocalSessionFactoryBean sessionFactory(DataSource dataSource)
 			throws PropertyVetoException {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource());
+		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan(new String[] { environment
 				.getRequiredProperty("hibernate.packagesToScan") });
 		sessionFactory.setHibernateProperties(getHibernateProperties());

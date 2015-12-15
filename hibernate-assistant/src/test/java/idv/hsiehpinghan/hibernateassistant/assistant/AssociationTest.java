@@ -167,14 +167,14 @@ public class AssociationTest {
 		testSingleTableInheritance_2_B_Entity();
 	}
 
-	// @Test
+	@Test
 	public void joinedInheritance() {
 		testJoinedInheritance_1_A_Entity();
 		testJoinedInheritance_2_A_Entity();
 		testJoinedInheritance_2_B_Entity();
 	}
 
-	// @Test
+	@Test
 	public void tablePerClassInheritance() {
 		testTablePerClassInheritance_1_A_Entity();
 		testTablePerClassInheritance_2_A_Entity();

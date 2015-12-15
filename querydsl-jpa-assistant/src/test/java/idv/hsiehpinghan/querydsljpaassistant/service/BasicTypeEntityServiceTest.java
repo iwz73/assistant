@@ -86,7 +86,7 @@ public class BasicTypeEntityServiceTest {
 		Assert.assertEquals(service.findOne(id).getString(), string);
 	}
 
-//	@Test(dependsOnMethods = { "findOne" })
+	@Test(dependsOnMethods = { "findOne" })
 	public void saveRollback() {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		try {
@@ -97,22 +97,22 @@ public class BasicTypeEntityServiceTest {
 		Assert.assertNull(service.findOne(entity.getId()));
 	}
 
-//	@Test(dependsOnMethods = { "findOne" })
+	@Test(dependsOnMethods = { "findOne" })
 	public void countByString() {
 		Assert.assertTrue(service.countByString(string) > 0);
 	}
 
-//	@Test
+	@Test
 	public void exists() {
 		Assert.assertTrue(service.exists(string));
 	}
 
-//	@Test
+	@Test
 	public void findAll() {
 		Assert.assertTrue(service.findAll().size() > 0);
 	}
 
-//	@Test(dependsOnMethods = { "findAll" })
+	@Test(dependsOnMethods = { "findAll" })
 	public void findAllDescentById() {
 		BasicTypeEntity newEntity = generateBasicTypeEntity();
 		service.save(newEntity);
@@ -125,13 +125,13 @@ public class BasicTypeEntityServiceTest {
 		}
 	}
 
-//	@Test(dependsOnMethods = { "findAllDescentById" })
+	@Test(dependsOnMethods = { "findAllDescentById" })
 	public void delete() {
 		service.delete(newId);
 		Assert.assertNull(service.findOne(newId));
 	}
 
-//	@AfterClass
+	@AfterClass
 	public void afterClass() {
 		service.deleteAll();
 	}

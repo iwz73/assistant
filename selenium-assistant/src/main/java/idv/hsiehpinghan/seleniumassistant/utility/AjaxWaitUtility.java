@@ -158,6 +158,28 @@ public class AjaxWaitUtility {
 	}
 
 	/**
+	 * Wait until text end with text.
+	 * 
+	 * @param webElement
+	 * @param text
+	 * @return
+	 */
+	public static boolean waitUntilTextEndWith(final WebElementBase webElement,
+			final String text) {
+		return wait(new Function<Void, Boolean>() {
+			@Override
+			public Boolean apply(Void v) {
+				try {
+					return webElement.getText().endsWith(text);
+				} catch (Exception e) {
+					logger.trace("Exception : ", e);
+					return false;
+				}
+			}
+		});
+	}
+
+	/**
 	 * Wait until webElement displayed.
 	 * 
 	 * @param webElement

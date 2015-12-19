@@ -1,4 +1,4 @@
-CREATE TABLE my_table(string_ STRING, int_ INT)
+CREATE TABLE my_table(tinyint_ TINYINT, smallint_ SMALLINT, int_ INT, bigint_ BIGINT, float_ FLOAT, double_ DOUBLE, boolean_ BOOLEAN, string_ STRING, timestamp_ TIMESTAMP)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
 
 SHOW TABLES;
@@ -6,5 +6,10 @@ SHOW TABLES;
 LOAD DATA LOCAL INPATH '/tmp/data'
 OVERWRITE INTO TABLE my_table;
 
-SELECT string_, int_
+SELECT *
 FROM my_table;
+
+SHOW FUNCTIONS;
+
+DESCRIBE FUNCTION abs;
+

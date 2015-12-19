@@ -5,12 +5,11 @@ import idv.hsiehpinghan.mongodbassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

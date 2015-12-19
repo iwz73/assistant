@@ -1,0 +1,10 @@
+CREATE TABLE my_table(string_ STRING, int_ INT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+SHOW TABLES;
+
+LOAD DATA LOCAL INPATH '/tmp/data'
+OVERWRITE INTO TABLE my_table;
+
+SELECT string_, int_
+FROM my_table;

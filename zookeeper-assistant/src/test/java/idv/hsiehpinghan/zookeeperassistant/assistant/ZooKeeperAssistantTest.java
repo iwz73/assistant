@@ -3,11 +3,12 @@ package idv.hsiehpinghan.zookeeperassistant.assistant;
 import idv.hsiehpinghan.zookeeperassistant.suit.TestngSuitSetting;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs.Ids;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
@@ -15,92 +16,91 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class ZooKeeperAssistantTest {
-	private ZooKeeperAssistant zooKeeperAssistant;
+	private ApplicationContext applicationContext;
 	private String groupPath;
 
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		zooKeeperAssistant = applicationContext
-				.getBean(ZooKeeperAssistant.class);
+		applicationContext = TestngSuitSetting.getApplicationContext();
 	}
 
 	@Test
-	public void generateZooKeeper() throws Exception {
-		ZooKeeper zooKeeper = null;
+	public void init() throws Exception {
+		ZooKeeperAssistant zooKeeperAssistant = applicationContext
+				.getBean(ZooKeeperAssistant.class);
 		try {
-			zooKeeper = zooKeeperAssistant.generateZooKeeper();
-			Assert.assertNotNull(zooKeeper);
+			zooKeeperAssistant.init();
+			Assert.assertNotNull(zooKeeperAssistant);
 		} finally {
-			if (zooKeeper != null) {
-				zooKeeper.close();
-			}
+			zooKeeperAssistant.close();
 		}
 	}
 
-	@Test(dependsOnMethods = { "generateZooKeeper" })
+	@Test(dependsOnMethods = { "init" })
 	public void createGroup() throws Exception {
-		ZooKeeper zooKeeper = null;
+		ZooKeeperAssistant zooKeeperAssistant = applicationContext
+				.getBean(ZooKeeperAssistant.class);
 		try {
-			zooKeeper = zooKeeperAssistant.generateZooKeeper();
-			String path = "/group" + System.nanoTime();
-			groupPath = zooKeeper.create(path, null, Ids.OPEN_ACL_UNSAFE,
-					CreateMode.PERSISTENT);
+			zooKeeperAssistant.init();
+			String path = "/group-";
+			byte[] data = null;
+			ArrayList<ACL> acls = Ids.OPEN_ACL_UNSAFE;
+			CreateMode createMode = CreateMode.PERSISTENT_SEQUENTIAL;
+			groupPath = zooKeeperAssistant.create(path, data, acls, createMode);
 			Assert.assertNotNull(groupPath);
 		} finally {
-			if (zooKeeper != null) {
-				zooKeeper.close();
-			}
+			zooKeeperAssistant.close();
 		}
 	}
 
 	@Test(dependsOnMethods = { "createGroup" })
 	public void addGroupMember() throws Exception {
-		ZooKeeper zooKeeper = null;
+		ZooKeeperAssistant zooKeeperAssistant = applicationContext
+				.getBean(ZooKeeperAssistant.class);
 		try {
-			zooKeeper = zooKeeperAssistant.generateZooKeeper();
-			String path = groupPath + "/member" + System.nanoTime();
-			String memberPath = zooKeeper.create(path, null,
-					Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+			zooKeeperAssistant.init();
+			String path = groupPath + "/member-";
+			byte[] data = null;
+			ArrayList<ACL> acls = Ids.OPEN_ACL_UNSAFE;
+			CreateMode createMode = CreateMode.PERSISTENT_SEQUENTIAL;
+			String memberPath = zooKeeperAssistant.create(path, data, acls,
+					createMode);
 			Assert.assertNotNull(memberPath);
 		} finally {
-			if (zooKeeper != null) {
-				zooKeeper.close();
-			}
+
 		}
 	}
 
 	@Test(dependsOnMethods = { "addGroupMember" })
 	public void listGroupMember() throws Exception {
-		ZooKeeper zooKeeper = null;
+		ZooKeeperAssistant zooKeeperAssistant = applicationContext
+				.getBean(ZooKeeperAssistant.class);
 		try {
-			zooKeeper = zooKeeperAssistant.generateZooKeeper();
-			List<String> members = zooKeeper.getChildren(groupPath, false);
+			zooKeeperAssistant.init();
+			List<String> members = zooKeeperAssistant.getChildren(groupPath,
+					false);
 			Assert.assertEquals(members.size(), 1);
 		} finally {
-			if (zooKeeper != null) {
-				zooKeeper.close();
-			}
+			zooKeeperAssistant.close();
 		}
 	}
 
 	@Test(dependsOnMethods = { "listGroupMember" })
 	public void deleteGroup() throws Exception {
-		ZooKeeper zooKeeper = null;
+		ZooKeeperAssistant zooKeeperAssistant = applicationContext
+				.getBean(ZooKeeperAssistant.class);
 		try {
-			zooKeeper = zooKeeperAssistant.generateZooKeeper();
-			List<String> members = zooKeeper.getChildren(groupPath, false);
+			zooKeeperAssistant.init();
+			List<String> members = zooKeeperAssistant.getChildren(groupPath,
+					false);
 			for (String member : members) {
-				zooKeeper.delete(groupPath + "/" + member, -1);
+				zooKeeperAssistant.delete(groupPath + "/" + member, -1);
 			}
-			zooKeeper.delete(groupPath, -1);
-			Stat stat = zooKeeper.exists(groupPath, false);
+			zooKeeperAssistant.delete(groupPath, -1);
+			Stat stat = zooKeeperAssistant.exists(groupPath, false);
 			Assert.assertNull(stat);
 		} finally {
-			if (zooKeeper != null) {
-				zooKeeper.close();
-			}
+			zooKeeperAssistant.close();
 		}
 	}
 }

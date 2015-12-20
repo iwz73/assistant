@@ -1,13 +1,51 @@
+#CREATE TABLE defaul_table(string_ STRING)
+#ROW FORMAT DELIMITED
+#	FIELDS TERMINATED BY '\001'
+#	COLLECTION ITEMS TERMINATED BY '\002'
+#	MAP KEYS TERMINATED BY '\003'
+#	LINES TERMINATED BY '\n'
+#STORED AS TEXTFILE;
+
 CREATE TABLE my_table(tinyint_ TINYINT, smallint_ SMALLINT, int_ INT, bigint_ BIGINT, float_ FLOAT, double_ DOUBLE, boolean_ BOOLEAN, string_ STRING, timestamp_ TIMESTAMP)
+PARTITIONED BY (partition_0 TIMESTAMP, partition_1 String)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+#CREATE EXTERNAL TABLE my_table(tinyint_ TINYINT, smallint_ SMALLINT, int_ INT, bigint_ BIGINT, float_ FLOAT, double_ DOUBLE, boolean_ BOOLEAN, string_ STRING, timestamp_ TIMESTAMP)
+#ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+#LOCATION '/tmp/data';
+
+CREATE TABLE my_bucket_table(tinyint_ TINYINT, smallint_ SMALLINT, int_ INT, bigint_ BIGINT, float_ FLOAT, double_ DOUBLE, boolean_ BOOLEAN, string_ STRING, timestamp_ TIMESTAMP, partition_0 TIMESTAMP, partition_1 String)
+CLUSTERED BY (tinyint_) SORTED BY (tinyint_ ASC) INTO 2 BUCKETS
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
 
 SHOW TABLES;
 
+SHOW PARTITIONS my_table;
+
 LOAD DATA LOCAL INPATH '/tmp/data'
-OVERWRITE INTO TABLE my_table;
+INTO TABLE my_table
+PARTITION(partition_0='2015-03-01 12:00:00.123456789', partition_1='partition_1');
+
+INSERT OVERWRITE TABLE my_bucket_table
+SELECT *
+FROM my_table;
+
+#LOAD DATA LOCAL INPATH '/tmp/data'
+#OVERWRITE INTO TABLE my_table;
+
+#LOAD DATA INPATH '/tmp/data'
+#INTO TABLE my_table;
 
 SELECT *
 FROM my_table;
+
+SELECT *
+FROM my_bucket_table
+TABLESAMPLE(BUCKET 1 OUT OF 2 ON tinyint_);
+
+#SELECT *
+#FROM my_table
+#WHERE partition_0='2015-03-01 12:00:00.123456789';
 
 SHOW FUNCTIONS;
 

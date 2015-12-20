@@ -51,3 +51,7 @@ SHOW FUNCTIONS;
 
 DESCRIBE FUNCTION abs;
 
+FROM my_table
+SELECT *
+DISTRIBUTE BY smallint_;
+

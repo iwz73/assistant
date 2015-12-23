@@ -39,10 +39,29 @@ public class Select extends WebElementWithBy {
 		getSeleniumSelect().selectByVisibleText(text);
 	}
 
+	/**
+	 * Get selected text.
+	 * 
+	 * @return
+	 */
 	public String getSelectedText() {
 		for (Option opt : getOptions()) {
 			if (opt.isSelected()) {
 				return opt.getText();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get selected value.
+	 * 
+	 * @return
+	 */
+	public String getSelectedValue() {
+		for (Option opt : getOptions()) {
+			if (opt.isSelected()) {
+				return opt.getValue();
 			}
 		}
 		return null;

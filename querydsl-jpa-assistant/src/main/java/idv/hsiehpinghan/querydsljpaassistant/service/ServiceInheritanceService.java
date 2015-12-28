@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Repository
+@Transactional
 public class ServiceInheritanceService extends CommonServiceInheritanceService {
 	private QServiceInheritanceEntity qEntity = QServiceInheritanceEntity.serviceInheritanceEntity;
 	@Autowired

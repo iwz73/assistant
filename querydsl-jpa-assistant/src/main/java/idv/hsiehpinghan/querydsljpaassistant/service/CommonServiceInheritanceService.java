@@ -3,10 +3,12 @@ package idv.hsiehpinghan.querydsljpaassistant.service;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
+@Repository
 @Transactional
 public abstract class CommonServiceInheritanceService {
 	@Autowired

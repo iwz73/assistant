@@ -55,3 +55,16 @@ FROM my_table
 SELECT *
 DISTRIBUTE BY smallint_;
 
+INSERT OVERWRITE LOCAL DIRECTORY '/tmp'
+FROM my_table
+SELECT *
+DISTRIBUTE BY smallint_;
+
+CREATE DATABASE IF NOT EXISTS my_database
+LOCATION '/tmp';
+
+CREATE TABLE my_database.my_database_table AS
+SELECT *
+FROM default.my_table;
+
+

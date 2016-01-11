@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.solrassistant.assistant;
 
-import idv.hsiehpinghan.solrassistant.document.BasicDocument;
-
 import java.io.IOException;
 
 import org.apache.solr.client.solrj.SolrQuery;
@@ -24,11 +22,11 @@ public class SolrAssistant {
 		return httpSolrServer.commit();
 	}
 
-	public UpdateResponse addBean(BasicDocument document) throws IOException,
-			SolrServerException {
-		httpSolrServer.addBean(document);
-		return httpSolrServer.commit();
-	}
+//	public UpdateResponse addBean(BasicDocument document) throws IOException,
+//			SolrServerException {
+//		httpSolrServer.addBean(document);
+//		return httpSolrServer.commit();
+//	}
 
 	public QueryResponse query(SolrQuery solrQuery) throws SolrServerException {
 		return httpSolrServer.query(solrQuery);

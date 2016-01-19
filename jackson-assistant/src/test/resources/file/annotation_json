@@ -1,0 +1,28 @@
+{
+	"boolean" : true,
+	"integer" : 1,
+	"float" : 2.2,
+	"string" : "string",
+	"object" : {
+		"integer" : 1,
+		"string" : "string"
+	},
+	"array" : ["array_0" , "array_1" , "array_2"],
+	"object_array" : [
+		{
+			"integer" : 0,
+			"string" : "string_0"
+		},
+		{
+			"integer" : 1,
+			"string" : "string_1"
+		},
+		{
+			"integer" : 2,
+			"string" : "string_2"
+		}
+	],
+	"null" : null,
+	"json_ignore_properties" : "json_ignore_properties",
+	"json_ignore" : "json_ignore"
+}

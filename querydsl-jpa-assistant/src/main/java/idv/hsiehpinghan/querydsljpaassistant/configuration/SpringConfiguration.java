@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @EnableTransactionManagement
-@Configuration("queryAssistantSpringConfiguration")
+@Configuration("querydslAssistantSpringConfiguration")
 @PropertySource("classpath:/querydsl_jpa_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.querydsljpaassistant" })
 public class SpringConfiguration {

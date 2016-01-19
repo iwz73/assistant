@@ -29,6 +29,8 @@ import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableFromEnt
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapEmbeddableToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapFromEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyMapToEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyUnidirectionFromEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.ManyToManyUnidirectionToEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnManyEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinColumnOneEntity;
 import idv.hsiehpinghan.hibernateassistant.entity.ManyToOneJoinTableManyEntity;
@@ -92,6 +94,7 @@ import idv.hsiehpinghan.hibernateassistant.service.ManyToManyCompoundIdService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapEmbeddableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToManyMapService;
+import idv.hsiehpinghan.hibernateassistant.service.ManyToManyUnidirectionService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinColumnService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneJoinTableService;
 import idv.hsiehpinghan.hibernateassistant.service.ManyToOneService;
@@ -510,6 +513,21 @@ public class AssociationTest {
 	}
 
 	@Test
+	public void ManyToManyUnidirection() {
+		ManyToManyUnidirectionService service = applicationContext
+				.getBean(ManyToManyUnidirectionService.class);
+		Collection<ManyToManyUnidirectionFromEntity> entities = generateManyToManyUnidirectionFromEntities();
+		for (ManyToManyUnidirectionFromEntity entity : entities) {
+			service.saveOrUpdate(entity);
+		}
+		for (ManyToManyUnidirectionFromEntity entity : entities) {
+			int id = entity.getId();
+			ManyToManyUnidirectionFromEntity fromEntity = service.findOne(id);
+			Assert.assertEquals(fromEntity.getTos().size(), 3);
+		}
+	}
+	
+	@Test
 	public void embeddedObject() {
 		EmbeddedObjectService service = applicationContext
 				.getBean(EmbeddedObjectService.class);
@@ -670,6 +688,14 @@ public class AssociationTest {
 		return entities;
 	}
 
+	private Collection<ManyToManyUnidirectionFromEntity> generateManyToManyUnidirectionFromEntities() {
+		Collection<ManyToManyUnidirectionFromEntity> entities = new ArrayList<ManyToManyUnidirectionFromEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateManyToManyUnidirectionFromEntity(i));
+		}
+		return entities;
+	}
+	
 	private Collection<ManyToManyBidirectionFromEntity> generateManyToManyBidirectionFromEntities() {
 		Collection<ManyToManyBidirectionFromEntity> entities = new ArrayList<ManyToManyBidirectionFromEntity>();
 		for (int i = 0; i < 3; ++i) {
@@ -710,6 +736,14 @@ public class AssociationTest {
 		return from;
 	}
 
+	private ManyToManyUnidirectionFromEntity generateManyToManyUnidirectionFromEntity(
+			int i) {
+		ManyToManyUnidirectionFromEntity from = new ManyToManyUnidirectionFromEntity();
+		from.setId(i);
+		from.setTos(generateManyToManyUnidirectionToEntities(from));
+		return from;
+	}
+	
 	private ManyToManyBidirectionFromEntity generateManyToManyBidirectionFromEntity(
 			int i) {
 		ManyToManyBidirectionFromEntity from = new ManyToManyBidirectionFromEntity();
@@ -758,6 +792,15 @@ public class AssociationTest {
 		return entities;
 	}
 
+	private Collection<ManyToManyUnidirectionToEntity> generateManyToManyUnidirectionToEntities(
+			ManyToManyUnidirectionFromEntity from) {
+		Collection<ManyToManyUnidirectionToEntity> entities = new ArrayList<ManyToManyUnidirectionToEntity>();
+		for (int i = 0; i < 3; ++i) {
+			entities.add(generateManyToManyUnidirectionToEntity(from, i));
+		}
+		return entities;
+	}
+	
 	private Collection<ManyToManyBidirectionToEntity> generateManyToManyBidirectionToEntities(
 			ManyToManyBidirectionFromEntity from) {
 		Collection<ManyToManyBidirectionToEntity> entities = new ArrayList<ManyToManyBidirectionToEntity>();
@@ -806,6 +849,13 @@ public class AssociationTest {
 		return to;
 	}
 
+	private ManyToManyUnidirectionToEntity generateManyToManyUnidirectionToEntity(
+			ManyToManyUnidirectionFromEntity from, int i) {
+		ManyToManyUnidirectionToEntity to = new ManyToManyUnidirectionToEntity();
+		to.setId(i);
+		return to;
+	}
+	
 	private ManyToManyBidirectionToEntity generateManyToManyBidirectionToEntity(
 			ManyToManyBidirectionFromEntity from, int i) {
 		ManyToManyBidirectionToEntity to = new ManyToManyBidirectionToEntity();

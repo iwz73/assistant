@@ -131,13 +131,13 @@ public class BasicTest {
 		Assert.assertEquals(returnEntity.getClazz(), clazz);
 		Assert.assertEquals(returnEntity.getSerializable().getClass(),
 				serializable.getClass());
-		Assert.assertEquals(returnEntity.getDate(), date);
+		Assert.assertEquals(returnEntity.getDate().getTime(), date.getTime());
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateDate(),
 				"yyyy/MM/dd"), DateFormatUtils.format(dateDate, "yyyy/MM/dd"));
 		Assert.assertEquals(
 				DateFormatUtils.format(returnEntity.getTimeDate(), "hh:mm:ss"),
 				DateFormatUtils.format(timeDate, "hh:mm:ss"));
-		Assert.assertEquals(returnEntity.getTimestampDate(), timestampDate);
+		Assert.assertEquals(returnEntity.getTimestampDate().getTime(), timestampDate.getTime());
 		Assert.assertEquals(returnEntity.getCalendar(), calendar);
 		Assert.assertEquals(DateFormatUtils.format(
 				returnEntity.getDateCalendar(), "yyyy/MM/dd"), DateFormatUtils

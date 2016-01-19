@@ -161,7 +161,7 @@ public class Post implements Serializable {
 	 */
 	@ManyToMany
 	@Column(name = "[to]")
-	@JoinTable(name = "J_PAGE_TO", joinColumns = @JoinColumn(name = "page_id"), inverseJoinColumns = @JoinColumn(name = "reference_id"))
+	@JoinTable(name = "J_PAGE_TO", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "reference_id"))
 	private List<Reference> to;
 	/**
 	 * A string indicating the object type of this post.
@@ -180,7 +180,7 @@ public class Post implements Serializable {
 	 */
 	@ManyToMany
 	@Column(name = "with_tags")
-	@JoinTable(name = "J_PAGE_WITH_TAGS", joinColumns = @JoinColumn(name = "page_id"), inverseJoinColumns = @JoinColumn(name = "reference_id"))
+	@JoinTable(name = "J_PAGE_WITH_TAGS", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "reference_id"))
 	private List<Reference> withTags;
 
 	public String getId() {

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "PAGE")
+@Table(name = "MAILING_ADDRESS")
 public class MailingAddress implements Serializable {
 	private static final long serialVersionUID = 1L;
 

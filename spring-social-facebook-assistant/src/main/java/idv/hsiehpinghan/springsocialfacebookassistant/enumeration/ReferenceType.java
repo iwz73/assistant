@@ -1,5 +1,5 @@
 package idv.hsiehpinghan.springsocialfacebookassistant.enumeration;
 
 public enum ReferenceType {
-	Group, Page;
+	USER, PAGE, GROUP, EVENT, APPLICATION;
 }

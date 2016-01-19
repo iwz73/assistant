@@ -138,7 +138,7 @@ public class User implements Serializable {
 	 */
 	@ManyToMany
 	@Column(name = "inspirational_people")
-	@JoinTable(name = "J_USER_INSPIRATIONAL_PEOPLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "inspirational_people_id"))
+	@JoinTable(name = "J_USER_INSPIRATIONAL_PEOPLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "reference_id"))
 	private List<Reference> inspirationalPeople;
 	/**
 	 * Is the app making the request installed?
@@ -152,6 +152,7 @@ public class User implements Serializable {
 	 * Genders the person is interested in
 	 */
 	@ElementCollection
+	@Column(name = "interested_in")
 	private List<String> interestedIn;
 	/**
 	 * People with large numbers of followers can have the authenticity of their

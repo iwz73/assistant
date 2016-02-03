@@ -1,0 +1,26 @@
+{
+	"_boolean" : true,
+	"_integer" : 1,
+	"_float" : 2.2,
+	"_string" : "string",
+	"_object" : {
+		"_integer" : 1,
+		"_string" : "string"
+	},
+	"_array" : ["array_0" , "array_1" , "array_2"],
+	"_object_array" : [
+		{
+			"_integer" : 0,
+			"_string" : "string_0"
+		},
+		{
+			"_integer" : 1,
+			"_string" : "string_1"
+		},
+		{
+			"_integer" : 2,
+			"_string" : "string_2"
+		}
+	],
+	"_null" : null
+}

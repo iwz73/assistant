@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>idv.hsiehpinghan</groupId>
-	<artifactId>batch-assistant</artifactId>
+	<artifactId>spring-batch-assistant</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>batch-assistant</name>
+	<name>spring-batch-assistant</name>
 	<url>http://maven.apache.org</url>
 
 	<build>

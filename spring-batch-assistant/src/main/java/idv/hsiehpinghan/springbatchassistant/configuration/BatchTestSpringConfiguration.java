@@ -17,23 +17,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BatchTestSpringConfiguration extends DefaultBatchConfigurer {
-	@Autowired
-	private JobBuilderFactory jobs;
-	@Autowired
-	private StepBuilderFactory steps;
-
-	@Bean
-	public Job job(@Qualifier("step1") Step step1) {
-		return jobs.get("myJob").start(step1).build();
-	}
-
-	@Bean
-	protected Step step1(ItemReader<TestPojo> reader, ItemWriter<TestPojo> writer,
-			ItemProcessor<TestPojo, TestPojo> processor) {
-		return steps.get("step1").<TestPojo, TestPojo> chunk(10).reader(reader)
-				.processor(processor).writer(writer).build();
-	}
+public class BatchTestSpringConfiguration {
+//	@Autowired
+//	private JobBuilderFactory jobs;
+//	@Autowired
+//	private StepBuilderFactory steps;
+//
+//	@Bean
+//	public Job job(@Qualifier("step1") Step step1) {
+//		return jobs.get("myJob").start(step1).build();
+//	}
+//
+//	@Bean
+//	protected Step step1(ItemReader<TestPojo> reader, ItemWriter<TestPojo> writer,
+//			ItemProcessor<TestPojo, TestPojo> processor) {
+//		return steps.get("step1").<TestPojo, TestPojo> chunk(10).reader(reader)
+//				.processor(processor).writer(writer).build();
+//	}
 
 
 }

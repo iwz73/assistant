@@ -11,18 +11,18 @@ import org.testng.annotations.Test;
 
 public class SpringBatchAssistantTest {
 	private ApplicationContext applicationContext;
-	private Job job;
+//	private Job job;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		applicationContext = TestngSuitSetting.getApplicationContext();
-		job = applicationContext.getBean(Job.class);
+//		job = applicationContext.getBean(Job.class);
 	}
 
 	@Test
 	public void test() throws Exception {
-		JobLauncher jobLauncher = new SimpleJobLauncher();
-		jobLauncher.run(job, null);
+//		JobLauncher jobLauncher = new SimpleJobLauncher();
+//		jobLauncher.run(job, null);
 	}
 
 }

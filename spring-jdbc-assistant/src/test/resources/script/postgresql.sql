@@ -1,0 +1,2 @@
+CREATE TABLE spring_jdbc_assistant.one_entity(id integer NOT NULL,name character varying(255),CONSTRAINT one_entity_pkey PRIMARY KEY (id));
+CREATE TABLE spring_jdbc_assistant.many_entity(id integer NOT NULL,name character varying(255),one_id integer,CONSTRAINT many_entity_pkey PRIMARY KEY (id),CONSTRAINT fk_many_entity_one_entity FOREIGN KEY (one_id) REFERENCES spring_jdbc_assistant.one_entity (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION);

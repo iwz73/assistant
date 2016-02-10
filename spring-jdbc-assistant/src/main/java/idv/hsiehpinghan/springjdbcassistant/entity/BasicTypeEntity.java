@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.springjdbcassistant.entity;
 
-import java.io.InputStream;
-import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -22,8 +20,8 @@ public class BasicTypeEntity implements Serializable {
 	private java.sql.Date sqlDate;
 	private java.sql.Time sqlTime;
 	private java.sql.Timestamp sqlTimestamp;
-	private Reader clobReader;
-	private InputStream blobInputStream;
+	private char[] clobCharArray;
+	private byte[] blobByteArray;
 	// array
 	private byte[] byteArray;
 
@@ -131,20 +129,20 @@ public class BasicTypeEntity implements Serializable {
 		this.sqlTimestamp = sqlTimestamp;
 	}
 
-	public Reader getClobReader() {
-		return clobReader;
+	public char[] getClobCharArray() {
+		return clobCharArray;
 	}
 
-	public void setClobReader(Reader clobReader) {
-		this.clobReader = clobReader;
+	public void setClobCharArray(char[] clobCharArray) {
+		this.clobCharArray = clobCharArray;
 	}
 
-	public InputStream getBlobInputStream() {
-		return blobInputStream;
+	public byte[] getBlobByteArray() {
+		return blobByteArray;
 	}
 
-	public void setBlobInputStream(InputStream blobInputStream) {
-		this.blobInputStream = blobInputStream;
+	public void setBlobByteArray(byte[] blobByteArray) {
+		this.blobByteArray = blobByteArray;
 	}
 
 	public byte[] getByteArray() {

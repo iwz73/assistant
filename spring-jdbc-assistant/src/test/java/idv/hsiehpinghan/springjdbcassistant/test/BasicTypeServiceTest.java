@@ -3,18 +3,19 @@ package idv.hsiehpinghan.springjdbcassistant.test;
 import idv.hsiehpinghan.springjdbcassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.springjdbcassistant.service.BasicTypeService;
 import idv.hsiehpinghan.springjdbcassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
+import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -34,70 +35,57 @@ public class BasicTypeServiceTest {
 			.getTimeInMillis());
 	private java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(Calendar
 			.getInstance().getTimeInMillis());
-	private Reader clobReader;
-	private InputStream blobInputStream;
+	private char[] clobCharArray;
+	private byte[] blobByteArray;
 	private byte[] byteArray = getByteArray();
 
 	private ApplicationContext applicationContext;
-	private InputStream clobIs;
-	private long clobContentLength;
-	private InputStreamReader clobIsr;
-	private InputStream blobIs;
-	private long blobContentLength;
 	private BasicTypeService service;
 	private BasicTypeEntity entity;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		applicationContext = TestngSuitSetting.getApplicationContext();
-		clobReader = generateClobReader();
-		blobInputStream = generateBlobInputStream();
 		service = applicationContext.getBean(BasicTypeService.class);
+		clobCharArray = generateClobCharArray();
+		blobByteArray = generateBlobByteArray();
 	}
 
 	@Test
-	public void insertByAbstractLobCreatingPreparedStatementCallback()
-			throws Exception {
+	public void insertByPreparedStatement() {
 		entity = generateBasicTypeEntity();
-		int result = service
-				.insertByAbstractLobCreatingPreparedStatementCallback(entity,
-						clobContentLength, blobContentLength);
+		int result = service.insertByPreparedStatement(entity);
 		Assert.assertEquals(result, 1);
 	}
 
-	// @Test
-	// public void insertByPreparedStatement() {
-	// entity = generateBasicTypeEntity();
-	// int result = service.insertByPreparedStatement(entity);
-	// Assert.assertEquals(result, 1);
-	// }
-	//
-	// @Test
-	// public void queryForObjectByRowMapper() throws Exception {
-	// BasicTypeEntity entity = service.queryForObjectByRowMapper(this.entity
-	// .getId());
-	// Assert.assertEquals(entity.isPrimativeBoolean(), primativeBoolean);
-	// Assert.assertEquals(String.valueOf(entity.getPrimativeByte()),
-	// String.valueOf(primativeByte));
-	// Assert.assertEquals(entity.getPrimativeDouble(), primativeDouble);
-	// Assert.assertEquals(entity.getPrimativeFloat(), primativeFloat);
-	// Assert.assertEquals(entity.getPrimativeInt(), primativeInt);
-	// Assert.assertEquals(entity.getPrimativeLong(), primativeLong);
-	// Assert.assertEquals(entity.getPrimativeShort(), primativeShort);
-	// Assert.assertEquals(entity.getString(), string);
-	// Assert.assertEquals(entity.getBigDecimal().doubleValue(),
-	// bigDecimal.doubleValue());
-	// Assert.assertEquals(
-	// DateFormatUtils.format(entity.getSqlDate(), "yyyy/MM/dd"),
-	// DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
-	// Assert.assertEquals(
-	// DateFormatUtils.format(entity.getSqlTime(), "hh:mm:ss"),
-	// DateFormatUtils.format(sqlTime, "hh:mm:ss"));
-	// Assert.assertEquals(entity.getSqlTimestamp(), sqlTimestamp);
-	// Assert.assertEquals(entity.getClob(), null);
-	// Assert.assertEquals(entity.getBlob(), null);
-	// Assert.assertEquals(entity.getByteArray(), byteArray);
-	// }
+	@Test(dependsOnMethods = { "insertByPreparedStatement" })
+	public void queryForObjectByRowMapper() throws Exception {
+		BasicTypeEntity entity = service.queryForObjectByRowMapper(this.entity
+				.getId());
+		Assert.assertEquals(entity.isPrimativeBoolean(), primativeBoolean);
+		Assert.assertEquals(String.valueOf(entity.getPrimativeByte()),
+				String.valueOf(primativeByte));
+		Assert.assertEquals(entity.getPrimativeDouble(), primativeDouble);
+		Assert.assertEquals(entity.getPrimativeFloat(), primativeFloat);
+		Assert.assertEquals(entity.getPrimativeInt(), primativeInt);
+		Assert.assertEquals(entity.getPrimativeLong(), primativeLong);
+		Assert.assertEquals(entity.getPrimativeShort(), primativeShort);
+		Assert.assertEquals(entity.getString(), string);
+		Assert.assertEquals(entity.getBigDecimal().doubleValue(),
+				bigDecimal.doubleValue());
+		Assert.assertEquals(
+				DateFormatUtils.format(entity.getSqlDate(), "yyyy/MM/dd"),
+				DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
+		Assert.assertEquals(
+				DateFormatUtils.format(entity.getSqlTime(), "hh:mm:ss"),
+				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
+		Assert.assertEquals(entity.getSqlTimestamp(), sqlTimestamp);
+		Assert.assertEquals(String.valueOf(entity.getClobCharArray()),
+				String.valueOf(clobCharArray));
+		Assert.assertEquals(String.valueOf(entity.getBlobByteArray()),
+				String.valueOf(blobByteArray));
+		Assert.assertEquals(entity.getByteArray(), byteArray);
+	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
 		BasicTypeEntity entity = new BasicTypeEntity();
@@ -114,48 +102,31 @@ public class BasicTypeServiceTest {
 		entity.setSqlDate(sqlDate);
 		entity.setSqlTime(sqlTime);
 		entity.setSqlTimestamp(sqlTimestamp);
-		entity.setClobReader(clobReader);
-		entity.setBlobInputStream(blobInputStream);
+		entity.setClobCharArray(clobCharArray);
+		entity.setBlobByteArray(blobByteArray);
 		entity.setByteArray(byteArray);
 		return entity;
 	}
 
-	private Reader generateClobReader() throws IOException {
+	private char[] generateClobCharArray() throws IOException {
 		Resource resource = applicationContext
 				.getResource("classpath:/file/file.xml");
-		clobIs = resource.getInputStream();
-		clobContentLength = resource.contentLength();
-		clobIsr = new InputStreamReader(clobIs);
-		return clobIsr;
+		InputStream inputStream = resource.getInputStream();
+		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+		int length = (int) resource.contentLength();
+		return ReaderUtility.readAsCharArray(inputStreamReader, length);
 	}
 
-	private InputStream generateBlobInputStream() throws IOException {
+	private byte[] generateBlobByteArray() throws IOException {
 		Resource resource = applicationContext
 				.getResource("classpath:/file/image.png");
-		blobIs = resource.getInputStream();
-		blobContentLength = resource.contentLength();
-		return blobIs;
+		InputStream inputStream = resource.getInputStream();
+		int length = (int) resource.contentLength();
+		return InputStreamUtility.readAsByteArray(inputStream, length);
 	}
-
-	// private char[] getCharArray() {
-	// return new char[] { 'a', 'b', 'c' };
-	// }
 
 	private byte[] getByteArray() {
 		return new byte[] { 0x1, 0x2, 0x3 };
-	}
-
-	@AfterClass
-	public void afterClass() throws Exception {
-		if (clobIsr != null) {
-			clobIsr.close();
-		}
-		if (clobIs != null) {
-			clobIs.close();
-		}
-		if (blobInputStream != null) {
-			blobInputStream.close();
-		}
 	}
 
 	//

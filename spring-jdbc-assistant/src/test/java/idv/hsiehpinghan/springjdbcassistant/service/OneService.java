@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class OneEntityService {
+public class OneService {
 	private ApplicationContext applicationContext;
 
 	@BeforeClass

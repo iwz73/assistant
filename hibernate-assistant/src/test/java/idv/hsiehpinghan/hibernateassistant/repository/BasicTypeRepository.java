@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.hibernateassistant.repository;
 
 import idv.hsiehpinghan.hibernateassistant.entity.BasicTypeEntity;
+import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
 import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
 import java.io.IOException;
@@ -58,6 +59,6 @@ public class BasicTypeRepository {
 	private String convertToString(java.sql.Blob blob) throws SQLException,
 			IOException {
 		InputStream inputStream = blob.getBinaryStream();
-		return ReaderUtility.readAsString(inputStream);
+		return InputStreamUtility.readAsString(inputStream);
 	}
 }

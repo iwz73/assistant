@@ -56,7 +56,7 @@ public class SpringConfiguration {
 	@PostConstruct
 	protected void postConstruct() throws ScriptException, SQLException {
 		Resource resource = resourceLoader
-				.getResource("classpath:script/postgresql.sql");
+				.getResource("classpath:/script/postgresql.sql");
 		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
 	}
 }

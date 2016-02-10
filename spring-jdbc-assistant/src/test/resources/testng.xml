@@ -9,7 +9,7 @@
 	<test name="test">
 		<classes>
 			<class
-				name="idv.hsiehpinghan.springjdbcassistant.service.OneEntityService" />
+				name="idv.hsiehpinghan.springjdbcassistant.test.BasicTypeServiceTest" />
 		</classes>
 	</test>
 </suite>

@@ -14,6 +14,7 @@ import idv.hsiehpinghan.hibernateassistant.service.SequenceGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TableGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TemporalService;
 import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
 import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
 import java.io.IOException;
@@ -137,7 +138,8 @@ public class BasicTest {
 		Assert.assertEquals(
 				DateFormatUtils.format(returnEntity.getTimeDate(), "hh:mm:ss"),
 				DateFormatUtils.format(timeDate, "hh:mm:ss"));
-		Assert.assertEquals(returnEntity.getTimestampDate().getTime(), timestampDate.getTime());
+		Assert.assertEquals(returnEntity.getTimestampDate().getTime(),
+				timestampDate.getTime());
 		Assert.assertEquals(returnEntity.getCalendar(), calendar);
 		Assert.assertEquals(DateFormatUtils.format(
 				returnEntity.getDateCalendar(), "yyyy/MM/dd"), DateFormatUtils
@@ -327,6 +329,6 @@ public class BasicTest {
 	private String convertToString(java.sql.Blob blob) throws SQLException,
 			IOException {
 		InputStream inputStream = blob.getBinaryStream();
-		return ReaderUtility.readAsString(inputStream);
+		return InputStreamUtility.readAsString(inputStream);
 	}
 }

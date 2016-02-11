@@ -7,7 +7,18 @@ import java.sql.SQLException;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
+import org.springframework.batch.core.configuration.support.MapJobRegistry;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.batch.core.launch.support.SimpleJobOperator;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +30,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
@@ -32,6 +44,19 @@ public class SpringConfiguration {
 	private ResourceLoader resourceLoader;
 	@Autowired
 	private DataSource dataSource;
+	// @EnableBatchProcessing instance.
+	@Autowired
+	private JobRepository jobRepository;
+	@Autowired
+	private JobLauncher jobLauncher;
+	@Autowired
+	private JobRegistry jobRegistry;
+	@Autowired
+	private PlatformTransactionManager transactionManager;
+	@Autowired
+	private JobBuilderFactory jobBuilders;
+	@Autowired
+	private StepBuilderFactory stepBuilders;
 
 	@PostConstruct
 	protected void postConstruct() throws ScriptException, SQLException {
@@ -61,4 +86,36 @@ public class SpringConfiguration {
 		return comboPooledDataSource;
 	}
 
+//	@Bean
+//	public JobExplorer jobExplorer(DataSource dataSource) throws Exception {
+//		JobExplorerFactoryBean jobExplorerFactoryBean = new JobExplorerFactoryBean();
+//		jobExplorerFactoryBean.setDataSource(dataSource);
+//		jobExplorerFactoryBean.afterPropertiesSet();
+//		return jobExplorerFactoryBean.getObject();
+//	}
+//
+//	@Bean
+//	public JobRegistry jobRegistry() {
+//		JobRegistry jobRegistry = new MapJobRegistry();
+//		return jobRegistry;
+//	}
+//
+//	@Bean
+//	public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(
+//			JobRegistry jobRegistry) {
+//		JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor = new JobRegistryBeanPostProcessor();
+//		jobRegistryBeanPostProcessor.setJobRegistry(jobRegistry);
+//		return jobRegistryBeanPostProcessor;
+//	}
+//
+//	@Bean
+//	public JobOperator jobOperator(JobExplorer jobExplorer,
+//			JobRegistry jobRegistry) {
+//		SimpleJobOperator simpleJobOperator = new SimpleJobOperator();
+//		simpleJobOperator.setJobExplorer(jobExplorer);
+//		simpleJobOperator.setJobRepository(jobRepository);
+//		simpleJobOperator.setJobRegistry(jobRegistry);
+//		simpleJobOperator.setJobLauncher(jobLauncher);
+//		return simpleJobOperator;
+//	}
 }

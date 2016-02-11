@@ -1,0 +1,4 @@
+postgresql.driverClass=org.postgresql.Driver
+postgresql.jdbcUrl=jdbc:postgresql://localhost:5432/postgres?currentSchema=spring_batch_assistant
+postgresql.user=thank
+postgresql.password=!)09w5t43w1oJ

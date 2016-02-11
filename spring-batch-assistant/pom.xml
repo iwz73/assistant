@@ -32,8 +32,9 @@
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<spring-batch.version>3.0.3.RELEASE</spring-batch.version>
-		<!-- <data-type-utility.version>1.0.0</data-type-utility.version> -->
+		<spring-batch.version>3.0.6.RELEASE</spring-batch.version>
+		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -85,12 +86,19 @@
 			<version>${spring-batch.version}</version>
 		</dependency>
 
-		<!-- data-type-utility -->
-		<!-- <dependency> -->
-		<!-- <groupId>idv.hsiehpinghan</groupId> -->
-		<!-- <artifactId>data-type-utility</artifactId> -->
-		<!-- <version>${data-type-utility.version}</version> -->
-		<!-- </dependency> -->
+		<!-- postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+		</dependency>
+
+		<!-- c3p0 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+		</dependency>
 
 		<!-- object-utility -->
 		<dependency>

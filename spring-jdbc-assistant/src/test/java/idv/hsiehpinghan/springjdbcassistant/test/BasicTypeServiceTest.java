@@ -3,23 +3,18 @@ package idv.hsiehpinghan.springjdbcassistant.test;
 import idv.hsiehpinghan.springjdbcassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.springjdbcassistant.service.BasicTypeService;
 import idv.hsiehpinghan.springjdbcassistant.suit.TestngSuitSetting;
-import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
-import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class BasicTypeServiceTest {
+	// original field
 	private boolean primativeBoolean = true;
 	private byte primativeByte = 0x1;
 	private double primativeDouble = 1.1;
@@ -35,9 +30,24 @@ public class BasicTypeServiceTest {
 			.getTimeInMillis());
 	private java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(Calendar
 			.getInstance().getTimeInMillis());
-	private char[] clobCharArray;
-	private byte[] blobByteArray;
 	private byte[] byteArray = getByteArray();
+	// updated field
+	private boolean primativeBoolean_u = false;
+	private byte primativeByte_u = 0x2;
+	private double primativeDouble_u = 2.2;
+	private float primativeFloat_u = 2.2f;
+	private int primativeInt_u = 2;
+	private long primativeLong_u = 2L;
+	private short primativeShort_u = 2;
+	private String string_u = "string_u";
+	private BigDecimal bigDecimal_u = BigDecimal.TEN;
+	private java.sql.Date sqlDate_u = new java.sql.Date(Calendar.getInstance()
+			.getTimeInMillis());
+	private java.sql.Time sqlTime_u = new java.sql.Time(Calendar.getInstance()
+			.getTimeInMillis());
+	private java.sql.Timestamp sqlTimestamp_u = new java.sql.Timestamp(Calendar
+			.getInstance().getTimeInMillis());
+	private byte[] byteArray_u = getByteArray_u();
 
 	private ApplicationContext applicationContext;
 	private BasicTypeService service;
@@ -47,18 +57,16 @@ public class BasicTypeServiceTest {
 	public void beforeClass() throws Exception {
 		applicationContext = TestngSuitSetting.getApplicationContext();
 		service = applicationContext.getBean(BasicTypeService.class);
-		clobCharArray = generateClobCharArray();
-		blobByteArray = generateBlobByteArray();
 	}
 
 	@Test
-	public void insertByPreparedStatement() {
+	public void insertByPreparedStatementCreator() {
 		entity = generateBasicTypeEntity();
-		int result = service.insertByPreparedStatement(entity);
+		int result = service.insertByPreparedStatementCreator(entity);
 		Assert.assertEquals(result, 1);
 	}
 
-	@Test(dependsOnMethods = { "insertByPreparedStatement" })
+	@Test(dependsOnMethods = { "insertByPreparedStatementCreator" })
 	public void queryForObjectByRowMapper() throws Exception {
 		BasicTypeEntity entity = service.queryForObjectByRowMapper(this.entity
 				.getId());
@@ -80,11 +88,44 @@ public class BasicTypeServiceTest {
 				DateFormatUtils.format(entity.getSqlTime(), "hh:mm:ss"),
 				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
 		Assert.assertEquals(entity.getSqlTimestamp(), sqlTimestamp);
-		Assert.assertEquals(String.valueOf(entity.getClobCharArray()),
-				String.valueOf(clobCharArray));
-		Assert.assertEquals(String.valueOf(entity.getBlobByteArray()),
-				String.valueOf(blobByteArray));
 		Assert.assertEquals(entity.getByteArray(), byteArray);
+	}
+
+	@Test(dependsOnMethods = { "queryForObjectByRowMapper" })
+	public void updateByPreparedStatementCreator() {
+		Long id = this.entity.getId();
+		BasicTypeEntity entity = generateBasicTypeEntity_u(id);
+		int result = service.updateByPreparedStatementCreator(entity);
+		Assert.assertEquals(result, 1);
+		BasicTypeEntity returnEntity = service.queryForObjectByRowMapper(id);
+		Assert.assertEquals(returnEntity.isPrimativeBoolean(),
+				primativeBoolean_u);
+		Assert.assertEquals(String.valueOf(returnEntity.getPrimativeByte()),
+				String.valueOf(primativeByte_u));
+		Assert.assertEquals(returnEntity.getPrimativeDouble(),
+				primativeDouble_u);
+		Assert.assertEquals(returnEntity.getPrimativeFloat(), primativeFloat_u);
+		Assert.assertEquals(returnEntity.getPrimativeInt(), primativeInt_u);
+		Assert.assertEquals(returnEntity.getPrimativeLong(), primativeLong_u);
+		Assert.assertEquals(returnEntity.getPrimativeShort(), primativeShort_u);
+		Assert.assertEquals(returnEntity.getString(), string_u);
+		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(),
+				bigDecimal_u.doubleValue());
+		Assert.assertEquals(
+				DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
+				DateFormatUtils.format(sqlDate_u.getTime(), "yyyy/MM/dd"));
+		Assert.assertEquals(
+				DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
+				DateFormatUtils.format(sqlTime_u, "hh:mm:ss"));
+		Assert.assertEquals(returnEntity.getSqlTimestamp(), sqlTimestamp_u);
+		Assert.assertEquals(returnEntity.getByteArray(), byteArray_u);
+	}
+
+	@Test(dependsOnMethods = { "updateByPreparedStatementCreator" })
+	public void deleteByPreparedStatementCreator() {
+		Long id = this.entity.getId();
+		service.deleteByPreparedStatementCreator(id);
+		Assert.assertFalse(service.exists(id));
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -102,43 +143,34 @@ public class BasicTypeServiceTest {
 		entity.setSqlDate(sqlDate);
 		entity.setSqlTime(sqlTime);
 		entity.setSqlTimestamp(sqlTimestamp);
-		entity.setClobCharArray(clobCharArray);
-		entity.setBlobByteArray(blobByteArray);
 		entity.setByteArray(byteArray);
 		return entity;
 	}
 
-	private char[] generateClobCharArray() throws IOException {
-		Resource resource = applicationContext
-				.getResource("classpath:/file/file.xml");
-		InputStream inputStream = resource.getInputStream();
-		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-		int length = (int) resource.contentLength();
-		return ReaderUtility.readAsCharArray(inputStreamReader, length);
-	}
-
-	private byte[] generateBlobByteArray() throws IOException {
-		Resource resource = applicationContext
-				.getResource("classpath:/file/image.png");
-		InputStream inputStream = resource.getInputStream();
-		int length = (int) resource.contentLength();
-		return InputStreamUtility.readAsByteArray(inputStream, length);
+	private BasicTypeEntity generateBasicTypeEntity_u(Long id) {
+		BasicTypeEntity entity = new BasicTypeEntity();
+		entity.setId(id);
+		entity.setPrimativeBoolean(primativeBoolean_u);
+		entity.setPrimativeByte(primativeByte_u);
+		entity.setPrimativeDouble(primativeDouble_u);
+		entity.setPrimativeFloat(primativeFloat_u);
+		entity.setPrimativeInt(primativeInt_u);
+		entity.setPrimativeLong(primativeLong_u);
+		entity.setPrimativeShort(primativeShort_u);
+		entity.setString(string_u);
+		entity.setBigDecimal(bigDecimal_u);
+		entity.setSqlDate(sqlDate_u);
+		entity.setSqlTime(sqlTime_u);
+		entity.setSqlTimestamp(sqlTimestamp_u);
+		entity.setByteArray(byteArray_u);
+		return entity;
 	}
 
 	private byte[] getByteArray() {
 		return new byte[] { 0x1, 0x2, 0x3 };
 	}
 
-	//
-	// private String convertToString(java.sql.Clob clob) throws Exception {
-	// Reader reader = clob.getCharacterStream();
-	// return ReaderUtility.readAsString(reader);
-	// }
-	//
-	// private String convertToString(java.sql.Blob blob) throws SQLException,
-	// IOException {
-	// InputStream inputStream = blob.getBinaryStream();
-	// return InputStreamUtility.readAsString(inputStream);
-	// }
-
+	private byte[] getByteArray_u() {
+		return new byte[] { 0x11, 0x22, 0x33 };
+	}
 }

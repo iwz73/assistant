@@ -34,6 +34,7 @@
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
+		<collection-utility.version>1.0.0</collection-utility.version>
 		<stream-utility.version>1.0.0</stream-utility.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
@@ -88,6 +89,13 @@
 			<version>${c3p0.version}</version>
 		</dependency>
 
+		<!-- collection-utility -->
+		<dependency>
+			<groupId>idv.hsiehpinghan</groupId>
+			<artifactId>collection-utility</artifactId>
+			<version>${collection-utility.version}</version>
+		</dependency>
+		
 		<!-- stream-utility -->
 		<dependency>
 			<groupId>idv.hsiehpinghan</groupId>

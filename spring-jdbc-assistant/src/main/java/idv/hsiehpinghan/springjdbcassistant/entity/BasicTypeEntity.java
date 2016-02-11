@@ -20,8 +20,6 @@ public class BasicTypeEntity implements Serializable {
 	private java.sql.Date sqlDate;
 	private java.sql.Time sqlTime;
 	private java.sql.Timestamp sqlTimestamp;
-	private char[] clobCharArray;
-	private byte[] blobByteArray;
 	// array
 	private byte[] byteArray;
 
@@ -127,22 +125,6 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setSqlTimestamp(java.sql.Timestamp sqlTimestamp) {
 		this.sqlTimestamp = sqlTimestamp;
-	}
-
-	public char[] getClobCharArray() {
-		return clobCharArray;
-	}
-
-	public void setClobCharArray(char[] clobCharArray) {
-		this.clobCharArray = clobCharArray;
-	}
-
-	public byte[] getBlobByteArray() {
-		return blobByteArray;
-	}
-
-	public void setBlobByteArray(byte[] blobByteArray) {
-		this.blobByteArray = blobByteArray;
 	}
 
 	public byte[] getByteArray() {

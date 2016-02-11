@@ -1,36 +1,25 @@
 package idv.hsiehpinghan.springjdbcassistant.repository;
 
 import idv.hsiehpinghan.springjdbcassistant.entity.BasicTypeEntity;
-import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
-import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialClob;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.lob.DefaultLobHandler;
-import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class BasicTypeRepository {
 	@Autowired
-	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 
-	public int insertByPreparedStatement(BasicTypeEntity entity) {
+	public int insertByPreparedStatementCreator(BasicTypeEntity entity) {
 		final Long id = entity.getId();
 		final boolean primativeBoolean = entity.isPrimativeBoolean();
 		final byte primativeByte = entity.getPrimativeByte();
@@ -44,15 +33,12 @@ public class BasicTypeRepository {
 		final java.sql.Date sqlDate = entity.getSqlDate();
 		final java.sql.Time sqlTime = entity.getSqlTime();
 		final java.sql.Timestamp sqlTimestamp = entity.getSqlTimestamp();
-		final char[] clobCharArray = entity.getClobCharArray();
-		final byte[] blobByteArray = entity.getBlobByteArray();
 		final byte[] byteArray = entity.getByteArray();
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)
 					throws SQLException {
-				String sql = "INSERT INTO spring_jdbc_assistant.basictypeentity(id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, clob, blob, bytearray) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				String sql = "INSERT INTO spring_jdbc_assistant.basictypeentity(id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setLong(1, id);
 				ps.setBoolean(2, primativeBoolean);
@@ -67,17 +53,14 @@ public class BasicTypeRepository {
 				ps.setDate(11, sqlDate);
 				ps.setTime(12, sqlTime);
 				ps.setTimestamp(13, sqlTimestamp);
-				ps.setClob(14, new SerialClob(clobCharArray));
-				ps.setBlob(15, new SerialBlob(blobByteArray));
-				ps.setBytes(16, byteArray);
+				ps.setBytes(14, byteArray);
 				return ps;
 			}
 		});
 	}
 
 	public BasicTypeEntity queryForObjectByRowMapper(long id) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		String sql = "SELECT id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, clob, blob, bytearray FROM spring_jdbc_assistant.basictypeentity where id = ?;";
+		String sql = "SELECT id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray FROM spring_jdbc_assistant.basictypeentity where id = ?;";
 		Object[] args = new Object[] { id };
 		return jdbcTemplate.queryForObject(sql, args,
 				new RowMapper<BasicTypeEntity>() {
@@ -99,22 +82,6 @@ public class BasicTypeRepository {
 						java.sql.Time sqlTime = rs.getTime("sqltime");
 						java.sql.Timestamp sqlTimestamp = rs
 								.getTimestamp("sqltimestamp");
-						LobHandler lobHandler = new DefaultLobHandler(); 
-						Reader reader = lobHandler.getClobAsCharacterStream(rs, "clob");
-						InputStream inputStream = lobHandler.getBlobAsBinaryStream(rs, "blob");
-//						java.sql.Clob clob = rs.getClob("clob");
-//						java.sql.Blob blob = rs.getBlob("blob");
-						
-
-						try {
-							System.err.println(ReaderUtility.readAsString(reader));
-							System.err.println(InputStreamUtility.readAsString(inputStream));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						
 						byte[] byteArray = rs.getBytes("bytearray");
 						BasicTypeEntity entity = new BasicTypeEntity();
 						entity.setId(id);
@@ -130,25 +97,67 @@ public class BasicTypeRepository {
 						entity.setSqlDate(sqlDate);
 						entity.setSqlTime(sqlTime);
 						entity.setSqlTimestamp(sqlTimestamp);
-//						try {
-//							char[] clobCharArray = ReaderUtility
-//									.readAsCharArray(clob.getCharacterStream(),
-//											(int) clob.length());
-//							entity.setClobCharArray(clobCharArray);
-//						} catch (IOException e) {
-//							throw new RuntimeException(e);
-//						}
-//						try {
-//							byte[] blobByteArray = InputStreamUtility
-//									.readAsByteArray(blob.getBinaryStream(),
-//											(int) blob.length());
-//							entity.setBlobByteArray(blobByteArray);
-//						} catch (IOException e) {
-//							throw new RuntimeException(e);
-//						}
 						entity.setByteArray(byteArray);
 						return entity;
 					}
 				});
+	}
+
+	public int updateByPreparedStatementCreator(BasicTypeEntity entity) {
+		final Long id = entity.getId();
+		final boolean primativeBoolean = entity.isPrimativeBoolean();
+		final byte primativeByte = entity.getPrimativeByte();
+		final double primativeDouble = entity.getPrimativeDouble();
+		final float primativeFloat = entity.getPrimativeFloat();
+		final int primativeInt = entity.getPrimativeInt();
+		final long primativeLong = entity.getPrimativeLong();
+		final short primativeShort = entity.getPrimativeShort();
+		final String string = entity.getString();
+		final BigDecimal bigDecimal = entity.getBigDecimal();
+		final java.sql.Date sqlDate = entity.getSqlDate();
+		final java.sql.Time sqlTime = entity.getSqlTime();
+		final java.sql.Timestamp sqlTimestamp = entity.getSqlTimestamp();
+		final byte[] byteArray = entity.getByteArray();
+		return jdbcTemplate.update(new PreparedStatementCreator() {
+			public PreparedStatement createPreparedStatement(Connection con)
+					throws SQLException {
+				String sql = "UPDATE spring_jdbc_assistant.basictypeentity SET primativeboolean=?, primativebyte=?, primativedouble=?, primativefloat=?, primativeint=?, primativelong=?, primativeshort=?, string=?, bigdecimal=?, sqldate=?, sqltime=?, sqltimestamp=?, bytearray=? WHERE id=?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setBoolean(1, primativeBoolean);
+				ps.setByte(2, primativeByte);
+				ps.setDouble(3, primativeDouble);
+				ps.setFloat(4, primativeFloat);
+				ps.setInt(5, primativeInt);
+				ps.setLong(6, primativeLong);
+				ps.setShort(7, primativeShort);
+				ps.setString(8, string);
+				ps.setBigDecimal(9, bigDecimal);
+				ps.setDate(10, sqlDate);
+				ps.setTime(11, sqlTime);
+				ps.setTimestamp(12, sqlTimestamp);
+				ps.setBytes(13, byteArray);
+				ps.setLong(14, id);
+				return ps;
+			}
+		});
+	}
+
+	public void deleteByPreparedStatementCreator(final Long id) {
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			public PreparedStatement createPreparedStatement(Connection con)
+					throws SQLException {
+				String sql = "DELETE FROM spring_jdbc_assistant.basictypeentity WHERE id=?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setLong(1, id);
+				return ps;
+			}
+		});
+	}
+
+	public boolean exists(long id) {
+		String sql = "SELECT COUNT(1) FROM spring_jdbc_assistant.basictypeentity WHERE id=?;";
+		Object[] args = new Object[] { id };
+		int amt = jdbcTemplate.queryForObject(sql, Integer.class, args);
+		return amt > 0;
 	}
 }

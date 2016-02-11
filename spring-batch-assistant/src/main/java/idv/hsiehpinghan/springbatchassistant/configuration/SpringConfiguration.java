@@ -1,12 +1,12 @@
 package idv.hsiehpinghan.springbatchassistant.configuration;
 
 import java.beans.PropertyVetoException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
-public class SpringConfiguration extends DefaultBatchConfigurer {
+public class SpringConfiguration {
 	@Autowired
 	private ResourceLoader resourceLoader;
 	@Autowired
@@ -35,9 +35,13 @@ public class SpringConfiguration extends DefaultBatchConfigurer {
 
 	@PostConstruct
 	protected void postConstruct() throws ScriptException, SQLException {
-		Resource resource = resourceLoader
+		Connection connection = dataSource.getConnection();
+		Resource schemaDropPostgresqlSql = resourceLoader
+				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");
+		ScriptUtils.executeSqlScript(connection, schemaDropPostgresqlSql);
+		Resource schemaPostgresqlSql = resourceLoader
 				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
-		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
+		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
 	}
 
 	@Bean

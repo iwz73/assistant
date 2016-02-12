@@ -8,8 +8,10 @@
 	</test>
 	<test name="test">
 		<classes>
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.BasicTest" 
+				/> -->
 			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.SpringBatchAssistantTest" />
+				name="idv.hsiehpinghan.springbatchassistant.test.ExecutionContextTest" />
 		</classes>
 	</test>
 </suite>

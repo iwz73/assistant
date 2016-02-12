@@ -7,12 +7,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestTasklet implements Tasklet {
-
+public class BasicTasklet implements Tasklet {
 	@Override
-	public RepeatStatus execute(StepContribution paramStepContribution,
-			ChunkContext paramChunkContext) throws Exception {
-		System.err.println("TestTasklet execute.");
+	public RepeatStatus execute(StepContribution stepContribution,
+			ChunkContext chunkContext) throws Exception {
+		System.err.println("BasicTasklet execute : " + RepeatStatus.FINISHED);
 		return RepeatStatus.FINISHED;
 	}
 

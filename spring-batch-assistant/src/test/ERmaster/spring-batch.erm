@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>0.75</zoom>
 	<x>0</x>
-	<y>132</y>
+	<y>6</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-02-11 18:11:19</creation_date>
-			<updated_date>2016-02-11 18:15:50</updated_date>
+			<updated_date>2016-02-12 20:46:01</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -2412,8 +2412,8 @@
 			<width>268</width>
 				<font_name>Sans</font_name>
 				<font_size>9</font_size>
-			<x>397</x>
-			<y>1044</y>
+			<x>49</x>
+			<y>720</y>
 			<color>
 				<r>128</r>
 				<g>128</g>

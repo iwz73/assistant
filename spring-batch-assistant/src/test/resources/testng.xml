@@ -21,7 +21,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" />
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" 
+				/> -->
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.AllowStartIfCompleteTest" />
 		</classes>
 	</test>
 </suite>

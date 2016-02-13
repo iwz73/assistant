@@ -23,8 +23,10 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" 
 				/> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.AllowStartIfCompleteTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.AllowStartIfCompleteTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.SkipTest" />
 		</classes>
 	</test>
 </suite>

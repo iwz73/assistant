@@ -8,12 +8,18 @@
 	</test>
 	<test name="test">
 		<classes>
-<!-- 			<class name="idv.hsiehpinghan.springbatchassistant.test.BasicTest" /> -->
-<!-- 			<class -->
-<!-- 				name="idv.hsiehpinghan.springbatchassistant.test.ExecutionContextTest" /> -->
-<!-- 			<class name="idv.hsiehpinghan.springbatchassistant.test.RestartableTest" /> -->
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.BasicTest" 
+				/> -->
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ExecutionContextTest" 
+				/> -->
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.RestartableTest" 
+				/> -->
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionListenerTest" 
+				/> -->
 			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionListenerTest" />
+				name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" />
 		</classes>
 	</test>
 </suite>

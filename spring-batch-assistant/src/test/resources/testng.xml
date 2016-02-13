@@ -18,8 +18,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionListenerTest" 
 				/> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" />
 		</classes>
 	</test>
 </suite>

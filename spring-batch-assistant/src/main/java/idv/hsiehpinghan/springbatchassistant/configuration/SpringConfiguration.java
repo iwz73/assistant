@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -23,7 +22,6 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @EnableBatchProcessing
-@Import({ BasicSpringConfiguration.class })
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })

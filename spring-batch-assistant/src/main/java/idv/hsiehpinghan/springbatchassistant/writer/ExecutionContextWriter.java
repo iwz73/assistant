@@ -33,8 +33,9 @@ public class ExecutionContextWriter implements ItemWriter<Integer> {
 	public void write(List<? extends Integer> datas) throws Exception {
 		processedAmount += datas.size();
 		if (isRestart == false && processedAmount >= 5) {
-			System.err.println("ExecutionContex Test !!!");
-			throw new Exception();
+			String msg = "ExecutionContex exception Test !!!";
+			System.err.println(msg);
+			throw new Exception(msg);
 		}
 		System.err.println("ExecutionContextWriter write : processedAmount("
 				+ processedAmount + ")");

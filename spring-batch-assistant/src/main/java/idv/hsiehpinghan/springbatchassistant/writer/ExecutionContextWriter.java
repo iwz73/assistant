@@ -10,18 +10,38 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExecutionContextWriter implements ItemWriter<Integer> {
-	private ExecutionContext executionContext;
+	private static int processedAmount = 0;
+	private static boolean isRestart = false;
+	private ExecutionContext stepExecutionContext;
+	private ExecutionContext jobExecutionContext;
 
 	@BeforeStep
 	public void beforeStep(StepExecution stepExecution) throws Exception {
-		executionContext = stepExecution.getExecutionContext();
+		jobExecutionContext = stepExecution.getJobExecution()
+				.getExecutionContext();
+		stepExecutionContext = stepExecution.getExecutionContext();
+		processedAmount = stepExecutionContext.getInt(
+				"stepExecutionContextParam", 0);
+		if (processedAmount == 0) {
+			isRestart = false;
+		} else {
+			isRestart = true;
+		}
 	}
 
 	@Override
 	public void write(List<? extends Integer> datas) throws Exception {
-		int index = executionContext.getInt("index");
-		System.err.println("ExecutionContextWriter write : index(" + index
-				+ ")");
+		processedAmount += datas.size();
+		if (isRestart == false && processedAmount >= 5) {
+			System.err.println("ExecutionContex Test !!!");
+			throw new Exception();
+		}
+		System.err.println("ExecutionContextWriter write : processedAmount("
+				+ processedAmount + ")");
+		stepExecutionContext.putInt("stepExecutionContextParam",
+				processedAmount);
+		jobExecutionContext.put("jobExecutionContextParam",
+				"jobExecutionContextParam");
 	}
 
 }

@@ -50,20 +50,20 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void assertBasicJobParameters(JobParameters jobParameters) {
-		Assert.assertEquals(DATE, jobParameters.getDate("DATE"));
-		Assert.assertEquals(DOUBLE, jobParameters.getDouble("DOUBLE"));
-		Assert.assertEquals(LONG, jobParameters.getLong("LONG"));
-		Assert.assertEquals(STRING, jobParameters.getString("STRING"));
+		Assert.assertEquals(jobParameters.getDate("DATE"), DATE);
+		Assert.assertEquals(jobParameters.getDouble("DOUBLE"), DOUBLE);
+		Assert.assertEquals(jobParameters.getLong("LONG"), LONG);
+		Assert.assertEquals(jobParameters.getString("STRING"), STRING);
 	}
 
 	private void assertBasicJobInstance(JobInstance JobInstance) {
-		Assert.assertEquals("basicJob", JobInstance.getJobName());
+		Assert.assertEquals(JobInstance.getJobName(), "basicJob");
 	}
 
 	private void assertBasicJobExecution(JobExecution jobExecution) {
-		Assert.assertEquals("COMPLETED", jobExecution.getExitStatus()
-				.getExitCode());
-		Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(),
+				"COMPLETED");
+		Assert.assertEquals(jobExecution.getStatus(), BatchStatus.COMPLETED);
 		assertBasicJobExecutionContext(jobExecution.getExecutionContext());
 	}
 
@@ -77,32 +77,32 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void assertBasicStep_0Execution(StepExecution stepExecution) {
-		Assert.assertEquals(4, stepExecution.getCommitCount());
+		Assert.assertEquals(stepExecution.getCommitCount(), 4);
 		Assert.assertEquals("COMPLETED", stepExecution.getExitStatus()
 				.getExitCode());
-		Assert.assertEquals(0, stepExecution.getFilterCount());
-		Assert.assertEquals(0, stepExecution.getProcessSkipCount());
-		Assert.assertEquals(10, stepExecution.getReadCount());
-		Assert.assertEquals(0, stepExecution.getReadSkipCount());
-		Assert.assertEquals(0, stepExecution.getRollbackCount());
-		Assert.assertEquals(0, stepExecution.getSkipCount());
-		Assert.assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus());
-		Assert.assertEquals("basicStep_0", stepExecution.getStepName());
+		Assert.assertEquals(stepExecution.getFilterCount(), 0);
+		Assert.assertEquals(stepExecution.getProcessSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getReadCount(), 10);
+		Assert.assertEquals(stepExecution.getReadSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getRollbackCount(), 0);
+		Assert.assertEquals(stepExecution.getSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.COMPLETED);
+		Assert.assertEquals(stepExecution.getStepName(), "basicStep_0");
 		assertBasicStep_0ExecutionContext(stepExecution.getExecutionContext());
 	}
 
 	private void assertBasicStep_1Execution(StepExecution stepExecution) {
-		Assert.assertEquals(1, stepExecution.getCommitCount());
-		Assert.assertEquals("COMPLETED", stepExecution.getExitStatus()
-				.getExitCode());
-		Assert.assertEquals(0, stepExecution.getFilterCount());
-		Assert.assertEquals(0, stepExecution.getProcessSkipCount());
-		Assert.assertEquals(0, stepExecution.getReadCount());
-		Assert.assertEquals(0, stepExecution.getReadSkipCount());
-		Assert.assertEquals(0, stepExecution.getRollbackCount());
-		Assert.assertEquals(0, stepExecution.getSkipCount());
-		Assert.assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus());
-		Assert.assertEquals("basicStep_1", stepExecution.getStepName());
+		Assert.assertEquals(stepExecution.getCommitCount(), 1);
+		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
+				"COMPLETED");
+		Assert.assertEquals(stepExecution.getFilterCount(), 0);
+		Assert.assertEquals(stepExecution.getProcessSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getReadCount(), 0);
+		Assert.assertEquals(stepExecution.getReadSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getRollbackCount(), 0);
+		Assert.assertEquals(stepExecution.getSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.COMPLETED);
+		Assert.assertEquals(stepExecution.getStepName(), "basicStep_1");
 		assertBasicStep_1ExecutionContext(stepExecution.getExecutionContext());
 	}
 

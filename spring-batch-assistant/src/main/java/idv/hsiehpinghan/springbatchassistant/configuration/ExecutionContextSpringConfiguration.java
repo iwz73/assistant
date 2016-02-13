@@ -32,8 +32,9 @@ public class ExecutionContextSpringConfiguration {
 	protected Step executionContextStep_0(
 			@Qualifier("executionContextReader") ItemReader<String> reader,
 			@Qualifier("executionContextWriter") ItemWriter<Integer> writer) {
-		return stepBuilderFactory.get("basicStep_0").<String, Integer> chunk(3)
-				.reader(reader).writer(writer).build();
+		return stepBuilderFactory.get("executionContextStep_0")
+				.<String, Integer> chunk(3).reader(reader).writer(writer)
+				.build();
 	}
 
 	@Bean

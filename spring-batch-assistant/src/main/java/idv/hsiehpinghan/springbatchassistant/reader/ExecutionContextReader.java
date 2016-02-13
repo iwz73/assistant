@@ -14,18 +14,12 @@ public class ExecutionContextReader implements ItemReader<String> {
 	private final static String[] STRINGS = new String[] { "0", "1", "2", "3",
 			"4", "5", "6", "7", "8", "9" };
 	private static int index;
-	private static boolean isRestart;
-	private ExecutionContext executionContext;
+	private ExecutionContext stepExecutionContext;
 
 	@BeforeStep
 	public void beforeStep(StepExecution stepExecution) throws Exception {
-		executionContext = stepExecution.getExecutionContext();
-		index = executionContext.getInt("index", 0);
-		if (index == 0) {
-			isRestart = false;
-		} else {
-			isRestart = true;
-		}
+		stepExecutionContext = stepExecution.getExecutionContext();
+		index = stepExecutionContext.getInt("stepExecutionContextParam", 0);
 	}
 
 	@Override
@@ -34,11 +28,6 @@ public class ExecutionContextReader implements ItemReader<String> {
 		if (index >= STRINGS.length) {
 			return null;
 		}
-		if (isRestart == false && index == 5) {
-			System.err.println("ExecutionContex Test !!!");
-			throw new Exception("ExecutionContex Test !!!");
-		}
-		executionContext.putInt("index", index);
 		System.err
 				.println("ExecutionContextReader read : index(" + index + ")");
 		return STRINGS[index++];

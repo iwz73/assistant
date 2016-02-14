@@ -30,8 +30,10 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.RetryTest" 
 				/> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.StepExecutionListenerTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.StepExecutionListenerTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" />
 		</classes>
 	</test>
 </suite>

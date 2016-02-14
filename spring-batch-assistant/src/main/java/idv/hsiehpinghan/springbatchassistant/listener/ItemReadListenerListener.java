@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 public class ItemReadListenerListener implements ItemReadListener<String> {
 
 	@Override
-	public void afterRead(String object) {
-		System.err.println("ItemReadListenerListener afterRead : object("
-				+ object + ")");
+	public void afterRead(String string) {
+		System.err.println("ItemReadListenerListener afterRead : string("
+				+ string + ")");
 	}
 
 	@Override

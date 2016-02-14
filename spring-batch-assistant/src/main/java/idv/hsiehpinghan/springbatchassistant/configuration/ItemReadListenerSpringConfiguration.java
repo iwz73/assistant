@@ -30,12 +30,12 @@ public class ItemReadListenerSpringConfiguration {
 
 	@Bean
 	protected Step itemReadListenerStep_0(
-			@Qualifier("itemReadListenerListener") ItemReadListenerListener listener,
 			@Qualifier("itemReadListenerReader") ItemReader<String> reader,
+			@Qualifier("itemReadListenerListener") ItemReadListenerListener listener,
 			@Qualifier("itemReadListenerWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("itemReadListenerStep_0")
-				.<String, Integer> chunk(3).reader(reader).writer(writer)
-				.listener(listener).build();
+				.<String, Integer> chunk(3).reader(reader).listener(listener)
+				.writer(writer).build();
 	}
 
 }

@@ -29,7 +29,7 @@ public class DefaultJobParametersValidatorSpringConfiguration {
 	}
 
 	@Bean
-	protected Step defaultJobParametersValidatorStep_0(
+	public Step defaultJobParametersValidatorStep_0(
 			@Qualifier("doNothingTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("defaultJobParametersValidatorStep_0")
 				.tasklet(tasklet).build();

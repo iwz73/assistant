@@ -28,7 +28,7 @@ public class RestartableSpringConfiguration {
 	}
 
 	@Bean
-	protected Step restartableStep_0(
+	public Step restartableStep_0(
 			@Qualifier("restartableTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("restartableStep_0").tasklet(tasklet)
 				.build();

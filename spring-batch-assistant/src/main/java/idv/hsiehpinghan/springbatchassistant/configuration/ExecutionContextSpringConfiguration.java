@@ -29,7 +29,7 @@ public class ExecutionContextSpringConfiguration {
 	}
 
 	@Bean
-	protected Step executionContextStep_0(
+	public Step executionContextStep_0(
 			@Qualifier("executionContextReader") ItemReader<String> reader,
 			@Qualifier("executionContextWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("executionContextStep_0")
@@ -38,7 +38,7 @@ public class ExecutionContextSpringConfiguration {
 	}
 
 	@Bean
-	protected Step executionContextStep_1(
+	public Step executionContextStep_1(
 			@Qualifier("executionContextTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("executionContextStep_1")
 				.tasklet(tasklet).build();

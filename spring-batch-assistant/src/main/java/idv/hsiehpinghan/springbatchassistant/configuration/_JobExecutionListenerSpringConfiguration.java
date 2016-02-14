@@ -28,7 +28,7 @@ public class _JobExecutionListenerSpringConfiguration {
 	}
 
 	@Bean
-	protected Step jobExecutionListenerStep_0(
+	public Step jobExecutionListenerStep_0(
 			@Qualifier("doNothingTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("jobExecutionListenerStep_0")
 				.tasklet(tasklet).build();

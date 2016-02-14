@@ -26,7 +26,7 @@ public class AllowStartIfCompleteSpringConfiguration {
 	}
 
 	@Bean
-	protected Step allowStartIfCompleteStep_0(
+	public Step allowStartIfCompleteStep_0(
 			@Qualifier("allowStartIfCompleteTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("allowStartIfCompleteStep_0")
 				.allowStartIfComplete(ALLOW_START_IF_COMPLETE).tasklet(tasklet)

@@ -28,7 +28,7 @@ public class RetrySpringConfiguration {
 	}
 
 	@Bean
-	protected Step retryStep_0(
+	public Step retryStep_0(
 			@Qualifier("retryReader") ItemReader<String> reader,
 			@Qualifier("retryWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("retryStep_0").<String, Integer> chunk(3)

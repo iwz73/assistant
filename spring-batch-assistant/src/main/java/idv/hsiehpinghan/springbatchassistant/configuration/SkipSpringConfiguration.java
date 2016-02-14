@@ -28,8 +28,7 @@ public class SkipSpringConfiguration {
 	}
 
 	@Bean
-	protected Step skipStep_0(
-			@Qualifier("skipReader") ItemReader<String> reader,
+	public Step skipStep_0(@Qualifier("skipReader") ItemReader<String> reader,
 			@Qualifier("skipWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("skipStep_0").<String, Integer> chunk(3)
 				.faultTolerant().skip(SKIP_CLASS).skipLimit(SKIP_LIMIT)

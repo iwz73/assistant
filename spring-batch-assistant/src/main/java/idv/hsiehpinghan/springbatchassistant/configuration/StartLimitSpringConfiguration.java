@@ -26,8 +26,7 @@ public class StartLimitSpringConfiguration {
 	}
 
 	@Bean
-	protected Step startLimitStep_0(
-			@Qualifier("startLimitTasklet") Tasklet tasklet) {
+	public Step startLimitStep_0(@Qualifier("startLimitTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("startLimitStep_0")
 				.startLimit(START_LIMIT).tasklet(tasklet).build();
 	}

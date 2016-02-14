@@ -37,7 +37,7 @@ public class BasicSpringConfiguration {
 	}
 
 	@Bean
-	protected Step basicStep_1(@Qualifier("basicTasklet") Tasklet tasklet) {
+	public Step basicStep_1(@Qualifier("basicTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("basicStep_1").tasklet(tasklet).build();
 	}
 

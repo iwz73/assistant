@@ -46,7 +46,7 @@ public class SpringConfiguration {
 	// private StepBuilderFactory stepBuilders;
 
 	@PostConstruct
-	protected void postConstruct() throws ScriptException, SQLException {
+	public void postConstruct() throws ScriptException, SQLException {
 		Connection connection = dataSource.getConnection();
 		Resource schemaDropPostgresqlSql = resourceLoader
 				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");

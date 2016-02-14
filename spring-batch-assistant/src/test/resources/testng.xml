@@ -33,7 +33,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.StepExecutionListenerTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" />
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" 
+				/> -->
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ItemReadListenerTest" />
 		</classes>
 	</test>
 </suite>

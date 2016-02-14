@@ -78,8 +78,8 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 	private void assertBasicStep_0Execution(StepExecution stepExecution) {
 		Assert.assertEquals(stepExecution.getCommitCount(), 4);
-		Assert.assertEquals("COMPLETED", stepExecution.getExitStatus()
-				.getExitCode());
+		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
+				"COMPLETED");
 		Assert.assertEquals(stepExecution.getFilterCount(), 0);
 		Assert.assertEquals(stepExecution.getProcessSkipCount(), 0);
 		Assert.assertEquals(stepExecution.getReadCount(), 10);

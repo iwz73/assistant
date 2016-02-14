@@ -36,10 +36,13 @@
 			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" 
 				/> -->
 			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemReadListenerTest" 
-				/> -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemReadListenerTest" -->
+			<!-- /> -->
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemProcessListenerTest" -->
+			<!-- /> -->
 			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.ItemProcessListenerTest" />
+				name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" />
 		</classes>
 	</test>
 </suite>

@@ -44,7 +44,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.springbatchassistant.test.SkipListenerTest" />
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.SkipListenerTest" 
+				/> -->
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.TaskletAdapterTest" />
 		</classes>
 	</test>
 </suite>

@@ -8,60 +8,39 @@
 	</test>
 	<test name="test">
 		<classes>
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.BasicTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ExecutionContextTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.RestartableTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionListenerTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.AllowStartIfCompleteTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.SkipTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.RetryTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.StepExecutionListenerTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemReadListenerTest" -->
-			<!-- /> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemProcessListenerTest" -->
-			<!-- /> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.SkipListenerTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.TaskletAdapterTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ConditionalFlowTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" 
-				/> -->
-			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.FailTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.StopAndRestartTest" 
-				/> -->
-			<!-- <class -->
-			<!-- name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionDeciderTest" 
-				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.BasicTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ExecutionContextTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.RestartableTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionListenerTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.DefaultJobParametersValidatorTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.StartLimitTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.AllowStartIfCompleteTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.SkipTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.RetryTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.StepExecutionListenerTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.ChunkListenerTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ItemReadListenerTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ItemProcessListenerTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.SkipListenerTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.TaskletAdapterTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.ConditionalFlowTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" />
+			<class name="idv.hsiehpinghan.springbatchassistant.test.FailTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.StopAndRestartTest" />
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionDeciderTest" />
 			<class name="idv.hsiehpinghan.springbatchassistant.test.SplitFlowTest" />
 		</classes>
 	</test>

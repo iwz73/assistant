@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.springbatchassistant.configuration;
 
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -9,17 +8,13 @@ import javax.sql.DataSource;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @EnableBatchProcessing
 @Configuration("springBatchAssistantSpringConfiguration")
@@ -54,23 +49,6 @@ public class SpringConfiguration {
 		Resource schemaPostgresqlSql = resourceLoader
 				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
 		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
-	}
-
-	@Bean
-	public DataSource dataSource(Environment environment)
-			throws PropertyVetoException {
-		String driverClass = environment
-				.getRequiredProperty("postgresql.driverClass");
-		String jdbcUrl = environment.getRequiredProperty("postgresql.jdbcUrl");
-		String user = environment.getRequiredProperty("postgresql.user");
-		String password = environment
-				.getRequiredProperty("postgresql.password");
-		ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-		comboPooledDataSource.setDriverClass(driverClass);
-		comboPooledDataSource.setJdbcUrl(jdbcUrl);
-		comboPooledDataSource.setUser(user);
-		comboPooledDataSource.setPassword(password);
-		return comboPooledDataSource;
 	}
 
 	// @Bean

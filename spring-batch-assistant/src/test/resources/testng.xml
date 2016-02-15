@@ -49,8 +49,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.TaskletAdapterTest" 
 				/> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.ConditionalFlowTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ConditionalFlowTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" />
 		</classes>
 	</test>
 </suite>

@@ -19,14 +19,10 @@ public class ConditionalFlowSpringConfiguration {
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;
 
-	/**
+	/*
 	 * conditionalFlowStep_0 --<GOTO_1>--> conditionalFlowStep_1
 	 *                       |
 	 *                       --<*>-------> conditionalFlowStep_2
-	 * @param conditionalFlowStep_0
-	 * @param conditionalFlowStep_1
-	 * @param conditionalFlowStep_Error
-	 * @return
 	 */
 	@Bean
 	public Job conditionalFlowJob(

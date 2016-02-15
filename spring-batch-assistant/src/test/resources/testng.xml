@@ -54,7 +54,10 @@
 				/> -->
 			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.springbatchassistant.test.FailTest" />
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.FailTest" 
+				/> -->
+			<class
+				name="idv.hsiehpinghan.springbatchassistant.test.StopAndRestartTest" />
 		</classes>
 	</test>
 </suite>

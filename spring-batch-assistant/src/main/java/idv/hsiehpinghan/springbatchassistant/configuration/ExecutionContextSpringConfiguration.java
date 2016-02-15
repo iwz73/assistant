@@ -41,7 +41,7 @@ public class ExecutionContextSpringConfiguration {
 	public Step executionContextStep_1(
 			@Qualifier("executionContextTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("executionContextStep_1")
-				.tasklet(tasklet).build();
+				.tasklet(tasklet).listener(tasklet).build();
 	}
 
 }

@@ -59,8 +59,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.StopAndRestartTest" 
 				/> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionDeciderTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.JobExecutionDeciderTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.SplitFlowTest" />
 		</classes>
 	</test>
 </suite>

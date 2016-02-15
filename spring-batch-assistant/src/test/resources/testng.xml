@@ -52,7 +52,9 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ConditionalFlowTest" 
 				/> -->
-			<class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" />
+			<!-- <class name="idv.hsiehpinghan.springbatchassistant.test.EndTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.FailTest" />
 		</classes>
 	</test>
 </suite>

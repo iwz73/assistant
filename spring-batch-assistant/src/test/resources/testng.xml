@@ -41,8 +41,10 @@
 			<!-- <class -->
 			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemProcessListenerTest" -->
 			<!-- /> -->
-			<class
-				name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" />
+			<!-- <class -->
+			<!-- name="idv.hsiehpinghan.springbatchassistant.test.ItemWriteListenerTest" 
+				/> -->
+			<class name="idv.hsiehpinghan.springbatchassistant.test.SkipListenerTest" />
 		</classes>
 	</test>
 </suite>

@@ -28,7 +28,7 @@ public class ItemReadListenerSpringConfiguration {
 	}
 
 	@Bean
-	protected Step itemReadListenerStep_0(
+	public Step itemReadListenerStep_0(
 			@Qualifier("itemReadListenerReader") ItemReader<String> reader,
 			@Qualifier("itemReadListenerListener") ItemReadListener<String> listener,
 			@Qualifier("itemReadListenerWriter") ItemWriter<Integer> writer) {

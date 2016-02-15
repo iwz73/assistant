@@ -29,7 +29,7 @@ public class ChunkListenerSpringConfiguration {
 	}
 
 	@Bean
-	protected Step chunkListenerStep_0(
+	public Step chunkListenerStep_0(
 			@Qualifier("chunkListenerListener") ChunkListenerListener listener,
 			@Qualifier("chunkListenerReader") ItemReader<String> reader,
 			@Qualifier("chunkListenerWriter") ItemWriter<Integer> writer) {

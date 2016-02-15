@@ -28,7 +28,7 @@ public class ItemProcessListenerSpringConfiguration {
 	}
 
 	@Bean
-	protected Step itemProcessListenerStep_0(
+	public Step itemProcessListenerStep_0(
 			@Qualifier("itemProcessListenerReader") ItemReader<String> reader,
 			@Qualifier("itemProcessListenerProcessor") ItemProcessor<String, Integer> processor,
 			@Qualifier("itemProcessListenerListener") ItemProcessListener<String, Integer> listener,

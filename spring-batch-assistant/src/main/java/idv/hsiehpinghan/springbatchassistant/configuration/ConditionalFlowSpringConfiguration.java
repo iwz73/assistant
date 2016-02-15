@@ -20,9 +20,8 @@ public class ConditionalFlowSpringConfiguration {
 	private StepBuilderFactory stepBuilderFactory;
 
 	/*
-	 * conditionalFlowStep_0 --<GOTO_1>--> conditionalFlowStep_1
-	 *                       |
-	 *                       --<*>-------> conditionalFlowStep_2
+	 * conditionalFlowStep_0 --<GOTO_1>--> conditionalFlowStep_1 | --<*>------->
+	 * conditionalFlowStep_2
 	 */
 	@Bean
 	public Job conditionalFlowJob(
@@ -30,26 +29,23 @@ public class ConditionalFlowSpringConfiguration {
 			@Qualifier("conditionalFlowStep_1") Step conditionalFlowStep_1,
 			@Qualifier("conditionalFlowStep_2") Step conditionalFlowStep_2) {
 		return jobBuilderFactory.get("conditionalFlowJob")
-				.start(conditionalFlowStep_0)
-					.on("GOTO_1").to(conditionalFlowStep_1)
-				.from(conditionalFlowStep_0)
-					.on("*").to(conditionalFlowStep_2)
-				.build().build();
+				.start(conditionalFlowStep_0).on("GOTO_1")
+				.to(conditionalFlowStep_1).from(conditionalFlowStep_0).on("*")
+				.to(conditionalFlowStep_2).build().build();
 	}
 
 	@Bean
-	protected Step conditionalFlowStep_0(
+	public Step conditionalFlowStep_0(
 			@Qualifier("conditionalFlowReader_0") ItemReader<String> reader,
 			@Qualifier("conditionalFlowWriter_0") ItemWriter<Integer> writer,
 			@Qualifier("conditionalFlowListener_0") StepExecutionListener listener) {
 		return stepBuilderFactory.get("conditionalFlowStep_0")
 				.<String, Integer> chunk(3).reader(reader).writer(writer)
-				.listener(listener)
-				.build();
+				.listener(listener).build();
 	}
 
 	@Bean
-	protected Step conditionalFlowStep_1(
+	public Step conditionalFlowStep_1(
 			@Qualifier("conditionalFlowReader_1") ItemReader<String> reader,
 			@Qualifier("conditionalFlowWriter_1") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("conditionalFlowStep_1")
@@ -58,7 +54,7 @@ public class ConditionalFlowSpringConfiguration {
 	}
 
 	@Bean
-	protected Step conditionalFlowStep_2(
+	public Step conditionalFlowStep_2(
 			@Qualifier("conditionalFlowReader_2") ItemReader<String> reader,
 			@Qualifier("conditionalFlowWriter_2") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("conditionalFlowStep_2")

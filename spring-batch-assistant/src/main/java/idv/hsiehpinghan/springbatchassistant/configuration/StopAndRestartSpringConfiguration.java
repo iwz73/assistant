@@ -28,7 +28,7 @@ public class StopAndRestartSpringConfiguration {
 	}
 
 	@Bean
-	protected Step stopAndRestartStep_0(
+	public Step stopAndRestartStep_0(
 			@Qualifier("stopAndRestartReader_0") ItemReader<String> reader,
 			@Qualifier("stopAndRestartWriter_0") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("stopAndRestartStep_0")
@@ -37,7 +37,7 @@ public class StopAndRestartSpringConfiguration {
 	}
 
 	@Bean
-	protected Step stopAndRestartStep_1(
+	public Step stopAndRestartStep_1(
 			@Qualifier("stopAndRestartReader_1") ItemReader<String> reader,
 			@Qualifier("stopAndRestartWriter_1") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("stopAndRestartStep_1")

@@ -25,7 +25,7 @@ public class EndSpringConfiguration {
 	}
 
 	@Bean
-	protected Step endStep_0(@Qualifier("endReader") ItemReader<String> reader,
+	public Step endStep_0(@Qualifier("endReader") ItemReader<String> reader,
 			@Qualifier("endWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("endStep_0").<String, Integer> chunk(3)
 				.reader(reader).writer(writer).build();

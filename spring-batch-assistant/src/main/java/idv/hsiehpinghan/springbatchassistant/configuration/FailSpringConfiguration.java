@@ -25,8 +25,7 @@ public class FailSpringConfiguration {
 	}
 
 	@Bean
-	protected Step failStep_0(
-			@Qualifier("failReader") ItemReader<String> reader,
+	public Step failStep_0(@Qualifier("failReader") ItemReader<String> reader,
 			@Qualifier("failWriter") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("failStep_0").<String, Integer> chunk(3)
 				.reader(reader).writer(writer).build();

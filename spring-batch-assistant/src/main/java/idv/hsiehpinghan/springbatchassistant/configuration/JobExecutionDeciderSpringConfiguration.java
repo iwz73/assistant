@@ -31,7 +31,7 @@ public class JobExecutionDeciderSpringConfiguration {
 	}
 
 	@Bean
-	protected Step jobExecutionDeciderStep_0(
+	public Step jobExecutionDeciderStep_0(
 			@Qualifier("jobExecutionDeciderReader_0") ItemReader<String> reader,
 			@Qualifier("jobExecutionDeciderWriter_0") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("jobExecutionDeciderStep_0")
@@ -40,7 +40,7 @@ public class JobExecutionDeciderSpringConfiguration {
 	}
 
 	@Bean
-	protected Step jobExecutionDeciderStep_1(
+	public Step jobExecutionDeciderStep_1(
 			@Qualifier("jobExecutionDeciderReader_1") ItemReader<String> reader,
 			@Qualifier("jobExecutionDeciderWriter_1") ItemWriter<Integer> writer) {
 		return stepBuilderFactory.get("jobExecutionDeciderStep_1")

@@ -28,7 +28,7 @@ public class BasicSpringConfiguration {
 	}
 
 	@Bean
-	protected Step basicStep_0(
+	public Step basicStep_0(
 			@Qualifier("basicReader") ItemReader<String> reader,
 			@Qualifier("basicProcessor") ItemProcessor<String, Integer> processor,
 			@Qualifier("basicWriter") ItemWriter<Integer> writer) {

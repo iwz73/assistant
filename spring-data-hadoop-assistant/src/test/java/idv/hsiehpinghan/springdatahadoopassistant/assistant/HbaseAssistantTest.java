@@ -13,11 +13,11 @@ import org.apache.hadoop.hbase.filter.BinaryComparator;
 import org.apache.hadoop.hbase.filter.CompareFilter;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
+import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.filter.RowFilter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueExcludeFilter;
 import org.apache.hadoop.hbase.filter.SkipFilter;
-import org.apache.hadoop.hbase.filter.ValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
@@ -41,8 +41,8 @@ public class HbaseAssistantTest {
 		// TestRowFilter();
 		// TestPageFilter();
 		// TestSingleColumnValueExcludeFilter();
-		 TestFilterList();
-//		TestTestFilter();
+		TestFilterList();
+		// TestTestFilter();
 	}
 
 	private void TestTestFilter() throws Exception {
@@ -58,7 +58,9 @@ public class HbaseAssistantTest {
 	private void TestFilterList() throws Exception {
 		Filter rowFilter = generateRowFilter();
 		Filter skipFilter = generateSkipFilter();
-		FilterList filterList = new FilterList(rowFilter, skipFilter);
+		Filter multipleColumnPrefixFilter = multipleColumnPrefixFilter();
+		FilterList filterList = new FilterList(rowFilter, skipFilter,
+				multipleColumnPrefixFilter);
 		Collection<Webpage> entities = assistant.scan(TABLE_NAME, filterList);
 		for (Webpage entity : entities) {
 			System.err.println(entity);
@@ -95,6 +97,13 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(PAGE_SIZE < entities.size());
 	}
 
+	private Filter multipleColumnPrefixFilter() {
+		byte[][] prefixes = new byte[][] { Bytes.toBytes("bas"),
+				Bytes.toBytes("pts"), Bytes.toBytes("cnt"),
+				Bytes.toBytes("sig") };
+		return new MultipleColumnPrefixFilter(prefixes);
+	}
+
 	private Filter generateRowFilter() {
 		return new RowFilter(CompareFilter.CompareOp.EQUAL,
 				new BinaryComparator(
@@ -108,21 +117,24 @@ public class HbaseAssistantTest {
 				Bytes.toBytes("pts"), CompareFilter.CompareOp.GREATER,
 				Bytes.toBytes(targetDate.getTime()));
 	}
-	
+
 	private Filter generateSkipFilter() {
 		Date targetDate_0 = Date.from(LocalDate.of(2016, 2, 11).atStartOfDay()
 				.atZone(ZoneId.systemDefault()).toInstant());
-		Filter filter_0 = new SingleColumnValueExcludeFilter(Bytes.toBytes("f"),
-				Bytes.toBytes("pts"), CompareFilter.CompareOp.GREATER,
-				Bytes.toBytes(targetDate_0.getTime()));
-		
+		Filter filter_0 = new SingleColumnValueExcludeFilter(
+				Bytes.toBytes("f"), Bytes.toBytes("pts"),
+				CompareFilter.CompareOp.GREATER, Bytes.toBytes(targetDate_0
+						.getTime()));
+
 		Date targetDate_1 = Date.from(LocalDate.of(2016, 2, 21).atStartOfDay()
 				.atZone(ZoneId.systemDefault()).toInstant());
-		Filter filter_1 = new SingleColumnValueExcludeFilter(Bytes.toBytes("f"),
-				Bytes.toBytes("pts"), CompareFilter.CompareOp.LESS_OR_EQUAL,
+		Filter filter_1 = new SingleColumnValueExcludeFilter(
+				Bytes.toBytes("f"), Bytes.toBytes("pts"),
+				CompareFilter.CompareOp.LESS_OR_EQUAL,
 				Bytes.toBytes(targetDate_1.getTime()));
-		
+
 		FilterList filterList = new FilterList(filter_0, filter_1);
 		return new SkipFilter(filterList);
 	}
+
 }

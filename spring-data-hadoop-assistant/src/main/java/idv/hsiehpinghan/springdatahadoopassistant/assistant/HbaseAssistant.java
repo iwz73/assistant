@@ -1,10 +1,11 @@
 package idv.hsiehpinghan.springdatahadoopassistant.assistant;
 
-import idv.hsiehpinghan.springdatahadoopassistant.entity.HbaseEntity;
+import idv.hsiehpinghan.springdatahadoopassistant.entity.Webpage;
 
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.NavigableMap;
 
-import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
@@ -17,59 +18,56 @@ import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("deprecation")
 public class HbaseAssistant {
 	@Autowired
 	private HbaseTemplate hbaseTemplate;
 
-	public TreeSet<HbaseEntity> scan(String tableName) {
+	public Collection<Webpage> scan(String tableName) {
 		return scan(tableName, null);
 	}
 
-	public TreeSet<HbaseEntity> scan(String tableName, Filter filter) {
-
+	public Collection<Webpage> scan(String tableName, Filter filter) {
 		return hbaseTemplate.execute(tableName,
-				new TableCallback<TreeSet<HbaseEntity>>() {
+				new TableCallback<Collection<Webpage>>() {
 					@Override
-					public TreeSet<HbaseEntity> doInTable(
+					public Collection<Webpage> doInTable(
 							HTableInterface tableInterface) throws Throwable {
-						
-						
-						System.err.println("in !!!");
-						
-						
-						
 						Scan scan = new Scan();
-						if (filter != null) {
-							scan.setFilter(filter);
-						}
+						scan.setFilter(filter);
 						ResultScanner scanner = tableInterface.getScanner(scan);
-						TreeSet<HbaseEntity> entities = new TreeSet<HbaseEntity>();
+						Collection<Webpage> webpages = new ArrayList<Webpage>();
 						for (Result result : scanner) {
-							HbaseEntity entity = new HbaseEntity();
-							Cell baseUrlCell = result.getColumnLatestCell(
-									Bytes.toBytes("f"), Bytes.toBytes("bas"));
-							entity.setBaseUrl(Bytes.toString(baseUrlCell
-									.getValueArray()));
-							entities.add(entity);
+							webpages.add(getWebpage(result));
 						}
-						return entities;
+						return webpages;
 					}
 				});
 	}
 
-	// public List<HbaseEntity> find(String tableName, String columnFamily) {
-	// final byte[] COLUMN_FAMILY = Bytes.toBytes(columnFamily);
-	// final byte[] BASE_URL = Bytes.toBytes("bas");
-	// return hbaseTemplate.find(tableName, columnFamily,
-	// new RowMapper<HbaseEntity>() {
-	// @Override
-	// public HbaseEntity mapRow(Result result, int rowNum)
-	// throws Exception {
-	// HbaseEntity entity = new HbaseEntity();
-	// entity.setBaseUrl(Bytes.toString(result.getValue(
-	// COLUMN_FAMILY, BASE_URL)));
-	// return entity;
-	// }
-	// });
-	// }
+	private Webpage getWebpage(Result result) {
+		byte[] key = result.getRow();
+		NavigableMap<byte[], byte[]> p = result
+				.getFamilyMap(Bytes.toBytes("p"));
+		NavigableMap<byte[], byte[]> f = result
+				.getFamilyMap(Bytes.toBytes("f"));
+		NavigableMap<byte[], byte[]> s = result
+				.getFamilyMap(Bytes.toBytes("s"));
+		NavigableMap<byte[], byte[]> il = result.getFamilyMap(Bytes
+				.toBytes("il"));
+		NavigableMap<byte[], byte[]> ol = result.getFamilyMap(Bytes
+				.toBytes("ol"));
+		NavigableMap<byte[], byte[]> h = result
+				.getFamilyMap(Bytes.toBytes("h"));
+		NavigableMap<byte[], byte[]> mtdt = result.getFamilyMap(Bytes
+				.toBytes("mtdt"));
+		NavigableMap<byte[], byte[]> mk = result.getFamilyMap(Bytes
+				.toBytes("mk"));
+		if (p == null && f == null && s == null && il == null && ol == null
+				&& h == null && mtdt == null && mk == null) {
+			return null;
+		}
+		return new Webpage(key, p, f, s, il, ol, h, mtdt, mk);
+	}
+
 }

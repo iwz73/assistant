@@ -2,10 +2,11 @@ package idv.hsiehpinghan.springdatahadoopassistant.assistant;
 
 import idv.hsiehpinghan.springdatahadoopassistant.entity.Webpage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NavigableMap;
+import java.util.TreeSet;
 
+import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
@@ -23,6 +24,19 @@ public class HbaseAssistant {
 	@Autowired
 	private HbaseTemplate hbaseTemplate;
 
+	public Webpage get(String tableName, String rowKey, Filter filter) {
+		return hbaseTemplate.execute(tableName, new TableCallback<Webpage>() {
+			@Override
+			public Webpage doInTable(HTableInterface tableInterface)
+					throws Throwable {
+				Get get = new Get(Bytes.toBytes(rowKey));
+				get.setFilter(filter);
+				Result result = tableInterface.get(get);
+				return getWebpage(result);
+			}
+		});
+	}
+
 	public Collection<Webpage> scan(String tableName) {
 		return scan(tableName, null);
 	}
@@ -36,7 +50,7 @@ public class HbaseAssistant {
 						Scan scan = new Scan();
 						scan.setFilter(filter);
 						ResultScanner scanner = tableInterface.getScanner(scan);
-						Collection<Webpage> webpages = new ArrayList<Webpage>();
+						Collection<Webpage> webpages = new TreeSet<Webpage>();
 						for (Result result : scanner) {
 							webpages.add(getWebpage(result));
 						}

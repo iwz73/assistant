@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.springdatahadoopassistant.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.NavigableMap;
 
 import org.apache.hadoop.hbase.util.Bytes;
 
-public class Webpage {
+public class Webpage implements Comparable<Webpage> {
 	private byte[] rowKey;
 	private P p;
 	private F f;
@@ -77,6 +78,28 @@ public class Webpage {
 				+ getF() + ", s=" + getS() + ", il=" + getIl() + ", ol="
 				+ getOl() + ", h=" + getH() + ", mtdt=" + getMtdt() + ", mk="
 				+ getMk() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(rowKey);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this.compareTo((Webpage) obj) == 0;
+	}
+
+	@Override
+	public int compareTo(Webpage obj) {
+		if (this == obj)
+			return 0;
+		if (obj == null)
+			return 1;
+		return Bytes.toString(rowKey).compareTo(obj.getRowKey());
 	}
 
 	public static class ColumnFamily {

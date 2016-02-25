@@ -15,6 +15,7 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.MultipleColumnPrefixFilter;
 import org.apache.hadoop.hbase.filter.PageFilter;
+import org.apache.hadoop.hbase.filter.RegexStringComparator;
 import org.apache.hadoop.hbase.filter.RowFilter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueExcludeFilter;
 import org.apache.hadoop.hbase.filter.SkipFilter;
@@ -37,8 +38,15 @@ public class HbaseAssistantTest {
 	}
 
 	@Test
+	public void get() throws Exception {
+		Webpage entity = assistant.get(TABLE_NAME, "tw.com.ipeen.www:http/comment/103620", generateMultipleColumnPrefixFilter());
+		System.err.println(entity);
+		Assert.assertNotNull(entity);
+	}
+	
+//	@Test
 	public void scan() throws Exception {
-		// TestRowFilter();
+//		 TestRowFilter();
 		// TestPageFilter();
 		// TestSingleColumnValueExcludeFilter();
 		TestFilterList();
@@ -56,14 +64,18 @@ public class HbaseAssistantTest {
 	}
 
 	private void TestFilterList() throws Exception {
-		Filter rowFilter = generateRowFilter();
-		Filter skipFilter = generateSkipFilter();
-		Filter multipleColumnPrefixFilter = multipleColumnPrefixFilter();
-		FilterList filterList = new FilterList(rowFilter, skipFilter,
-				multipleColumnPrefixFilter);
+//		Filter rowFilter_0 = generateRowFilter_0();
+//		Filter rowFilter_1 = generateRowFilter_1();
+		Filter rowFilter_2 = generateRowFilter_2();
+//		Filter skipFilter = generateSkipFilter();
+//		Filter multipleColumnPrefixFilter = generateMultipleColumnPrefixFilter();
+		Filter pageFilter = generatePageFilter();
+//		FilterList filterList = new FilterList(rowFilter, skipFilter,
+//				multipleColumnPrefixFilter, pageFilter);
+		FilterList filterList = new FilterList(rowFilter_2, pageFilter);
 		Collection<Webpage> entities = assistant.scan(TABLE_NAME, filterList);
 		for (Webpage entity : entities) {
-			System.err.println(entity);
+			System.err.println(entity.getRowKey());
 		}
 		Assert.assertTrue(0 < entities.size());
 	}
@@ -79,17 +91,16 @@ public class HbaseAssistantTest {
 	}
 
 	private void TestRowFilter() throws Exception {
-		Filter filter = generateRowFilter();
+		Filter filter = generateRowFilter_2();
 		Collection<Webpage> entities = assistant.scan(TABLE_NAME, filter);
 		for (Webpage entity : entities) {
-			System.err.println(entity);
+			System.err.println(entity.getRowKey() + " / " + entity.getF().getPrevFetchTime());
 		}
 		Assert.assertEquals(1, entities.size());
 	}
 
 	private void TestPageFilter() throws Exception {
-		PageFilter filter = new org.apache.hadoop.hbase.filter.PageFilter(
-				PAGE_SIZE);
+		Filter filter = generatePageFilter();
 		Collection<Webpage> entities = assistant.scan(TABLE_NAME, filter);
 		for (Webpage entity : entities) {
 			System.err.println(entity);
@@ -97,19 +108,35 @@ public class HbaseAssistantTest {
 		Assert.assertTrue(PAGE_SIZE < entities.size());
 	}
 
-	private Filter multipleColumnPrefixFilter() {
+	private Filter generatePageFilter() {
+		return new PageFilter(PAGE_SIZE);
+	}
+
+	private Filter generateMultipleColumnPrefixFilter() {
 		byte[][] prefixes = new byte[][] { Bytes.toBytes("bas"),
 				Bytes.toBytes("pts"), Bytes.toBytes("cnt"),
 				Bytes.toBytes("sig") };
 		return new MultipleColumnPrefixFilter(prefixes);
 	}
 
-	private Filter generateRowFilter() {
-		return new RowFilter(CompareFilter.CompareOp.EQUAL,
-				new BinaryComparator(
-						Bytes.toBytes("tw.com.ipeen.www:http/comment/148690")));
+	private Filter generateRowFilter_0() {
+		 return new RowFilter(CompareFilter.CompareOp.GREATER,
+		 new BinaryComparator(
+		 Bytes.toBytes("tw.com.ipeen.www:http/comment/148690")));
+			
 	}
 
+	private Filter generateRowFilter_1() {
+		return new RowFilter(CompareFilter.CompareOp.LESS,
+				new BinaryComparator(Bytes.toBytes("tw.com.ipeen.www:http/shop/82600")));
+			
+	}
+	
+	private Filter generateRowFilter_2() {
+		return new RowFilter(CompareFilter.CompareOp.EQUAL, new RegexStringComparator("tw.com.ipeen.www:http/shop/[0-9]*$"));
+			
+	}
+	
 	private Filter generateSingleColumnValueExcludeFilter() {
 		Date targetDate = Date.from(LocalDate.of(2016, 2, 11).atStartOfDay()
 				.atZone(ZoneId.systemDefault()).toInstant());

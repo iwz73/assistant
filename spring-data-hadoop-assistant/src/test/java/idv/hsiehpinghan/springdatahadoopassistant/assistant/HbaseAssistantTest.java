@@ -6,8 +6,10 @@ import idv.hsiehpinghan.springdatahadoopassistant.suit.TestngSuitSetting;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.hadoop.hbase.filter.BinaryComparator;
 import org.apache.hadoop.hbase.filter.CompareFilter;
@@ -39,9 +41,16 @@ public class HbaseAssistantTest {
 
 	@Test
 	public void get() throws Exception {
-		Webpage entity = assistant.get(TABLE_NAME, "tw.com.ipeen.www:http/comment/103620", generateMultipleColumnPrefixFilter());
-		System.err.println(entity);
-		Assert.assertNotNull(entity);
+		final int SIZE = 3;
+		List<String> rowKeys = new ArrayList<String>(SIZE);
+		rowKeys.add("tw.com.ipeen.www:http/comment/103620");
+		rowKeys.add("tw.com.ipeen.www:http/comment/104119");
+		rowKeys.add("tw.com.ipeen.www:http/comment/117595");
+		List<Webpage> entities = assistant.get(TABLE_NAME, rowKeys, generateMultipleColumnPrefixFilter());
+		entities.forEach((entity)->{
+			System.err.println(entity);
+		});
+		Assert.assertEquals(entities.size(), SIZE);
 	}
 	
 //	@Test

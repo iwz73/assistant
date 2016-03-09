@@ -2,7 +2,9 @@ package idv.hsiehpinghan.springdatahadoopassistant.assistant;
 
 import idv.hsiehpinghan.springdatahadoopassistant.entity.Webpage;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeSet;
 
@@ -24,17 +26,28 @@ public class HbaseAssistant {
 	@Autowired
 	private HbaseTemplate hbaseTemplate;
 
-	public Webpage get(String tableName, String rowKey, Filter filter) {
-		return hbaseTemplate.execute(tableName, new TableCallback<Webpage>() {
-			@Override
-			public Webpage doInTable(HTableInterface tableInterface)
-					throws Throwable {
-				Get get = new Get(Bytes.toBytes(rowKey));
-				get.setFilter(filter);
-				Result result = tableInterface.get(get);
-				return getWebpage(result);
-			}
-		});
+	public List<Webpage> get(String tableName, Collection<String> rowKeys,
+			Filter filter) {
+		return hbaseTemplate.execute(tableName,
+				new TableCallback<List<Webpage>>() {
+					@Override
+					public List<Webpage> doInTable(
+							HTableInterface tableInterface) throws Throwable {
+						List<Get> gets = new ArrayList<Get>(rowKeys.size());
+						rowKeys.forEach((rowKey) -> {
+							Get get = new Get(Bytes.toBytes(rowKey));
+							get.setFilter(filter);
+							gets.add(get);
+						});
+						Result[] results = tableInterface.get(gets);
+						List<Webpage> webpages = new ArrayList<Webpage>(
+								results.length);
+						for (Result result : results) {
+							webpages.add(getWebpage(result));
+						}
+						return webpages;
+					}
+				});
 	}
 
 	public Collection<Webpage> scan(String tableName) {

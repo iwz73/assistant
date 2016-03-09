@@ -48,10 +48,6 @@ public class SpringConfiguration {
 			throws IOException {
 		String fileName = "hbase-site.xml";
 		Resource resource = new ClassPathResource(fileName);
-		File file = resource.getFile();
-		if (file.exists() == false) {
-			throw new RuntimeException(fileName + " not exists !!!");
-		}
-		config.addResource(new FileInputStream(file));
+		config.addResource(resource.getInputStream());
 	}
 }

@@ -18,7 +18,8 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-<!-- 		<hive.version>1.2.1</hive.version> -->
+		<hadoop.version>2.6.0</hadoop.version>
+		<hive.version>1.1.1</hive.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -53,12 +54,24 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- hadoop -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
 		<!-- hive -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.hive</groupId> -->
-<!-- 			<artifactId>hive-cli</artifactId> -->
-<!-- 			<version>${hive.version}</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.hive</groupId> -->
+		<!-- <artifactId>hive-cli</artifactId> -->
+		<!-- <version>${hive.version}</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-jdbc</artifactId>
+			<version>${hive.version}</version>
+		</dependency>
 
 		<!-- object-utility -->
 		<dependency>

@@ -26,7 +26,8 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.testutility.utility.CompareUtility;
 
 public class WebPageServiceTest {
-	private String BATCH_ID = "batchId";
+	// private String BATCH_ID = "batchId";
+	private String BATCH_ID = "1464158096-1608326935";
 	private ApplicationContext applicationContext;
 	private WebPageService service;
 
@@ -36,7 +37,7 @@ public class WebPageServiceTest {
 		service = applicationContext.getBean(WebPageService.class);
 	}
 
-	@Test
+	// @Test
 	public void put() {
 		for (int i = 0; i < 100; ++i) {
 			String key = String.valueOf(i);
@@ -49,9 +50,16 @@ public class WebPageServiceTest {
 
 	@Test
 	public void query() throws Exception {
-		Result<String, WebPage> result = service.query(generateFilterList());
+		String[] fields = new String[] { WebPage.Field.STATUS.getName() };
+		Result<String, WebPage> result = service.query(generateFilterList(), fields);
 		int row = 0;
 		while (result.next()) {
+
+			String key = result.getKey();
+			WebPage entity = result.get();
+			System.err.println(key);
+			System.err.println(entity);
+
 			++row;
 		}
 		Assert.assertTrue(row > 0);

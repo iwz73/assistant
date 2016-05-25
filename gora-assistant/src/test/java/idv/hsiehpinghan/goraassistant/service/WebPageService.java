@@ -35,8 +35,8 @@ public class WebPageService {
 		return repository.query(key, fields);
 	}
 
-	public Result<String, WebPage> query(Filter<String, WebPage> filter) {
-		return repository.query(filter);
+	public Result<String, WebPage> query(Filter<String, WebPage> filter, String... fields) {
+		return repository.query(filter, fields);
 	}
 
 	public boolean delete(String key) {

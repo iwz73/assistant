@@ -45,9 +45,10 @@ public class WebPageRepository {
 		return query.execute();
 	}
 
-	public Result<String, WebPage> query(Filter<String, WebPage> filter) {
+	public Result<String, WebPage> query(Filter<String, WebPage> filter, String... fields) {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setFilter(filter);
+		query.setFields(fields);
 		return query.execute();
 	}
 

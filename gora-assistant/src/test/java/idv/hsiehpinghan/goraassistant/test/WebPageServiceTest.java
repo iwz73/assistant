@@ -26,8 +26,8 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.testutility.utility.CompareUtility;
 
 public class WebPageServiceTest {
-	// private String BATCH_ID = "batchId";
-	private String BATCH_ID = "1464158096-1608326935";
+	 private String BATCH_ID = "batchId";
+//	private String BATCH_ID = "1464158096-1608326935";
 	private ApplicationContext applicationContext;
 	private WebPageService service;
 
@@ -37,9 +37,9 @@ public class WebPageServiceTest {
 		service = applicationContext.getBean(WebPageService.class);
 	}
 
-	// @Test
+//	@Test
 	public void put() {
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			String key = String.valueOf(i);
 			WebPage entity = generateWebPage(i);
 			service.put(key, entity);
@@ -50,8 +50,23 @@ public class WebPageServiceTest {
 
 	@Test
 	public void query() throws Exception {
+		query_0();
+		query_1();
+	}
+
+	private void query_0() throws Exception {
 		String[] fields = new String[] { WebPage.Field.STATUS.getName() };
-		Result<String, WebPage> result = service.query(generateFilterList(), fields);
+		Result<String, WebPage> result = service.query(generateFilterList_0(), fields);
+		int row = 0;
+		while (result.next()) {
+			++row;
+		}
+		Assert.assertTrue(row > 0);
+	}
+
+	private void query_1() throws Exception {
+		String[] fields = new String[] { WebPage.Field.CONTENT.getName() };
+		Result<String, WebPage> result = service.query(generateFilterList_1(), fields);
 		int row = 0;
 		while (result.next()) {
 
@@ -65,21 +80,35 @@ public class WebPageServiceTest {
 		Assert.assertTrue(row > 0);
 	}
 
-	private FilterList<String, WebPage> generateFilterList() {
+	private FilterList<String, WebPage> generateFilterList_0() {
 		FilterList<String, WebPage> filter = new FilterList<String, WebPage>(Operator.MUST_PASS_ALL);
-		filter.addFilter(generateSingleFieldValueFilter());
+		filter.addFilter(generateSingleFieldValueFilter_0());
 		return filter;
 	}
 
-	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter() {
+	private FilterList<String, WebPage> generateFilterList_1() {
+		FilterList<String, WebPage> filter = new FilterList<String, WebPage>(Operator.MUST_PASS_ALL);
+		filter.addFilter(generateSingleFieldValueFilter_1());
+		return filter;
+	}
+
+	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter_0() {
 		SingleFieldValueFilter<String, WebPage> filter = new SingleFieldValueFilter<String, WebPage>();
-		filter.setFieldName(WebPage.Field.STATUS.toString());
-		filter.setFilterOp(FilterOp.EQUALS);
-		filter.setFilterIfMissing(true);
 		filter.setFieldName(WebPage.Field.BATCH_ID.toString());
 		filter.setFilterOp(FilterOp.EQUALS);
 		filter.setFilterIfMissing(true);
-		filter.getOperands().add(new Utf8(BATCH_ID));
+		filter.getOperands().add(new Utf8(BATCH_ID + 0));
+		return filter;
+	}
+
+	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter_1() {
+		SingleFieldValueFilter<String, WebPage> filter = new SingleFieldValueFilter<String, WebPage>();
+		filter.setFieldName(WebPage.Field.BATCH_ID.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setFilterIfMissing(true);
+		for(int i = 0; i < 3; ++i) {
+			filter.getOperands().add(new Utf8(BATCH_ID + i));	
+		}
 		return filter;
 	}
 
@@ -183,7 +212,7 @@ public class WebPageServiceTest {
 		entity.setInlinks(generateInlinks());
 		entity.setMarkers(generateMarkers());
 		entity.setMetadata(generateMetadata());
-		entity.setBatchId(BATCH_ID);
+		entity.setBatchId(BATCH_ID + i);
 		return entity;
 	}
 

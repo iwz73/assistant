@@ -2,6 +2,7 @@ package idv.hsiehpinghan.goraassistant.repository;
 
 import java.io.IOException;
 
+import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
@@ -41,6 +42,12 @@ public class WebPageRepository {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setKey(key);
 		query.setFields(fields);
+		return query.execute();
+	}
+
+	public Result<String, WebPage> query(Filter<String, WebPage> filter) {
+		Query<String, WebPage> query = dataStore.newQuery();
+		query.setFilter(filter);
 		return query.execute();
 	}
 

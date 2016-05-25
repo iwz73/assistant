@@ -1,9 +1,5 @@
 package idv.hsiehpinghan.goraassistant.test;
 
-import idv.hsiehpinghan.goraassistant.service.WebPageService;
-import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
-import idv.hsiehpinghan.testutility.utility.CompareUtility;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.avro.util.Utf8;
+import org.apache.gora.filter.FilterList;
+import org.apache.gora.filter.FilterList.Operator;
+import org.apache.gora.filter.FilterOp;
+import org.apache.gora.filter.SingleFieldValueFilter;
+import org.apache.gora.query.Result;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.storage.ProtocolStatus;
 import org.apache.nutch.storage.WebPage;
@@ -19,7 +21,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import idv.hsiehpinghan.goraassistant.service.WebPageService;
+import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.testutility.utility.CompareUtility;
+
 public class WebPageServiceTest {
+	private String BATCH_ID = "batchId";
 	private ApplicationContext applicationContext;
 	private WebPageService service;
 
@@ -32,16 +39,40 @@ public class WebPageServiceTest {
 	@Test
 	public void put() {
 		for (int i = 0; i < 100; ++i) {
-			
-			System.err.println(i);
-			
-			
 			String key = String.valueOf(i);
 			WebPage entity = generateWebPage(i);
 			service.put(key, entity);
 			WebPage returnEntity = service.get(key);
 			assertEquals(returnEntity, entity);
 		}
+	}
+
+	@Test
+	public void query() throws Exception {
+		Result<String, WebPage> result = service.query(generateFilterList());
+		int row = 0;
+		while (result.next()) {
+			++row;
+		}
+		Assert.assertTrue(row > 0);
+	}
+
+	private FilterList<String, WebPage> generateFilterList() {
+		FilterList<String, WebPage> filter = new FilterList<String, WebPage>(Operator.MUST_PASS_ALL);
+		filter.addFilter(generateSingleFieldValueFilter());
+		return filter;
+	}
+
+	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter() {
+		SingleFieldValueFilter<String, WebPage> filter = new SingleFieldValueFilter<String, WebPage>();
+		filter.setFieldName(WebPage.Field.STATUS.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setFilterIfMissing(true);
+		filter.setFieldName(WebPage.Field.BATCH_ID.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setFilterIfMissing(true);
+		filter.getOperands().add(new Utf8(BATCH_ID));
+		return filter;
 	}
 
 	private List<CharSequence> generateArgs() {
@@ -71,8 +102,7 @@ public class WebPageServiceTest {
 
 	private Map<CharSequence, CharSequence> generateHeaders() {
 		final int SIZE = 100;
-		Map<CharSequence, CharSequence> headers = new HashMap<CharSequence, CharSequence>(
-				SIZE);
+		Map<CharSequence, CharSequence> headers = new HashMap<CharSequence, CharSequence>(SIZE);
 		for (int i = 0; i < 100; ++i) {
 			headers.put(String.valueOf(i), String.valueOf(i));
 		}
@@ -81,8 +111,7 @@ public class WebPageServiceTest {
 
 	private Map<CharSequence, CharSequence> generateOutlinks() {
 		final int SIZE = 100;
-		Map<CharSequence, CharSequence> outlinks = new HashMap<CharSequence, CharSequence>(
-				SIZE);
+		Map<CharSequence, CharSequence> outlinks = new HashMap<CharSequence, CharSequence>(SIZE);
 		for (int i = 0; i < 100; ++i) {
 			outlinks.put(String.valueOf(i), String.valueOf(i));
 		}
@@ -91,8 +120,7 @@ public class WebPageServiceTest {
 
 	private Map<CharSequence, CharSequence> generateInlinks() {
 		final int SIZE = 100;
-		Map<CharSequence, CharSequence> inlinks = new HashMap<CharSequence, CharSequence>(
-				SIZE);
+		Map<CharSequence, CharSequence> inlinks = new HashMap<CharSequence, CharSequence>(SIZE);
 		for (int i = 0; i < 100; ++i) {
 			inlinks.put(String.valueOf(i), String.valueOf(i));
 		}
@@ -101,8 +129,7 @@ public class WebPageServiceTest {
 
 	private Map<CharSequence, CharSequence> generateMarkers() {
 		final int SIZE = 100;
-		Map<CharSequence, CharSequence> markers = new HashMap<CharSequence, CharSequence>(
-				SIZE);
+		Map<CharSequence, CharSequence> markers = new HashMap<CharSequence, CharSequence>(SIZE);
 		for (int i = 0; i < 100; ++i) {
 			markers.put(String.valueOf(i), String.valueOf(i));
 		}
@@ -111,11 +138,9 @@ public class WebPageServiceTest {
 
 	private Map<CharSequence, ByteBuffer> generateMetadata() {
 		final int SIZE = 100;
-		Map<CharSequence, ByteBuffer> metadata = new HashMap<CharSequence, ByteBuffer>(
-				SIZE);
+		Map<CharSequence, ByteBuffer> metadata = new HashMap<CharSequence, ByteBuffer>(SIZE);
 		for (int i = 0; i < 100; ++i) {
-			metadata.put(String.valueOf(i),
-					generateByteBuffer(String.valueOf(i)));
+			metadata.put(String.valueOf(i), generateByteBuffer(String.valueOf(i)));
 		}
 		return metadata;
 	}
@@ -150,58 +175,38 @@ public class WebPageServiceTest {
 		entity.setInlinks(generateInlinks());
 		entity.setMarkers(generateMarkers());
 		entity.setMetadata(generateMetadata());
-		entity.setBatchId("batchId");
+		entity.setBatchId(BATCH_ID);
 		return entity;
 	}
 
 	private void assertEquals(WebPage returnEntity, WebPage entity) {
-		Assert.assertEquals(returnEntity.getBaseUrl().toString(), entity
-				.getBaseUrl().toString());
+		Assert.assertEquals(returnEntity.getBaseUrl().toString(), entity.getBaseUrl().toString());
 		Assert.assertEquals(returnEntity.getStatus(), entity.getStatus());
 		Assert.assertEquals(returnEntity.getFetchTime(), entity.getFetchTime());
-		Assert.assertEquals(returnEntity.getPrevFetchTime(),
-				entity.getPrevFetchTime());
-		Assert.assertEquals(returnEntity.getFetchInterval(),
-				entity.getFetchInterval());
-		Assert.assertEquals(returnEntity.getRetriesSinceFetch(),
-				entity.getRetriesSinceFetch());
-		Assert.assertEquals(returnEntity.getModifiedTime(),
-				entity.getModifiedTime());
-		Assert.assertEquals(returnEntity.getPrevModifiedTime(),
-				entity.getPrevModifiedTime());
-		Assert.assertEquals(returnEntity.getProtocolStatus(),
-				entity.getProtocolStatus());
-		Assert.assertNull(CompareUtility.getIndexOfDifferentByte(
-				returnEntity.getContent(), entity.getContent()));
-		Assert.assertNull(CompareUtility.getIndexOfDifferentByte(
-				returnEntity.getPrevSignature(), entity.getPrevSignature()));
-		Assert.assertNull(CompareUtility.getIndexOfDifferentByte(
-				returnEntity.getSignature(), entity.getSignature()));
-		Assert.assertEquals(returnEntity.getTitle().toString(), entity
-				.getTitle().toString());
-		Assert.assertEquals(returnEntity.getText().toString(), entity.getText()
-				.toString());
-		Assert.assertEquals(returnEntity.getParseStatus(),
-				entity.getParseStatus());
+		Assert.assertEquals(returnEntity.getPrevFetchTime(), entity.getPrevFetchTime());
+		Assert.assertEquals(returnEntity.getFetchInterval(), entity.getFetchInterval());
+		Assert.assertEquals(returnEntity.getRetriesSinceFetch(), entity.getRetriesSinceFetch());
+		Assert.assertEquals(returnEntity.getModifiedTime(), entity.getModifiedTime());
+		Assert.assertEquals(returnEntity.getPrevModifiedTime(), entity.getPrevModifiedTime());
+		Assert.assertEquals(returnEntity.getProtocolStatus(), entity.getProtocolStatus());
+		Assert.assertNull(CompareUtility.getIndexOfDifferentByte(returnEntity.getContent(), entity.getContent()));
+		Assert.assertNull(
+				CompareUtility.getIndexOfDifferentByte(returnEntity.getPrevSignature(), entity.getPrevSignature()));
+		Assert.assertNull(CompareUtility.getIndexOfDifferentByte(returnEntity.getSignature(), entity.getSignature()));
+		Assert.assertEquals(returnEntity.getTitle().toString(), entity.getTitle().toString());
+		Assert.assertEquals(returnEntity.getText().toString(), entity.getText().toString());
+		Assert.assertEquals(returnEntity.getParseStatus(), entity.getParseStatus());
 		Assert.assertEquals(returnEntity.getScore(), entity.getScore());
-		Assert.assertEquals(returnEntity.getReprUrl().toString(), entity
-				.getReprUrl().toString());
-		Assert.assertTrue(CompareUtility.compareCharSequenceMap(
-				returnEntity.getHeaders(), entity.getHeaders()));
-		Assert.assertTrue(CompareUtility.compareCharSequenceMap(
-				returnEntity.getOutlinks(), entity.getOutlinks()));
-		Assert.assertTrue(CompareUtility.compareCharSequenceMap(
-				returnEntity.getInlinks(), entity.getInlinks()));
-		Assert.assertTrue(CompareUtility.compareCharSequenceMap(
-				returnEntity.getMarkers(), entity.getMarkers()));
-		Assert.assertTrue(compare(returnEntity.getMetadata(),
-				entity.getMetadata()));
-		Assert.assertEquals(returnEntity.getBatchId().toString(), entity
-				.getBatchId().toString());
+		Assert.assertEquals(returnEntity.getReprUrl().toString(), entity.getReprUrl().toString());
+		Assert.assertTrue(CompareUtility.compareCharSequenceMap(returnEntity.getHeaders(), entity.getHeaders()));
+		Assert.assertTrue(CompareUtility.compareCharSequenceMap(returnEntity.getOutlinks(), entity.getOutlinks()));
+		Assert.assertTrue(CompareUtility.compareCharSequenceMap(returnEntity.getInlinks(), entity.getInlinks()));
+		Assert.assertTrue(CompareUtility.compareCharSequenceMap(returnEntity.getMarkers(), entity.getMarkers()));
+		Assert.assertTrue(compare(returnEntity.getMetadata(), entity.getMetadata()));
+		Assert.assertEquals(returnEntity.getBatchId().toString(), entity.getBatchId().toString());
 	}
 
-	private static boolean compare(Map<CharSequence, ByteBuffer> map0,
-			Map<CharSequence, ByteBuffer> map1) {
+	private static boolean compare(Map<CharSequence, ByteBuffer> map0, Map<CharSequence, ByteBuffer> map1) {
 		if (map0.size() != map1.size()) {
 			return false;
 		}
@@ -218,8 +223,7 @@ public class WebPageServiceTest {
 		return true;
 	}
 
-	private static Map<String, String> convertToStringMap(
-			Map<CharSequence, ByteBuffer> map) {
+	private static Map<String, String> convertToStringMap(Map<CharSequence, ByteBuffer> map) {
 		Map<String, String> m = new HashMap<String, String>(map.size());
 		map.forEach((k, v) -> {
 			String key = k.toString();

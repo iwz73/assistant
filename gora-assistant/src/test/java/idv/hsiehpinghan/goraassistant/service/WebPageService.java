@@ -1,13 +1,14 @@
 package idv.hsiehpinghan.goraassistant.service;
 
-import idv.hsiehpinghan.goraassistant.repository.WebPageRepository;
-
 import java.io.IOException;
 
+import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Result;
 import org.apache.nutch.storage.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import idv.hsiehpinghan.goraassistant.repository.WebPageRepository;
 
 @Service
 public class WebPageService {
@@ -32,6 +33,10 @@ public class WebPageService {
 
 	public Result<String, WebPage> query(String key, String... fields) {
 		return repository.query(key, fields);
+	}
+
+	public Result<String, WebPage> query(Filter<String, WebPage> filter) {
+		return repository.query(filter);
 	}
 
 	public boolean delete(String key) {

@@ -1,11 +1,5 @@
 package idv.hsiehpinghan.goraassistant.test;
 
-import idv.hsiehpinghan.goraassistant.entity.Gora;
-import idv.hsiehpinghan.goraassistant.entity.NestedRecord;
-import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
-import idv.hsiehpinghan.goraassistant.service.GoraService;
-import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
-
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -15,6 +9,12 @@ import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import idv.hsiehpinghan.goraassistant.entity.Gora;
+import idv.hsiehpinghan.goraassistant.entity.NestedRecord;
+import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
+import idv.hsiehpinghan.goraassistant.service.GoraService;
+import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 
 public class GoraServiceTest {
 	private final long KEY = Calendar.getInstance().getTimeInMillis();
@@ -107,24 +107,41 @@ public class GoraServiceTest {
 
 	}
 
-	@Test(dependsOnMethods = { "query" })
+	@Test(dependsOnMethods = { "queryWithLimit" })
+	public void putWithOnlyOneField() {
+		final String STRING = "new_string";
+		service.put(KEY, generateGora1(STRING));
+		Gora returnGora = service.get(KEY);
+		assertReturnGora1(returnGora, STRING);
+	}
+
+	@Test(dependsOnMethods = { "putWithOnlyOneField" })
 	public void delete() {
 		Assert.assertTrue(service.delete(KEY));
 		Assert.assertNull(service.get(KEY));
 	}
 
 	private void assertReturnGora(Gora returnGora) {
-		Assert.assertEquals(Boolean.valueOf(_boolean),
-				returnGora.getBoolean$1());
+		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
 		Assert.assertEquals(Long.valueOf(_long), returnGora.getLong$1());
 		Assert.assertEquals(Float.valueOf(_float), returnGora.getFloat$1());
 		Assert.assertEquals(Double.valueOf(_double), returnGora.getDouble$1());
 		Assert.assertEquals(_string, returnGora.getString$1());
-		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora
-				.getRecord$1().getBoolean$1());
-		Assert.assertEquals(Integer.valueOf(_record_int), returnGora
-				.getRecord$1().getInt$1());
+		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora.getRecord$1().getBoolean$1());
+		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
+		Assert.assertEquals(_enum, returnGora.getEnum$1());
+	}
+
+	private void assertReturnGora1(Gora returnGora, String string) {
+		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
+		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
+		Assert.assertEquals(Long.valueOf(_long), returnGora.getLong$1());
+		Assert.assertEquals(Float.valueOf(_float), returnGora.getFloat$1());
+		Assert.assertEquals(Double.valueOf(_double), returnGora.getDouble$1());
+		Assert.assertEquals(string, String.valueOf(returnGora.getString$1()));
+		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora.getRecord$1().getBoolean$1());
+		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
 	}
 
@@ -138,6 +155,12 @@ public class GoraServiceTest {
 		entity.setString$1(_string);
 		entity.setRecord$1(generateNestedRecord());
 		entity.setEnum$1(_enum);
+		return entity;
+	}
+
+	private Gora generateGora1(String string) {
+		Gora entity = new Gora();
+		entity.setString$1(string);
 		return entity;
 	}
 

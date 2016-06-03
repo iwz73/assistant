@@ -2,7 +2,6 @@ package idv.hsiehpinghan.nekohtmlassistant.assistant;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -13,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -32,15 +32,29 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		doc = assistant.getDocument(inputSource);
 	}
 
-//	@Test
+	// @Test
 	public void getBody() {
 		Assert.assertEquals(assistant.getElementsByTagName(doc, "body").getLength(), 1);
 	}
-	
+
 	@Test
 	public void generateElementVo() {
-		Node node = assistant.getElementsByTagName(doc, "body").item(0).getChildNodes().item(9);
-		ElementVo vo = assistant.generateElementVo(node);
+		Node node = assistant.getElementsByTagName(doc, "body").item(0);
+		print(node);
+	}
+
+	private void print(Node node) {
+		short nodeType = node.getNodeType();
+		if ((Node.ELEMENT_NODE == nodeType) && ("SCRIPT".equals(node.getNodeName()) == false)) {
+			ElementVo vo = assistant.generateElementVo(node);
+
+			System.err.println(vo);
+
+			NodeList nodeList = node.getChildNodes();
+			for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+				print(nodeList.item(i));
+			}
+		}
 	}
 
 }

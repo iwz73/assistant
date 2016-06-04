@@ -22,8 +22,15 @@ public class NekohtmlAssistant {
 		return parser.getDocument();
 	}
 
-	public NodeList getElementsByTagName(Document document, String tagname) {
-		return document.getElementsByTagName(tagname);
+	public NodeList getElementsByTagName(Document document, String tagName) {
+		return document.getElementsByTagName(tagName);
+	}
+
+	public Document removeElementsByNodeName(Document document, String nodeName) {
+
+		// System.err.println(document.normalize());
+
+		return null;
 	}
 
 	public ElementVo generateElementVo(Node node) {
@@ -32,6 +39,98 @@ public class NekohtmlAssistant {
 		String serialClass = generateSerialClass(node);
 		String visibleText = generateVisibleText(node);
 		return new ElementVo(serialNodeName, serialIndex, serialClass, visibleText);
+	}
+
+	public String getElementVosString(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendSubNodeElementVoString(sb, node);
+		return sb.toString();
+	}
+
+	public String getHtmlString(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendSubNodeHtmlString(sb, node);
+		return sb.toString();
+	}
+	
+	private void appendSubNodeHtmlString(StringBuilder sb, Node node) {
+		short nodeType = node.getNodeType();
+		switch (nodeType) {
+		case Node.DOCUMENT_TYPE_NODE:
+			appendSubDocumentTypeNodeHtmlString(sb, node);
+			break;
+		case Node.COMMENT_NODE:
+			appendSubCommentNodeHtmlString(sb, node);
+			break;
+		case Node.ELEMENT_NODE:
+//			appendSubElementNodeHtmlString(sb, node);
+//			break;			
+		case Node.DOCUMENT_NODE:
+		case Node.TEXT_NODE:
+		case Node.ATTRIBUTE_NODE:
+		case Node.CDATA_SECTION_NODE:
+		case Node.ENTITY_REFERENCE_NODE:
+		case Node.ENTITY_NODE:
+		case Node.PROCESSING_INSTRUCTION_NODE:
+		case Node.DOCUMENT_FRAGMENT_NODE:
+		case Node.NOTATION_NODE:
+		default:
+			break;
+//			throw new RuntimeException("nodeType(" + nodeType + ") not implements !!!");
+		}
+	}
+	
+	private void appendSubDocumentTypeNodeHtmlString(StringBuilder sb, Node node) {
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			appendSubNodeHtmlString(sb, nodeList.item(i));
+		}
+	}
+
+	private void appendSubCommentNodeHtmlString(StringBuilder sb, Node node) {
+		
+		System.err.println(node.getTextContent());
+		
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			appendSubNodeHtmlString(sb, nodeList.item(i));
+		}
+	}
+	
+	private void appendSubElementNodeHtmlString(StringBuilder sb, Node node) {
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			appendSubNodeHtmlString(sb, nodeList.item(i));
+		}
+	}
+	
+	private void appendSubNodeElementVoString(StringBuilder sb, Node node) {
+		short nodeType = node.getNodeType();
+		switch (nodeType) {
+		case Node.ELEMENT_NODE:
+		case Node.DOCUMENT_NODE:
+			ElementVo vo = generateElementVo(node);
+			sb.append(vo);
+			sb.append(System.lineSeparator());
+			NodeList nodeList = node.getChildNodes();
+			for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+				appendSubNodeElementVoString(sb, nodeList.item(i));
+			}
+			break;
+		case Node.TEXT_NODE:
+		case Node.COMMENT_NODE:
+		case Node.ATTRIBUTE_NODE:
+		case Node.CDATA_SECTION_NODE:
+		case Node.ENTITY_REFERENCE_NODE:
+		case Node.ENTITY_NODE:
+		case Node.PROCESSING_INSTRUCTION_NODE:
+		case Node.DOCUMENT_TYPE_NODE:
+		case Node.DOCUMENT_FRAGMENT_NODE:
+		case Node.NOTATION_NODE:
+			break;
+		default:
+			throw new RuntimeException("nodeType(" + nodeType + ") not implements !!!");
+		}
 	}
 
 	private String generateSerialNodeName(Node node) {
@@ -104,33 +203,4 @@ public class NekohtmlAssistant {
 		return sb.toString();
 	}
 
-	// private void appendChildrenVisibleText(StringBuilder sb, Node node) {
-	// short nodeType = node.getNodeType();
-	// switch (nodeType) {
-	// case Node.TEXT_NODE:
-	// sb.append(node.getTextContent().trim());
-	// break;
-	// case Node.ELEMENT_NODE:
-	// NodeList nodeList = node.getChildNodes();
-	// for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
-	// appendChildrenVisibleText(sb, nodeList.item(i));
-	// }
-	// break;
-	// case Node.COMMENT_NODE:
-	// // do nothing.
-	// break;
-	// case Node.ATTRIBUTE_NODE:
-	// case Node.CDATA_SECTION_NODE:
-	// case Node.ENTITY_REFERENCE_NODE:
-	// case Node.ENTITY_NODE:
-	// case Node.PROCESSING_INSTRUCTION_NODE:
-	// case Node.DOCUMENT_NODE:
-	// case Node.DOCUMENT_TYPE_NODE:
-	// case Node.DOCUMENT_FRAGMENT_NODE:
-	// case Node.NOTATION_NODE:
-	// default:
-	// throw new RuntimeException("nodeType(" + nodeType + ") not implements
-	// !!!");
-	// }
-	// }
 }

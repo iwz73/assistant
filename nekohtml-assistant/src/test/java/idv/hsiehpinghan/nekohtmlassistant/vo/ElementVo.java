@@ -1,41 +1,73 @@
 package idv.hsiehpinghan.nekohtmlassistant.vo;
 
 public class ElementVo {
-	private String serialNodeName;
-	private String serialIndex;
-	private String serialClass;
+	private String serialAncestorNodeName;
+	private String serialAncestorIndex;
+	private String serialAncestorClass;
+	private String serialPosterityNodeName;
+	private String serialPosterityIndex;
+	private String serialPosterityClass;
 	private String visibleText;
 
-	public ElementVo(String serialNodeName, String serialIndex, String serialClass, String visibleText) {
+	public ElementVo(String serialAncestorNodeName, String serialAncestorIndex, String serialAncestorClass,
+			String serialPosterityNodeName, String serialPosterityIndex, String serialPosterityClass,
+			String visibleText) {
 		super();
-		this.serialNodeName = serialNodeName;
-		this.serialIndex = serialIndex;
-		this.serialClass = serialClass;
+		this.serialAncestorNodeName = serialAncestorNodeName;
+		this.serialAncestorIndex = serialAncestorIndex;
+		this.serialAncestorClass = serialAncestorClass;
+		this.serialPosterityNodeName = serialPosterityNodeName;
+		this.serialPosterityIndex = serialPosterityIndex;
+		this.serialPosterityClass = serialPosterityClass;
 		this.visibleText = visibleText;
 	}
 
-	public String getSerialNodeName() {
-		return serialNodeName;
+	public String getSerialAncestorNodeName() {
+		return serialAncestorNodeName;
 	}
 
-	public void setSerialNodeName(String serialNodeName) {
-		this.serialNodeName = serialNodeName;
+	public void setSerialAncestorNodeName(String serialAncestorNodeName) {
+		this.serialAncestorNodeName = serialAncestorNodeName;
 	}
 
-	public String getSerialIndex() {
-		return serialIndex;
+	public String getSerialAncestorIndex() {
+		return serialAncestorIndex;
 	}
 
-	public void setSerialIndex(String serialIndex) {
-		this.serialIndex = serialIndex;
+	public void setSerialAncestorIndex(String serialAncestorIndex) {
+		this.serialAncestorIndex = serialAncestorIndex;
 	}
 
-	public String getSerialClass() {
-		return serialClass;
+	public String getSerialAncestorClass() {
+		return serialAncestorClass;
 	}
 
-	public void setSerialClass(String serialClass) {
-		this.serialClass = serialClass;
+	public void setSerialAncestorClass(String serialAncestorClass) {
+		this.serialAncestorClass = serialAncestorClass;
+	}
+
+	public String getSerialPosterityNodeName() {
+		return serialPosterityNodeName;
+	}
+
+	public void setSerialPosterityNodeName(String serialPosterityNodeName) {
+		this.serialPosterityNodeName = serialPosterityNodeName;
+	}
+
+	public String getSerialPosterityIndex() {
+		return serialPosterityIndex;
+	}
+
+	public void setSerialPosterityIndex(String serialPosterityIndex) {
+		this.serialPosterityIndex = serialPosterityIndex;
+	}
+
+	public String getSerialPosterityClass() {
+		return serialPosterityClass;
+	}
+
+	public void setSerialPosterityClass(String serialPosterityClass) {
+		this.serialPosterityClass = serialPosterityClass;
 	}
 
 	public String getVisibleText() {
@@ -48,8 +80,7 @@ public class ElementVo {
 
 	@Override
 	public String toString() {
-		return "ElementVo [serialNodeName=" + serialNodeName + ", serialIndex=" + serialIndex + ", serialClass="
-				+ serialClass + ", visibleText=" + visibleText + "]";
+		return serialPosterityClass;
 	}
 
 }

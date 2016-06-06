@@ -15,6 +15,9 @@ import idv.hsiehpinghan.nekohtmlassistant.vo.ElementVo;
 
 @Component
 public class NekohtmlAssistant {
+	private static final String NODE_NAME = "node_name";
+	private static final String INDEX = "index";
+	private static final String CLAZZ = "class";
 
 	public Document getDocument(InputSource inputSource) throws SAXException, IOException {
 		DOMParser parser = new DOMParser();
@@ -26,19 +29,16 @@ public class NekohtmlAssistant {
 		return document.getElementsByTagName(tagName);
 	}
 
-	public Document removeElementsByNodeName(Document document, String nodeName) {
-
-		// System.err.println(document.normalize());
-
-		return null;
-	}
-
 	public ElementVo generateElementVo(Node node) {
-		String serialNodeName = generateSerialNodeName(node);
-		String serialIndex = generateSerialIndex(node);
-		String serialClass = generateSerialClass(node);
+		String serialAncestorNodeName = generateSerialAncestorNodeName(node);
+		String serialAncestorIndex = generateSerialAncestorIndex(node);
+		String serialAncestorClass = generateSerialAncestorClass(node);
+		String serialPosterityNodeName = generateSerialPosterityNodeName(node);
+		String serialPosterityIndex = generateSerialPosterityIndex(node);
+		String serialPosterityClass = generateSerialPosterityClass(node);
 		String visibleText = generateVisibleText(node);
-		return new ElementVo(serialNodeName, serialIndex, serialClass, visibleText);
+		return new ElementVo(serialAncestorNodeName, serialAncestorIndex, serialAncestorClass, serialPosterityNodeName,
+				serialPosterityIndex, serialPosterityClass, visibleText);
 	}
 
 	public String getElementVosString(Node node) {
@@ -47,63 +47,6 @@ public class NekohtmlAssistant {
 		return sb.toString();
 	}
 
-	public String getHtmlString(Node node) {
-		StringBuilder sb = new StringBuilder();
-		appendSubNodeHtmlString(sb, node);
-		return sb.toString();
-	}
-	
-	private void appendSubNodeHtmlString(StringBuilder sb, Node node) {
-		short nodeType = node.getNodeType();
-		switch (nodeType) {
-		case Node.DOCUMENT_TYPE_NODE:
-			appendSubDocumentTypeNodeHtmlString(sb, node);
-			break;
-		case Node.COMMENT_NODE:
-			appendSubCommentNodeHtmlString(sb, node);
-			break;
-		case Node.ELEMENT_NODE:
-//			appendSubElementNodeHtmlString(sb, node);
-//			break;			
-		case Node.DOCUMENT_NODE:
-		case Node.TEXT_NODE:
-		case Node.ATTRIBUTE_NODE:
-		case Node.CDATA_SECTION_NODE:
-		case Node.ENTITY_REFERENCE_NODE:
-		case Node.ENTITY_NODE:
-		case Node.PROCESSING_INSTRUCTION_NODE:
-		case Node.DOCUMENT_FRAGMENT_NODE:
-		case Node.NOTATION_NODE:
-		default:
-			break;
-//			throw new RuntimeException("nodeType(" + nodeType + ") not implements !!!");
-		}
-	}
-	
-	private void appendSubDocumentTypeNodeHtmlString(StringBuilder sb, Node node) {
-		NodeList nodeList = node.getChildNodes();
-		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
-			appendSubNodeHtmlString(sb, nodeList.item(i));
-		}
-	}
-
-	private void appendSubCommentNodeHtmlString(StringBuilder sb, Node node) {
-		
-		System.err.println(node.getTextContent());
-		
-		NodeList nodeList = node.getChildNodes();
-		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
-			appendSubNodeHtmlString(sb, nodeList.item(i));
-		}
-	}
-	
-	private void appendSubElementNodeHtmlString(StringBuilder sb, Node node) {
-		NodeList nodeList = node.getChildNodes();
-		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
-			appendSubNodeHtmlString(sb, nodeList.item(i));
-		}
-	}
-	
 	private void appendSubNodeElementVoString(StringBuilder sb, Node node) {
 		short nodeType = node.getNodeType();
 		switch (nodeType) {
@@ -133,9 +76,27 @@ public class NekohtmlAssistant {
 		}
 	}
 
-	private String generateSerialNodeName(Node node) {
+	private String generateSerialAncestorNodeName(Node node) {
 		StringBuilder sb = new StringBuilder();
 		appendAncestorNodeName(sb, node);
+		return sb.toString();
+	}
+
+	private String generateSerialPosterityNodeName(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendPosterity(sb, node, NODE_NAME);
+		return sb.toString();
+	}
+
+	private String generateSerialPosterityIndex(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendPosterity(sb, node, INDEX);
+		return sb.toString();
+	}
+
+	private String generateSerialPosterityClass(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendPosterity(sb, node, CLAZZ);
 		return sb.toString();
 	}
 
@@ -145,9 +106,49 @@ public class NekohtmlAssistant {
 			appendAncestorNodeName(sb, parentNode);
 		}
 		sb.append(node.getNodeName());
+		sb.append(",");
 	}
 
-	private String generateSerialIndex(Node node) {
+	private void appendPosterity(StringBuilder sb, Node node, String type) {
+		if (NODE_NAME.equals(type)) {
+			sb.append(node.getNodeName());
+			sb.append(",");
+		} else if (INDEX.equals(type)) {
+			sb.append(getNodeIndex(node));
+			sb.append(",");
+		} else if (CLAZZ.equals(type)) {
+			sb.append(getNodeClass(node));
+			sb.append(",");
+		} else {
+			throw new RuntimeException("type(" + type + ") not implements !!!");
+		}
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			Node childNode = nodeList.item(i);
+			short nodeType = childNode.getNodeType();
+			switch (nodeType) {
+			case Node.TEXT_NODE:
+			case Node.COMMENT_NODE:
+			case Node.ATTRIBUTE_NODE:
+			case Node.CDATA_SECTION_NODE:
+				continue;
+			case Node.ELEMENT_NODE:
+			case Node.DOCUMENT_NODE:
+			case Node.ENTITY_REFERENCE_NODE:
+			case Node.ENTITY_NODE:
+			case Node.PROCESSING_INSTRUCTION_NODE:
+			case Node.DOCUMENT_TYPE_NODE:
+			case Node.DOCUMENT_FRAGMENT_NODE:
+			case Node.NOTATION_NODE:
+				appendPosterity(sb, childNode, type);
+				break;
+			default:
+				throw new RuntimeException("nodeType(" + nodeType + ") not implements !!!");
+			}
+		}
+	}
+
+	private String generateSerialAncestorIndex(Node node) {
 		StringBuilder sb = new StringBuilder();
 		appendAncestorIndex(sb, node);
 		return sb.toString();
@@ -158,15 +159,11 @@ public class NekohtmlAssistant {
 		if (parentNode != null) {
 			appendAncestorIndex(sb, parentNode);
 		}
-		Node tempNode = node;
-		int index = 0;
-		while ((tempNode = tempNode.getPreviousSibling()) != null) {
-			++index;
-		}
-		sb.append(index);
+		sb.append(getNodeIndex(node));
+		sb.append(",");
 	}
 
-	private String generateSerialClass(Node node) {
+	private String generateSerialAncestorClass(Node node) {
 		StringBuilder sb = new StringBuilder();
 		appendAncestorClass(sb, node);
 		return sb.toString();
@@ -188,7 +185,20 @@ public class NekohtmlAssistant {
 		String classValue = classNode.getNodeValue();
 		if (classValue != null) {
 			sb.append(classValue);
+			sb.append(",");
 		}
+	}
+
+	private String getNodeClass(Node node) {
+		NamedNodeMap nameNodeMap = node.getAttributes();
+		if (nameNodeMap == null) {
+			return "";
+		}
+		Node classNode = nameNodeMap.getNamedItem("class");
+		if (classNode == null) {
+			return "";
+		}
+		return classNode.getNodeValue();
 	}
 
 	private String generateVisibleText(Node node) {
@@ -201,6 +211,15 @@ public class NekohtmlAssistant {
 			}
 		}
 		return sb.toString();
+	}
+
+	private int getNodeIndex(Node node) {
+		Node tempNode = node;
+		int index = 0;
+		while ((tempNode = tempNode.getPreviousSibling()) != null) {
+			++index;
+		}
+		return index;
 	}
 
 }

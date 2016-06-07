@@ -47,6 +47,65 @@ public class NekohtmlAssistant {
 		return sb.toString();
 	}
 
+	public String getHtmlString(Node node) {
+		StringBuilder sb = new StringBuilder();
+		appendSubHtmlString(sb, node);
+		return sb.toString();
+	}
+
+	private void appendSubHtmlString(StringBuilder sb, Node node) {
+		short nodeType = node.getNodeType();
+		NodeList nodeList = null;
+		switch (nodeType) {
+		case Node.DOCUMENT_NODE:
+			nodeList = node.getChildNodes();
+			for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+				appendSubHtmlString(sb, nodeList.item(i));
+			}
+			break;
+		case Node.COMMENT_NODE:
+			sb.append("<!--");
+			sb.append(node.getTextContent());
+			sb.append("-->");
+			break;
+		case Node.ELEMENT_NODE:
+			sb.append("<");
+			sb.append(node.getNodeName());
+			NamedNodeMap map = node.getAttributes();
+			for (int i = 0, size = map.getLength(); i < size; ++i) {
+				Node attrNode = map.item(i);
+				sb.append(" ");
+				sb.append(attrNode.getNodeName());
+				sb.append("=\"");
+				sb.append(attrNode.getNodeValue());
+				sb.append("\"");
+			}
+			sb.append(">");
+			nodeList = node.getChildNodes();
+			for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+				appendSubHtmlString(sb, nodeList.item(i));
+			}
+			sb.append("</");
+			sb.append(node.getNodeName());
+			sb.append(">");
+			break;
+		case Node.TEXT_NODE:
+			sb.append(node.getTextContent());
+			break;
+		case Node.ATTRIBUTE_NODE:
+		case Node.CDATA_SECTION_NODE:
+		case Node.ENTITY_REFERENCE_NODE:
+		case Node.ENTITY_NODE:
+		case Node.PROCESSING_INSTRUCTION_NODE:
+		case Node.DOCUMENT_TYPE_NODE:
+		case Node.DOCUMENT_FRAGMENT_NODE:
+		case Node.NOTATION_NODE:
+			break;
+		default:
+			throw new RuntimeException("nodeType(" + nodeType + ") not implements !!!");
+		}
+	}
+
 	private void appendSubNodeElementVoString(StringBuilder sb, Node node) {
 		short nodeType = node.getNodeType();
 		switch (nodeType) {

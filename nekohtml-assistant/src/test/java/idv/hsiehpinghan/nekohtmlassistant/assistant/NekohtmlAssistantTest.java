@@ -34,9 +34,14 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(assistant.getElementsByTagName(doc, "body").getLength(), 1);
 	}
 
-	@Test
+	// @Test
 	public void getElementVosString() {
 		System.err.println(assistant.getElementVosString(doc));
+	}
+
+	@Test
+	public void getHtmlString() {
+		System.err.println(assistant.getHtmlString(doc));
 	}
 
 }

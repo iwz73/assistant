@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WordCount {
 
-	public boolean count(String inputPath, String outputPath) throws Exception {
+	public boolean count(Path inputPath, Path outputPath) throws Exception {
 		Configuration conf = new Configuration();
 		Job job = Job.getInstance(conf, "word count");
 		job.setJarByClass(WordCount.class);
@@ -27,8 +27,8 @@ public class WordCount {
 		job.setReducerClass(IntSumReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
-		FileInputFormat.addInputPath(job, new Path(inputPath));
-		FileOutputFormat.setOutputPath(job, new Path(outputPath));
+		FileInputFormat.addInputPath(job, inputPath);
+		FileOutputFormat.setOutputPath(job, outputPath);
 		return job.waitForCompletion(true);
 	}
 

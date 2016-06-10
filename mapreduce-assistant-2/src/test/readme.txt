@@ -54,4 +54,7 @@ hdfs dfs -put /user/<username> <input file>
 # ResourceManager
 http://localhost:8088/
 
+# put files to hdfs
+bin/hdfs dfs -put /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/wordCount_*.txt /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/patterns.txt /tmp
+
 

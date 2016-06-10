@@ -26,18 +26,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WordCount2 {
-	public boolean count() throws Exception {
-		
-		String[] args = {"/home/thank/git/assistant/mapreduce-assistant-2/src/test/file/WordCount_*.txt", "/tmp/WordCount"};
-		
-		Configuration conf = new Configuration();
-		GenericOptionsParser optionParser = new GenericOptionsParser(conf, args);
-		String[] remainingArgs = optionParser.getRemainingArgs();
-		if (!(remainingArgs.length != 2 || remainingArgs.length != 4)) {
-			System.err.println("Usage: wordcount <in> <out> [-skip skipPatternFile]");
-			System.exit(2);
-		}
-		Job job = Job.getInstance(conf, "word count");
+	public boolean count(Configuration conf, Path inputPath, Path outputPath, Path patternPath) throws Exception {
+//		GenericOptionsParser optionParser = new GenericOptionsParser(conf, args);
+//		String[] remainingArgs = optionParser.getRemainingArgs();
+//		if (!(remainingArgs.length != 2 || remainingArgs.length != 4)) {
+//			System.err.println("Usage: wordcount <in> <out> [-skip skipPatternFile]");
+//			System.exit(2);
+//		}
+		Job job = Job.getInstance(conf, "word count 2");
 		job.setJarByClass(WordCount2.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
@@ -45,21 +41,26 @@ public class WordCount2 {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
 
-		List<String> otherArgs = new ArrayList<String>();
-		for (int i = 0; i < remainingArgs.length; ++i) {
-			if ("-skip".equals(remainingArgs[i])) {
-				job.addCacheFile(new Path(remainingArgs[++i]).toUri());
-				job.getConfiguration().setBoolean("wordcount.skip.patterns", true);
-			} else {
-				otherArgs.add(remainingArgs[i]);
-			}
-		}
-		FileInputFormat.addInputPath(job, new Path(otherArgs.get(0)));
-		FileOutputFormat.setOutputPath(job, new Path(otherArgs.get(1)));
+//		List<String> otherArgs = new ArrayList<String>();
+//		for (int i = 0; i < remainingArgs.length; ++i) {
+//			if ("-skip".equals(remainingArgs[i])) {
+//				job.addCacheFile(new Path(remainingArgs[++i]).toUri());
+//				job.getConfiguration().setBoolean("wordcount.skip.patterns", true);
+//			} else {
+//				otherArgs.add(remainingArgs[i]);
+//			}
+//		}
+		
+//		job.addCacheFile(new Path(remainingArgs[++i]).toUri());
+//		job.getConfiguration().setBoolean("wordcount.skip.patterns", true);
+		
+		job.addCacheFile(patternPath.toUri());
+		FileInputFormat.addInputPath(job, inputPath);
+		FileOutputFormat.setOutputPath(job, outputPath);
 
 		
-		System.err.println(otherArgs.get(0));
-		System.err.println(otherArgs.get(1));
+//		System.err.println(otherArgs.get(0));
+//		System.err.println(otherArgs.get(1));
 		
 		
 		return job.waitForCompletion(true);
@@ -87,7 +88,7 @@ public class WordCount2 {
 			if (conf.getBoolean("wordcount.skip.patterns", true)) {
 				URI[] patternsURIs = Job.getInstance(conf).getCacheFiles();
 				
-//				System.err.println(patternsURIs);
+				System.err.println(patternsURIs);
 				
 				for (URI patternsURI : patternsURIs) {
 					Path patternsPath = new Path(patternsURI.getPath());

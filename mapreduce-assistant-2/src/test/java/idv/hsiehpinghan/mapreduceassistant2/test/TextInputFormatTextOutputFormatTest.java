@@ -15,21 +15,21 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
-import idv.hsiehpinghan.mapreduceassistant2.job.InputFormatOutputFormat;
+import idv.hsiehpinghan.mapreduceassistant2.job.TextInputFormatTextOutputFormat;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class InputFormatOutputFormatTest extends AbstractTestNGSpringContextTests {
+public class TextInputFormatTextOutputFormatTest extends AbstractTestNGSpringContextTests {
 	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
 	@Autowired
-	private InputFormatOutputFormat inputFormatOutputFormat;
+	private TextInputFormatTextOutputFormat textInputFormatTextOutputFormat;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		conf = new Configuration();
-		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/inputFormatOutputFormat/file/");
-		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/inputFormatOutputFormat/result/");
+		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/textInputFormatTextOutputFormat/file/");
+		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/textInputFormatTextOutputFormat/result/");
 		FileSystem fs = FileSystem.get(conf);
 		deleteAndMkdirs(fs);
 		Path[] srcs = generateSourcePaths();
@@ -38,7 +38,7 @@ public class InputFormatOutputFormatTest extends AbstractTestNGSpringContextTest
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(inputFormatOutputFormat.count(conf, inputPath, outputPath));
+		Assert.assertTrue(textInputFormatTextOutputFormat.count(conf, inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

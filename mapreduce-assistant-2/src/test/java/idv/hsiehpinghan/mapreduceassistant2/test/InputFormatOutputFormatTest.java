@@ -15,21 +15,21 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
-import idv.hsiehpinghan.mapreduceassistant2.job.Basic;
+import idv.hsiehpinghan.mapreduceassistant2.job.InputFormatOutputFormat;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class BasicTest extends AbstractTestNGSpringContextTests {
+public class InputFormatOutputFormatTest extends AbstractTestNGSpringContextTests {
 	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
 	@Autowired
-	private Basic basic;
+	private InputFormatOutputFormat inputFormatOutputFormat;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		conf = new Configuration();
-		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/basic/file/");
-		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/basic/result/");
+		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/inputFormatOutputFormat/file/");
+		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/inputFormatOutputFormat/result/");
 		FileSystem fs = FileSystem.get(conf);
 		deleteAndMkdirs(fs);
 		Path[] srcs = generateSourcePaths();
@@ -38,7 +38,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(basic.count(conf, inputPath, outputPath));
+		Assert.assertTrue(inputFormatOutputFormat.count(conf, inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

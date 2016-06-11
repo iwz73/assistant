@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.mapreduceassistant2.test;
+package idv.hsiehpinghan.mapreduceassistant2.job;
 
 import java.io.IOException;
 

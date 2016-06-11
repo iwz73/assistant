@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
+import idv.hsiehpinghan.mapreduceassistant2.job.CacheFile;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class CacheFileTest extends AbstractTestNGSpringContextTests {
@@ -49,7 +50,7 @@ public class CacheFileTest extends AbstractTestNGSpringContextTests {
 		fs.delete(inputPath, true);
 		fs.delete(outputPath, true);
 		fs.delete(patternPath, true);
-		FsPermission permission = new FsPermission(FsAction.ALL, FsAction.NONE, FsAction.NONE);
+		FsPermission permission = new FsPermission(FsAction.ALL, FsAction.ALL, FsAction.ALL);
 		if (fs.mkdirs(inputPath, permission) == false) {
 			return false;
 		}

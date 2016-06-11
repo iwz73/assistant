@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
+import idv.hsiehpinghan.mapreduceassistant2.job.Partitioner_;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class Partitioner_Test extends AbstractTestNGSpringContextTests {
@@ -43,7 +44,7 @@ public class Partitioner_Test extends AbstractTestNGSpringContextTests {
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {
 		fs.delete(inputPath, true);
 		fs.delete(outputPath, true);
-		FsPermission permission = new FsPermission(FsAction.ALL, FsAction.NONE, FsAction.NONE);
+		FsPermission permission = new FsPermission(FsAction.ALL, FsAction.ALL, FsAction.ALL);
 		if (fs.mkdirs(inputPath, permission) == false) {
 			return false;
 		}

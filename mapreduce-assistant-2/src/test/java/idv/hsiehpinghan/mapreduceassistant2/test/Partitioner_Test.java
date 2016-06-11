@@ -17,18 +17,18 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class WordCountTest extends AbstractTestNGSpringContextTests {
+public class Partitioner_Test extends AbstractTestNGSpringContextTests {
 	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
 	@Autowired
-	private WordCount wordCount;
+	private Partitioner_ partitioner;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		conf = new Configuration();
-		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/wordCount/file/");
-		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/wordCount/result/");
+		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/partitioner/file/");
+		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/partitioner/result/");
 		FileSystem fs = FileSystem.get(conf);
 		deleteAndMkdirs(fs);
 		Path[] srcs = generateSourcePaths();
@@ -37,7 +37,7 @@ public class WordCountTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(wordCount.count(inputPath, outputPath));
+		Assert.assertTrue(partitioner.getMax(conf, inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {
@@ -51,10 +51,8 @@ public class WordCountTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private Path[] generateSourcePaths() {
-		Path wordCount_1 = new Path(
-				"/home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/wordCount_1.txt");
-		Path wordCount_2 = new Path(
-				"/home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/wordCount_2.txt");
-		return new Path[] { wordCount_1, wordCount_2 };
+		Path partitioner = new Path(
+				"/home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/partitioner.txt");
+		return new Path[] { partitioner };
 	}
 }

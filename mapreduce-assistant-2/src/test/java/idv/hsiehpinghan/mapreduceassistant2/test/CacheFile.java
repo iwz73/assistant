@@ -21,10 +21,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WordCount2 {
+public class CacheFile {
 	public boolean count(Configuration conf, Path inputPath, Path outputPath, Path patternPath) throws Exception {
-		Job job = Job.getInstance(conf, "word count 2");
-		job.setJarByClass(WordCount2.class);
+		Job job = Job.getInstance(conf, "cacheFile");
+		job.setJarByClass(CacheFile.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);

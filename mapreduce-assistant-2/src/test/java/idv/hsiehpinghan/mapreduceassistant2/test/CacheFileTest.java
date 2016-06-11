@@ -17,20 +17,20 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.mapreduceassistant2.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class WordCount2Test extends AbstractTestNGSpringContextTests {
+public class CacheFileTest extends AbstractTestNGSpringContextTests {
 	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
 	private Path patternPath;
 	@Autowired
-	private WordCount2 wordCount;
+	private CacheFile cacheFile;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		conf = new Configuration();
-		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/wordCount2/file/");
-		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/wordCount2/result/");
-		patternPath = new Path(conf.get("fs.defaultFS") + "/tmp/wordCount2/pattern/");
+		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/file/");
+		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/result/");
+		patternPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/pattern/");
 		FileSystem fs = FileSystem.get(conf);
 		deleteAndMkdirs(fs);
 		Path[] srcs = generateSourcePaths();
@@ -41,8 +41,8 @@ public class WordCount2Test extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(wordCount.count(conf, inputPath, outputPath,
-				new Path(conf.get("fs.defaultFS") + "/tmp/wordCount2/pattern/patterns.txt")));
+		Assert.assertTrue(cacheFile.count(conf, inputPath, outputPath,
+				new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/pattern/patterns.txt")));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

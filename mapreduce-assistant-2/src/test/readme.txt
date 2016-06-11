@@ -29,8 +29,9 @@ start-dfs.sh
 http://localhost:50070/
 
 # Make the HDFS directories required to execute MapReduce jobs
-hdfs dfs -mkdir /user
-hdfs dfs -mkdir /user/<username>
+hdfs dfs -mkdir -p /user/hsiehpinghan
+hdfs dfs -mkdir -p /tmp
+hdfs dfs -chmod 777 /tmp
 
 # Copy the input files into the distributed filesystem
 hdfs dfs -put /user/<username> <input file>
@@ -55,6 +56,6 @@ hdfs dfs -put /user/<username> <input file>
 http://localhost:8088/
 
 # put files to hdfs
-bin/hdfs dfs -put /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/wordCount_*.txt /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/patterns.txt /tmp
+hdfs dfs -put /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/wordCount_*.txt /home/hsiehpinghan/git/assistant/mapreduce-assistant-2/src/test/file/patterns.txt /tmp
 
 

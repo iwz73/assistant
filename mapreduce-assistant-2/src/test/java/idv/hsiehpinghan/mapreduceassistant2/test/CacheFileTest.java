@@ -19,16 +19,16 @@ import idv.hsiehpinghan.mapreduceassistant2.job.CacheFile;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class CacheFileTest extends AbstractTestNGSpringContextTests {
-	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
 	private Path patternPath;
+	@Autowired
+	private Configuration conf;
 	@Autowired
 	private CacheFile cacheFile;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
-		conf = new Configuration();
 		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/file/");
 		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/result/");
 		patternPath = new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/pattern/");
@@ -42,7 +42,7 @@ public class CacheFileTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(cacheFile.count(conf, inputPath, outputPath,
+		Assert.assertTrue(cacheFile.count(inputPath, outputPath,
 				new Path(conf.get("fs.defaultFS") + "/tmp/cacheFile/pattern/patterns.txt")));
 	}
 

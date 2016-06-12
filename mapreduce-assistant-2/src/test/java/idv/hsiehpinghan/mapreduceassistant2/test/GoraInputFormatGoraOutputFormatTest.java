@@ -6,9 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.avro.util.Utf8;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.crawl.DbUpdaterJob;
-import org.apache.nutch.crawl.GeneratorJob;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.TableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,6 @@ public class GoraInputFormatGoraOutputFormatTest extends AbstractTestNGSpringCon
 		FIELDS.add(WebPage.Field.STATUS);
 		FIELDS.add(WebPage.Field.MARKERS);
 	}
-	private Configuration conf;
 	private long curTime = System.currentTimeMillis();
 	private float score = 1.1f;
 	private int status = 1;
@@ -44,7 +41,6 @@ public class GoraInputFormatGoraOutputFormatTest extends AbstractTestNGSpringCon
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		injectWebPage("http://www.google.com");
-		conf = new Configuration();
 	}
 
 	@Test

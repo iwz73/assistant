@@ -15,12 +15,15 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Partitioner_ {
+	@Autowired
+	private Configuration conf;
 
-	public boolean getMax(Configuration conf, Path inputPath, Path outputPath) throws Exception {
+	public boolean getMax(Path inputPath, Path outputPath) throws Exception {
 		Job job = Job.getInstance(conf, "partitioner_");
 		job.setJarByClass(Partitioner_.class);
 		job.setMapperClass(MapClass.class);

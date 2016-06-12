@@ -19,15 +19,15 @@ import idv.hsiehpinghan.mapreduceassistant2.job.TextInputFormatTextOutputFormat;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class TextInputFormatTextOutputFormatTest extends AbstractTestNGSpringContextTests {
-	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
+	@Autowired
+	private Configuration conf;
 	@Autowired
 	private TextInputFormatTextOutputFormat textInputFormatTextOutputFormat;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
-		conf = new Configuration();
 		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/textInputFormatTextOutputFormat/file/");
 		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/textInputFormatTextOutputFormat/result/");
 		FileSystem fs = FileSystem.get(conf);
@@ -38,7 +38,7 @@ public class TextInputFormatTextOutputFormatTest extends AbstractTestNGSpringCon
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(textInputFormatTextOutputFormat.count(conf, inputPath, outputPath));
+		Assert.assertTrue(textInputFormatTextOutputFormat.count(inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

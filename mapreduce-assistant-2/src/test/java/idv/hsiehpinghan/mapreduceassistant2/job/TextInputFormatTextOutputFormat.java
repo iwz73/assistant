@@ -13,12 +13,15 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TextInputFormatTextOutputFormat {
+	@Autowired
+	private Configuration conf;
 
-	public boolean count(Configuration conf, Path inputPath, Path outputPath) throws Exception {
+	public boolean count(Path inputPath, Path outputPath) throws Exception {
 		Job job = Job.getInstance(conf, "textInputFormatTextOutputFormat");
 		job.setJarByClass(TextInputFormatTextOutputFormat.class);
 		job.setMapperClass(TokenizerMapper.class);

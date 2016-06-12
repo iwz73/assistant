@@ -19,9 +19,10 @@ import idv.hsiehpinghan.mapreduceassistant2.job.Basic;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class BasicTest extends AbstractTestNGSpringContextTests {
-	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
+	@Autowired
+	private Configuration conf;
 	@Autowired
 	private Basic basic;
 
@@ -38,7 +39,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(basic.count(conf, inputPath, outputPath));
+		Assert.assertTrue(basic.count(inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

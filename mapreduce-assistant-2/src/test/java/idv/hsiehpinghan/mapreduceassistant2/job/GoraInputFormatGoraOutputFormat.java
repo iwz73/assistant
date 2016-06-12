@@ -24,7 +24,6 @@ import org.apache.nutch.crawl.URLPartitioner;
 import org.apache.nutch.storage.Mark;
 import org.apache.nutch.storage.StorageUtils;
 import org.apache.nutch.storage.WebPage;
-import org.apache.nutch.util.NutchJob;
 import org.apache.nutch.util.TableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ import org.springframework.stereotype.Component;
 public class GoraInputFormatGoraOutputFormat {
 	@Autowired
 	private Configuration conf;
-	
+
 	public boolean test(String batchId, Collection<WebPage.Field> fields) throws Exception {
 		conf.set(GeneratorJob.BATCH_ID, String.valueOf(batchId));
 		Job job = Job.getInstance(conf, "goraInputFormatGoraOutputFormat");
@@ -42,33 +41,13 @@ public class GoraInputFormatGoraOutputFormat {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setFields(toStringArray(fields));
 		job.setJarByClass(GoraInputFormatGoraOutputFormat.class);
-
-		 job.setMapperClass(GeneratorMapper_.class);
-		 job.setMapOutputKeyClass(SelectorEntry_.class);
-		 job.setMapOutputValueClass(WebPage.class);
-		 job.setPartitionerClass(SelectorEntryPartitioner_.class);
-		 job.setReducerClass(GeneratorReducer_.class);
-
-		 GoraInputFormat.setInput(job, query, dataStore, true);
-		
-		 GoraOutputFormat.setOutput(job, dataStore, true);
-
-//		Job job = NutchJob.getInstance(conf, "generate: test");
-//		StorageUtils.initMapperJob(job, fields, SelectorEntry_.class, WebPage.class, GeneratorMapper_.class,
-//				SelectorEntryPartitioner_.class, true);
-//		StorageUtils.initReducerJob(job, GeneratorReducer_.class);
-
-		// job.setJarByClass(GoraInputFormatGoraOutputFormat.class);
-		// job.setMapperClass(TokenizerMapper.class);
-		// job.setCombinerClass(IntSumReducer.class);
-		// job.setReducerClass(IntSumReducer.class);
-		// job.setOutputKeyClass(Text.class);
-		// job.setOutputValueClass(IntWritable.class);
-		// GoraInputFormat.setQuery(job, query);
-		// job.setInputFormatClass(GoraInputFormat.class);
-		//
-		// TextOutputFormat.setOutputPath(job, outputPath);
-		// job.setOutputFormatClass(TextOutputFormat.class);
+		job.setMapperClass(GeneratorMapper_.class);
+		job.setMapOutputKeyClass(SelectorEntry_.class);
+		job.setMapOutputValueClass(WebPage.class);
+		job.setPartitionerClass(SelectorEntryPartitioner_.class);
+		job.setReducerClass(GeneratorReducer_.class);
+		GoraInputFormat.setInput(job, query, dataStore, true);
+		GoraOutputFormat.setOutput(job, dataStore, true);
 		return job.waitForCompletion(true);
 	}
 
@@ -91,7 +70,6 @@ public class GoraInputFormatGoraOutputFormat {
 			entry.set(url, score);
 			context.write(entry, page);
 		}
-
 	}
 
 	public static class GeneratorReducer_ extends GoraReducer<SelectorEntry_, WebPage, String, WebPage> {

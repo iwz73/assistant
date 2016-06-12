@@ -18,11 +18,15 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CacheFile {
-	public boolean count(Configuration conf, Path inputPath, Path outputPath, Path patternPath) throws Exception {
+	@Autowired
+	private Configuration conf;
+
+	public boolean count(Path inputPath, Path outputPath, Path patternPath) throws Exception {
 		Job job = Job.getInstance(conf, "cacheFile");
 		job.setJarByClass(CacheFile.class);
 		job.setMapperClass(TokenizerMapper.class);

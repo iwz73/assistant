@@ -19,15 +19,15 @@ import idv.hsiehpinghan.mapreduceassistant2.job.Partitioner_;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class Partitioner_Test extends AbstractTestNGSpringContextTests {
-	private Configuration conf;
 	private Path inputPath;
 	private Path outputPath;
+	@Autowired
+	private Configuration conf;
 	@Autowired
 	private Partitioner_ partitioner;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
-		conf = new Configuration();
 		inputPath = new Path(conf.get("fs.defaultFS") + "/tmp/partitioner/file/");
 		outputPath = new Path(conf.get("fs.defaultFS") + "/tmp/partitioner/result/");
 		FileSystem fs = FileSystem.get(conf);
@@ -38,7 +38,7 @@ public class Partitioner_Test extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void count() throws Exception {
-		Assert.assertTrue(partitioner.getMax(conf, inputPath, outputPath));
+		Assert.assertTrue(partitioner.getMax(inputPath, outputPath));
 	}
 
 	private boolean deleteAndMkdirs(FileSystem fs) throws IOException {

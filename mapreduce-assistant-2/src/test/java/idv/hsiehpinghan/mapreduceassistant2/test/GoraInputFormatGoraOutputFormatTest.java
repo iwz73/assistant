@@ -49,8 +49,8 @@ public class GoraInputFormatGoraOutputFormatTest extends AbstractTestNGSpringCon
 
 	@Test
 	public void test() throws Exception {
-		conf.set(GeneratorJob.BATCH_ID, String.valueOf(System.currentTimeMillis()));
-		Assert.assertTrue(goraInputFormatGoraOutputFormat.test(conf, FIELDS));
+		String batchId = String.valueOf(System.currentTimeMillis());
+		Assert.assertTrue(goraInputFormatGoraOutputFormat.test(batchId, FIELDS));
 	}
 
 	private void injectWebPage(String url) throws IOException, Exception {

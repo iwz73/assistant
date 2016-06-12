@@ -3,11 +3,8 @@ package idv.hsiehpinghan.mapreduceassistant2.job;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.mapreduce.GoraInputFormat;
@@ -16,39 +13,51 @@ import org.apache.gora.mapreduce.GoraOutputFormat;
 import org.apache.gora.mapreduce.GoraReducer;
 import org.apache.gora.query.Query;
 import org.apache.gora.store.DataStore;
+import org.apache.hadoop.conf.Configurable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.nutch.crawl.GeneratorJob;
+import org.apache.nutch.crawl.URLPartitioner;
 import org.apache.nutch.storage.Mark;
 import org.apache.nutch.storage.StorageUtils;
 import org.apache.nutch.storage.WebPage;
+import org.apache.nutch.util.NutchJob;
 import org.apache.nutch.util.TableUtil;
-import org.apache.nutch.util.URLUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GoraInputFormatGoraOutputFormat {
-
-	public boolean test(Configuration conf, Collection<WebPage.Field> fields) throws Exception {
+	@Autowired
+	private Configuration conf;
+	
+	public boolean test(String batchId, Collection<WebPage.Field> fields) throws Exception {
+		conf.set(GeneratorJob.BATCH_ID, String.valueOf(batchId));
 		Job job = Job.getInstance(conf, "goraInputFormatGoraOutputFormat");
 		DataStore<String, WebPage> dataStore = StorageUtils.createWebStore(job.getConfiguration(), String.class,
 				WebPage.class);
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setFields(toStringArray(fields));
 		job.setJarByClass(GoraInputFormatGoraOutputFormat.class);
-		job.setMapperClass(GeneratorMapper.class);
-		job.setMapOutputKeyClass(SelectorEntry.class);
-		job.setMapOutputValueClass(WebPage.class);
-		job.setReducerClass(GeneratorReducer.class);
 
-		GoraInputFormat.setInput(job, query, dataStore, true);
-	    
-		GoraOutputFormat.setOutput(job, dataStore, true);
+		 job.setMapperClass(GeneratorMapper_.class);
+		 job.setMapOutputKeyClass(SelectorEntry_.class);
+		 job.setMapOutputValueClass(WebPage.class);
+		 job.setPartitionerClass(SelectorEntryPartitioner_.class);
+		 job.setReducerClass(GeneratorReducer_.class);
 
-
+		 GoraInputFormat.setInput(job, query, dataStore, true);
 		
+		 GoraOutputFormat.setOutput(job, dataStore, true);
+
+//		Job job = NutchJob.getInstance(conf, "generate: test");
+//		StorageUtils.initMapperJob(job, fields, SelectorEntry_.class, WebPage.class, GeneratorMapper_.class,
+//				SelectorEntryPartitioner_.class, true);
+//		StorageUtils.initReducerJob(job, GeneratorReducer_.class);
+
 		// job.setJarByClass(GoraInputFormatGoraOutputFormat.class);
 		// job.setMapperClass(TokenizerMapper.class);
 		// job.setCombinerClass(IntSumReducer.class);
@@ -72,8 +81,8 @@ public class GoraInputFormatGoraOutputFormat {
 		return arr;
 	}
 
-	public static class GeneratorMapper extends GoraMapper<String, WebPage, SelectorEntry, WebPage> {
-		private SelectorEntry entry = new SelectorEntry();
+	public static class GeneratorMapper_ extends GoraMapper<String, WebPage, SelectorEntry_, WebPage> {
+		private SelectorEntry_ entry = new SelectorEntry_();
 
 		@Override
 		public void map(String reversedUrl, WebPage page, Context context) throws IOException, InterruptedException {
@@ -83,19 +92,9 @@ public class GoraInputFormatGoraOutputFormat {
 			context.write(entry, page);
 		}
 
-		@Override
-		public void setup(Context context) {
-			Configuration conf = context.getConfiguration();
-		}
 	}
 
-	public static class GeneratorReducer extends GoraReducer<SelectorEntry, WebPage, String, WebPage> {
-
-		private long limit;
-		private long maxCount;
-		protected static long count = 0;
-		private boolean byDomain = false;
-		private Map<String, Integer> hostCountMap = new HashMap<String, Integer>();
+	public static class GeneratorReducer_ extends GoraReducer<SelectorEntry_, WebPage, String, WebPage> {
 		private Utf8 batchId;
 
 		@Override
@@ -103,34 +102,27 @@ public class GoraInputFormatGoraOutputFormat {
 			Configuration conf = context.getConfiguration();
 			batchId = new Utf8(conf.get(GeneratorJob.BATCH_ID));
 		}
-		
+
 		@Override
-		protected void reduce(SelectorEntry key, Iterable<WebPage> values, Context context)
+		protected void reduce(SelectorEntry_ key, Iterable<WebPage> values, Context context)
 				throws IOException, InterruptedException {
 			for (WebPage page : values) {
 				Mark.GENERATE_MARK.putMark(page, batchId);
 				page.setBatchId(batchId);
-				try {
-					context.write(TableUtil.reverseUrl(key.url), page);
-				} catch (MalformedURLException e) {
-					context.getCounter("Generator", "MALFORMED_URL").increment(1);
-					continue;
-				}
-				context.getCounter("Generator", "GENERATE_MARK").increment(1);
-				count++;
+				context.write(TableUtil.reverseUrl(key.url), page);
 			}
 		}
 
 	}
 
-	public static class SelectorEntry implements WritableComparable<SelectorEntry> {
+	public static class SelectorEntry_ implements WritableComparable<SelectorEntry_> {
 		String url;
 		float score;
 
-		public SelectorEntry() {
+		public SelectorEntry_() {
 		}
 
-		public SelectorEntry(String url, float score) {
+		public SelectorEntry_(String url, float score) {
 			this.url = url;
 			this.score = score;
 		}
@@ -145,7 +137,7 @@ public class GoraInputFormatGoraOutputFormat {
 			out.writeFloat(score);
 		}
 
-		public int compareTo(SelectorEntry se) {
+		public int compareTo(SelectorEntry_ se) {
 			if (se.score > score)
 				return 1;
 			else if (se.score == score)
@@ -164,7 +156,7 @@ public class GoraInputFormatGoraOutputFormat {
 
 		@Override
 		public boolean equals(Object obj) {
-			SelectorEntry other = (SelectorEntry) obj;
+			SelectorEntry_ other = (SelectorEntry_) obj;
 			if (!url.equals(other.url))
 				return false;
 			if (Float.floatToIntBits(score) != Float.floatToIntBits(other.score))
@@ -178,4 +170,24 @@ public class GoraInputFormatGoraOutputFormat {
 		}
 	}
 
+	public static class SelectorEntryPartitioner_ extends Partitioner<SelectorEntry_, WebPage> implements Configurable {
+		private URLPartitioner partitioner = new URLPartitioner();
+		private Configuration conf;
+
+		@Override
+		public int getPartition(SelectorEntry_ selectorEntry, WebPage page, int numReduces) {
+			return partitioner.getPartition(selectorEntry.url, numReduces);
+		}
+
+		@Override
+		public Configuration getConf() {
+			return conf;
+		}
+
+		@Override
+		public void setConf(Configuration conf) {
+			this.conf = conf;
+			partitioner.setConf(conf);
+		}
+	}
 }

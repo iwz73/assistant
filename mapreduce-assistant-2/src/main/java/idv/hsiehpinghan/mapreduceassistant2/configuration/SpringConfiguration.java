@@ -22,6 +22,7 @@ public class SpringConfiguration {
 	public org.apache.hadoop.conf.Configuration configuration() {
 		org.apache.hadoop.conf.Configuration conf = NutchConfiguration.create();
 		conf.set("preferred.schema.name", "webpage");
+		conf.addResource("nutch-site.xml");
 		return conf;
 	}
 }

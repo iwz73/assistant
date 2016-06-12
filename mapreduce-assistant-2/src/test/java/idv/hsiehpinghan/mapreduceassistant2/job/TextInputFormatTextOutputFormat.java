@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class TextInputFormatTextOutputFormat {
 
 	public boolean count(Configuration conf, Path inputPath, Path outputPath) throws Exception {
-		Job job = Job.getInstance(conf, "basic");
+		Job job = Job.getInstance(conf, "textInputFormatTextOutputFormat");
 		job.setJarByClass(TextInputFormatTextOutputFormat.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);

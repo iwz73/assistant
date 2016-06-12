@@ -34,6 +34,8 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<hadoop.version>2.6.0</hadoop.version>
+		<gora.version>0.6.1</gora.version>
+		<nutch.version>2.3.1</nutch.version>
 	</properties>
 
 	<dependencies>
@@ -79,5 +81,28 @@
 			<version>${hadoop.version}</version>
 		</dependency>
 
+		<!-- gora -->
+		<dependency>
+			<groupId>org.apache.gora</groupId>
+			<artifactId>gora-compiler-cli</artifactId>
+			<version>${gora.version}</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.gora</groupId> -->
+		<!-- <artifactId>gora-hbase</artifactId> -->
+		<!-- <version>${gora.version}</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.apache.gora</groupId>
+			<artifactId>gora-mongodb</artifactId>
+			<version>${gora.version}</version>
+		</dependency>
+
+		<!-- nutch -->
+		<dependency>
+			<groupId>org.apache.nutch</groupId>
+			<artifactId>nutch</artifactId>
+			<version>${nutch.version}</version>
+		</dependency>
 	</dependencies>
 </project>

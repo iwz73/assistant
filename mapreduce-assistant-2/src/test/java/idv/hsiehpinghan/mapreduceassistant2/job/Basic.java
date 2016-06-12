@@ -11,8 +11,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,12 +22,16 @@ public class Basic {
 		Job job = Job.getInstance(conf, "basic");
 		job.setJarByClass(Basic.class);
 		job.setMapperClass(TokenizerMapper.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(IntWritable.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
-		FileInputFormat.addInputPath(job, inputPath);
-		FileOutputFormat.setOutputPath(job, outputPath);
+		// job.setOutputKeyClass(Text.class);
+		// job.setOutputValueClass(IntWritable.class);
+		TextInputFormat.addInputPath(job, inputPath);
+		// job.setInputFormatClass(TextInputFormat.class);
+		TextOutputFormat.setOutputPath(job, outputPath);
+		// job.setOutputFormatClass(TextOutputFormat.class);
 		return job.waitForCompletion(true);
 	}
 

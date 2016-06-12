@@ -3,7 +3,11 @@
 <suite name="suite" verbose="1">
 	<test name="test">
 		<classes>
-			<class name="idv.hsiehpinghan.mapreduceassistant2.test.WordCountTest" />
+			<class name="idv.hsiehpinghan.mapreduceassistant2.test.BasicTest" />
+			<class name="idv.hsiehpinghan.mapreduceassistant2.test.CacheFileTest" />
+			<class name="idv.hsiehpinghan.mapreduceassistant2.test.Partitioner_Test" />
+			<class
+				name="idv.hsiehpinghan.mapreduceassistant2.test.TextInputFormatTextOutputFormatTest" />
 		</classes>
 	</test>
 </suite>

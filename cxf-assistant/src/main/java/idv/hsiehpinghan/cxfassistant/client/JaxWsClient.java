@@ -15,10 +15,10 @@ public class JaxWsClient {
 			"JaxWsWebServicePort");
 	private final String ENDPOINT_ADDRESS = "http://localhost:9000/" + JaxWsWebService.class.getSimpleName();
 
-	public void request() {
+	public String request(String text) {
 		Service service = generateService();
 		JaxWsWebService webService = service.getPort(JaxWsWebService.class);
-		System.err.println("client get response : " + webService.execute(this.getClass().getSimpleName()));
+		return webService.execute(text);
 	}
 
 	private Service generateService() {

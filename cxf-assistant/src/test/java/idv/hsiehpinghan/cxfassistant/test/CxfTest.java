@@ -7,17 +7,17 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import idv.hsiehpinghan.cxfassistant.client.JaxWsClient;
-import idv.hsiehpinghan.cxfassistant.configuration.JaxWsSpringConfiguration;
-import idv.hsiehpinghan.cxfassistant.server.JaxWsServer;
+import idv.hsiehpinghan.cxfassistant.client.CxfClient;
+import idv.hsiehpinghan.cxfassistant.configuration.CxfSpringConfiguration;
+import idv.hsiehpinghan.cxfassistant.server.CxfServer;
 
-@ContextConfiguration(classes = { JaxWsSpringConfiguration.class })
-public class JaxWsTest extends AbstractTestNGSpringContextTests {
+@ContextConfiguration(classes = { CxfSpringConfiguration.class })
+public class CxfTest extends AbstractTestNGSpringContextTests {
 	private final String TEXT = "text";
 	@Autowired
-	private JaxWsServer server;
+	private CxfServer server;
 	@Autowired
-	private JaxWsClient client;
+	private CxfClient client;
 
 	@BeforeClass
 	public void beforeClass() {

@@ -11,7 +11,7 @@ import idv.hsiehpinghan.cxfassistant.webservice.impl.JaxWsWebServiceImpl;
 public class JaxWsServer {
 	private final String ADDRESS = "http://localhost:9000/" + JaxWsWebService.class.getSimpleName();
 
-	public JaxWsServer() {
+	public void start() {
 		System.err.println("Starting " + this.getClass().getSimpleName() + "...");
 		JaxWsWebService webService = new JaxWsWebServiceImpl();
 		Endpoint.publish(ADDRESS, webService);

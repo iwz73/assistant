@@ -1,18 +1,19 @@
 package idv.hsiehpinghan.cxfassistant.client;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.springframework.stereotype.Component;
 
-import idv.hsiehpinghan.cxfassistant.webservice.HelloWorld;
+import idv.hsiehpinghan.cxfassistant.webservice.CxfWebService;
 
+@Component
 public class CxfClient {
+	private final String ENDPOINT_ADDRESS = "http://localhost:9000/" + CxfWebService.class.getSimpleName();
 
-	public static void main(String[] args) {
-		System.out.println("Starting Client");
+	public String request(String text) {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-		factory.setServiceClass(HelloWorld.class);
-		factory.setAddress("http://localhost:9000/HelloWorld");
-		HelloWorld helloWorld = (HelloWorld) factory.create();
-		System.out.println(helloWorld.sayHello("thank "));
-		System.err.println(0);
+		factory.setServiceClass(CxfWebService.class);
+		factory.setAddress(ENDPOINT_ADDRESS);
+		CxfWebService webService = (CxfWebService) factory.create();
+		return webService.execute(text);
 	}
 }

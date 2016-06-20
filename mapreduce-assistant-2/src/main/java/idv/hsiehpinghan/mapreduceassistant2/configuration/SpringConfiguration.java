@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import idv.hsiehpinghan.nutch.storage.Seed;
+
 @Configuration("mapreduceAssistant2SpringConfiguration")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.mapreduceassistant2" })
 public class SpringConfiguration {
@@ -19,9 +21,14 @@ public class SpringConfiguration {
 	}
 
 	@Bean
+	public DataStore<String, Seed> seedDataStore(org.apache.hadoop.conf.Configuration configuration)
+			throws GoraException {
+		return DataStoreFactory.getDataStore(String.class, Seed.class, configuration);
+	}
+
+	@Bean
 	public org.apache.hadoop.conf.Configuration configuration() {
 		org.apache.hadoop.conf.Configuration conf = NutchConfiguration.create();
-		conf.set("preferred.schema.name", "webpage");
 		conf.addResource("nutch-site.xml");
 		return conf;
 	}

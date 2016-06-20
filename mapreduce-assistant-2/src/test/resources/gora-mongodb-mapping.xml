@@ -21,15 +21,16 @@
 -->
 <gora-otd>
 
-	<class name="idv.hsiehpinghan.connet.apachenutchinjector.entity.Seed"
-		keyClass="java.lang.String" document="seed">
-		<field name="status" docfield="status" type="objectid" />
-		<field name="domain" docfield="domain" type="string" />
-		<field name="category" docfield="category" type="string" />
-		<field name="createdBy" docfield="createdBy" type="string" />
-		<field name="createdDt" docfield="createdDt" type="int64" />
-	</class>
-
+    <class name="idv.hsiehpinghan.nutch.storage.Seed"
+        keyClass="java.lang.String" document="seed">   
+        <field name="name" docfield="name" type="string" />     
+        <field name="status" docfield="status" type="string" />
+        <field name="score" docfield="score" type="double" />
+        <field name="fetchInterval" docfield="fetchInterval" type="int32" />
+        <field name="createdBy" docfield="createdBy" type="string" />
+        <field name="createdDt" docfield="createdDt" type="int64" />
+    </class>
+    
     <class name="org.apache.nutch.storage.WebPage" keyClass="java.lang.String" document="webpage">
         <!-- fetch fields -->
         <field name="baseUrl" docfield="baseUrl" type="string"/>

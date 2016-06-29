@@ -202,13 +202,6 @@ public abstract class BrowserBase {
 	}
 
 	/**
-	 * set browser property.
-	 * 
-	 * @param property
-	 */
-	public abstract void setBrowserProperty(BrowserProperty property);
-
-	/**
 	 * Get webDriver for test.
 	 * 
 	 * @return

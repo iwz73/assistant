@@ -8,11 +8,9 @@ import org.springframework.stereotype.Component;
 
 import idv.hsiehpinghan.phantomjsdriverassistant.browser.FirefoxBrowser;
 import idv.hsiehpinghan.phantomjsdriverassistant.factory.FirefoxBrowserFactory;
-import idv.hsiehpinghan.phantomjsdriverassistant.property.BrowserProperty;
 
 @Component
 public class FirefoxBrowserPool implements InitializingBean {
-	private BrowserProperty browserProperty = new BrowserProperty(true, null);
 	private GenericObjectPool<FirefoxBrowser> pool;
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -25,7 +23,6 @@ public class FirefoxBrowserPool implements InitializingBean {
 
 	public FirefoxBrowser borrowObject() throws Exception {
 		FirefoxBrowser browser = pool.borrowObject();
-		browser.setBrowserProperty(browserProperty);
 		return browser;
 	}
 

@@ -4,6 +4,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
-public interface HelloWorld {
-	String sayHello(@WebParam(name = "text") String text);
+public interface SpringWebService {
+	String execute(@WebParam(name = "text") String text);
 }

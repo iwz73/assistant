@@ -6,19 +6,19 @@ import javax.xml.ws.soap.SOAPBinding;
 
 import org.springframework.stereotype.Component;
 
-import idv.hsiehpinghan.cxfassistant.webservice.JaxWsWebService;
+import idv.hsiehpinghan.cxfassistant.webservice.SpringWebService;
 
 @Component
-public class JaxWsClient {
+public class SpringClient {
 	private final QName SERVICE_NAME = new QName("http://webservice.cxfassistant.hsiehpinghan.idv/",
-			JaxWsWebService.class.getSimpleName());
+			SpringWebService.class.getSimpleName());
 	private final QName PORT_NAME = new QName("http://webservice.cxfassistant.hsiehpinghan.idv/",
-			"JaxWsWebServicePort");
-	private final String ENDPOINT_ADDRESS = "http://localhost:9000/" + JaxWsWebService.class.getSimpleName();
+			"SpringWebServicePort");
+	private final String ENDPOINT_ADDRESS = "http://localhost:9000/" + SpringWebService.class.getSimpleName();
 
 	public String request(String text) {
 		Service service = generateService();
-		JaxWsWebService webService = service.getPort(JaxWsWebService.class);
+		SpringWebService webService = service.getPort(SpringWebService.class);
 		return webService.execute(text);
 	}
 

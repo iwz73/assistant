@@ -1,2 +1,0 @@
-# run server
-java -cp cxf-assistant-jawith-dependencies.jar idv.hsiehpinghan.cxfassistant.server.Server

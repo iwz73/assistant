@@ -1,2 +1,5 @@
 # execute
 mvn jetty:run
+
+# client
+http://localhost:8080/jersey-assistant/podcasts

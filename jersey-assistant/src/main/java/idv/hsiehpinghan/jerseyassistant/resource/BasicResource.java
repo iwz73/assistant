@@ -1,5 +1,10 @@
 package idv.hsiehpinghan.jerseyassistant.resource;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -8,10 +13,20 @@ import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.springframework.core.io.ClassPathResource;
+
+import idv.hsiehpinghan.jerseyassistant.utility.StreamUtility;
 
 @Path("basics")
 public class BasicResource {
@@ -104,6 +119,23 @@ public class BasicResource {
 	}
 
 	/**
+	 * http://localhost:8080/jersey-assistant/basics/fileGet
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	@GET
+	@Path("fileGet")
+	@Produces("text/plain")
+	public Response fileGet() throws IOException {
+		File file = new ClassPathResource("fileGet.txt").getFile();
+		ResponseBuilder response = Response.ok(file);
+		response.header("Content-Disposition", "attachment; filename=\"fileGet.txt\"");
+		return response.build();
+
+	}
+
+	/**
 	 * using formParamPost.html
 	 * 
 	 * @param formParam
@@ -115,4 +147,22 @@ public class BasicResource {
 		return "formParamPost : " + formParam;
 	}
 
+	/**
+	 * using uploadFile.html
+	 * 
+	 * @param inputStream
+	 * @param formDataContentDisposition
+	 * @return
+	 * @throws IOException
+	 */
+	@POST
+	@Path("uploadFile")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadFile(@FormDataParam("file") InputStream inputStream,
+			@FormDataParam("file") FormDataContentDisposition formDataContentDisposition) throws IOException {
+		String filePath = "/tmp/" + formDataContentDisposition.getFileName();
+		StreamUtility.writeToFile(inputStream, filePath);
+		String output = "file uploaded to : " + filePath;
+		return Response.status(200).entity(output).build();
+	}
 }

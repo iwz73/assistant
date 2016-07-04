@@ -4,72 +4,40 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import idv.hsiehpinghan.jerseyassistant.enumeration.Enumeration;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class XmlVo {
-	@XmlAttribute
-	private int attribute;
-	@XmlElement
+public class JsonVo {
 	private boolean primativeBoolean;
-	@XmlElement
 	private Boolean wrappedBoolean;
-	@XmlElement
 	private byte primativeByte;
-	@XmlElement
 	private Byte wrappedByte;
-	@XmlElement
 	private char primativeChar;
-	@XmlElement
 	private Character wrappedChar;
-	@XmlElement
 	private double primativeDouble;
-	@XmlElement
 	private Double wrappedDouble;
-	@XmlElement
 	private float primativeFloat;
-	@XmlElement
 	private Float wrappedFloat;
-	@XmlElement
 	private int primativeInt;
-	@XmlElement
 	private Integer wrappedInt;
-	@XmlElement
 	private long primativeLong;
-	@XmlElement
 	private Long wrappedLong;
-	@XmlElement
 	private short primativeShort;
-	@XmlElement
 	private Short wrappedShort;
-	@XmlElement
 	private String string;
-	@XmlElement
 	private BigInteger bigInteger;
-	@XmlElement
 	private BigDecimal bigDecimal;
-	@XmlElement
 	private Date date;
-	@XmlElement
 	private Enumeration enumeration;
 
-	public XmlVo() {
+	public JsonVo() {
 	}
 
-	public XmlVo(int attribute, boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
+	public JsonVo(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
 			char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
 			float primativeFloat, Float wrappedFloat, int primativeInt, Integer wrappedInt, long primativeLong,
 			Long wrappedLong, short primativeShort, Short wrappedShort, String string, BigInteger bigInteger,
 			BigDecimal bigDecimal, Date date, Enumeration enumeration) {
 		super();
-		this.attribute = attribute;
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
 		this.primativeByte = primativeByte;
@@ -91,14 +59,6 @@ public class XmlVo {
 		this.bigDecimal = bigDecimal;
 		this.date = date;
 		this.enumeration = enumeration;
-	}
-
-	public int getAttribute() {
-		return attribute;
-	}
-
-	public void setAttribute(int attribute) {
-		this.attribute = attribute;
 	}
 
 	public boolean isPrimativeBoolean() {

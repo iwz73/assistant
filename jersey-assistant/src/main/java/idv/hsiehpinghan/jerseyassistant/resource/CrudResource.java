@@ -34,10 +34,15 @@ public class CrudResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response createCrud(CrudVo vo) {
 		Integer id = vo.getId();
-		vos.put(id, vo);
-		return Response.status(Response.Status.CREATED)
-				.entity("CrudVo(" + id + ") has been created")
-				.header("location", "http://localhost:8080/jersey-assistant/cruds/" + id).build();
+		if (id == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("CrudVo's id is null !!!").build();
+		} else if (vos.containsKey(id)) {
+			return Response.status(Response.Status.CONFLICT).entity("CrudVo(" + id + ") has already exist !!!").build();
+		} else {
+			vos.put(id, vo);
+			return Response.status(Response.Status.CREATED).entity("CrudVo(" + id + ") has been created.")
+					.header("location", "http://localhost:8080/jersey-assistant/cruds/" + id).build();
+		}
 	}
 
 	/**
@@ -49,8 +54,13 @@ public class CrudResource {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CrudVo readCrud(@PathParam("id") int id) {
-		return vos.get(id);
+	public Response readCrud(@PathParam("id") int id) {
+		CrudVo vo = vos.get(id);
+		if (vo == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("CrudVo(" + id + ") not found !!!").build();
+		} else {
+			return Response.status(Response.Status.OK).entity(vo).build();
+		}
 	}
 
 	/**
@@ -60,28 +70,33 @@ public class CrudResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CrudVo> readCruds() {
+	public Response readCruds() {
 		List<CrudVo> results = new ArrayList<>(vos.size());
 		for (Map.Entry<Integer, CrudVo> ent : vos.entrySet()) {
 			results.add(ent.getValue());
 		}
-		return results;
+		return Response.status(Response.Status.OK).entity(results).build();
 	}
 
 	/**
 	 * curl -X PUT -H "Content-Type: application/json" -d '{"id":1,"message":
 	 * "updateCrud"}' http://localhost:8080/jersey-assistant/cruds
+	 * 
 	 * @param vo
 	 * @return
 	 */
 	@PUT
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response updateCrud(CrudVo vo) {
 		Integer id = vo.getId();
-		vos.put(id, vo);
-		return Response.status(Response.Status.CREATED)
-				.entity("CrudVo(" + id + ") has been updated")
-				.header("location", "http://localhost:8080/jersey-assistant/cruds/" + id).build();
+		if (id == null) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("CrudVo's id is null !!!").build();
+		} else if (vos.containsKey(id)) {
+			vos.put(id, vo);
+			return Response.status(Response.Status.OK).entity("CrudVo(" + id + ") has been updated").build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity("CrudVo(" + id + ") not found !!!").build();
+		}
 	}
 
 	/**
@@ -90,13 +105,12 @@ public class CrudResource {
 	 * @return
 	 */
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCruds() {
 		vos.clear();
-	    return Response.status(Response.Status.NO_CONTENT)
-	            .entity("All CrudVo have been removed.").build();
+		return Response.status(Response.Status.NO_CONTENT).entity("All CrudVo have been removed.").build();
 	}
-	
+
 	/**
 	 * curl -X DELETE http://localhost:8080/jersey-assistant/cruds/1
 	 * 
@@ -104,10 +118,13 @@ public class CrudResource {
 	 */
 	@DELETE
 	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCrud(@PathParam("id") int id) {
-		vos.remove(id);
-	    return Response.status(Response.Status.NO_CONTENT)
-	            .entity("CrudVo(" + id + ") have been removed.").build();
+		if (vos.containsKey(id)) {
+			vos.remove(id);
+			return Response.status(Response.Status.OK).entity("CrudVo(" + id + ") have been removed.").build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity("CrudVo(" + id + ") not found !!!").build();
+		}
 	}
 }

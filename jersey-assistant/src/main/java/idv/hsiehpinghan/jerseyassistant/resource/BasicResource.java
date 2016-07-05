@@ -221,6 +221,7 @@ public class BasicResource {
 	 */
 	@POST
 	@Path("formParamPost")
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
 	public String formParamPost(@FormParam("formParam") @DefaultValue("formParam") String formParam) {
 		return "formParamPost : " + formParam;
 	}

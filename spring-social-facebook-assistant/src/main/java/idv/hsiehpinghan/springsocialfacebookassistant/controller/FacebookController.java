@@ -1,11 +1,5 @@
 package idv.hsiehpinghan.springsocialfacebookassistant.controller;
 
-import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LoginInfoCriteria;
-import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LongLivedTokenCriteria;
-import idv.hsiehpinghan.springsocialfacebookassistant.criteria.TokenInfoCriteria;
-import idv.hsiehpinghan.springsocialfacebookassistant.service.InfoService;
-import idv.hsiehpinghan.springsocialfacebookassistant.service.TokenService;
-
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import idv.hsiehpinghan.springsocialfacebookassistant.criteria.GetFeedsCriteria;
+import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LoginInfoCriteria;
+import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LongLivedTokenCriteria;
+import idv.hsiehpinghan.springsocialfacebookassistant.criteria.TokenInfoCriteria;
+import idv.hsiehpinghan.springsocialfacebookassistant.service.InfoService;
+import idv.hsiehpinghan.springsocialfacebookassistant.service.TokenService;
 
 @Controller
 @RequestMapping(value = "/facebook")
@@ -39,8 +40,7 @@ public class FacebookController {
 
 	@ResponseBody
 	@RequestMapping(value = "/longLivedToken", method = RequestMethod.GET)
-	public String longLivedToken(LongLivedTokenCriteria criteria)
-			throws IOException {
+	public String longLivedToken(LongLivedTokenCriteria criteria) throws IOException {
 		String shortLivedToken = criteria.getAccessToken();
 		return tokenService.getLongLivedToken(shortLivedToken);
 	}
@@ -70,4 +70,19 @@ public class FacebookController {
 		return "/facebook/socialPlugin";
 	}
 
+	@RequestMapping(value = "/feed", method = RequestMethod.GET)
+	public String feed() {
+		return "/facebook/feed";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getFeeds", method = RequestMethod.GET)
+	public String getFeeds(GetFeedsCriteria criteria) throws IOException {
+		String pageId = criteria.getPageId();
+		String str = infoService.getFeeds(pageId);
+		
+		System.err.println(str);
+		
+		return str;
+	}
 }

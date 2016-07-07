@@ -1,8 +1,5 @@
 package idv.hsiehpinghan.solrassistant.assistant;
 
-import idv.hsiehpinghan.solrassistant.document.DefaultDocument;
-import idv.hsiehpinghan.solrassistant.suit.TestngSuitSetting;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,12 +11,17 @@ import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class SolrAssistantTest {
+import idv.hsiehpinghan.solrassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.solrassistant.document.DefaultDocument;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 	private static final String ID = String.valueOf(System.nanoTime());
 	private static final String SKU = "sku";
 	private static final String NAME = "name";
@@ -75,17 +77,11 @@ public class SolrAssistantTest {
 	private static final Date DYNAMICFIELD_TDT = new Date();
 	private static final Object IGNORED_DYNAMICFIELD = "IGNORED_DYNAMICFIELD";
 	private static final List<String> ATTR_DYNAMICFIELD = generateStringList("attr_dynamicfield");
-	private SolrAssistant solrAssistant;
 	private SolrInputDocument solrInputDocument = generateSolrInputDocument();
 	private SolrQuery solrQuery = generateSolrQuery();
 	private DefaultDocument defaultDocument = generateDefaultDocument();
-
-	@BeforeClass
-	public void beforeClass() throws Exception {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		solrAssistant = applicationContext.getBean(SolrAssistant.class);
-	}
+	@Autowired
+	private SolrAssistant solrAssistant;
 
 	@Test
 	public void add() throws Exception {
@@ -101,52 +97,32 @@ public class SolrAssistantTest {
 		for (SolrDocument doc : solrDocumentList) {
 			Assert.assertEquals(String.valueOf(doc.getFieldValue("id")),
 					String.valueOf(solrInputDocument.getFieldValue("id")));
-			Assert.assertEquals(doc.getFieldValue("sku"),
-					solrInputDocument.getFieldValue("sku"));
-			Assert.assertEquals(doc.getFieldValue("name"),
-					solrInputDocument.getFieldValue("name"));
-			Assert.assertEquals(doc.getFieldValue("manu"),
-					solrInputDocument.getFieldValue("manu"));
+			Assert.assertEquals(doc.getFieldValue("sku"), solrInputDocument.getFieldValue("sku"));
+			Assert.assertEquals(doc.getFieldValue("name"), solrInputDocument.getFieldValue("name"));
+			Assert.assertEquals(doc.getFieldValue("manu"), solrInputDocument.getFieldValue("manu"));
 			Assert.assertEquals(String.valueOf(doc.getFieldValues("cat")),
 					String.valueOf(solrInputDocument.getFieldValues("cat")));
-			Assert.assertEquals(
-					String.valueOf(doc.getFieldValues("features")),
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("features")),
 					String.valueOf(solrInputDocument.getFieldValues("features")));
-			Assert.assertEquals(doc.getFieldValue("includes"),
-					solrInputDocument.getFieldValue("includes"));
-			Assert.assertEquals(doc.getFieldValue("weight"),
-					solrInputDocument.getFieldValue("weight"));
-			Assert.assertEquals(doc.getFieldValue("price"),
-					solrInputDocument.getFieldValue("price"));
-			Assert.assertEquals(doc.getFieldValue("popularity"),
-					solrInputDocument.getFieldValue("popularity"));
-			Assert.assertEquals(doc.getFieldValue("inStock"),
-					solrInputDocument.getFieldValue("inStock"));
-			Assert.assertEquals(doc.getFieldValue("store"),
-					solrInputDocument.getFieldValue("store"));
+			Assert.assertEquals(doc.getFieldValue("includes"), solrInputDocument.getFieldValue("includes"));
+			Assert.assertEquals(doc.getFieldValue("weight"), solrInputDocument.getFieldValue("weight"));
+			Assert.assertEquals(doc.getFieldValue("price"), solrInputDocument.getFieldValue("price"));
+			Assert.assertEquals(doc.getFieldValue("popularity"), solrInputDocument.getFieldValue("popularity"));
+			Assert.assertEquals(doc.getFieldValue("inStock"), solrInputDocument.getFieldValue("inStock"));
+			Assert.assertEquals(doc.getFieldValue("store"), solrInputDocument.getFieldValue("store"));
 			Assert.assertEquals(String.valueOf(doc.getFieldValues("title")),
 					String.valueOf(solrInputDocument.getFieldValues("title")));
-			Assert.assertEquals(doc.getFieldValue("subject"),
-					solrInputDocument.getFieldValue("subject"));
-			Assert.assertEquals(doc.getFieldValue("description"),
-					solrInputDocument.getFieldValue("description"));
-			Assert.assertEquals(doc.getFieldValue("comments"),
-					solrInputDocument.getFieldValue("comments"));
-			Assert.assertEquals(doc.getFieldValue("author"),
-					solrInputDocument.getFieldValue("author"));
-			Assert.assertEquals(doc.getFieldValue("keywords"),
-					solrInputDocument.getFieldValue("keywords"));
-			Assert.assertEquals(doc.getFieldValue("category"),
-					solrInputDocument.getFieldValue("category"));
-			Assert.assertEquals(doc.getFieldValue("resourcename"),
-					solrInputDocument.getFieldValue("resourcename"));
-			Assert.assertEquals(doc.getFieldValue("url"),
-					solrInputDocument.getFieldValue("url"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("content_type")), String
-					.valueOf(solrInputDocument.getFieldValues("content_type")));
-			Assert.assertEquals(doc.getFieldValue("last_modified"),
-					solrInputDocument.getFieldValue("last_modified"));
+			Assert.assertEquals(doc.getFieldValue("subject"), solrInputDocument.getFieldValue("subject"));
+			Assert.assertEquals(doc.getFieldValue("description"), solrInputDocument.getFieldValue("description"));
+			Assert.assertEquals(doc.getFieldValue("comments"), solrInputDocument.getFieldValue("comments"));
+			Assert.assertEquals(doc.getFieldValue("author"), solrInputDocument.getFieldValue("author"));
+			Assert.assertEquals(doc.getFieldValue("keywords"), solrInputDocument.getFieldValue("keywords"));
+			Assert.assertEquals(doc.getFieldValue("category"), solrInputDocument.getFieldValue("category"));
+			Assert.assertEquals(doc.getFieldValue("resourcename"), solrInputDocument.getFieldValue("resourcename"));
+			Assert.assertEquals(doc.getFieldValue("url"), solrInputDocument.getFieldValue("url"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("content_type")),
+					String.valueOf(solrInputDocument.getFieldValues("content_type")));
+			Assert.assertEquals(doc.getFieldValue("last_modified"), solrInputDocument.getFieldValue("last_modified"));
 			Assert.assertEquals(String.valueOf(doc.getFieldValues("links")),
 					String.valueOf(solrInputDocument.getFieldValues("links")));
 			Assert.assertEquals(String.valueOf(doc.getFieldValues("content")),
@@ -154,54 +130,30 @@ public class SolrAssistantTest {
 			Assert.assertNull(doc.getFieldValues("text"));
 			Assert.assertNull(doc.getFieldValue("text_rev"));
 			Assert.assertNull(doc.getFieldValue("manu_exact"));
-			Assert.assertEquals(doc.getFieldValue("payloads"),
-					solrInputDocument.getFieldValue("payloads"));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_i"),
-					solrInputDocument.getFieldValue("dynamicfield_i"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_is")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_is")));
-			Assert.assertEquals(doc.getFieldValue("dynamicField_s"),
-					solrInputDocument.getFieldValue("dynamicField_s"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicField_ss")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicField_ss")));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_l"),
-					solrInputDocument.getFieldValue("dynamicfield_l"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_ls")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_ls")));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_t"),
-					solrInputDocument.getFieldValue("dynamicfield_t"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_txt")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_txt")));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicField_en")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicField_en")));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_b"),
-					solrInputDocument.getFieldValue("dynamicfield_b"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_bs")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_bs")));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_f"),
-					solrInputDocument.getFieldValue("dynamicfield_f"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_fs")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_fs")));
-			Assert.assertEquals(doc.getFieldValue("dynamicfield_d"),
-					solrInputDocument.getFieldValue("dynamicfield_d"));
-			Assert.assertEquals(String.valueOf(doc
-					.getFieldValues("dynamicfield_ds")), String
-					.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_ds")));
+			Assert.assertEquals(doc.getFieldValue("payloads"), solrInputDocument.getFieldValue("payloads"));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_i"), solrInputDocument.getFieldValue("dynamicfield_i"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_is")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_is")));
+			Assert.assertEquals(doc.getFieldValue("dynamicField_s"), solrInputDocument.getFieldValue("dynamicField_s"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicField_ss")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicField_ss")));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_l"), solrInputDocument.getFieldValue("dynamicfield_l"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_ls")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_ls")));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_t"), solrInputDocument.getFieldValue("dynamicfield_t"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_txt")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_txt")));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicField_en")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicField_en")));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_b"), solrInputDocument.getFieldValue("dynamicfield_b"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_bs")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_bs")));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_f"), solrInputDocument.getFieldValue("dynamicfield_f"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_fs")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_fs")));
+			Assert.assertEquals(doc.getFieldValue("dynamicfield_d"), solrInputDocument.getFieldValue("dynamicfield_d"));
+			Assert.assertEquals(String.valueOf(doc.getFieldValues("dynamicfield_ds")),
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_ds")));
 			Assert.assertNull(doc.getFieldValue("dynamicfield_coordinate"));
 		}
 	}
@@ -224,56 +176,35 @@ public class SolrAssistantTest {
 	@Test(dependsOnMethods = { "addBean" })
 	public void queryBean() throws Exception {
 		QueryResponse response = solrAssistant.query(solrQuery);
-		List<DefaultDocument> defaultDocumentList = response
-				.getBeans(DefaultDocument.class);
+		List<DefaultDocument> defaultDocumentList = response.getBeans(DefaultDocument.class);
 		Assert.assertEquals(defaultDocumentList.size(), 1);
 		for (DefaultDocument doc : defaultDocumentList) {
-			Assert.assertEquals(String.valueOf(doc.getId()),
-					String.valueOf(solrInputDocument.getFieldValue("id")));
-			Assert.assertEquals(doc.getSku(),
-					solrInputDocument.getFieldValue("sku"));
-			Assert.assertEquals(doc.getName(),
-					solrInputDocument.getFieldValue("name"));
-			Assert.assertEquals(doc.getManu(),
-					solrInputDocument.getFieldValue("manu"));
-			Assert.assertEquals(String.valueOf(doc.getCat()),
-					String.valueOf(solrInputDocument.getFieldValues("cat")));
-			Assert.assertEquals(String.valueOf(doc.getFeatures()), String
-					.valueOf(solrInputDocument.getFieldValues("features")));
-			Assert.assertEquals(doc.getIncludes(),
-					solrInputDocument.getFieldValue("includes"));
-			Assert.assertEquals(doc.getWeight(),
-					solrInputDocument.getFieldValue("weight"));
-			Assert.assertEquals(doc.getPrice(),
-					solrInputDocument.getFieldValue("price"));
-			Assert.assertEquals(doc.getPopularity(),
-					solrInputDocument.getFieldValue("popularity"));
-			Assert.assertEquals(doc.getInStock(),
-					solrInputDocument.getFieldValue("inStock"));
-			Assert.assertEquals(doc.getStore(),
-					solrInputDocument.getFieldValue("store"));
+			Assert.assertEquals(String.valueOf(doc.getId()), String.valueOf(solrInputDocument.getFieldValue("id")));
+			Assert.assertEquals(doc.getSku(), solrInputDocument.getFieldValue("sku"));
+			Assert.assertEquals(doc.getName(), solrInputDocument.getFieldValue("name"));
+			Assert.assertEquals(doc.getManu(), solrInputDocument.getFieldValue("manu"));
+			Assert.assertEquals(String.valueOf(doc.getCat()), String.valueOf(solrInputDocument.getFieldValues("cat")));
+			Assert.assertEquals(String.valueOf(doc.getFeatures()),
+					String.valueOf(solrInputDocument.getFieldValues("features")));
+			Assert.assertEquals(doc.getIncludes(), solrInputDocument.getFieldValue("includes"));
+			Assert.assertEquals(doc.getWeight(), solrInputDocument.getFieldValue("weight"));
+			Assert.assertEquals(doc.getPrice(), solrInputDocument.getFieldValue("price"));
+			Assert.assertEquals(doc.getPopularity(), solrInputDocument.getFieldValue("popularity"));
+			Assert.assertEquals(doc.getInStock(), solrInputDocument.getFieldValue("inStock"));
+			Assert.assertEquals(doc.getStore(), solrInputDocument.getFieldValue("store"));
 			Assert.assertEquals(String.valueOf(doc.getTitle()),
 					String.valueOf(solrInputDocument.getFieldValues("title")));
-			Assert.assertEquals(doc.getSubject(),
-					solrInputDocument.getFieldValue("subject"));
-			Assert.assertEquals(doc.getDescription(),
-					solrInputDocument.getFieldValue("description"));
-			Assert.assertEquals(doc.getComments(),
-					solrInputDocument.getFieldValue("comments"));
-			Assert.assertEquals(doc.getAuthor(),
-					solrInputDocument.getFieldValue("author"));
-			Assert.assertEquals(doc.getKeywords(),
-					solrInputDocument.getFieldValue("keywords"));
-			Assert.assertEquals(doc.getCategory(),
-					solrInputDocument.getFieldValue("category"));
-			Assert.assertEquals(doc.getResourcename(),
-					solrInputDocument.getFieldValue("resourcename"));
-			Assert.assertEquals(doc.getUrl(),
-					solrInputDocument.getFieldValue("url"));
-			Assert.assertEquals(String.valueOf(doc.getContent_type()), String
-					.valueOf(solrInputDocument.getFieldValues("content_type")));
-			Assert.assertEquals(doc.getLast_modified(),
-					solrInputDocument.getFieldValue("last_modified"));
+			Assert.assertEquals(doc.getSubject(), solrInputDocument.getFieldValue("subject"));
+			Assert.assertEquals(doc.getDescription(), solrInputDocument.getFieldValue("description"));
+			Assert.assertEquals(doc.getComments(), solrInputDocument.getFieldValue("comments"));
+			Assert.assertEquals(doc.getAuthor(), solrInputDocument.getFieldValue("author"));
+			Assert.assertEquals(doc.getKeywords(), solrInputDocument.getFieldValue("keywords"));
+			Assert.assertEquals(doc.getCategory(), solrInputDocument.getFieldValue("category"));
+			Assert.assertEquals(doc.getResourcename(), solrInputDocument.getFieldValue("resourcename"));
+			Assert.assertEquals(doc.getUrl(), solrInputDocument.getFieldValue("url"));
+			Assert.assertEquals(String.valueOf(doc.getContent_type()),
+					String.valueOf(solrInputDocument.getFieldValues("content_type")));
+			Assert.assertEquals(doc.getLast_modified(), solrInputDocument.getFieldValue("last_modified"));
 			Assert.assertEquals(String.valueOf(doc.getLinks()),
 					String.valueOf(solrInputDocument.getFieldValues("links")));
 			Assert.assertEquals(String.valueOf(doc.getContent()),
@@ -281,52 +212,36 @@ public class SolrAssistantTest {
 			Assert.assertNull(doc.getText());
 			Assert.assertNull(doc.getText_rev());
 			Assert.assertNull(doc.getManu_exact());
-			Assert.assertEquals(doc.getPayloads(),
-					solrInputDocument.getFieldValue("payloads"));
-			Assert.assertEquals(doc.getDynamicfield_i(),
-					solrInputDocument.getFieldValue("dynamicfield_i"));
+			Assert.assertEquals(doc.getPayloads(), solrInputDocument.getFieldValue("payloads"));
+			Assert.assertEquals(doc.getDynamicfield_i(), solrInputDocument.getFieldValue("dynamicfield_i"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_is()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_is")));
-			Assert.assertEquals(doc.getDynamicfield_s(),
-					solrInputDocument.getFieldValue("dynamicField_s"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_is")));
+			Assert.assertEquals(doc.getDynamicfield_s(), solrInputDocument.getFieldValue("dynamicField_s"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_ss()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicField_ss")));
-			Assert.assertEquals(doc.getDynamicfield_l(),
-					solrInputDocument.getFieldValue("dynamicfield_l"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicField_ss")));
+			Assert.assertEquals(doc.getDynamicfield_l(), solrInputDocument.getFieldValue("dynamicfield_l"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_ls()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_ls")));
-			Assert.assertEquals(doc.getDynamicfield_t(),
-					solrInputDocument.getFieldValue("dynamicfield_t"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_ls")));
+			Assert.assertEquals(doc.getDynamicfield_t(), solrInputDocument.getFieldValue("dynamicfield_t"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_txt()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_txt")));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_txt")));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_en()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicField_en")));
-			Assert.assertEquals(doc.getDynamicfield_b(),
-					solrInputDocument.getFieldValue("dynamicfield_b"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicField_en")));
+			Assert.assertEquals(doc.getDynamicfield_b(), solrInputDocument.getFieldValue("dynamicfield_b"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_bs()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_bs")));
-			Assert.assertEquals(doc.getDynamicfield_f(),
-					solrInputDocument.getFieldValue("dynamicfield_f"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_bs")));
+			Assert.assertEquals(doc.getDynamicfield_f(), solrInputDocument.getFieldValue("dynamicfield_f"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_fs()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_fs")));
-			Assert.assertEquals(doc.getDynamicfield_d(),
-					solrInputDocument.getFieldValue("dynamicfield_d"));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_fs")));
+			Assert.assertEquals(doc.getDynamicfield_d(), solrInputDocument.getFieldValue("dynamicfield_d"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_ds()),
-					String.valueOf(solrInputDocument
-							.getFieldValues("dynamicfield_ds")));
+					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_ds")));
 			Assert.assertNull(doc.getDynamicfield_coordinate());
 		}
 	}
 
-	@Test(dependsOnMethods = { "queryBean" })
-	private void deleteBean() throws Exception {
+//	@Test(dependsOnMethods = { "queryBean" })
+	public void deleteBean() throws Exception {
 		String id = String.valueOf(defaultDocument.getId());
 		UpdateResponse deleteResponse = solrAssistant.deleteById(id);
 		Assert.assertEquals(deleteResponse.getStatus(), 0);

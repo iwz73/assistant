@@ -80,9 +80,6 @@ public class FacebookController {
 	public String getFeeds(GetFeedsCriteria criteria) throws IOException {
 		String pageId = criteria.getPageId();
 		String str = infoService.getFeeds(pageId);
-		
-		System.err.println(str);
-		
 		return str;
 	}
 }

@@ -21,75 +21,46 @@
 					"pageId" : pageId
 				}
 			}).done(function(feeds, textStatus, jqXHR) {
-				var info = $("#info")
-				var table = $("<table>");
-				table.attr("border", "1");
-				var tr;
-				var td;
-				var id;
-				var message;
-				var created_time;
-				var data = feeds["data"];
-				for (i = 0, size = data.length; i < size; ++i) {
-					tr = $("<tr>");
-					id = data[i]["id"];
-					message = data[i]["message"];
-					created_time = data[i]["created_time"];
-					td = $("<td>");
-					td.text(id);
-					tr.append(td);
-					td = $("<td>");
-					td.text(message);
-					tr.append(td);
-					td = $("<td>");
-					td.text(created_time);
-					tr.append(td);
-					table.append(tr);
-				}
-				info.append(table);
-				var paging = feeds["paging"];
-				$("#more").attr("href", paging["next"]);
+				appendFeeds(feeds);
 			});
 		});
-        $("#more").on("click", function() {
-//             var url = $("#next").attr("href");
-            $.ajax({
-                url : $("#more").attr("href"),
-                method : 'GET',
-                contentType : 'application/json; charset=UTF-8'
-            }).done(function(feeds, textStatus, jqXHR) {
-                var info = $("#info")
-                var table = $("<table>");
-                table.attr("border", "1");
-                var tr;
-                var td;
-                var id;
-                var message;
-                var created_time;
-                var data = feeds["data"];
-                for (i = 0, size = data.length; i < size; ++i) {
-                    tr = $("<tr>");
-                    id = data[i]["id"];
-                    message = data[i]["message"];
-                    created_time = data[i]["created_time"];
-                    td = $("<td>");
-                    td.text(id);
-                    tr.append(td);
-                    td = $("<td>");
-                    td.text(message);
-                    tr.append(td);
-                    td = $("<td>");
-                    td.text(created_time);
-                    tr.append(td);
-                    table.append(tr);
-                }
-                info.append(table);
-                var paging = feeds["paging"];
-                $("#previous").attr("href", paging["previous"]);
-                $("#next").attr("href", paging["next"]);
-            });
-            return false;
-        });
+		$("#more").on("click", function() {
+			$.ajax({
+				url : $("#more").attr("href"),
+				method : 'GET',
+				contentType : 'application/json; charset=UTF-8'
+			}).done(function(feeds, textStatus, jqXHR) {
+				appendFeeds(feeds);
+			});
+			return false;
+		});
+		function appendFeeds(feeds) {
+			var table = $("#table")
+			var tr;
+			var td;
+			var id;
+			var message;
+			var created_time;
+			var data = feeds["data"];
+			for (i = 0, size = data.length; i < size; ++i) {
+				tr = $("<tr>");
+				id = data[i]["id"];
+				message = data[i]["message"];
+				created_time = data[i]["created_time"];
+				td = $("<td>");
+				td.text(id);
+				tr.append(td);
+				td = $("<td>");
+				td.text(message);
+				tr.append(td);
+				td = $("<td>");
+				td.text(created_time);
+				tr.append(td);
+				table.append(tr);
+			}
+			var paging = feeds["paging"];
+			$("#more").attr("href", paging["next"]);
+		}
 	});
 </script>
 </head>
@@ -99,7 +70,9 @@
 	</select>
 	<input id="showFeeds" type="button" value="show feeds">
 	<hr>
-	<div id="info"></div>
+	<div>
+		<table id="table" border="1"></table>
+	</div>
 	<a href="#" id="more">more</a>
 </body>
 

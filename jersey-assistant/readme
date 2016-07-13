@@ -3,3 +3,8 @@ mvn jetty:run
 
 # client
 http://localhost:8080/jersey-assistant/podcasts
+
+# export war and run on jetty server
+using eclipse "Export -> war file"
+put jersey-assistant.war on jetty's webapps
+

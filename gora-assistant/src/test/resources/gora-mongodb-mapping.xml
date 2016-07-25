@@ -31,6 +31,7 @@
 		<field name="_string" docfield="_string" type="string" />
 		<field name="_record" docfield="_record" type="document" />
 		<field name="_enum" docfield="_enum" type="objectid" />
+		<field name="_array" docfield="_array" type="list"/>
 	</class>
 
 	<!-- webpage -->

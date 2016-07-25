@@ -1,7 +1,9 @@
 package idv.hsiehpinghan.goraassistant.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.query.Result;
@@ -10,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import idv.hsiehpinghan.goraassistant.entity.ArrayItem;
 import idv.hsiehpinghan.goraassistant.entity.Gora;
 import idv.hsiehpinghan.goraassistant.entity.NestedRecord;
 import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
@@ -27,6 +30,7 @@ public class GoraServiceTest {
 	private boolean _record_boolean = true;
 	private int _record_int = 1;
 	private Enumeration _enum = Enumeration.ENUM_1;
+	private List<ArrayItem> _array = generate_Array();
 	private ApplicationContext applicationContext;
 	private GoraService service;
 
@@ -131,8 +135,17 @@ public class GoraServiceTest {
 		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora.getRecord$1().getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
+		assertArrayItem(returnGora.getArray$1());
 	}
 
+	private void assertArrayItem(List<ArrayItem> arrayItems) {
+		for(long i = 0, size = arrayItems.size(); i < size; ++i) {
+			ArrayItem arrayItem = arrayItems.get((int)i);
+			Assert.assertEquals(arrayItem.getId().longValue(), i);
+			Assert.assertEquals(String.valueOf(arrayItem.getName()), "name_" + i);
+		}
+	}
+	
 	private void assertReturnGora1(Gora returnGora, String string) {
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
@@ -143,10 +156,11 @@ public class GoraServiceTest {
 		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora.getRecord$1().getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
+		assertArrayItem(returnGora.getArray$1());
 	}
 
 	private Gora generateGora() {
-		Gora entity = new Gora();
+		Gora entity = Gora.newBuilder().build();
 		entity.setBoolean$1(_boolean);
 		entity.setInt$1(_int);
 		entity.setLong$1(_long);
@@ -155,6 +169,7 @@ public class GoraServiceTest {
 		entity.setString$1(_string);
 		entity.setRecord$1(generateNestedRecord());
 		entity.setEnum$1(_enum);
+		entity.setArray$1(_array);
 		return entity;
 	}
 
@@ -193,6 +208,21 @@ public class GoraServiceTest {
 			++amt;
 		}
 		Assert.assertEquals(amt, 1);
+	}
+	
+	private List<ArrayItem> generate_Array() {
+		List<ArrayItem> arrayItems = new ArrayList<ArrayItem>();
+		for(long i = 0; i < 3; ++i) {
+			arrayItems.add(generateArrayItem(i));
+		}
+		return arrayItems;
+	}
+	
+	private ArrayItem generateArrayItem(Long id) {
+		ArrayItem arrayItem = new ArrayItem();
+		arrayItem.setId(id);
+		arrayItem.setName("name_" + id);
+		return arrayItem;
 	}
 
 }

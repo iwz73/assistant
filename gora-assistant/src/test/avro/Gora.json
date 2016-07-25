@@ -93,7 +93,39 @@
 			},
 			"default":"ENUM_1",
 			"order":"ignore"
+		},
+		{
+			"doc":"array doc",
+			"name":"_array",
+			"type":{
+				"type":"array",
+				"items":{
+					"name":"ArrayItem",
+					"type":"record",
+					"fields":[
+						{
+							"doc":"ArrayItem id doc",
+							"name":"id",
+							"type":"long",
+							"default":0,
+							"order":"ignore"
+						},
+						{
+							"doc":"ArrayItem name doc",
+							"name":"name",
+							"type":["null", "string"],
+							"default":null,
+							"order":"ignore"
+						}
+					]
+					
+				}
+				
+			},
+			"default":[
+				
+			],
+			"order":"ignore"
 		}
-		
 	]
 }

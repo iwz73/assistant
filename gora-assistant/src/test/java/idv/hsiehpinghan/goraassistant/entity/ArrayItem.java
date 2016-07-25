@@ -6,7 +6,7 @@
 package idv.hsiehpinghan.goraassistant.entity;  
 @SuppressWarnings("all")
 public class ArrayItem extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ArrayItem\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ArrayItem\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":\"string\",\"doc\":\"ArrayItem name doc\",\"default\":\"\",\"order\":\"ignore\"}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {

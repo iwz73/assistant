@@ -3,6 +3,7 @@
 	<table name="Gora">
 		<family name="primary" />
 		<family name="object" />
+		<family name="collection" />
 	</table>
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
 		keyClass="java.lang.Long" table="Gora">
@@ -14,6 +15,7 @@
 		<field name="_string" family="object" qualifier="_string" />
 		<field name="_record" family="object" qualifier="_record" />
 		<field name="_enum" family="object" qualifier="_enum" />
+		<field name="_array" family="collection" qualifier="_array"/>
 	</class>
 
 	<!-- webpage -->

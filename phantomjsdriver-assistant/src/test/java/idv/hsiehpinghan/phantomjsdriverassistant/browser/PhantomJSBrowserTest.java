@@ -5,6 +5,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,8 +26,15 @@ public class PhantomJSBrowserTest extends AbstractTestNGSpringContextTests {
 		System.err.println(driver.getPageSource());
 	}
 
+	@AfterClass
+	public void afterClass() {
+		if (driver != null) {
+			driver.quit();
+		}
+	}
+
 	private PhantomJSDriver generatePhantomJSDriver() {
-		String path = "/home/hsiehpinghan/git/assistant/phantomjsdriver-assistant/src/test/phantomjs-2.1.1-linux-x86_64/phantomjs";
+		String path = "/home/thank/git/assistant/phantomjsdriver-assistant/src/test/phantomjs-2.1.1-linux-x86_64/phantomjs";
 		DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 		desiredCapabilities.setJavascriptEnabled(true);
 		desiredCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, path);

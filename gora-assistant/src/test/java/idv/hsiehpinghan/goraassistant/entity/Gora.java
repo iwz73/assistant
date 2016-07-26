@@ -7,7 +7,7 @@ package idv.hsiehpinghan.goraassistant.entity;
 @SuppressWarnings("all")
 /** Gora doc. */
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]},\"doc\":\"record doc\",\"default\":{},\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]},\"doc\":\"enum doc\",\"default\":\"ENUM_1\",\"order\":\"ignore\"},{\"name\":\"_array\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":\"string\",\"doc\":\"ArrayItem name doc\",\"default\":\"\",\"order\":\"ignore\"}]}},\"doc\":\"array doc\",\"default\":[],\"order\":\"ignore\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]}],\"doc\":\"record doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}],\"doc\":\"enum doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_array\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}}],\"doc\":\"array doc\",\"default\":null}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -124,7 +124,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 5: _string = (java.lang.CharSequence)(value); break;
     case 6: _record = (idv.hsiehpinghan.goraassistant.entity.NestedRecord)(value); break;
     case 7: _enum = (idv.hsiehpinghan.goraassistant.enumeration.Enumeration)(value); break;
-    case 8: _array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>)((value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyListWrapper((java.util.List)value)); break;
+    case 8: _array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>)(value); break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -333,7 +333,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * array doc   * @param value the value to set.
    */
   public void setArray$1(java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> value) {
-    this._array = (value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyListWrapper(value);
+    this._array = value;
     setDirty(8);
   }
   
@@ -680,9 +680,9 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
         record._float = fieldSetFlags()[3] ? this._float : (java.lang.Float) defaultValue(fields()[3]);
         record._double = fieldSetFlags()[4] ? this._double : (java.lang.Double) defaultValue(fields()[4]);
         record._string = fieldSetFlags()[5] ? this._string : (java.lang.CharSequence) defaultValue(fields()[5]);
-        record._record = fieldSetFlags()[6] ? this._record : (idv.hsiehpinghan.goraassistant.entity.NestedRecord) NestedRecord.newBuilder().build();
+        record._record = fieldSetFlags()[6] ? this._record : (idv.hsiehpinghan.goraassistant.entity.NestedRecord) defaultValue(fields()[6]);
         record._enum = fieldSetFlags()[7] ? this._enum : (idv.hsiehpinghan.goraassistant.enumeration.Enumeration) defaultValue(fields()[7]);
-        record._array = fieldSetFlags()[8] ? this._array : (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) new org.apache.gora.persistency.impl.DirtyListWrapper((java.util.List)defaultValue(fields()[8]));
+        record._array = fieldSetFlags()[8] ? this._array : (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) defaultValue(fields()[8]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

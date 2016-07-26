@@ -49,83 +49,86 @@
 		{
 			"doc":"record doc",
 			"name":"_record",
-			"type":{
-				"type":"record",
-				"name":"NestedRecord",
-				"fields":[
-					{
-						"doc":"boolean doc",
-						"name":"_boolean",
-						"type":"boolean",
-						"default":true,
-						"order":"ignore"
-					},
-					{
-						"doc":"int doc",
-						"name":"_int",
-						"type":"int",
-						"default":1,
-						"order":"ignore"
-					}
+			"type":[
+				"null", 
+				{
+					"type":"record",
+					"name":"NestedRecord",
+					"fields":[
+						{
+							"doc":"boolean doc",
+							"name":"_boolean",
+							"type":"boolean",
+							"default":true,
+							"order":"ignore"
+						},
+						{
+							"doc":"int doc",
+							"name":"_int",
+							"type":"int",
+							"default":1,
+							"order":"ignore"
+						}
 					
-				]
-				
-			},
-			"default":{
-				
-			},
+					]
+				}
+			],
+			"default":null,
 			"order":"ignore"
 		},
 		{
 			"doc":"enum doc",
 			"name":"_enum",
-			"type":{
-				"doc":"Enumeration doc",
-				"namespace":"idv.hsiehpinghan.goraassistant.enumeration",
-				"name":"Enumeration",
-				"type":"enum",
-				"symbols":[
-					"ENUM_0",
-					"ENUM_1",
-					"ENUM_2"
-				]
+			"type":[
+				"null",
+				{
+					"doc":"Enumeration doc",
+					"namespace":"idv.hsiehpinghan.goraassistant.enumeration",
+					"name":"Enumeration",
+					"type":"enum",
+					"symbols":[
+						"ENUM_0",
+						"ENUM_1",
+						"ENUM_2"
+					]
 				
-			},
-			"default":"ENUM_1",
+				}
+			],
+			"default":null,
 			"order":"ignore"
 		},
 		{
 			"doc":"array doc",
 			"name":"_array",
-			"type":{
-				"type":"array",
-				"items":{
-					"name":"ArrayItem",
-					"type":"record",
-					"fields":[
-						{
-							"doc":"ArrayItem id doc",
-							"name":"id",
-							"type":"long",
-							"default":0,
-							"order":"ignore"
-						},
-						{
-							"doc":"ArrayItem name doc",
-							"name":"name",
-							"type":["null", "string"],
-							"default":null,
-							"order":"ignore"
-						}
-					]
+			"type":[
+				"null",
+				{
+					"type":"array",
+					"items":{
+						"name":"ArrayItem",
+						"type":"record",
+						"fields":[
+							{
+								"doc":"ArrayItem id doc",
+								"name":"id",
+								"type":"long",
+								"default":0,
+								"order":"ignore"
+							},
+							{
+								"doc":"ArrayItem name doc",
+								"name":"name",
+								"type":["null", "string"],
+								"default":null,
+								"order":"ignore"
+							}
+						]
 					
+					}
 				}
-				
-			},
-			"default":[
-				
 			],
-			"order":"ignore"
+			"default":null,
+			"order":"ascending"
 		}
 	]
 }

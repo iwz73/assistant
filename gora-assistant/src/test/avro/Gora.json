@@ -5,6 +5,15 @@
 	"name":"Gora",
 	"fields":[
 		{
+			"doc": "bytes doc",
+			"name": "_bytes",
+			"type": [
+				"null",
+				"bytes"
+			],
+			"default": null
+		},
+		{
 			"doc":"boolean doc",
 			"name":"_boolean",
 			"type":"boolean",
@@ -129,6 +138,21 @@
 			],
 			"default":null,
 			"order":"ascending"
+		},
+		{
+			"doc":"map doc",
+			"name": "_map",
+			"type": [
+				"null",
+				{
+					"type": "map",
+					"values": [
+						"null",
+						"string"
+					]
+				}
+			],
+			"default":null
 		}
 	]
 }

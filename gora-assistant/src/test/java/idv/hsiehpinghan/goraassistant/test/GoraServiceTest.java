@@ -1,9 +1,12 @@
 package idv.hsiehpinghan.goraassistant.test;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.query.Result;
@@ -21,6 +24,7 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 
 public class GoraServiceTest {
 	private final long KEY = Calendar.getInstance().getTimeInMillis();
+	private ByteBuffer _bytes = ByteBuffer.wrap(new byte[] { 0x01, 0x02, 0x03 });
 	private boolean _boolean = true;
 	private int _int = 1;
 	private long _long = 2;
@@ -31,6 +35,7 @@ public class GoraServiceTest {
 	private int _record_int = 1;
 	private Enumeration _enum = Enumeration.ENUM_1;
 	private List<ArrayItem> _array = generate_Array();
+	private Map<CharSequence, CharSequence> _map = generate_Map();
 	private ApplicationContext applicationContext;
 	private GoraService service;
 
@@ -126,6 +131,7 @@ public class GoraServiceTest {
 	}
 
 	private void assertReturnGora(Gora returnGora) {
+		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
 		Assert.assertEquals(Long.valueOf(_long), returnGora.getLong$1());
@@ -136,17 +142,38 @@ public class GoraServiceTest {
 		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
 		assertArrayItem(returnGora.getArray$1());
+		assertMap(returnGora.getMap$1());
 	}
 
 	private void assertArrayItem(List<ArrayItem> arrayItems) {
-		for(long i = 0, size = arrayItems.size(); i < size; ++i) {
-			ArrayItem arrayItem = arrayItems.get((int)i);
+		for (long i = 0, size = arrayItems.size(); i < size; ++i) {
+			ArrayItem arrayItem = arrayItems.get((int) i);
 			Assert.assertEquals(arrayItem.getId().longValue(), i);
 			Assert.assertEquals(String.valueOf(arrayItem.getName()), "name_" + i);
 		}
 	}
-	
+
+	private void assertMap(Map<CharSequence, CharSequence> map) {
+		Map<String, String> strMap = convertCharSequenceMapToStringMap(map);
+		for (int i = 0; i < 3; ++i) {
+			String key = "key_" + i;
+			String value = "value_" + i;
+			Assert.assertEquals(strMap.get(key), value);
+		}
+	}
+
+	private Map<String, String> convertCharSequenceMapToStringMap(Map<CharSequence, CharSequence> map) {
+		Map<String, String> strMap = new HashMap<>();
+		for (Map.Entry<CharSequence, CharSequence> ent : map.entrySet()) {
+			String key = String.valueOf(ent.getKey());
+			String value = String.valueOf(ent.getValue());
+			strMap.put(key, value);
+		}
+		return strMap;
+	}
+
 	private void assertReturnGora1(Gora returnGora, String string) {
+		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
 		Assert.assertEquals(Long.valueOf(_long), returnGora.getLong$1());
@@ -161,6 +188,7 @@ public class GoraServiceTest {
 
 	private Gora generateGora() {
 		Gora entity = Gora.newBuilder().build();
+		entity.setBytes$1(_bytes);
 		entity.setBoolean$1(_boolean);
 		entity.setInt$1(_int);
 		entity.setLong$1(_long);
@@ -170,6 +198,7 @@ public class GoraServiceTest {
 		entity.setRecord$1(generateNestedRecord());
 		entity.setEnum$1(_enum);
 		entity.setArray$1(_array);
+		entity.setMap$1(_map);
 		return entity;
 	}
 
@@ -209,15 +238,23 @@ public class GoraServiceTest {
 		}
 		Assert.assertEquals(amt, 1);
 	}
-	
+
 	private List<ArrayItem> generate_Array() {
 		List<ArrayItem> arrayItems = new ArrayList<ArrayItem>();
-		for(long i = 0; i < 3; ++i) {
+		for (long i = 0; i < 3; ++i) {
 			arrayItems.add(generateArrayItem(i));
 		}
 		return arrayItems;
 	}
-	
+
+	private Map<CharSequence, CharSequence> generate_Map() {
+		Map<CharSequence, CharSequence> map = new HashMap<CharSequence, CharSequence>();
+		for (int i = 0; i < 3; ++i) {
+			map.put("key_" + i, "value_" + i);
+		}
+		return map;
+	}
+
 	private ArrayItem generateArrayItem(Long id) {
 		ArrayItem arrayItem = new ArrayItem();
 		arrayItem.setId(id);

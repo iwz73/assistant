@@ -4,6 +4,7 @@
 		<family name="primary" maxVersions="1" />
 		<family name="object" maxVersions="1" />
 		<family name="collection" maxVersions="1" />
+		<family name="map" maxVersions="1" />
 	</table>
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
 		keyClass="java.lang.String" table="Gora">
@@ -17,7 +18,7 @@
 		<field name="_record" family="object" qualifier="_record" />
 		<field name="_enum" family="object" qualifier="_enum" />
 		<field name="_array" family="collection" qualifier="_array" />
-		<field name="_map" family="collection" qualifier="_map" />
+		<field name="_map" family="map" />
 	</class>
 
 	<!-- webpage -->

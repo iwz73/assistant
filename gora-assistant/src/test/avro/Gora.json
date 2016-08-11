@@ -142,13 +142,16 @@
 		{
 			"doc":"map doc",
 			"name": "_map",
-			"type": {
-				"type": "map",
-				"values": [
-					"null",
-					"string"
-				]
-			},
+			"type": [
+				"null",
+				{
+					"type": "map",
+					"values": [
+						"null",
+						"string"
+					]
+				}
+			],
 			"default":null
 		}
 	]

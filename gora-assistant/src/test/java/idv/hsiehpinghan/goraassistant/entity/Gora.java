@@ -7,7 +7,7 @@ package idv.hsiehpinghan.goraassistant.entity;
 @SuppressWarnings("all")
 /** Gora doc. */
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_bytes\",\"type\":[\"null\",\"bytes\"],\"doc\":\"bytes doc\",\"default\":null},{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]}],\"doc\":\"record doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}],\"doc\":\"enum doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_array\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}}],\"doc\":\"array doc\",\"default\":null},{\"name\":\"_map\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"map doc\",\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_bytes\",\"type\":[\"null\",\"bytes\"],\"doc\":\"bytes doc\",\"default\":null},{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]}],\"doc\":\"record doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}],\"doc\":\"enum doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_array\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}}],\"doc\":\"array doc\",\"default\":null},{\"name\":\"_map\",\"type\":[\"null\",{\"type\":\"map\",\"values\":[\"null\",\"string\"]}],\"doc\":\"map doc\",\"default\":null}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -136,7 +136,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 7: _record = (idv.hsiehpinghan.goraassistant.entity.NestedRecord)(value); break;
     case 8: _enum = (idv.hsiehpinghan.goraassistant.enumeration.Enumeration)(value); break;
     case 9: _array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>)(value); break;
-    case 10: _map = (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>)((value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyMapWrapper((java.util.Map)value)); break;
+    case 10: _map = (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>)(value); break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -393,7 +393,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
    * map doc   * @param value the value to set.
    */
   public void setMap$1(java.util.Map<java.lang.CharSequence,java.lang.CharSequence> value) {
-    this._map = (value instanceof org.apache.gora.persistency.Dirtyable) ? value : new org.apache.gora.persistency.impl.DirtyMapWrapper(value);
+    this._map = value;
     setDirty(10);
   }
   
@@ -804,7 +804,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
         record._record = fieldSetFlags()[7] ? this._record : (idv.hsiehpinghan.goraassistant.entity.NestedRecord) defaultValue(fields()[7]);
         record._enum = fieldSetFlags()[8] ? this._enum : (idv.hsiehpinghan.goraassistant.enumeration.Enumeration) defaultValue(fields()[8]);
         record._array = fieldSetFlags()[9] ? this._array : (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) defaultValue(fields()[9]);
-        record._map = fieldSetFlags()[10] ? this._map : (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>) new org.apache.gora.persistency.impl.DirtyMapWrapper((java.util.Map)defaultValue(fields()[10]));
+        record._map = fieldSetFlags()[10] ? this._map : (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>) defaultValue(fields()[10]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

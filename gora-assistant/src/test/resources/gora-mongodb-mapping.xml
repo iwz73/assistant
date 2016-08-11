@@ -22,7 +22,7 @@
 <gora-otd>
 	<!-- Gora -->
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
-		keyClass="java.lang.Long" document="Gora">
+		keyClass="java.lang.String" document="Gora">
 		<field name="_bytes" docfield="_bytes" type="binary"/>
 		<field name="_boolean" docfield="_boolean" type="boolean" />
 		<field name="_int" docfield="_int" type="int32" />

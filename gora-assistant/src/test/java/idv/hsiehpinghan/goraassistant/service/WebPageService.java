@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Result;
+import org.apache.gora.store.DataStore;
+import org.apache.gora.store.DataStoreFactory;
+import org.apache.gora.util.GoraException;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.storage.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,37 +17,67 @@ import idv.hsiehpinghan.goraassistant.repository.WebPageRepository;
 @Service
 public class WebPageService {
 	@Autowired
+	private Configuration configuration;
+	@Autowired
 	private WebPageRepository repository;
 
-	public void put(String key, WebPage entity) {
-		repository.put(key, entity);
+	public void put(String key, WebPage entity) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		repository.put(dataStore, key, entity);
+		dataStore.flush();
 	}
 
-	public WebPage get(String key) {
-		return repository.get(key);
+	public WebPage get(String key) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		WebPage result = repository.get(dataStore, key);
+		dataStore.flush();
+		return result;
 	}
 
-	public Result<String, WebPage> query(String key) {
-		return repository.query(key);
+	public Result<String, WebPage> query(String key) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		Result<String, WebPage> result = repository.query(dataStore, key);
+		dataStore.flush();
+		return result;
 	}
 
-	public Result<String, WebPage> query(String startKey, long limit) {
-		return repository.query(startKey, limit);
+	public Result<String, WebPage> query(String startKey, long limit) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		Result<String, WebPage> result = repository.query(dataStore, startKey, limit);
+		dataStore.flush();
+		return result;
 	}
 
-	public Result<String, WebPage> query(String key, String... fields) {
-		return repository.query(key, fields);
+	public Result<String, WebPage> query(String key, String... fields) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		Result<String, WebPage> result = repository.query(dataStore, key, fields);
+		dataStore.flush();
+		return result;
 	}
 
-	public Result<String, WebPage> query(Filter<String, WebPage> filter, String... fields) {
-		return repository.query(filter, fields);
+	public Result<String, WebPage> query(Filter<String, WebPage> filter, String... fields) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		Result<String, WebPage> result = repository.query(dataStore, filter, fields);
+		dataStore.flush();
+		return result;
 	}
 
-	public boolean delete(String key) {
-		return repository.delete(key);
+	public boolean delete(String key) throws GoraException {
+		DataStore<String, WebPage> dataStore = getDataStore();
+		boolean result = repository.delete(dataStore, key);
+		dataStore.flush();
+		return result;
 	}
 
 	public boolean exist(String key) throws IOException, Exception {
-		return repository.exist(key);
+		DataStore<String, WebPage> dataStore = getDataStore();
+		boolean result = repository.exist(dataStore, key);
+		dataStore.flush();
+		return result;
 	}
+
+	private DataStore<String, WebPage> getDataStore() throws GoraException {
+		return DataStoreFactory.getDataStore(String.class, WebPage.class, configuration);
+	}
+
 }

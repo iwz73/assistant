@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.query.Result;
+import org.apache.gora.util.GoraException;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -23,8 +24,8 @@ import idv.hsiehpinghan.goraassistant.service.GoraService;
 import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 
 public class GoraServiceTest {
-	private final long KEY = Calendar.getInstance().getTimeInMillis();
-	private ByteBuffer _bytes = ByteBuffer.wrap(new byte[] { 0x01, 0x02, 0x03 });
+	private final String KEY = String.valueOf(Calendar.getInstance().getTimeInMillis());
+	private ByteBuffer _bytes = ByteBuffer.wrap(new byte[] { 'a', 'b', 'c' });
 	private boolean _boolean = true;
 	private int _int = 1;
 	private long _long = 2;
@@ -46,19 +47,19 @@ public class GoraServiceTest {
 	}
 
 	@Test
-	public void put() {
+	public void put() throws GoraException {
 		service.put(KEY, generateGora());
 	}
 
 	@Test(dependsOnMethods = { "put" })
-	public void get() {
+	public void get() throws GoraException {
 		Gora returnGora = service.get(KEY);
 		assertReturnGora(returnGora);
 	}
 
 	@Test(dependsOnMethods = { "put" })
 	public void exists() throws IOException, Exception {
-		Assert.assertFalse(service.exist(Long.MAX_VALUE));
+		Assert.assertFalse(service.exist("NotExists"));
 		Assert.assertTrue(service.exist(KEY));
 	}
 
@@ -69,7 +70,7 @@ public class GoraServiceTest {
 	 */
 	@Test(dependsOnMethods = { "get" })
 	public void query() throws Exception {
-		Result<Long, Gora> result = service.query(KEY);
+		Result<String, Gora> result = service.query(KEY);
 		while (result.next()) {
 			Gora returnGora = result.get();
 			assertReturnGora(returnGora);
@@ -99,12 +100,12 @@ public class GoraServiceTest {
 	@Test(dependsOnMethods = { "query" })
 	public void queryWithLimit() throws Exception {
 		final long SIZE = 3;
-		Long lastValue = null;
+		String lastValue = null;
 		for (long i = 0; i < SIZE; ++i) {
-			lastValue = Long.MAX_VALUE - i;
+			lastValue = String.valueOf(Long.MAX_VALUE - i);
 			service.put(lastValue, generateGora());
 		}
-		Result<Long, Gora> result = service.query(lastValue, Long.MAX_VALUE);
+		Result<String, Gora> result = service.query(lastValue, Long.MAX_VALUE);
 		int amt = 0;
 		while (result.next()) {
 			++amt;
@@ -117,7 +118,7 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "queryWithLimit" })
-	public void putWithOnlyOneField() {
+	public void putWithOnlyOneField() throws GoraException {
 		final String STRING = "new_string";
 		service.put(KEY, generateGora1(STRING));
 		Gora returnGora = service.get(KEY);
@@ -125,7 +126,7 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "putWithOnlyOneField" })
-	public void delete() {
+	public void delete() throws GoraException {
 		Assert.assertTrue(service.delete(KEY));
 		Assert.assertNull(service.get(KEY));
 	}
@@ -155,11 +156,15 @@ public class GoraServiceTest {
 
 	private void assertMap(Map<CharSequence, CharSequence> map) {
 		Map<String, String> strMap = convertCharSequenceMapToStringMap(map);
-		for (int i = 0; i < 3; ++i) {
-			String key = "key_" + i;
-			String value = "value_" + i;
-			Assert.assertEquals(strMap.get(key), value);
+		Map<String, String> m = convertCharSequenceMapToStringMap(_map);
+		boolean tested = false;
+		for (Map.Entry<String, String> ent : strMap.entrySet()) {
+			String key = ent.getKey();
+			String value = ent.getValue();
+			Assert.assertEquals(value, m.get(key));
+			tested = true;
 		}
+		Assert.assertTrue(tested);
 	}
 
 	private Map<String, String> convertCharSequenceMapToStringMap(Map<CharSequence, CharSequence> map) {
@@ -184,6 +189,7 @@ public class GoraServiceTest {
 		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
 		assertArrayItem(returnGora.getArray$1());
+		assertMap(returnGora.getMap$1());
 	}
 
 	private Gora generateGora() {
@@ -217,7 +223,7 @@ public class GoraServiceTest {
 
 	private void testStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._STRING.getName() };
-		Result<Long, Gora> result = service.query(KEY, fields);
+		Result<String, Gora> result = service.query(KEY, fields);
 		int amt = 0;
 		while (result.next()) {
 			Gora returnGora = result.get();
@@ -229,7 +235,7 @@ public class GoraServiceTest {
 
 	private void testNoStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._BOOLEAN.getName() };
-		Result<Long, Gora> result = service.query(KEY, fields);
+		Result<String, Gora> result = service.query(KEY, fields);
 		int amt = 0;
 		while (result.next()) {
 			Gora returnGora = result.get();

@@ -11,8 +11,10 @@ import org.apache.avro.util.Utf8;
 import org.apache.gora.filter.FilterList;
 import org.apache.gora.filter.FilterList.Operator;
 import org.apache.gora.filter.FilterOp;
+import org.apache.gora.filter.MapFieldValueFilter;
 import org.apache.gora.filter.SingleFieldValueFilter;
 import org.apache.gora.query.Result;
+import org.apache.gora.util.GoraException;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.storage.ProtocolStatus;
 import org.apache.nutch.storage.WebPage;
@@ -26,8 +28,8 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.testutility.utility.CompareUtility;
 
 public class WebPageServiceTest {
-	 private String BATCH_ID = "batchId";
-//	private String BATCH_ID = "1464158096-1608326935";
+	private long now = System.currentTimeMillis();
+	private String TITLE = "title";
 	private ApplicationContext applicationContext;
 	private WebPageService service;
 
@@ -37,10 +39,10 @@ public class WebPageServiceTest {
 		service = applicationContext.getBean(WebPageService.class);
 	}
 
-//	@Test
-	public void put() {
+	@Test
+	public void put() throws GoraException {
 		for (int i = 0; i < 10; ++i) {
-			String key = String.valueOf(i);
+			String key = String.valueOf(now + i);
 			WebPage entity = generateWebPage(i);
 			service.put(key, entity);
 			WebPage returnEntity = service.get(key);
@@ -48,14 +50,14 @@ public class WebPageServiceTest {
 		}
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "put" })
 	public void query() throws Exception {
 		query_0();
 		query_1();
 	}
 
 	private void query_0() throws Exception {
-		String[] fields = new String[] { WebPage.Field.STATUS.getName() };
+		String[] fields = new String[] { WebPage.Field.MARKERS.getName() };
 		Result<String, WebPage> result = service.query(generateFilterList_0(), fields);
 		int row = 0;
 		while (result.next()) {
@@ -65,16 +67,10 @@ public class WebPageServiceTest {
 	}
 
 	private void query_1() throws Exception {
-		String[] fields = new String[] { WebPage.Field.CONTENT.getName() };
+		String[] fields = new String[] { WebPage.Field.TITLE.getName() };
 		Result<String, WebPage> result = service.query(generateFilterList_1(), fields);
 		int row = 0;
 		while (result.next()) {
-
-			String key = result.getKey();
-			WebPage entity = result.get();
-			System.err.println(key);
-			System.err.println(entity);
-
 			++row;
 		}
 		Assert.assertTrue(row > 0);
@@ -82,7 +78,7 @@ public class WebPageServiceTest {
 
 	private FilterList<String, WebPage> generateFilterList_0() {
 		FilterList<String, WebPage> filter = new FilterList<String, WebPage>(Operator.MUST_PASS_ALL);
-		filter.addFilter(generateSingleFieldValueFilter_0());
+		filter.addFilter(generateMapFieldValueFilter_0());
 		return filter;
 	}
 
@@ -92,22 +88,23 @@ public class WebPageServiceTest {
 		return filter;
 	}
 
-	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter_0() {
-		SingleFieldValueFilter<String, WebPage> filter = new SingleFieldValueFilter<String, WebPage>();
-		filter.setFieldName(WebPage.Field.BATCH_ID.toString());
+	private MapFieldValueFilter<String, WebPage> generateMapFieldValueFilter_0() {
+		MapFieldValueFilter<String, WebPage> filter = new MapFieldValueFilter<String, WebPage>();
+		filter.setFieldName(WebPage.Field.MARKERS.toString());
 		filter.setFilterOp(FilterOp.EQUALS);
 		filter.setFilterIfMissing(true);
-		filter.getOperands().add(new Utf8(BATCH_ID + 0));
+		filter.setMapKey(new Utf8("key_" + 0));
+		filter.getOperands().add(new Utf8("value_" + 0));
 		return filter;
 	}
 
 	private SingleFieldValueFilter<String, WebPage> generateSingleFieldValueFilter_1() {
 		SingleFieldValueFilter<String, WebPage> filter = new SingleFieldValueFilter<String, WebPage>();
-		filter.setFieldName(WebPage.Field.BATCH_ID.toString());
+		filter.setFieldName(WebPage.Field.TITLE.toString());
 		filter.setFilterOp(FilterOp.EQUALS);
 		filter.setFilterIfMissing(true);
-		for(int i = 0; i < 3; ++i) {
-			filter.getOperands().add(new Utf8(BATCH_ID + i));	
+		for (int i = 0; i < 3; ++i) {
+			filter.getOperands().add(TITLE + i);
 		}
 		return filter;
 	}
@@ -165,10 +162,10 @@ public class WebPageServiceTest {
 	}
 
 	private Map<CharSequence, CharSequence> generateMarkers() {
-		final int SIZE = 100;
+		final int SIZE = 3;
 		Map<CharSequence, CharSequence> markers = new HashMap<CharSequence, CharSequence>(SIZE);
-		for (int i = 0; i < 100; ++i) {
-			markers.put(String.valueOf(i), String.valueOf(i));
+		for (int i = 0; i < SIZE; ++i) {
+			markers.put(new Utf8("key_" + i), new Utf8("value_" + i));
 		}
 		return markers;
 	}
@@ -202,7 +199,7 @@ public class WebPageServiceTest {
 		entity.setContent(generateByteBuffer("content"));
 		entity.setPrevSignature(generateByteBuffer("prevSignature"));
 		entity.setSignature(generateByteBuffer("signature"));
-		entity.setTitle("title");
+		entity.setTitle(TITLE + i);
 		entity.setText("text");
 		entity.setParseStatus(generateParseStatus(i));
 		entity.setScore(Float.valueOf(i));
@@ -212,7 +209,7 @@ public class WebPageServiceTest {
 		entity.setInlinks(generateInlinks());
 		entity.setMarkers(generateMarkers());
 		entity.setMetadata(generateMetadata());
-		entity.setBatchId(BATCH_ID + i);
+		entity.setBatchId("batchId");
 		return entity;
 	}
 

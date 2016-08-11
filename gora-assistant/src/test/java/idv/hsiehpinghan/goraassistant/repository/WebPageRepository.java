@@ -7,60 +7,58 @@ import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
 import org.apache.nutch.storage.WebPage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class WebPageRepository {
-	@Autowired
-	private DataStore<String, WebPage> dataStore;
 
-	public void put(String key, WebPage entity) {
+	public void put(DataStore<String, WebPage> dataStore, String key, WebPage entity) {
 		dataStore.put(key, entity);
 		dataStore.flush();
 	}
 
-	public WebPage get(String key) {
+	public WebPage get(DataStore<String, WebPage> dataStore, String key) {
 		WebPage entity = dataStore.get(key);
 		return entity;
 	}
 
-	public Result<String, WebPage> query(String key) {
+	public Result<String, WebPage> query(DataStore<String, WebPage> dataStore, String key) {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setKey(key);
 		return query.execute();
 	}
 
-	public Result<String, WebPage> query(String startKey, long limit) {
+	public Result<String, WebPage> query(DataStore<String, WebPage> dataStore, String startKey, long limit) {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setStartKey(startKey);
 		query.setLimit(limit);
 		return query.execute();
 	}
 
-	public Result<String, WebPage> query(String key, String... fields) {
+	public Result<String, WebPage> query(DataStore<String, WebPage> dataStore, String key, String... fields) {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setKey(key);
 		query.setFields(fields);
 		return query.execute();
 	}
 
-	public Result<String, WebPage> query(Filter<String, WebPage> filter, String... fields) {
+	public Result<String, WebPage> query(DataStore<String, WebPage> dataStore, Filter<String, WebPage> filter,
+			String... fields) {
 		Query<String, WebPage> query = dataStore.newQuery();
 		query.setFilter(filter);
 		query.setFields(fields);
 		return query.execute();
 	}
 
-	public boolean delete(String key) {
+	public boolean delete(DataStore<String, WebPage> dataStore, String key) {
 		boolean result = dataStore.delete(key);
 		dataStore.flush();
 		return result;
 	}
 
-	public boolean exist(String key) throws IOException, Exception {
+	public boolean exist(DataStore<String, WebPage> dataStore, String key) throws IOException, Exception {
 		String[] fields = new String[] {};
-		Result<String, WebPage> result = query(key, fields);
+		Result<String, WebPage> result = query(dataStore, key, fields);
 		return result.next();
 	}
 }

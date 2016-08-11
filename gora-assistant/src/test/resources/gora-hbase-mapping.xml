@@ -1,12 +1,12 @@
 <gora-otd>
 	<!-- Gora -->
 	<table name="Gora">
-		<family name="primary" />
-		<family name="object" />
-		<family name="collection" />
+		<family name="primary" maxVersions="1" />
+		<family name="object" maxVersions="1" />
+		<family name="collection" maxVersions="1" />
 	</table>
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
-		keyClass="java.lang.Long" table="Gora">
+		keyClass="java.lang.String" table="Gora">
 		<field name="_bytes" family="primary" qualifier="_bytes"/>
 		<field name="_boolean" family="primary" qualifier="_boolean" />
 		<field name="_int" family="primary" qualifier="_int" />

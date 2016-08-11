@@ -1,59 +1,54 @@
 package idv.hsiehpinghan.goraassistant.repository;
 
-import idv.hsiehpinghan.goraassistant.entity.Gora;
-
 import java.io.IOException;
 
 import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import idv.hsiehpinghan.goraassistant.entity.Gora;
 
 @Repository
 public class GoraRepository {
-	@Autowired
-	private DataStore<Long, Gora> dataStore;
-
-	public void put(Long key, Gora entity) {
+	public void put(DataStore<String, Gora> dataStore, String key, Gora entity) {
 		dataStore.put(key, entity);
-		dataStore.flush();
 	}
 
-	public Gora get(Long key) {
+	public Gora get(DataStore<String, Gora> dataStore, String key) {
 		Gora entity = dataStore.get(key);
 		return entity;
 	}
 
-	public Result<Long, Gora> query(Long key) {
-		Query<Long, Gora> query = dataStore.newQuery();
+	public Result<String, Gora> query(DataStore<String, Gora> dataStore, String key) {
+		Query<String, Gora> query = dataStore.newQuery();
 		query.setKey(key);
 		return query.execute();
 	}
 
-	public Result<Long, Gora> query(Long startKey, long limit) {
-		Query<Long, Gora> query = dataStore.newQuery();
+	public Result<String, Gora> query(DataStore<String, Gora> dataStore, String startKey, long limit) {
+		Query<String, Gora> query = dataStore.newQuery();
 		query.setStartKey(startKey);
 		query.setLimit(limit);
 		return query.execute();
 	}
 
-	public Result<Long, Gora> query(Long key, String... fields) {
-		Query<Long, Gora> query = dataStore.newQuery();
+	public Result<String, Gora> query(DataStore<String, Gora> dataStore, String key, String... fields) {
+		Query<String, Gora> query = dataStore.newQuery();
 		query.setKey(key);
 		query.setFields(fields);
 		return query.execute();
 	}
 
-	public boolean delete(Long key) {
+	public boolean delete(DataStore<String, Gora> dataStore, String key) {
 		boolean result = dataStore.delete(key);
 		dataStore.flush();
 		return result;
 	}
 
-	public boolean exist(Long key) throws IOException, Exception {
+	public boolean exist(DataStore<String, Gora> dataStore, String key) throws IOException, Exception {
 		String[] fields = new String[] {};
-		Result<Long, Gora> result = query(key, fields);
+		Result<String, Gora> result = query(dataStore, key, fields);
 		return result.next();
 	}
 }

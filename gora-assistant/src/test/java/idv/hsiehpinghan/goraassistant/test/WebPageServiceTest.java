@@ -28,8 +28,8 @@ import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
 import idv.hsiehpinghan.testutility.utility.CompareUtility;
 
 public class WebPageServiceTest {
-	private long now = System.currentTimeMillis();
-	private String TITLE = "title";
+	private final long NOW = System.currentTimeMillis();
+	private final String TITLE = "title";
 	private ApplicationContext applicationContext;
 	private WebPageService service;
 
@@ -42,7 +42,7 @@ public class WebPageServiceTest {
 	@Test
 	public void put() throws GoraException {
 		for (int i = 0; i < 10; ++i) {
-			String key = String.valueOf(now + i);
+			String key = String.valueOf(NOW + i);
 			WebPage entity = generateWebPage(i);
 			service.put(key, entity);
 			WebPage returnEntity = service.get(key);

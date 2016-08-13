@@ -58,22 +58,36 @@ public class WebPageServiceTest {
 
 	private void query_0() throws Exception {
 		String[] fields = new String[] { WebPage.Field.MARKERS.getName() };
-		Result<String, WebPage> result = service.query(generateFilterList_0(), fields);
-		int row = 0;
-		while (result.next()) {
-			++row;
+		Result<String, WebPage> result = null;
+		try {
+			result = service.query(generateFilterList_0(), fields);
+			int row = 0;
+			while (result.next()) {
+				++row;
+			}
+			Assert.assertTrue(row > 0);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
-		Assert.assertTrue(row > 0);
 	}
 
 	private void query_1() throws Exception {
 		String[] fields = new String[] { WebPage.Field.TITLE.getName() };
-		Result<String, WebPage> result = service.query(generateFilterList_1(), fields);
-		int row = 0;
-		while (result.next()) {
-			++row;
+		Result<String, WebPage> result = null;
+		try {
+			result = service.query(generateFilterList_1(), fields);
+			int row = 0;
+			while (result.next()) {
+				++row;
+			}
+			Assert.assertTrue(row > 0);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
-		Assert.assertTrue(row > 0);
 	}
 
 	private FilterList<String, WebPage> generateFilterList_0() {

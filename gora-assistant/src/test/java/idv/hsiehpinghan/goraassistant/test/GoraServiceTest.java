@@ -70,10 +70,17 @@ public class GoraServiceTest {
 	 */
 	@Test(dependsOnMethods = { "get" })
 	public void query() throws Exception {
-		Result<String, Gora> result = service.query(KEY);
-		while (result.next()) {
-			Gora returnGora = result.get();
-			assertReturnGora(returnGora);
+		Result<String, Gora> result = null;
+		try {
+			result = service.query(KEY);
+			while (result.next()) {
+				Gora returnGora = result.get();
+				assertReturnGora(returnGora);
+			}
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
 	}
 
@@ -105,15 +112,22 @@ public class GoraServiceTest {
 			lastValue = String.valueOf(Long.MAX_VALUE - i);
 			service.put(lastValue, generateGora());
 		}
-		Result<String, Gora> result = service.query(lastValue, Long.MAX_VALUE);
-		int amt = 0;
-		while (result.next()) {
-			++amt;
-			Gora returnGora = result.get();
-			assertReturnGora(returnGora);
-			service.delete(result.getKey());
+		Result<String, Gora> result = null;
+		try {
+			result = service.query(lastValue, Long.MAX_VALUE);
+			int amt = 0;
+			while (result.next()) {
+				++amt;
+				Gora returnGora = result.get();
+				assertReturnGora(returnGora);
+				service.delete(result.getKey());
+			}
+			Assert.assertEquals(amt, SIZE);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
-		Assert.assertEquals(amt, SIZE);
 
 	}
 
@@ -223,26 +237,40 @@ public class GoraServiceTest {
 
 	private void testStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._STRING.getName() };
-		Result<String, Gora> result = service.query(KEY, fields);
-		int amt = 0;
-		while (result.next()) {
-			Gora returnGora = result.get();
-			Assert.assertEquals(returnGora.getString$1(), testStr);
-			++amt;
+		Result<String, Gora> result = null;
+		try {
+			result = service.query(KEY, fields);
+			int amt = 0;
+			while (result.next()) {
+				Gora returnGora = result.get();
+				Assert.assertEquals(returnGora.getString$1(), testStr);
+				++amt;
+			}
+			Assert.assertEquals(amt, 1);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
-		Assert.assertEquals(amt, 1);
 	}
 
 	private void testNoStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._BOOLEAN.getName() };
-		Result<String, Gora> result = service.query(KEY, fields);
-		int amt = 0;
-		while (result.next()) {
-			Gora returnGora = result.get();
-			Assert.assertNotEquals(returnGora.getString$1(), testStr);
-			++amt;
+		Result<String, Gora> result = null;
+		try {
+			result = service.query(KEY, fields);
+			int amt = 0;
+			while (result.next()) {
+				Gora returnGora = result.get();
+				Assert.assertNotEquals(returnGora.getString$1(), testStr);
+				++amt;
+			}
+			Assert.assertEquals(amt, 1);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
 		}
-		Assert.assertEquals(amt, 1);
 	}
 
 	private List<ArrayItem> generate_Array() {

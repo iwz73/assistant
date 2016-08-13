@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.avro.util.Utf8;
-import org.apache.gora.query.Result;
 import org.apache.gora.util.GoraException;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
@@ -22,6 +21,8 @@ import idv.hsiehpinghan.goraassistant.entity.NestedRecord;
 import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.goraassistant.service.GoraService;
 import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.goraassistant.vo.ArrayItemVo;
+import idv.hsiehpinghan.goraassistant.vo.GoraVo;
 
 public class GoraServiceTest {
 	private final String KEY = String.valueOf(Calendar.getInstance().getTimeInMillis());
@@ -53,7 +54,7 @@ public class GoraServiceTest {
 
 	@Test(dependsOnMethods = { "put" })
 	public void get() throws GoraException {
-		Gora returnGora = service.get(KEY);
+		GoraVo returnGora = service.get(KEY);
 		assertReturnGora(returnGora);
 	}
 
@@ -70,17 +71,10 @@ public class GoraServiceTest {
 	 */
 	@Test(dependsOnMethods = { "get" })
 	public void query() throws Exception {
-		Result<String, Gora> result = null;
-		try {
-			result = service.query(KEY);
-			while (result.next()) {
-				Gora returnGora = result.get();
-				assertReturnGora(returnGora);
-			}
-		} finally {
-			if (result != null) {
-				result.close();
-			}
+		Map<String, GoraVo> result = service.query(KEY);
+		for (Map.Entry<String, GoraVo> ent : result.entrySet()) {
+			GoraVo returnGora = ent.getValue();
+			assertReturnGora(returnGora);
 		}
 	}
 
@@ -112,30 +106,22 @@ public class GoraServiceTest {
 			lastValue = String.valueOf(Long.MAX_VALUE - i);
 			service.put(lastValue, generateGora());
 		}
-		Result<String, Gora> result = null;
-		try {
-			result = service.query(lastValue, Long.MAX_VALUE);
-			int amt = 0;
-			while (result.next()) {
-				++amt;
-				Gora returnGora = result.get();
-				assertReturnGora(returnGora);
-				service.delete(result.getKey());
-			}
-			Assert.assertEquals(amt, SIZE);
-		} finally {
-			if (result != null) {
-				result.close();
-			}
+		int amt = 0;
+		Map<String, GoraVo> result = service.query(lastValue, Long.MAX_VALUE);
+		for (Map.Entry<String, GoraVo> ent : result.entrySet()) {
+			GoraVo returnGora = ent.getValue();
+			assertReturnGora(returnGora);
+			service.delete(ent.getKey());
+			++amt;
 		}
-
+		Assert.assertEquals(amt, SIZE);
 	}
 
 	@Test(dependsOnMethods = { "queryWithLimit" })
 	public void putWithOnlyOneField() throws GoraException {
 		final String STRING = "new_string";
 		service.put(KEY, generateGora1(STRING));
-		Gora returnGora = service.get(KEY);
+		GoraVo returnGora = service.get(KEY);
 		assertReturnGora1(returnGora, STRING);
 	}
 
@@ -145,7 +131,7 @@ public class GoraServiceTest {
 		Assert.assertNull(service.get(KEY));
 	}
 
-	private void assertReturnGora(Gora returnGora) {
+	private void assertReturnGora(GoraVo returnGora) {
 		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
@@ -160,9 +146,9 @@ public class GoraServiceTest {
 		assertMap(returnGora.getMap$1());
 	}
 
-	private void assertArrayItem(List<ArrayItem> arrayItems) {
-		for (long i = 0, size = arrayItems.size(); i < size; ++i) {
-			ArrayItem arrayItem = arrayItems.get((int) i);
+	private void assertArrayItem(List<ArrayItemVo> arrayItems) {
+		for (int i = 0, size = arrayItems.size(); i < size; ++i) {
+			ArrayItemVo arrayItem = arrayItems.get(i);
 			Assert.assertEquals(arrayItem.getId().longValue(), i);
 			Assert.assertEquals(String.valueOf(arrayItem.getName()), "name_" + i);
 		}
@@ -191,7 +177,7 @@ public class GoraServiceTest {
 		return strMap;
 	}
 
-	private void assertReturnGora1(Gora returnGora, String string) {
+	private void assertReturnGora1(GoraVo returnGora, String string) {
 		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
@@ -237,40 +223,26 @@ public class GoraServiceTest {
 
 	private void testStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._STRING.getName() };
-		Result<String, Gora> result = null;
-		try {
-			result = service.query(KEY, fields);
-			int amt = 0;
-			while (result.next()) {
-				Gora returnGora = result.get();
-				Assert.assertEquals(returnGora.getString$1(), testStr);
-				++amt;
-			}
-			Assert.assertEquals(amt, 1);
-		} finally {
-			if (result != null) {
-				result.close();
-			}
+		int amt = 0;
+		Map<String, GoraVo> result = service.query(KEY, fields);
+		for (Map.Entry<String, GoraVo> ent : result.entrySet()) {
+			GoraVo returnGora = ent.getValue();
+			Assert.assertEquals(returnGora.getString$1(), testStr);
+			++amt;
 		}
+		Assert.assertEquals(amt, 1);
 	}
 
 	private void testNoStringField(CharSequence testStr) throws Exception {
 		String[] fields = new String[] { Gora.Field._BOOLEAN.getName() };
-		Result<String, Gora> result = null;
-		try {
-			result = service.query(KEY, fields);
-			int amt = 0;
-			while (result.next()) {
-				Gora returnGora = result.get();
-				Assert.assertNotEquals(returnGora.getString$1(), testStr);
-				++amt;
-			}
-			Assert.assertEquals(amt, 1);
-		} finally {
-			if (result != null) {
-				result.close();
-			}
+		int amt = 0;
+		Map<String, GoraVo> result = service.query(KEY, fields);
+		for (Map.Entry<String, GoraVo> ent : result.entrySet()) {
+			GoraVo returnGora = ent.getValue();
+			Assert.assertNotEquals(returnGora.getString$1(), testStr);
+			++amt;
 		}
+		Assert.assertEquals(amt, 1);
 	}
 
 	private List<ArrayItem> generate_Array() {

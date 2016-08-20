@@ -1,0 +1,10 @@
+# start solr
+/opt/solr-4.10.3//bin/solr start
+
+# add example xml document
+cd /opt/solr-4.10.3/example/exampledocs
+java -jar post.jar *.xml
+
+# Solritas url
+http://localhost:8983/solr/collection1/browse
+

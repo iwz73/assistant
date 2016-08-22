@@ -8,3 +8,50 @@ java -jar post.jar *.xml
 # Solritas url
 http://localhost:8983/solr/collection1/browse
 
+
+REQUIRED TERMS:
+  +new +house
+  new AND house
+
+OPTIONAL TERMS:
+  new house
+  new OR house
+
+NEGATED TERMS
+  new house –rental
+  new house NOT rental
+
+GROUPED EXPRESSIONS
+  New AND (house OR (home NOT improvement NOT depot NOT grown))
+
+WILDCARD SEARCHING
+  offi*
+  off*r
+  off?r
+
+RANGE SEARCHING
+  << inclusive >>
+  created:[2012-02-01T00:00.0Z TO 2012-08-02T00:00.0Z]
+  yearsOld:[18 TO 21]
+  title:[boat TO boulder]
+  [12.99 TO 14.99]
+  << inclusive >>
+  yearsOld:{18 TO 21}
+  yearsOld:[18 TO 21}
+  
+FUZZY/EDIT-DISTANCE SEARCHING(insertion, a deletion, a substitution, or a transposition of characters)
+  administrator~
+  administrator~1
+  administrator~2
+  
+PROXIMITY SEARCHING
+  "chief officer"~0
+  "chief officer"~1
+  "chief officer"~2
+  
+Boosting
+  title:(solr in action)^2.5 description:(solr in action)
+  title:(solr in action) description:(solr in action)^0.2
+  title:(solr^2 in^.01 action^1.5)^3 OR "solr in action"^2.5
+  
+  

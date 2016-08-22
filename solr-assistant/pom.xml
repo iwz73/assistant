@@ -32,7 +32,7 @@
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
-		<solr-solrj.version>4.10.3</solr-solrj.version>
+		<solr.version>4.10.3</solr.version>
 		<object-utility.version>1.0.0</object-utility.version>
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
@@ -73,11 +73,16 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- solr-solrj -->
+		<!-- solr -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.solr</groupId> -->
+<!-- 			<artifactId>solr-core</artifactId> -->
+<!-- 			<version>${solr.version}</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
-			<version>${solr-solrj.version}</version>
+			<version>${solr.version}</version>
 		</dependency>
 
 		<!-- object-utility -->
@@ -95,5 +100,6 @@
 			<version>${test-utility.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 </project>

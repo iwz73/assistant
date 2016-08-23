@@ -54,4 +54,8 @@ Boosting
   title:(solr in action) description:(solr in action)^0.2
   title:(solr^2 in^.01 action^1.5)^3 OR "solr in action"^2.5
   
+Date Query
+  <field name="timestamp">2012-05-22T09:30:22Z</field>
+  <field name="timestamp">2012-05-22T09:30:22Z/HOUR</field>
+  <field name="timestamp">timestamp:[NOW/DAY TO NOW/DAY+1DAY}</field>
   

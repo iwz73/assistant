@@ -14,7 +14,7 @@
   <dataDir>${solr.data.dir:}</dataDir>
 
   <directoryFactory name="DirectoryFactory" 
-                    class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">
+                    class="${solr.directoryFactory:solr.MMapDirectoryFactory}">
     <str name="solr.hdfs.home">${solr.hdfs.home:}</str>
     <str name="solr.hdfs.confdir">${solr.hdfs.confdir:}</str>
     <str name="solr.hdfs.blockcache.enabled">${solr.hdfs.blockcache.enabled:true}</str>
@@ -40,6 +40,7 @@
  
      <autoCommit> 
        <maxTime>${solr.autoCommit.maxTime:15000}</maxTime> 
+       <maxDocs>50000</maxDocs>
        <openSearcher>false</openSearcher> 
      </autoCommit>
 

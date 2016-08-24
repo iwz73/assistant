@@ -51,6 +51,8 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 	private static final List<String> TEXT_REV = generateStringList("text_rev");
 	private static final String MANU_EXACT = "manu_exact";
 	private static final String PAYLOADS = "payloads";
+	private static final String TEST_TEXT = "#Yummm :) Drinking a latte at Caffé Grecco in SF's historic North Beach... Learning text analysis with #SolrInAction by @ManningBooks on my i-Pad https://www.google.com.tw/?gws_rd=ssl thank@gmail.com drinking";
+	private static final String HTML_TEXT = "111<a href=\"www.foo.bar\">link</a>222<script><!-- f('<!--internal--></script>'); --></script>333&#65444";
 	private static final Integer DYNAMICFIELD_I = Integer.MAX_VALUE;
 	private static final List<Integer> DYNAMICFIELD_IS = generateIntegerList();
 	private static final String DYNAMICFIELD_S = "dynamicField_s";
@@ -240,6 +242,105 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 	}
 
+	@Test(dependsOnMethods = { "queryBean" })
+	public void testMappingCharFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id:" + solrInputDocument.getFieldValue("id") + " AND text_mapping_char_filter_factory:Caffe");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testMappingCharFilterFactory" })
+	public void testPatternReplaceCharFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id:" + solrInputDocument.getFieldValue("id") + " AND text_pattern_replace_char_filter_factory:#Yumm");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testPatternReplaceCharFilterFactory" })
+	public void testWhitespaceTokenizerFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id:" + solrInputDocument.getFieldValue("id") + " AND text_whitespace_tokenizer_factory:#Yummm");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testWhitespaceTokenizerFactory" })
+	public void testHTMLStripCharFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id:" + solrInputDocument.getFieldValue("id") + " AND text_html_strip_char_filter_factory:111link222");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testHTMLStripCharFilterFactory" })
+	public void testStandardTokenizerFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_standard_tokenizer_factory:Yummm");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testStandardTokenizerFactory" })
+	public void testStopFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_stop_filter_factory:a");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 0);
+	}
+	
+	@Test(dependsOnMethods = { "testStopFilterFactory" })
+	public void testLowerCaseFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_lower_case_filter_factory:Drinking");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 0);
+	}
+	
+	@Test(dependsOnMethods = { "testLowerCaseFilterFactory" })
+	public void testWordDelimiterFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_word_delimiter_filter_factory:iPad");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testWordDelimiterFilterFactory" })
+	public void testASCIIFoldingFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_ascii_folding_filter_factory:Caffe");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testASCIIFoldingFilterFactory" })
+	public void testKStemFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_kstem_filter_factory:drink");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
+	@Test(dependsOnMethods = { "testKStemFilterFactory" })
+	public void testSynonymFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_synonym_filter_factory:ipad");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
 //	@Test(dependsOnMethods = { "queryBean" })
 	public void deleteBean() throws Exception {
 		String id = String.valueOf(defaultDocument.getId());
@@ -286,6 +387,17 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setField("text_rev", TEXT_REV);
 		doc.setField("manu_exact", MANU_EXACT);
 		doc.setField("payloads", PAYLOADS);
+		doc.setField("text_mapping_char_filter_factory", TEST_TEXT);
+		doc.setField("text_pattern_replace_char_filter_factory", TEST_TEXT);
+		doc.setField("text_html_strip_char_filter_factory", HTML_TEXT);
+		doc.setField("text_whitespace_tokenizer_factory", TEST_TEXT);
+		doc.setField("text_standard_tokenizer_factory", TEST_TEXT);
+		doc.setField("text_stop_filter_factory", TEST_TEXT);
+		doc.setField("text_lower_case_filter_factory", TEST_TEXT);
+		doc.setField("text_word_delimiter_filter_factory", TEST_TEXT);
+		doc.setField("text_ascii_folding_filter_factory", TEST_TEXT);
+		doc.setField("text_kstem_filter_factory", TEST_TEXT);
+		doc.setField("text_synonym_filter_factory", TEST_TEXT);
 		doc.setField("dynamicfield_i", DYNAMICFIELD_I);
 		doc.setField("dynamicfield_is", DYNAMICFIELD_IS);
 		doc.setField("dynamicField_s", DYNAMICFIELD_S);
@@ -346,6 +458,17 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setText_rev(TEXT_REV);
 		doc.setManu_exact(MANU_EXACT);
 		doc.setPayloads(PAYLOADS);
+		doc.setText_mapping_char_filter_factory(TEST_TEXT);
+		doc.setText_pattern_replace_char_filter_factory(TEST_TEXT);
+		doc.setText_html_strip_char_filter_factory(HTML_TEXT);
+		doc.setText_whitespace_tokenizer_factory(TEST_TEXT);
+		doc.setText_standard_tokenizer_factory(TEST_TEXT);
+		doc.setText_stop_filter_factory(TEST_TEXT);
+		doc.setText_lower_case_filter_factory(TEST_TEXT);
+		doc.setText_word_delimiter_filter_factory(TEST_TEXT);
+		doc.setText_ascii_folding_filter_factory(TEST_TEXT);
+		doc.setText_kstem_filter_factory(TEST_TEXT);
+		doc.setText_synonym_filter_factory(TEST_TEXT);
 		doc.setDynamicfield_i(DYNAMICFIELD_I);
 		doc.setDynamicfield_is(DYNAMICFIELD_IS);
 		doc.setDynamicfield_s(DYNAMICFIELD_S);

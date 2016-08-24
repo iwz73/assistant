@@ -65,6 +65,28 @@ public class DefaultDocument {
 	@Field
 	private String payloads;
 	@Field
+	private String text_mapping_char_filter_factory;
+	@Field
+	private String text_pattern_replace_char_filter_factory;
+	@Field
+	private String text_html_strip_char_filter_factory;
+	@Field
+	private String text_whitespace_tokenizer_factory;
+	@Field
+	private String text_standard_tokenizer_factory;
+	@Field
+	private String text_stop_filter_factory;
+	@Field
+	private String text_lower_case_filter_factory;
+	@Field
+	private String text_word_delimiter_filter_factory;
+	@Field
+	private String text_ascii_folding_filter_factory;
+	@Field
+	private String text_kstem_filter_factory;
+	@Field
+	private String text_synonym_filter_factory;
+	@Field
 	private Integer dynamicfield_i;
 	@Field
 	private List<Integer> dynamicfield_is;
@@ -347,6 +369,94 @@ public class DefaultDocument {
 
 	public void setPayloads(String payloads) {
 		this.payloads = payloads;
+	}
+
+	public String getText_mapping_char_filter_factory() {
+		return text_mapping_char_filter_factory;
+	}
+
+	public void setText_mapping_char_filter_factory(String text_mapping_char_filter_factory) {
+		this.text_mapping_char_filter_factory = text_mapping_char_filter_factory;
+	}
+
+	public String getText_pattern_replace_char_filter_factory() {
+		return text_pattern_replace_char_filter_factory;
+	}
+
+	public void setText_pattern_replace_char_filter_factory(String text_pattern_replace_char_filter_factory) {
+		this.text_pattern_replace_char_filter_factory = text_pattern_replace_char_filter_factory;
+	}
+
+	public String getText_html_strip_char_filter_factory() {
+		return text_html_strip_char_filter_factory;
+	}
+
+	public void setText_html_strip_char_filter_factory(String text_html_strip_char_filter_factory) {
+		this.text_html_strip_char_filter_factory = text_html_strip_char_filter_factory;
+	}
+
+	public String getText_whitespace_tokenizer_factory() {
+		return text_whitespace_tokenizer_factory;
+	}
+
+	public void setText_whitespace_tokenizer_factory(String text_whitespace_tokenizer_factory) {
+		this.text_whitespace_tokenizer_factory = text_whitespace_tokenizer_factory;
+	}
+
+	public String getText_standard_tokenizer_factory() {
+		return text_standard_tokenizer_factory;
+	}
+
+	public void setText_standard_tokenizer_factory(String text_standard_tokenizer_factory) {
+		this.text_standard_tokenizer_factory = text_standard_tokenizer_factory;
+	}
+
+	public String getText_stop_filter_factory() {
+		return text_stop_filter_factory;
+	}
+
+	public void setText_stop_filter_factory(String text_stop_filter_factory) {
+		this.text_stop_filter_factory = text_stop_filter_factory;
+	}
+
+	public String getText_lower_case_filter_factory() {
+		return text_lower_case_filter_factory;
+	}
+
+	public void setText_lower_case_filter_factory(String text_lower_case_filter_factory) {
+		this.text_lower_case_filter_factory = text_lower_case_filter_factory;
+	}
+
+	public String getText_word_delimiter_filter_factory() {
+		return text_word_delimiter_filter_factory;
+	}
+
+	public void setText_word_delimiter_filter_factory(String text_word_delimiter_filter_factory) {
+		this.text_word_delimiter_filter_factory = text_word_delimiter_filter_factory;
+	}
+
+	public String getText_ascii_folding_filter_factory() {
+		return text_ascii_folding_filter_factory;
+	}
+
+	public void setText_ascii_folding_filter_factory(String text_ascii_folding_filter_factory) {
+		this.text_ascii_folding_filter_factory = text_ascii_folding_filter_factory;
+	}
+
+	public String getText_kstem_filter_factory() {
+		return text_kstem_filter_factory;
+	}
+
+	public void setText_kstem_filter_factory(String text_kstem_filter_factory) {
+		this.text_kstem_filter_factory = text_kstem_filter_factory;
+	}
+
+	public String getText_synonym_filter_factory() {
+		return text_synonym_filter_factory;
+	}
+
+	public void setText_synonym_filter_factory(String text_synonym_filter_factory) {
+		this.text_synonym_filter_factory = text_synonym_filter_factory;
 	}
 
 	public Integer getDynamicfield_i() {

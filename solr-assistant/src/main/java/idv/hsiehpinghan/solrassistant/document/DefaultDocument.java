@@ -87,6 +87,8 @@ public class DefaultDocument {
 	@Field
 	private String text_synonym_filter_factory;
 	@Field
+	private String text_upper_case_token_filter_factory;
+	@Field
 	private Integer dynamicfield_i;
 	@Field
 	private List<Integer> dynamicfield_is;
@@ -457,6 +459,14 @@ public class DefaultDocument {
 
 	public void setText_synonym_filter_factory(String text_synonym_filter_factory) {
 		this.text_synonym_filter_factory = text_synonym_filter_factory;
+	}
+
+	public String getText_upper_case_token_filter_factory() {
+		return text_upper_case_token_filter_factory;
+	}
+
+	public void setText_upper_case_token_filter_factory(String text_upper_case_token_filter_factory) {
+		this.text_upper_case_token_filter_factory = text_upper_case_token_filter_factory;
 	}
 
 	public Integer getDynamicfield_i() {

@@ -341,6 +341,15 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(queryResponse.getResults().size(), 1);
 	}
 	
+	@Test(dependsOnMethods = { "testSynonymFilterFactory" })
+	public void testUpperCaseTokenFilterFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_upper_case_token_filter_factory:ANALYSIS");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+	
 //	@Test(dependsOnMethods = { "queryBean" })
 	public void deleteBean() throws Exception {
 		String id = String.valueOf(defaultDocument.getId());
@@ -398,6 +407,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setField("text_ascii_folding_filter_factory", TEST_TEXT);
 		doc.setField("text_kstem_filter_factory", TEST_TEXT);
 		doc.setField("text_synonym_filter_factory", TEST_TEXT);
+		doc.setField("text_upper_case_token_filter_factory", TEST_TEXT);
 		doc.setField("dynamicfield_i", DYNAMICFIELD_I);
 		doc.setField("dynamicfield_is", DYNAMICFIELD_IS);
 		doc.setField("dynamicField_s", DYNAMICFIELD_S);
@@ -469,6 +479,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setText_ascii_folding_filter_factory(TEST_TEXT);
 		doc.setText_kstem_filter_factory(TEST_TEXT);
 		doc.setText_synonym_filter_factory(TEST_TEXT);
+		doc.setText_upper_case_token_filter_factory(TEST_TEXT);
 		doc.setDynamicfield_i(DYNAMICFIELD_I);
 		doc.setDynamicfield_is(DYNAMICFIELD_IS);
 		doc.setDynamicfield_s(DYNAMICFIELD_S);

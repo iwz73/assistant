@@ -10,6 +10,7 @@
   <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-langid-\d.*\.jar" />
   <lib dir="${solr.install.dir:../../..}/contrib/velocity/lib" regex=".*\.jar" />
   <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
+  <lib dir="${solr.install.dir:../../..}/contrib/thank" regex="solr-assistant-1.0.0.jar" />
   
   <dataDir>${solr.data.dir:}</dataDir>
 

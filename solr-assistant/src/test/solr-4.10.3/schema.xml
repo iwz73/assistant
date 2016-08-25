@@ -67,9 +67,8 @@
 		indexed="true" stored="true" />
 	<field name="text_synonym_filter_factory" type="text_synonymFilterFactory"
 		indexed="true" stored="true" />
-
-
-	<!-- aaa -->
+	<field name="text_upper_case_token_filter_factory" type="text_upperCaseTokenFilterFactory"
+		indexed="true" stored="true" />
 
 	<dynamicField name="*_i" type="int" indexed="true" stored="true" />
 	<dynamicField name="*_is" type="int" indexed="true"
@@ -470,10 +469,17 @@
 				format="solr" ignoreCase="false" expand="true" />
 		</analyzer>
 	</fieldType>
-
-
-
-
-
+	<fieldType name="text_upperCaseTokenFilterFactory" class="solr.TextField"
+		positionIncrementGap="100">
+		<analyzer type="index">
+			<tokenizer class="solr.WhitespaceTokenizerFactory" />
+			<filter
+				class="idv.hsiehpinghan.solrassistant.tokenfilterfactory.UpperCaseTokenFilterFactory"
+				term="analysis" />
+		</analyzer>
+		<analyzer type="query">
+			<tokenizer class="solr.WhitespaceTokenizerFactory" />
+		</analyzer>
+	</fieldType>
 
 </schema>

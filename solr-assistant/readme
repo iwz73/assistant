@@ -75,3 +75,23 @@ Date Query
   <field name="timestamp">2012-05-22T09:30:22Z/HOUR</field>
   <field name="timestamp">timestamp:[NOW/DAY TO NOW/DAY+1DAY}</field>
   
+modify the query parser
+  /select?q={!edismax}hello world
+  /select?q={!term}hello
+  /select?q={!edismax}hello world OR {!lucene}title:"my title"
+  
+LOCAL PARAMS SYNTAX
+  /select?q={!type=edismax qf="title^10 text" q.op=AND}hello world
+  /select?q={!type=edismax qf='title^10 text' q.op=AND}hello world
+  
+PARAMETER VALUE
+  /select?q={!edismax qf="title^10 text"}hello world
+  /select?q={!edismax qf="title^10 text" v="hello world"}
+  
+  /select?q={!edismax qf="title^10 text"}"hello world"
+  /select?q={!edismax qf="title^10 text" v="\"hello world\""}
+
+PARAMETER DEREFERENCING
+  /select?q={!edismax v=$userQuery}&userQuery="hello world"
+
+

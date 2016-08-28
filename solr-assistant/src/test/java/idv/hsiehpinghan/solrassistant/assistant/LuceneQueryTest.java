@@ -29,9 +29,9 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void requiredTermTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
-		// solrQuery.setQuery("+name:\"ipod\" +id:\"F8V7067-APL-KIT\"");
-		// solrQuery.setQuery("name:\"ipod\" && id:\"F8V7067-APL-KIT\"");
-		solrQuery.setQuery("name:\"ipod\" AND id:\"F8V7067-APL-KIT\"");
+		// solrQuery.setQuery("+name:ipod +id:F8V7067-APL-KIT");
+		// solrQuery.setQuery("name:ipod && id:F8V7067-APL-KIT");
+		solrQuery.setQuery("name:ipod AND id:F8V7067-APL-KIT");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 1);
@@ -40,8 +40,8 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void excludingTermsTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
-		// solrQuery.setQuery("-name:\"ipod\" -id:\"F8V7067-APL-KIT\"");
-		solrQuery.setQuery("name:\"ipod\" AND NOT id:\"F8V7067-APL-KIT\"");
+		// solrQuery.setQuery("-name:ipod -id:F8V7067-APL-KIT");
+		solrQuery.setQuery("name:ipod AND NOT id:F8V7067-APL-KIT");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 2);
@@ -50,8 +50,8 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void optionalTermTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
-		// solrQuery.setQuery("name:\"ipod\" || id:\"F8V7067-APL-KIT\"");
-		solrQuery.setQuery("name:\"ipod\" OR id:\"F8V7067-APL-KIT\"");
+		// solrQuery.setQuery("name:ipod || id:F8V7067-APL-KIT");
+		solrQuery.setQuery("name:ipod OR id:F8V7067-APL-KIT");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 3);
@@ -60,7 +60,7 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void groupedExpressionTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery("(name:\"ipod\" AND id:(\"IW-02\" OR \"F8V7067-APL-KIT\")) AND weight:4");
+		solrQuery.setQuery("(name:ipod AND id:(IW-02 OR F8V7067-APL-KIT)) AND weight:4");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 1);
@@ -100,7 +100,7 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void boostingExpressionsTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery("name:\"ipod\"^10 OR manu:\"Samsung\"^0.5");
+		solrQuery.setQuery("name:ipod^10 OR manu:Samsung^0.5");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 4);
@@ -124,7 +124,7 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 
 	private void stringRangeSearchesTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery("manu:[\"Belkin\" TO \"C\"}");
+		solrQuery.setQuery("manu:[Belkin TO C}");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 2);
@@ -148,7 +148,7 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 
 	private void termSearchTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery("name:\"ipod\" AND id:\"F8V7067-APL-KIT\"");
+		solrQuery.setQuery("name:ipod AND id:F8V7067-APL-KIT");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 1);
@@ -156,7 +156,7 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 
 	private void multipleTermSearchTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
-		solrQuery.setQuery("name:(\"ipod\" \"GB18030\")");
+		solrQuery.setQuery("name:(ipod GB18030)");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 4);

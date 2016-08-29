@@ -57,7 +57,27 @@ public class EDisMaxQueryTest extends AbstractTestNGSpringContextTests {
 		disableFieldsTest();
 	}
 		
+	@Test
+	public void minimumMatchdTest() throws Exception {
+		positiveIntegerMinimumMatchdTest();
+		positivePercentageMinimumMatchdTest();
+	}
 	
+	private void positiveIntegerMinimumMatchdTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("{!edismax mm=2}name:Maxtor hard drive");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 2);
+	}
+	
+	private void positivePercentageMinimumMatchdTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("{!edismax mm=70%}name:Maxtor hard drive");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 2);
+	}
 	
 	private void restrictAvailableFieldsTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();

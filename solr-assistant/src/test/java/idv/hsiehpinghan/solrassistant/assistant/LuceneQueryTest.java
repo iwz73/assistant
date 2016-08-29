@@ -3,6 +3,7 @@ package idv.hsiehpinghan.solrassistant.assistant;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -104,6 +105,73 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 4);
+	}
+
+	@Test
+	public void wtTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("name:ipod");
+		solrQuery.set("wt", "javabin");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 3);
+	}
+
+	@Test
+	public void flTest() throws Exception {
+		basicFlTest();
+		specialFlTest();
+		returnFieldAliasFlTest();
+	}
+
+	@Test
+	public void pagingTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.set("start", "0");
+		solrQuery.set("rows", "5");	
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 5);
+	}
+	
+	private void basicFlTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("name:ipod");
+		solrQuery.set("fl", "id,name");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertNotNull(doc.getFieldValue("id"));
+			Assert.assertNotNull(doc.getFieldValue("name"));
+			Assert.assertNull(doc.getFieldValue("manu"));
+		}
+	}
+
+	private void specialFlTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("name:ipod");
+		solrQuery.set("fl", "score,[docid],[explain],[shard]");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertNotNull(doc.getFieldValue("score"));
+			Assert.assertNotNull(doc.getFieldValue("[docid]"));
+			Assert.assertNotNull(doc.getFieldValue("[explain]"));
+			Assert.assertNotNull(doc.getFieldValue("[shard]"));
+		}
+	}
+
+	private void returnFieldAliasFlTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("name:ipod");
+		solrQuery.set("fl", "id,test_name:name");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertNotNull(doc.getFieldValue("id"));
+			Assert.assertNotNull(doc.getFieldValue("test_name"));
+		}
 	}
 
 	private void asteriskWildcardSearchTest() throws SolrServerException {

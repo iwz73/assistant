@@ -135,6 +135,16 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(solrDocumentList.size(), 5);
 	}
 	
+	@Test
+	public void sortTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.set("sort", "price desc, includes asc");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.get(0).getFieldValue("id"), "9784828985906");
+	}
+	
 	private void basicFlTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("name:ipod");

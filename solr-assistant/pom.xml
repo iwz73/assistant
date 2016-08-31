@@ -19,8 +19,6 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<solr.version>4.10.3</solr.version>
-		<object-utility.version>1.0.0</object-utility.version>
-		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -70,22 +68,6 @@
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 			<version>${solr.version}</version>
-		</dependency>
-
-		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

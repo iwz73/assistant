@@ -139,10 +139,10 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	public void sortTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");
-		solrQuery.set("sort", "price desc, includes asc");
+		solrQuery.set("sort", "price asc, includes desc");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
-		Assert.assertEquals(solrDocumentList.get(0).getFieldValue("id"), "9784828985906");
+		Assert.assertEquals(solrDocumentList.get(0).getFieldValue("id"), "GB18030TEST");
 	}
 	
 	private void basicFlTest() throws SolrServerException {

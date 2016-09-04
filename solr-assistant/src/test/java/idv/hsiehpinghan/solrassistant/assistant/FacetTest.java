@@ -37,8 +37,26 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		facetQueryTest();
 		multiFacetQueryTest();
 		renameFacetTest();
+		exTest();
 	}
 
+	private void exTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.setFacet(true);
+		solrQuery.addFacetQuery("{!key=\"range_0\"}manufacturedate_dt:[2005-01-01T00:00:00Z TO 2006-01-01T00:00:00Z}");
+		solrQuery.addFacetQuery("{!key=\"range_1\"}manufacturedate_dt:[2006-01-01T00:00:00Z TO 2007-01-01T00:00:00Z}");
+		solrQuery.addFacetQuery("{!key=\"range_2\"}manufacturedate_dt:[2007-01-01T00:00:00Z TO *]");
+		solrQuery.setFilterQueries("name:ipod");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		Map<String, Integer> facetQueryMap = response.getFacetQuery();
+		System.err.println("<< renameFacetTest >>");
+		for (Map.Entry<String, Integer> ent : facetQueryMap.entrySet()) {
+			System.err.println(ent.getKey() + " : " + ent.getValue());
+		}
+		Assert.assertTrue(facetQueryMap.size() > 0);
+	}
+	
 	private void renameFacetTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");

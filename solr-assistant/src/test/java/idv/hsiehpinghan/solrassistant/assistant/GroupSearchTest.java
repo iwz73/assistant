@@ -29,8 +29,57 @@ public class GroupSearchTest extends AbstractTestNGSpringContextTests {
 		groupFieldTest();
 		groupMainTest();
 		groupFormatTest();
+		groupFuncTest();
+		groupQueryTest();
 	}
-
+	
+	private void groupQueryTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.setParam("group", "true");
+		solrQuery.add("group.query", "name:ipod");
+		solrQuery.add("group.query", "card");
+		solrQuery.setParam("group.limit", "3");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		System.err.println("<< groupQueryTest >>");
+		GroupResponse groupResponse = response.getGroupResponse();
+		List<GroupCommand> groupCommands = groupResponse.getValues();
+		int i = 0;
+		for (GroupCommand groupCommand : groupCommands) {
+			for (Group group : groupCommand.getValues()) {
+				SolrDocumentList solrDocumentList = group.getResult();
+				for (SolrDocument doc : solrDocumentList) {
+					System.err.println(group.getGroupValue() + " / " + doc);
+					++i;
+				}
+			}
+		}
+		Assert.assertTrue(i > 0);
+	}
+	
+	private void groupFuncTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.setParam("group", "true");
+		solrQuery.setParam("group.func", "map(map(map(popularity,1,5,1),6,10,2),11,100,3)");
+		solrQuery.setParam("group.limit", "3");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		System.err.println("<< groupFuncTest >>");
+		GroupResponse groupResponse = response.getGroupResponse();
+		List<GroupCommand> groupCommands = groupResponse.getValues();
+		int i = 0;
+		for (GroupCommand groupCommand : groupCommands) {
+			for (Group group : groupCommand.getValues()) {
+				SolrDocumentList solrDocumentList = group.getResult();
+				for (SolrDocument doc : solrDocumentList) {
+					System.err.println(group.getGroupValue() + " / " + doc);
+					++i;
+				}
+			}
+		}
+		Assert.assertTrue(i > 0);
+	}
+	
 	private void groupFormatTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("ipod");
@@ -47,7 +96,7 @@ public class GroupSearchTest extends AbstractTestNGSpringContextTests {
 			for (Group group : groupCommand.getValues()) {
 				SolrDocumentList solrDocumentList = group.getResult();
 				for (SolrDocument doc : solrDocumentList) {
-					System.err.println(groupCommand.getMatches() + " / " + doc);
+					System.err.println(group.getGroupValue() + " / " + doc);
 					++i;
 				}
 			}
@@ -87,7 +136,7 @@ public class GroupSearchTest extends AbstractTestNGSpringContextTests {
 			for (Group group : groupCommand.getValues()) {
 				SolrDocumentList solrDocumentList = group.getResult();
 				for (SolrDocument doc : solrDocumentList) {
-					System.err.println(groupCommand.getMatches() + " / " + group.getGroupValue() + " / " + doc);
+					System.err.println(group.getGroupValue() + " / " + doc);
 					++i;
 				}
 			}

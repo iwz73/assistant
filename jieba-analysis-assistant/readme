@@ -1,0 +1,4 @@
+#compile and copy to solr
+Maven Build... -> Goals:package
+mkdir /opt/solr-4.10.3/contrib/thank
+cp /home/thank/workspace/jieba-analysis-assistant/target/jieba-analysis-assistant-1.0.0-jar-with-dependencies.jar /opt/solr-4.10.3/contrib/thank

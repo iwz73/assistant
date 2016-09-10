@@ -11,6 +11,7 @@
   <lib dir="${solr.install.dir:../../..}/contrib/velocity/lib" regex=".*\.jar" />
   <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
   <lib dir="${solr.install.dir:../../..}/contrib/thank" regex="solr-assistant-1.0.0.jar" />
+  <lib dir="${solr.install.dir:../../..}/contrib/thank" regex="jieba-analysis-assistant-1.0.0-jar-with-dependencies.jar" />
   
   <dataDir>${solr.data.dir:}</dataDir>
 

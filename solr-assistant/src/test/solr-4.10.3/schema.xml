@@ -69,6 +69,8 @@
 		indexed="true" stored="true" />
 	<field name="text_upper_case_token_filter_factory" type="text_upperCaseTokenFilterFactory"
 		indexed="true" stored="true" />
+	<field name="text_jieba_tokenizer_factory" type="text_jiebaTokenizerFactory"
+		indexed="true" stored="true" />
 
 	<dynamicField name="*_i" type="int" indexed="true" stored="true" />
 	<dynamicField name="*_is" type="int" indexed="true"
@@ -479,6 +481,19 @@
 		</analyzer>
 		<analyzer type="query">
 			<tokenizer class="solr.WhitespaceTokenizerFactory" />
+		</analyzer>
+	</fieldType>
+	<fieldType name="text_jiebaTokenizerFactory" class="solr.TextField"
+		positionIncrementGap="100">
+		<analyzer type="index">
+			<tokenizer
+				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.jieba.JiebaTokenizerFactory"
+				segMode="INDEX" />
+		</analyzer>
+		<analyzer type="query">
+			<tokenizer
+				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.jieba.JiebaTokenizerFactory"
+				segMode="SEARCH" />
 		</analyzer>
 	</fieldType>
 

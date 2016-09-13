@@ -15,8 +15,8 @@
 <script>
 	function usersSelf(endpoint) {
 		var client_id = "${clientId}";
-		var redirect_uri = "http://localhost:8080/instagram-assistant/instagram/serverSideEndpointResult?endpoint=" + endpoint;
-//         var redirect_uri = "http://localhost:8080/instagram-assistant/instagram/serverSideEndpointResult";
+		var redirect_uri = "${serverSideEndpointRedirectUri}?endpoint="
+				+ endpoint;
 		var response_type = "code";
 		window
 				.open(

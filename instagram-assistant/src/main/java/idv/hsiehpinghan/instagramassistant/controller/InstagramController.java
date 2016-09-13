@@ -59,27 +59,19 @@ public class InstagramController {
 	public ModelAndView serverSideEndpoint() {
 		ModelAndView mv = new ModelAndView("/instagram/serverSideEndpoint");
 		String clientId = environment.getRequiredProperty("clientId");
+		String serverSideEndpointRedirectUri = environment.getRequiredProperty("serverSideEndpointRedirectUri");
 		mv.addObject("clientId", clientId);
+		mv.addObject("serverSideEndpointRedirectUri", serverSideEndpointRedirectUri);
 		return mv;
 	}
-
-//	@RequestMapping(value = "/serverSideEndpointResult", method = RequestMethod.GET)
-//	public ModelAndView serverSideEndpointResult(ServerSideEndpointResultCriteria criteria) throws IOException {
-//		ModelAndView mv = new ModelAndView("/instagram/serverSideAssessToken");
-//		String code = criteria.getCode();
-//		String serverSideRedirectUri = environment.getRequiredProperty("serverSideEndpointRedirectUri" + "?endpoint=" + endpoint);
-//		String accessToken = tokenService.getAccessToken(code, serverSideRedirectUri);
-//		mv.addObject("accessToken", accessToken);
-//		return mv;
-//	}
 
 	@ResponseBody
 	@RequestMapping(value = "/serverSideEndpointResult", method = RequestMethod.GET)
 	public String serverSideEndpointResult(ServerSideEndpointResultCriteria criteria) throws IOException {
 		String code = criteria.getCode();
 		String endpoint = criteria.getEndpoint();
-//		String serverSideEndpointRedirectUri = environment.getRequiredProperty("serverSideEndpointRedirectUri");
-		String serverSideEndpointRedirectUri = environment.getRequiredProperty("serverSideEndpointRedirectUri") + "?endpoint=" + endpoint;
+		String serverSideEndpointRedirectUri = environment.getRequiredProperty("serverSideEndpointRedirectUri")
+				+ "?endpoint=" + endpoint;
 		return infoService.getEndpointData(code, endpoint, serverSideEndpointRedirectUri);
 	}
 }

@@ -29,10 +29,18 @@ public class TokenService implements InitializingBean {
 	}
 
 	public String getAccessToken(String code) throws IOException {
-		final String PARAMETER = "grant_type=" + URLEncoder.encode("authorization_code", "UTF-8") + "&client_id="
-				+ URLEncoder.encode(clientId, "UTF-8") + "&client_secret=" + URLEncoder.encode(clientSecret, "UTF-8")
-				+ "&redirect_uri=" + URLEncoder.encode(serverSideRedirectUri, "UTF-8") + "&code="
-				+ URLEncoder.encode(code, "UTF-8");
+		StringBuilder sb = new StringBuilder();
+		sb.append("grant_type=");
+		sb.append(URLEncoder.encode("authorization_code", "UTF-8"));
+		sb.append("&client_id=");
+		sb.append(URLEncoder.encode(clientId, "UTF-8"));
+		sb.append("&client_secret=");
+		sb.append(URLEncoder.encode(clientSecret, "UTF-8"));
+		sb.append("&redirect_uri=");
+		sb.append(URLEncoder.encode(serverSideRedirectUri, "UTF-8"));
+		sb.append("&code=");
+		sb.append(URLEncoder.encode(code, "UTF-8"));
+		final String PARAMETER = sb.toString();
 		final Map<String, String> REQUEST_PROPERTIES = getRequestProperties(PARAMETER);
 		return UrlUtility.getContent(HTTPS_URL, REQUEST_PROPERTIES, PARAMETER);
 	}
@@ -43,4 +51,5 @@ public class TokenService implements InitializingBean {
 		map.put("Content-length", String.valueOf(parameter.length()));
 		return map;
 	}
+
 }

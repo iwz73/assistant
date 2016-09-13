@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.instagramassistant.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -44,9 +45,15 @@ public class InstagramController {
 	public ModelAndView serverSideAssessToken(ServerSideAssessTokenCriteria criteria) throws IOException {
 		ModelAndView mv = new ModelAndView("/instagram/serverSideAssessToken");
 		String code = criteria.getCode();
+		List<String> scopes = generateScopes();
 		String accessToken = tokenService.getAccessToken(code);
 		mv.addObject("accessToken", accessToken);
 		return mv;
+	}
+
+	@RequestMapping(value = "/serverEndpoint", method = RequestMethod.GET)
+	public String serverEndpoint() {
+		return "/instagram/serverEndpoint";
 	}
 
 }

@@ -1,1 +1,4 @@
 clientId=d9f9a50903ea4e1092469b4804237a5a
+clientSecret=4fe82076c53e48ceab6e2fce1dfd72d2
+clientSideRedirectUri=http://localhost:8080/instagram-assistant/instagram/clientSideAuthentication
+serverSideRedirectUri=http://localhost:8080/instagram-assistant/instagram/serverSideAssessToken

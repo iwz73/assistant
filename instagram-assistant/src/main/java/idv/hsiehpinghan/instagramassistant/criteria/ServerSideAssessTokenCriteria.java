@@ -1,6 +1,6 @@
 package idv.hsiehpinghan.instagramassistant.criteria;
 
-public class ServerSideGetCodeCriteria {
+public class ServerSideAssessTokenCriteria {
 	private String code;
 
 	public String getCode() {

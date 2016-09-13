@@ -21,8 +21,8 @@
 	}
 
 	function getClientSideAuthentication() {
-		var client_id = "d9f9a50903ea4e1092469b4804237a5a";
-		var redirect_uri = "http://localhost:8080/instagram-assistant/instagram/clientSideAuthentication";
+		var client_id = "${clientId}";
+		var redirect_uri = "${clientSideRedirectUri}";
 		var response_type = "token";
 		window.open("https://instagram.com/oauth/authorize/?client_id="
 				+ client_id + "&redirect_uri=" + redirect_uri

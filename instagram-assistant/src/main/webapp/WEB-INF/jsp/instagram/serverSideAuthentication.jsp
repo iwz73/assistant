@@ -6,10 +6,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>client-side authentication result</title>
+<title>server-side authentication</title>
 </head>
 <body>
-	access_token : ${access_token}
+    <button onclick="javascritp:getServerSideAuthentication();">get
+        server-side access_token</button>
 </body>
-
+<script>
+    function getServerSideAuthentication() {
+        var client_id = "${clientId}";
+        var redirect_uri = "${serverSideRedirectUri}";
+        var response_type = "code";
+        window.open("https://api.instagram.com/oauth/authorize/?client_id=" + client_id + "&redirect_uri=" + redirect_uri + "&response_type=" + response_type, "_self");
+    }
+</script>
 </html>

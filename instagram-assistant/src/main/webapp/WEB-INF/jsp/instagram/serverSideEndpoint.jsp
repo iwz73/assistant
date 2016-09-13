@@ -6,30 +6,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>endpoint</title>
+<title>server-side endpoint</title>
 </head>
 <body>
-	access_token :
-	<div id="access_token"></div>
-	<button onclick="javascritp:getClientSideAuthentication();">get
-		client-side access_token</button>
+	<button onclick="javascritp:usersSelf('/users/self');">/users/self</button>
+	<br>
 </body>
 <script>
-	var access_token = getHashValue();
-	document.getElementById("access_token").innerHTML = access_token;
-
-	function getHashValue() {
-		var match = location.hash.match(new RegExp("access_token=(.*)"));
-		return match ? match[1] : null;
-	}
-
-	function getClientSideAuthentication() {
+	function usersSelf(endpoint) {
 		var client_id = "${clientId}";
-		var redirect_uri = "${clientSideRedirectUri}";
-		var response_type = "token";
+		var redirect_uri = "http://localhost:8080/instagram-assistant/instagram/serverSideEndpointResult?endpoint=" + endpoint;
+//         var redirect_uri = "http://localhost:8080/instagram-assistant/instagram/serverSideEndpointResult";
+		var response_type = "code";
 		window
 				.open(
-						"https://instagram.com/oauth/authorize/?client_id="
+						"https://api.instagram.com/oauth/authorize/?client_id="
 								+ client_id
 								+ "&redirect_uri="
 								+ redirect_uri

@@ -9,6 +9,6 @@
 <title>server-side assess token</title>
 </head>
 <body>
-    assess token : ${accessToken}
+    assess token json: ${accessTokenJson}
 </body>
 </html>

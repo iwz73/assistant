@@ -14,9 +14,13 @@ import javax.net.ssl.HttpsURLConnection;
 public class UrlUtility {
 	private static final String POST = "POST";
 
-	public static String getContent(String httpUrl, Map<String, String> requestProperties, String parameter)
+	public static String getContent(String httpsUrl) throws IOException {
+		return getContent(httpsUrl, null, null);
+	}
+
+	public static String getContent(String httpsUrl, Map<String, String> requestProperties, String parameter)
 			throws IOException {
-		URL url = new URL(httpUrl);
+		URL url = new URL(httpsUrl);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 		connection.setRequestMethod(POST);
 		connection.setDoOutput(true);
@@ -45,12 +49,18 @@ public class UrlUtility {
 	}
 
 	private static void addRequestProperties(HttpURLConnection connection, Map<String, String> requestProperties) {
+		if (requestProperties == null) {
+			return;
+		}
 		for (Map.Entry<String, String> ent : requestProperties.entrySet()) {
 			connection.setRequestProperty(ent.getKey(), ent.getValue());
 		}
 	}
 
 	private static void addParameter(HttpURLConnection connection, String parameter) throws IOException {
+		if (parameter == null) {
+			return;
+		}
 		OutputStream outputStream = null;
 		DataOutputStream dataOutputStream = null;
 		try {

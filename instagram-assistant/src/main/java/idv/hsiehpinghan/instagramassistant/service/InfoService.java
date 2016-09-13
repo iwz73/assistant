@@ -10,6 +10,7 @@ import idv.hsiehpinghan.instagramassistant.utility.UrlUtility;
 
 @Service
 public class InfoService {
+	private final String GET = "GET";
 	@Autowired
 	private Environment environment;
 	@Autowired
@@ -19,7 +20,7 @@ public class InfoService {
 		String instagramApiUri = environment.getRequiredProperty("instagramApiUri");
 		String accessToken = tokenService.getAccessToken(code, redirectUri);
 		String httpsUrl = instagramApiUri + endpoint + "/?access_token=" + accessToken;
-		return UrlUtility.getContent(httpsUrl);
+		return UrlUtility.getContent(httpsUrl, GET);
 	}
 
 }

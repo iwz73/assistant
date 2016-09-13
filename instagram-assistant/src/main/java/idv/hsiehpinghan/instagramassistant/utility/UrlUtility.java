@@ -12,17 +12,16 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 public class UrlUtility {
-	private static final String POST = "POST";
 
-	public static String getContent(String httpsUrl) throws IOException {
-		return getContent(httpsUrl, null, null);
+	public static String getContent(String httpsUrl, String requestMethod) throws IOException {
+		return getContent(httpsUrl, requestMethod, null, null);
 	}
 
-	public static String getContent(String httpsUrl, Map<String, String> requestProperties, String parameter)
-			throws IOException {
+	public static String getContent(String httpsUrl, String requestMethod, Map<String, String> requestProperties,
+			String parameter) throws IOException {
 		URL url = new URL(httpsUrl);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-		connection.setRequestMethod(POST);
+		connection.setRequestMethod(requestMethod);
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		addRequestProperties(connection, requestProperties);

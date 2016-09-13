@@ -44,9 +44,6 @@ public class InstagramController {
 	public ModelAndView serverSideAssessToken(ServerSideAssessTokenCriteria criteria) throws IOException {
 		ModelAndView mv = new ModelAndView("/instagram/serverSideAssessToken");
 		String code = criteria.getCode();
-
-		System.err.println(code);
-
 		String accessToken = tokenService.getAccessToken(code);
 		mv.addObject("accessToken", accessToken);
 		return mv;

@@ -29,29 +29,18 @@ public class TokenService implements InitializingBean {
 	}
 
 	public String getAccessToken(String code) throws IOException {
-		final String PARAMETER = "grant_type=" + URLEncoder.encode("authorization_code","UTF-8") + "&client_id=" + URLEncoder.encode(clientId,"UTF-8") + "&client_secret="
-				+ URLEncoder.encode(clientSecret,"UTF-8") + "&redirect_uri=" + URLEncoder.encode(serverSideRedirectUri,"UTF-8") + "&code=" + URLEncoder.encode(code,"UTF-8");
-		
-		System.err.println(PARAMETER);
-		
+		final String PARAMETER = "grant_type=" + URLEncoder.encode("authorization_code", "UTF-8") + "&client_id="
+				+ URLEncoder.encode(clientId, "UTF-8") + "&client_secret=" + URLEncoder.encode(clientSecret, "UTF-8")
+				+ "&redirect_uri=" + URLEncoder.encode(serverSideRedirectUri, "UTF-8") + "&code="
+				+ URLEncoder.encode(code, "UTF-8");
 		final Map<String, String> REQUEST_PROPERTIES = getRequestProperties(PARAMETER);
-//		
-//		 curl -F 'client_id=d9f9a50903ea4e1092469b4804237a5a' \
-//		    -F 'client_secret=4fe82076c53e48ceab6e2fce1dfd72d2' \
-//		    -F 'grant_type=authorization_code' \
-//		    -F 'redirect_uri=http://localhost:8080/instagram-assistant/instagram/serverSideAssessToken' \
-//		    -F 'code=ee7363e0bd954c7c984d0c5722c61828' \
-//		    https://api.instagram.com/oauth/access_token
-		
-//		con.setRequestProperty("Content-Type","application/x-www- form-urlencoded");	
-		
 		return UrlUtility.getContent(HTTPS_URL, REQUEST_PROPERTIES, PARAMETER);
 	}
 
 	private Map<String, String> getRequestProperties(String parameter) {
 		Map<String, String> map = new HashMap<>();
 		map.put("Content-Type", "application/x-www-form-urlencoded");
-		map.put("Content-length", String.valueOf(parameter.length())); 
+		map.put("Content-length", String.valueOf(parameter.length()));
 		return map;
 	}
 }

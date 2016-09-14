@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -38,6 +39,7 @@ public class UrlUtility {
 			char[] cbuf = new char[SIZE];
 			while (reader.read(cbuf) != -1) {
 				sb.append(cbuf);
+				Arrays.fill(cbuf, '\0');
 			}
 			return sb.toString();
 		} finally {

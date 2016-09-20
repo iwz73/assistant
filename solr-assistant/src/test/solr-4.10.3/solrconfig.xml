@@ -233,6 +233,9 @@
   </requestHandler>
 
   <requestHandler name="/update" class="solr.UpdateRequestHandler">
+    <lst name="defaults">
+      <str name="update.chain">langid</str>
+    </lst>
   </requestHandler>
 
   <requestHandler name="/update/extract" 
@@ -508,6 +511,18 @@
       </boundaryScanner>
     </highlighting>
   </searchComponent>
+
+  <updateRequestProcessorChain name="langid">
+    <processor class="org.apache.solr.update.processor.LangDetectLanguageIdentifierUpdateProcessorFactory">
+      <str name="langid.fl">lang_detect_language_identifier_update_processor_factory</str>
+      <str name="langid.langField">language_s</str>
+      <str name="langid.langsField">language_ss</str>
+      <str name="langid.fallback">en</str>
+    </processor>
+    <processor class="solr.LogUpdateProcessorFactory" />
+    <processor class="solr.RunUpdateProcessorFactory" />
+  </updateRequestProcessorChain>
+
 
   <queryResponseWriter name="json" class="solr.JSONResponseWriter">
     <str name="content-type">text/plain; charset=UTF-8</str>

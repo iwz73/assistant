@@ -65,6 +65,8 @@ public class DefaultDocument {
 	@Field
 	private String payloads;
 	@Field
+	private String lang_detect_language_identifier_update_processor_factory;
+	@Field
 	private String text_mapping_char_filter_factory;
 	@Field
 	private String text_pattern_replace_char_filter_factory;
@@ -373,6 +375,15 @@ public class DefaultDocument {
 
 	public void setPayloads(String payloads) {
 		this.payloads = payloads;
+	}
+
+	public String getLang_detect_language_identifier_update_processor_factory() {
+		return lang_detect_language_identifier_update_processor_factory;
+	}
+
+	public void setLang_detect_language_identifier_update_processor_factory(
+			String lang_detect_language_identifier_update_processor_factory) {
+		this.lang_detect_language_identifier_update_processor_factory = lang_detect_language_identifier_update_processor_factory;
 	}
 
 	public String getText_mapping_char_filter_factory() {

@@ -45,6 +45,8 @@
 		stored="false" multiValued="true" />
 	<field name="manu_exact" type="string" indexed="true" stored="false" />
 	<field name="payloads" type="payloads" indexed="true" stored="true" />
+	<field name="lang_detect_language_identifier_update_processor_factory"
+		type="text_general" indexed="true" stored="true" />
 	<field name="text_mapping_char_filter_factory" type="text_mappingCharFilterFactory"
 		indexed="true" stored="true" />
 	<field name="text_pattern_replace_char_filter_factory" type="text_patternReplaceCharFilterFactory"

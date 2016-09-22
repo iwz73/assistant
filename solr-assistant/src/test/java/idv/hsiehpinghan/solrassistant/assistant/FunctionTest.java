@@ -19,7 +19,7 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private SolrAssistant solrAssistant;
 
-	// @Test
+	@Test
 	public void dataTransformationTest() throws Exception {
 		defTest();
 		fieldTest();
@@ -31,7 +31,17 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 		scaleTest();
 	}
 
-	// @Test
+	@Test
+	public void distanceTest() throws Exception {
+		distTest();
+		sqedistTest();
+		hsinTest();
+		strdistTest_0();
+		strdistTest_1();
+		geodistTest();
+	}
+
+	@Test
 	public void mathTest() throws Exception {
 		absTest();
 		acosTest();
@@ -65,7 +75,7 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 		tanhTest();
 	}
 
-	// @Test
+	@Test
 	public void relevancyTest() throws Exception {
 		docfreqTest();
 		idfTest();
@@ -76,6 +86,16 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 		termfreqTest();
 		tfTest();
 		totaltermfreqTest();
+	}
+
+	@Test
+	public void booleanTest() throws Exception {
+		andTest();
+		existsTest();
+		ifTest();
+		notTest();
+		orTest();
+		xorTest();
 	}
 
 	/**
@@ -840,11 +860,11 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 	}
 
 	/**
-	 * Calculates the distance between 2 vectors/points in n-dimensional space based upon the specified distance measure defined by power. The most common values for power are:
-	 *   0—Sparseness calculation
-	 *   1—Manhattan (taxicab) distance
-	 *   2—Euclidean distance
-	 * Infinity—Infinite norm (maximum value in the vector)
+	 * Calculates the distance between 2 vectors/points in n-dimensional space
+	 * based upon the specified distance measure defined by power. The most
+	 * common values for power are: 0—Sparseness calculation 1—Manhattan
+	 * (taxicab) distance 2—Euclidean distance Infinity—Infinite norm (maximum
+	 * value in the vector)
 	 * 
 	 * @throws SolrServerException
 	 */
@@ -858,13 +878,12 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(doc.getFieldValue("distTest").toString(), "2.0");
 		}
 	}
-	
+
 	/**
-	 * Returns the square of the Euclidean distance from the dist(2, ...) 
-	 * function, which is more efficient (it eliminates a square root 
-	 * calculation) if you only need relative ordering of values 
-	 * (for sorting or relevancy boosting) and not exact distance 
-	 * calculations.
+	 * Returns the square of the Euclidean distance from the dist(2, ...)
+	 * function, which is more efficient (it eliminates a square root
+	 * calculation) if you only need relative ordering of values (for sorting or
+	 * relevancy boosting) and not exact distance calculations.
 	 * 
 	 * @throws SolrServerException
 	 */
@@ -878,9 +897,9 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(doc.getFieldValue("sqedistTest").toString(), "8.0");
 		}
 	}
-	
+
 	/**
-	 * Calculates the Haversine, or greater circle, distance, the distance 
+	 * Calculates the Haversine, or greater circle, distance, the distance
 	 * between two points when traveling along a sphere.
 	 * 
 	 * @throws SolrServerException
@@ -895,35 +914,162 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(doc.getFieldValue("hsinTest").toString(), "0.04936411278353287");
 		}
 	}
-	
+
 	/**
-	 * Calculates the similarity, or distance apart, of characters within two strings ranging between 0 (not similar) 
-	 * and 1 (exactly the same). The valid values for distType are
-	 *   jw—Jaro-Winkler
-	 *   edit—The edit distance (Levenshtein distance)
-	 *   ngram—The NGramDistance
-	 * Additionally, the fully qualified name of any class which implements the StringDistance interface can be 
-	 * specified(useful if you write your own plugin).
+	 * Calculates the similarity, or distance apart, of characters within two
+	 * strings ranging between 0 (not similar) and 1 (exactly the same). The
+	 * valid values for distType are jw—Jaro-Winkler edit—The edit distance
+	 * (Levenshtein distance) ngram—The NGramDistance Additionally, the fully
+	 * qualified name of any class which implements the StringDistance interface
+	 * can be specified(useful if you write your own plugin).
 	 * 
 	 * @throws SolrServerException
 	 */
-	private void strdistTest() throws SolrServerException {
+	private void strdistTest_0() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("id:GB18030TEST");
-		solrQuery.add("fl", "strdistTest:strdist(\"This is for test\",\"this is for test\", \"edit\")");
+		solrQuery.add("fl", "strdistTest_0:strdist(\"This is for test\",\"this is for test\", \"edit\")");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		for (SolrDocument doc : solrDocumentList) {
-			Assert.assertEquals(doc.getFieldValue("strdistTest").toString(), "0.9375");
+			Assert.assertEquals(doc.getFieldValue("strdistTest_0").toString(), "0.9375");
 		}
 	}
-	
-	
-	@Test
-	public void distanceTest() throws Exception {
-//		distTest();
-//		sqedistTest();
-//		hsinTest();
-		strdistTest();
+
+	/**
+	 * Calculates the similarity, or distance apart, of characters within two
+	 * strings ranging between 0 (not similar) and 1 (exactly the same). The
+	 * valid values for distType are jw—Jaro-Winkler edit—The edit distance
+	 * (Levenshtein distance) ngram—The NGramDistance Additionally, the fully
+	 * qualified name of any class which implements the StringDistance interface
+	 * can be specified(useful if you write your own plugin).
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void strdistTest_1() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "strdistTest_1:strdist(\"This is for test\",\"this is for test\", \"ngram\", 3)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("strdistTest_1").toString(), "0.8854167");
+		}
 	}
+
+	/**
+	 * Returns the distance between two points on Earth, one specified by a
+	 * spatial field (sfield), and the other by coordinate.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void geodistTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:SP2514N");
+		solrQuery.add("fl", "geodistTest:geodist(store,37.7,-122.4)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("geodistTest").toString(), "2282.411882354996");
+		}
+	}
+
+	/**
+	 * Returns true if both x and y are true.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void andTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:SP2514N");
+		solrQuery.add("fl", "andTest:and(true, true)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("andTest"), true);
+		}
+	}
+
+	/**
+	 * Returns true if a value exists for x.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void existsTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "existsTest:exists(manufacturedate_dt)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("existsTest"), false);
+		}
+	}
+
+	/**
+	 * Returns trueValue if x is true and falseValue if x is false.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void ifTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "ifTest:if(false,\"Y\",\"N\")");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("ifTest"), "N");
+		}
+	}
+
+	/**
+	 * Returns false if x is true. Returns true if x is false.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void notTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "notTest:not(true)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("notTest"), false);
+		}
+	}
+
+	/**
+	 * Returns true if x is true, if y is true, or if both x and y are true.
+	 * Returns false otherwise.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void orTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "orTest:or(false,true)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("orTest"), true);
+		}
+	}
+
+	/**
+	 * Returns true if either x or y is true, but false if both x and y are
+	 * true.
+	 * 
+	 * @throws SolrServerException
+	 */
+	private void xorTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "xorTest:or(false,true)");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("xorTest"), true);
+		}
+	}
+
 }

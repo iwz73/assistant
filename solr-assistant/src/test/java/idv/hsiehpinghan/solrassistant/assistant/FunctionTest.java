@@ -98,6 +98,18 @@ public class FunctionTest extends AbstractTestNGSpringContextTests {
 		xorTest();
 	}
 
+	@Test
+	public void customFunctionTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("id:GB18030TEST");
+		solrQuery.add("fl", "customFunctionTest:concatenate(id,id,\"---\")");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		for (SolrDocument doc : solrDocumentList) {
+			Assert.assertEquals(doc.getFieldValue("customFunctionTest"), "GB18030TEST---GB18030TEST");
+		}
+	}
+
 	/**
 	 * Returns the value of x if x exists, otherwise returns the value of y.
 	 * 

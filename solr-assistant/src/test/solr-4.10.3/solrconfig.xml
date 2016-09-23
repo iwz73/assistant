@@ -539,4 +539,6 @@
     <defaultQuery>*:*</defaultQuery>
   </admin>
 
+  <valueSourceParser name="concatenate" class="idv.hsiehpinghan.solrassistant.valuesourceparser.ConcatenateFunctionParser" />
+
 </config>

@@ -22,6 +22,16 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 	private SolrAssistant solrAssistant;
 
 	@Test
+	public void filterQueryTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.addFilterQuery("id:F8V7067-APL-KIT");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 1);
+	}
+
+	@Test
 	public void fieldedTermSearchesTest() throws Exception {
 		termSearchTest();
 		multipleTermSearchTest();

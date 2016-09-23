@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.solrassistant.assistant;
 
+import java.util.Date;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -129,12 +131,12 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");
 		solrQuery.set("start", "0");
-		solrQuery.set("rows", "5");	
+		solrQuery.set("rows", "5");
 		QueryResponse response = solrAssistant.query(solrQuery);
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.size(), 5);
 	}
-	
+
 	@Test
 	public void sortTest() throws Exception {
 		SolrQuery solrQuery = new SolrQuery();
@@ -144,7 +146,21 @@ public class LuceneQueryTest extends AbstractTestNGSpringContextTests {
 		SolrDocumentList solrDocumentList = response.getResults();
 		Assert.assertEquals(solrDocumentList.get(0).getFieldValue("id"), "GB18030TEST");
 	}
-	
+
+	@Test
+	public void valTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("_val_:manufacturedate_dt");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		long oldTime = Long.MAX_VALUE;
+		for (int i = 0, size = solrDocumentList.size(); i < size; ++i) {
+			long time = ((Date) solrDocumentList.get(i).getFieldValue("manufacturedate_dt")).getTime();
+			Assert.assertTrue(oldTime >= time);
+			oldTime = time;
+		}
+	}
+
 	private void basicFlTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("name:ipod");

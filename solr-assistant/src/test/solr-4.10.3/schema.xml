@@ -52,7 +52,7 @@
 	<field name="spatial_recursive_prefix_tree_field_type_circle"
 		type="location_rpt" indexed="true" stored="true" />
 	<field name="spatial_recursive_prefix_tree_field_type_polygon"
-		type="location_rpt" indexed="true" stored="true" />
+		type="location_jts" indexed="true" stored="true" />
 
 	<field name="lang_detect_language_identifier_update_processor_factory"
 		type="text_general" indexed="true" stored="true" />
@@ -364,6 +364,9 @@
 	<fieldType name="location" class="solr.LatLonType"
 		subFieldSuffix="_coordinate" />
 	<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+		geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
+	<fieldType name="location_jts" class="solr.SpatialRecursivePrefixTreeFieldType"
+		spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
 		geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
 	<fieldType name="bbox" class="solr.BBoxField" geo="true"
 		units="degrees" numberType="_bbox_coord" />

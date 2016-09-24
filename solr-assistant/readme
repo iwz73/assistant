@@ -25,6 +25,9 @@ cp -f /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/schem
 /opt/solr-4.10.3/bin/solr stop -all
 /opt/solr-4.10.3/bin/solr start
 
+# add jts.jar for polygon search
+cp /home/thank/git/assistant/solr-assistant/src/main/lib/jts-1.13.jar /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/lib
+
 modify the query parser
   /select?q={!edismax}hello world
   /select?q={!term}hello

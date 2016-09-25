@@ -7,7 +7,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.util.NamedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -22,13 +24,13 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private SolrAssistant solrAssistant;
 
-	@Test
+	// @Test
 	public void fieldFacetingTest() throws Exception {
 		facetFieldsTest();
 		fqTest();
 	}
 
-	@Test
+	// @Test
 	public void FacetQueryTest() throws Exception {
 		facetSortTest();
 		facetLimitTest();
@@ -38,6 +40,39 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		multiFacetQueryTest();
 		renameFacetTest();
 		exTest();
+	}
+
+	@Test
+	public void FacetPivotQueryTest() throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.setFacet(true);
+		solrQuery.addFacetPivotField("manu_id_s,inStock");
+		solrQuery.setFacetLimit(3);
+		QueryResponse response = solrAssistant.query(solrQuery);
+		NamedList<List<PivotField>> namedList = response.getFacetPivot();
+		System.err.println("<< FacetPivotQueryTest >>");
+		for (Map.Entry<String, List<PivotField>> ent : namedList) {
+			String facetPivotFields = ent.getKey();
+			System.err.println("facetPivotFields(" + facetPivotFields + ") : ");
+			List<PivotField> list = ent.getValue();
+			for (PivotField pivotField : list) {
+				String field = pivotField.getField();
+				Object value = pivotField.getValue();
+				int count = pivotField.getCount();
+				System.err.println("  field(" + field + "), value(" + value + "), count(" + count + ")");
+				List<PivotField> subPivotFields = pivotField.getPivot();
+				for (PivotField subPivotField : subPivotFields) {
+					String subField = subPivotField.getField();
+					Object subFalue = subPivotField.getValue();
+					int subCount = subPivotField.getCount();
+					System.err.println(
+							"    subField(" + subField + "), subFalue(" + subFalue + "), subCount(" + subCount + ")");
+				}
+			}
+
+		}
+		Assert.assertTrue(namedList.size() > 0);
 	}
 
 	private void exTest() throws SolrServerException {
@@ -56,7 +91,7 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertTrue(facetQueryMap.size() > 0);
 	}
-	
+
 	private void renameFacetTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");
@@ -73,7 +108,7 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertTrue(facetQueryMap.size() > 0);
 	}
-	
+
 	private void fqTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");
@@ -90,7 +125,7 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertTrue(facetQueryMap.size() > 0);
 	}
-	
+
 	private void multiFacetQueryTest() throws SolrServerException {
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery("*:*");

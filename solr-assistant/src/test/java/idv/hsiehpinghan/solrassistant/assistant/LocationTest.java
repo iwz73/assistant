@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -23,7 +22,7 @@ public class LocationTest extends AbstractTestNGSpringContextTests {
 	private static final String SPATIAL_RECURSIVE_PREFIX_TREE_FIELD_TYPE_CIRCLE = "Circle(37.775,-122.419 d=20)";
 	private static final String SPATIAL_RECURSIVE_PREFIX_TREE_FIELD_TYPE_POLYGON = "POLYGON((-10 30, -40 40, -10 -20, 40 20, 0 0, -10 30))";
 	private SolrInputDocument solrInputDocument = generateSolrInputDocument();
-	private SolrQuery solrQuery = generateSolrQuery();
+
 	@Autowired
 	private SolrAssistant solrAssistant;
 
@@ -82,6 +81,33 @@ public class LocationTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(solrDocumentList.size(), 1);
 	}
 
+	/**
+	 * Intersects : Matches all documents with one or more shapes which overlap the shape in the query
+	 * IsWithin : Matches all documents with one or more shapes fully contained within the shape in the query
+	 * Contains : Matches all documents with one or more shapes which fully contain the shape in the query
+	 * IsDisjointTo : Returns all documents containing no shapes which intersect with the shape in the query
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void advancedShapeQueryTest() throws Exception {
+		// Intersects
+		advancedShapeQuery("spatial_recursive_prefix_tree_field_type_point:\"Intersects(-91 43 -90 44)\"");
+		advancedShapeQuery("spatial_recursive_prefix_tree_field_type_rectangle:\"Intersects(-75 41 -74 42)\"");
+		advancedShapeQuery("spatial_recursive_prefix_tree_field_type_circle:\"Intersects(-123 37 -122 38)\"");
+		advancedShapeQuery("spatial_recursive_prefix_tree_field_type_polygon:\"Intersects(-11 29 -9 31)\"");
+	}
+	
+	public void advancedShapeQuery(String filterQuery) throws Exception {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.addFilterQuery("id :" + solrInputDocument.getFieldValue("id"));
+		solrQuery.addFilterQuery(filterQuery);
+		QueryResponse response = solrAssistant.query(solrQuery);
+		SolrDocumentList solrDocumentList = response.getResults();
+		Assert.assertEquals(solrDocumentList.size(), 1);
+	}
+	
 //	@AfterClass
 //	private void afterClass() throws Exception {
 //		String id = String.valueOf(solrInputDocument.getFieldValue("id"));
@@ -104,9 +130,4 @@ public class LocationTest extends AbstractTestNGSpringContextTests {
 		return doc;
 	}
 
-	private SolrQuery generateSolrQuery() {
-		SolrQuery query = new SolrQuery();
-		query.setQuery("id :" + solrInputDocument.getFieldValue("id"));
-		return query;
-	}
 }

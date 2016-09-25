@@ -541,4 +541,6 @@
 
   <valueSourceParser name="concatenate" class="idv.hsiehpinghan.solrassistant.valuesourceparser.ConcatenateFunctionParser" />
 
+  <requestHandler name="/mlt" class="solr.MoreLikeThisHandler" />
+  
 </config>

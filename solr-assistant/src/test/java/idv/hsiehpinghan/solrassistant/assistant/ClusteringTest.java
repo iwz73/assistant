@@ -27,9 +27,6 @@ public class ClusteringTest extends AbstractTestNGSpringContextTests {
 		solrQuery.setRequestHandler("/clustering");
 		solrQuery.setQuery("name:drive OR features:drive");
 		QueryResponse response = solrAssistant.query(solrQuery);
-
-		System.err.println(response);
-
 		SolrDocumentList solrDocumentList = (SolrDocumentList) response.getResponse().get("response");
 		Assert.assertTrue(solrDocumentList.size() > 0);
 		@SuppressWarnings("unchecked")

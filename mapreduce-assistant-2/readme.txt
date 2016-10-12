@@ -19,11 +19,11 @@
 ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
 cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
 
-# Format the filesystem
-hdfs namenode -format
-
 # Start NameNode daemon and DataNode daemon
 start-dfs.sh
+
+# Format the filesystem
+hdfs namenode -format
 
 # NameNode
 http://localhost:50070/

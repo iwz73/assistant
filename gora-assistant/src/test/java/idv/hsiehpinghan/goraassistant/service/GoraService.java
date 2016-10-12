@@ -164,6 +164,7 @@ public class GoraService {
 		}
 		vo.setRecord$1(recordVo);
 		vo.setEnum$1(gora.getEnum$1());
+		vo.setStrings$1(gora.getStrings$1());
 		List<ArrayItemVo> arrayItemVos = null;
 		if (gora.getArray$1() != null) {
 			arrayItemVos = convertArrayItemsToArrayItemVos(gora.getArray$1());

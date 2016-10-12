@@ -17,6 +17,7 @@
 		<field name="_string" family="object" qualifier="_string" />
 		<field name="_record" family="object" qualifier="_record" />
 		<field name="_enum" family="object" qualifier="_enum" />
+		<field name="_strings" family="collection" qualifier="_strings" />
 		<field name="_array" family="collection" qualifier="_array" />
 		<field name="_map" family="map" />
 	</class>

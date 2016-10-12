@@ -107,6 +107,18 @@
 			"order":"ignore"
 		},
 		{
+			"name":"_strings",
+			"type":[
+				"null",
+				{
+					"type":"array",
+					"items": "string"
+				}
+			],
+			"default":null,
+			"order":"ascending"
+		},
+		{
 			"doc":"array doc",
 			"name":"_array",
 			"type":[

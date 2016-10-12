@@ -36,6 +36,7 @@ public class GoraServiceTest {
 	private boolean _record_boolean = true;
 	private int _record_int = 1;
 	private Enumeration _enum = Enumeration.ENUM_1;
+	private List<CharSequence> _strings = generate_Strings();
 	private List<ArrayItem> _array = generate_Array();
 	private Map<CharSequence, CharSequence> _map = generate_Map();
 	private ApplicationContext applicationContext;
@@ -142,8 +143,16 @@ public class GoraServiceTest {
 		Assert.assertEquals(Boolean.valueOf(_record_boolean), returnGora.getRecord$1().getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_record_int), returnGora.getRecord$1().getInt$1());
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
+		assertStrings(returnGora.getStrings$1());
 		assertArrayItem(returnGora.getArray$1());
 		assertMap(returnGora.getMap$1());
+	}
+
+	private void assertStrings(List<CharSequence> strings) {
+		for (int i = 0, size = strings.size(); i < size; ++i) {
+			CharSequence string = strings.get(i);
+			Assert.assertEquals(String.valueOf(string), "string_" + i);
+		}
 	}
 
 	private void assertArrayItem(List<ArrayItemVo> arrayItems) {
@@ -203,6 +212,7 @@ public class GoraServiceTest {
 		entity.setString$1(_string);
 		entity.setRecord$1(generateNestedRecord());
 		entity.setEnum$1(_enum);
+		entity.setStrings$1(_strings);
 		entity.setArray$1(_array);
 		entity.setMap$1(_map);
 		return entity;
@@ -251,6 +261,14 @@ public class GoraServiceTest {
 			arrayItems.add(generateArrayItem(i));
 		}
 		return arrayItems;
+	}
+
+	private List<CharSequence> generate_Strings() {
+		List<CharSequence> strings = new ArrayList<>();
+		for (long i = 0; i < 3; ++i) {
+			strings.add("string_" + i);
+		}
+		return strings;
 	}
 
 	private Map<CharSequence, CharSequence> generate_Map() {

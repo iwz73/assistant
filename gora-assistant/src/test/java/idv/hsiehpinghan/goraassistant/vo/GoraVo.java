@@ -16,6 +16,7 @@ public class GoraVo {
 	private CharSequence string$1;
 	private NestedRecordVo record$1;
 	private Enumeration enum$1;
+	private List<CharSequence> strings$1;
 	private List<ArrayItemVo> array$1;
 	private Map<CharSequence, CharSequence> map$1;
 
@@ -89,6 +90,14 @@ public class GoraVo {
 
 	public void setEnum$1(Enumeration enum$1) {
 		this.enum$1 = enum$1;
+	}
+
+	public List<CharSequence> getStrings$1() {
+		return strings$1;
+	}
+
+	public void setStrings$1(List<CharSequence> strings$1) {
+		this.strings$1 = strings$1;
 	}
 
 	public List<ArrayItemVo> getArray$1() {

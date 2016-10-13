@@ -53,6 +53,62 @@ public class NekohtmlAssistant {
 		return sb.toString();
 	}
 
+	public String getHtmlStructureId(Node node) {
+		Node bodyNode = getBodyNode(node);
+		StringBuilder sb = new StringBuilder();
+		appendSubHtmlStructureId(sb, bodyNode, 0);
+		return sb.toString();
+	}
+
+	private boolean appendSubHtmlStructureId(StringBuilder sb, Node node, int index) {
+		String nodeName = node.getNodeName();
+		if (isIgnore(nodeName)) {
+			return false;
+		}
+		sb.append(index);
+		sb.append(nodeName);
+		boolean isSuccess = false;
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, idx = 0, size = nodeList.getLength(); i < size; ++i) {
+			isSuccess = appendSubHtmlStructureId(sb, nodeList.item(i), idx);
+			if (isSuccess) {
+				++idx;
+			}
+		}
+		return true;
+	}
+
+	private boolean isIgnore(String nodeName) {
+		switch (nodeName) {
+		case "#text":
+		case "#comment":
+		case "SCRIPT":
+		case "NOSCRIPT":
+		case "FONT":
+		case "STRONG":
+		case "BR":
+		case "EM":
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	private Node getBodyNode(Node node) {
+		if (node.getNodeName().equalsIgnoreCase("BODY")) {
+			return node;
+		} else {
+			NodeList nodeList = node.getChildNodes();
+			for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+				Node bodyNode = getBodyNode(nodeList.item(i));
+				if (bodyNode != null) {
+					return bodyNode;
+				}
+			}
+			return null;
+		}
+	}
+
 	private void appendSubHtmlString(StringBuilder sb, Node node) {
 		short nodeType = node.getNodeType();
 		NodeList nodeList = null;

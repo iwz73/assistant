@@ -11,6 +11,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -19,6 +21,8 @@ import idv.hsiehpinghan.nekohtmlassistant.configuration.SpringConfiguration;
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 	private Document doc;
+	private Node lastChild;
+	private String elementStructureId;
 	@Autowired
 	private NekohtmlAssistant assistant;
 
@@ -35,17 +39,44 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	// @Test
-	public void getElementVosString() {
-		System.err.println(assistant.getElementVosString(doc));
-	}
-
-	// @Test
 	public void getHtmlString() {
 		System.err.println(assistant.getHtmlString(doc));
 	}
 
-	@Test
+	// @Test
 	public void getHtmlStructureId() {
 		System.err.println(assistant.getHtmlStructureId(doc));
+	}
+
+	@Test
+	public void getElementStructureId() {
+		Node bodyNode = assistant.getBodyNode(doc);
+		lastChild = getLatestChild(bodyNode);
+		elementStructureId = assistant.getElementStructureId(lastChild);
+		System.err.println("getElementStructureId : " + elementStructureId);
+	}
+
+	@Test(dependsOnMethods = { "getElementStructureId" })
+	public void getNodeByElementStructureId() {
+		Node node = assistant.getNodeByElementStructureId(doc, elementStructureId);
+		Assert.assertTrue(lastChild.isEqualNode(node));
+		System.err.println("getNodeByElementStructureId : " + node.getTextContent());
+	}
+
+	private Node getLatestChild(Node node) {
+		NodeList nodeList = node.getChildNodes();
+		for (int i = nodeList.getLength() - 1; 0 <= i; --i) {
+			Node nd = nodeList.item(i);
+			if (assistant.isIgnore(nd.getNodeName())) {
+				continue;
+			}
+			Node n = getLatestChild(nd);
+			if (n == null) {
+				return nd;
+			} else {
+				return n;
+			}
+		}
+		return null;
 	}
 }

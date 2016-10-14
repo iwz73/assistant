@@ -48,7 +48,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println(assistant.getHtmlStructureId(doc));
 	}
 
-	@Test
+	// @Test
 	public void getElementStructureId() {
 		Node bodyNode = assistant.getBodyNode(doc);
 		lastChild = getLatestChild(bodyNode);
@@ -56,11 +56,17 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println("getElementStructureId : " + elementStructureId);
 	}
 
-	@Test(dependsOnMethods = { "getElementStructureId" })
+	// @Test(dependsOnMethods = { "getElementStructureId" })
 	public void getNodeByElementStructureId() {
 		Node node = assistant.getNodeByElementStructureId(doc, elementStructureId);
 		Assert.assertTrue(lastChild.isEqualNode(node));
 		System.err.println("getNodeByElementStructureId : " + node.getTextContent());
+	}
+
+	@Test
+	public void addAllElementWithStructureId() {
+		Document doc = assistant.addAllElementWithStructureId(this.doc);
+		System.err.println(assistant.getHtmlString(doc));
 	}
 
 	private Node getLatestChild(Node node) {

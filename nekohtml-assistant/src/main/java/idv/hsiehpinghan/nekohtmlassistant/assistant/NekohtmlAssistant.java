@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.cyberneko.html.parsers.DOMParser;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -15,6 +16,7 @@ import org.xml.sax.SAXException;
 public class NekohtmlAssistant {
 	private final String BODY = "BODY";
 	private final String SEPERATOR = "_";
+	private final String THANK_ID = "thankId";
 
 	public Document getDocument(InputSource inputSource) throws SAXException, IOException {
 		DOMParser parser = new DOMParser();
@@ -55,6 +57,37 @@ public class NekohtmlAssistant {
 		return tempNode;
 	}
 
+	public String getVisibleText(Node node) {
+		StringBuilder sb = new StringBuilder();
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			Node subNode = nodeList.item(i);
+			if (Node.TEXT_NODE == subNode.getNodeType()) {
+				sb.append(subNode.getTextContent().trim());
+			}
+		}
+		return sb.toString();
+	}
+
+	public Document addAllElementWithStructureId(Document doc) {
+		Node bodyNode = getBodyNode(doc);
+		addSubElementsWithStructureId(bodyNode);
+		return doc;
+	}
+
+	private void addSubElementsWithStructureId(Node node) {
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			Node subNode = nodeList.item(i);
+			if (isIgnore(subNode.getNodeName())) {
+				continue;
+			}
+			Element ele = (Element) subNode;
+			ele.setAttribute(THANK_ID, getElementStructureId(ele));
+			addSubElementsWithStructureId(subNode);
+		}
+	}
+
 	private Node getChildNode(Node node, int index) {
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0, j = 0, size = nodeList.getLength(); i < size; ++i) {
@@ -68,18 +101,6 @@ public class NekohtmlAssistant {
 			++j;
 		}
 		return null;
-	}
-
-	public String getVisibleText(Node node) {
-		StringBuilder sb = new StringBuilder();
-		NodeList nodeList = node.getChildNodes();
-		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
-			Node subNode = nodeList.item(i);
-			if (Node.TEXT_NODE == subNode.getNodeType()) {
-				sb.append(subNode.getTextContent().trim());
-			}
-		}
-		return sb.toString();
 	}
 
 	private void prependAncestorIndex(StringBuilder sb, Node node) {

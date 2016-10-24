@@ -202,11 +202,11 @@ db.runCommand({
    lock: 1
 })
 db.currentOp()
-<<!!!new console>> mongodump -d test -o /tmp/backup/
+<<!!!new console>> mongodump -h 127.0.0.1 -d nutch -o /tmp/backup/
 db.fsyncUnlock()
 
 # restore
-<<!!!new console>> mongorestore -d test --drop /tmp/backup/test/
+<<!!!new console>> mongorestore -h 127.0.0.1 -d nutch --drop /tmp/backup/nutch
 
 # exit
 db.collection.drop()

@@ -1,0 +1,9 @@
+# remote jconsole connect
+# <remote java application parameter>
+-Djava.rmi.server.hostname=<remote java application ip>
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=<remote java application listening port>
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+# <local JConsole setting>
+<remote java application ip>:<remote java application listening port>

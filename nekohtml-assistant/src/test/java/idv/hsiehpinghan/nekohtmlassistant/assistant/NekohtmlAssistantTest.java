@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,7 +62,14 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println("getNodeByElementStructureId : " + node.getTextContent());
 	}
 
-	@Test
+	// @Test
+	public void getAttribute() {
+		Node node = assistant.getElementsByTagName(doc, "body").item(0);
+		String attr = assistant.getAttribute(node, "bgcolor");
+		Assert.assertEquals(attr, "#999999");
+	}
+
+	// @Test
 	public void addAllElementWithStructureId() {
 		Document doc = assistant.addAllElementWithStructureId(this.doc);
 		System.err.println(assistant.getHtmlString(doc));

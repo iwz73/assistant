@@ -18,6 +18,17 @@ public class NekohtmlAssistant {
 	private final String SEPERATOR = "_";
 	private final String THANK_ID = "thankId";
 
+	public String getAttribute(Node node, String attributeName) {
+		NamedNodeMap map = node.getAttributes();
+		for (int i = 0, size = map.getLength(); i < size; ++i) {
+			Node attrNode = map.item(i);
+			if (attrNode.getNodeName().equals(attributeName)) {
+				return attrNode.getNodeValue();
+			}
+		}
+		return null;
+	}
+
 	public Document getDocument(InputSource inputSource) throws SAXException, IOException {
 		DOMParser parser = new DOMParser();
 		parser.parse(inputSource);

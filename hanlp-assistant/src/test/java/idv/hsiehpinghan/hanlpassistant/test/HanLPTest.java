@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.hanlpassistant.segment.test;
+package idv.hsiehpinghan.hanlpassistant.test;
 
 import java.util.List;
 

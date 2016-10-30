@@ -4,19 +4,23 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.seg.Segment;
-import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.suggest.Suggester;
 
 @Component
 public class SuggesterAssistant {
-//	private Segment segment = null;
-//
-//	public void addSentence() {
-//		segment = HanLP.newSegment().enableTranslatedNameRecognize(true);
-//	}
-//
-//	public List<Term> segment(String str) {
-//		return segment.seg(str);
-//	}
+	private Suggester suggester = null;
+
+	public SuggesterAssistant() {
+		suggester = new Suggester();
+	}
+
+	public void addSentence(String... sentences) {
+		for (String sentence : sentences) {
+			suggester.addSentence(sentence);
+		}
+	}
+
+	public List<String> suggest(String keyword, int size) {
+		return suggester.suggest(keyword, size);
+	}
 }

@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.hanlpassistant.tokenizer.dictionary;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.BaseSearcher;
 import com.hankcs.hanlp.dictionary.CoreDictionary;
-import com.hankcs.hanlp.seg.Segment;
-import com.hankcs.hanlp.seg.common.Term;
 
 import idv.hsiehpinghan.hanlpassistant.configuration.SpringConfiguration;
 
@@ -39,24 +35,6 @@ public class CustomDictionaryAssistantTest extends AbstractTestNGSpringContextTe
 	public void insert() {
 		boolean result = assistant.insert("白富美", "nz 1024");
 		Assert.assertTrue(result);
-	}
-	
-	public static void main(String[] args) {
-		String[] testCase = new String[]{
-		        "签约仪式前，秦光荣、李纪恒、仇和等一同会见了参加签约的企业家。",
-		        "王国强、高峰、汪洋、张朝阳光着头、韩寒、小四",
-		        "张浩和胡健康复员回家了",
-		        "王总和小丽结婚了",
-		        "编剧邵钧林和稽道青说",
-		        "这里有关天培的有关事迹",
-		        "龚学平等领导,邓颖超生前",
-		        };
-		Segment segment = HanLP.newSegment().enableNameRecognize(true);
-		for (String sentence : testCase)
-		{
-		    List<Term> termList = segment.seg(sentence);
-		    System.out.println(termList);
-		}
 	}
 
 	@Test(dependsOnMethods = { "add" })

@@ -51,7 +51,7 @@ public class SpringConfiguration extends WebMvcConfigurationSupport {
 
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		configurer.ignoreAcceptHeader(true).defaultContentType(MediaType.TEXT_HTML);
+		configurer.ignoreAcceptHeader(false).defaultContentType(MediaType.TEXT_HTML);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.solrassistant.assistant;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.RangeFacet;
 import org.apache.solr.common.util.NamedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,13 +27,13 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private SolrAssistant solrAssistant;
 
-	// @Test
+	@Test
 	public void fieldFacetingTest() throws Exception {
 		facetFieldsTest();
 		fqTest();
 	}
 
-	// @Test
+	@Test
 	public void FacetQueryTest() throws Exception {
 		facetSortTest();
 		facetLimitTest();
@@ -40,6 +43,7 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 		multiFacetQueryTest();
 		renameFacetTest();
 		exTest();
+		dateRangeFacetTest();
 	}
 
 	@Test
@@ -73,6 +77,26 @@ public class FacetTest extends AbstractTestNGSpringContextTests {
 
 		}
 		Assert.assertTrue(namedList.size() > 0);
+	}
+
+	private void dateRangeFacetTest() throws SolrServerException {
+		SolrQuery solrQuery = new SolrQuery();
+		solrQuery.setQuery("*:*");
+		solrQuery.setFacet(true);
+		Date start = Date.from(Instant.parse("2005-01-01T00:00:00Z"));
+		Date end = Date.from(Instant.parse("2008-01-01T00:00:00Z"));
+		solrQuery.addDateRangeFacet("manufacturedate_dt", start, end, "+1YEAR");
+		solrQuery.setFilterQueries("name:ipod");
+		QueryResponse response = solrAssistant.query(solrQuery);
+		@SuppressWarnings("unchecked")
+		List<RangeFacet<Date, Date>> rangeFacets = (List<RangeFacet<Date, Date>>) (Object) response.getFacetRanges();
+		for (RangeFacet<Date, Date> rangeFacet : rangeFacets) {
+			List<RangeFacet.Count> counts = rangeFacet.getCounts();
+			for (RangeFacet.Count count : counts) {
+				System.err.println(count.getValue() + " / " + count.getCount());
+			}
+		}
+		Assert.assertTrue(rangeFacets.size() > 0);
 	}
 
 	private void exTest() throws SolrServerException {

@@ -2,9 +2,9 @@ package idv.hsiehpinghan.ansjsegassistant.analysis.assistant;
 
 import java.io.UnsupportedEncodingException;
 
+import org.ansj.domain.Result;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -19,8 +19,9 @@ public class IndexAnalysisAssistantTest extends AbstractTestNGSpringContextTests
 
 	@Test
 	public void parse() {
-		// List<Term> parse = IndexAnalysis.parse("主副食品");
-		// System.out.println(parse);
+		UserDefineLibrary.insertWord("食品", "n", 1000);
+		Result result = IndexAnalysis.parse("主副食品");
+		 System.out.println(result);
 		// System.out.println(IndexAnalysis.parse("上海虹桥机场南路"));
 		// System.out.println(IndexAnalysis.parse("主副食品"));
 		// System.out.println(IndexAnalysis.parse("花生油"));

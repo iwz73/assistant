@@ -26,10 +26,12 @@ public class IndexTokenizerAssistantTest extends AbstractTestNGSpringContextTest
 
 	@Test
 	public void segment() {
-		List<Term> terms = assistant.segment("他说的确实在理");
-		for (Term term : terms) {
-			System.err.println("term(" + term + "), offset(" + term.offset + ")");
-		}
-		Assert.assertEquals(terms.toString(), "[他/r, 说/v, 的/uj, 确实/ad, 在理/a]");
+		
+		System.err.println(assistant.segment("主副食品"));
+//		List<Term> terms = assistant.segment("他说的确实在理");
+//		for (Term term : terms) {
+//			System.err.println("term(" + term + "), offset(" + term.offset + ")");
+//		}
+//		Assert.assertEquals(terms.toString(), "[他/r, 说/v, 的/uj, 确实/ad, 在理/a]");
 	}
 }

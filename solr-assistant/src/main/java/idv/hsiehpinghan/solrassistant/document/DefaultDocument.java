@@ -95,6 +95,8 @@ public class DefaultDocument {
 	@Field
 	private String text_hanlp_tokenizer_factory;
 	@Field
+	private String text_ansj_tokenizer_factory;
+	@Field
 	private Integer dynamicfield_i;
 	@Field
 	private List<Integer> dynamicfield_is;
@@ -498,6 +500,14 @@ public class DefaultDocument {
 
 	public void setText_hanlp_tokenizer_factory(String text_hanlp_tokenizer_factory) {
 		this.text_hanlp_tokenizer_factory = text_hanlp_tokenizer_factory;
+	}
+
+	public String getText_ansj_tokenizer_factory() {
+		return text_ansj_tokenizer_factory;
+	}
+
+	public void setText_ansj_tokenizer_factory(String text_ansj_tokenizer_factory) {
+		this.text_ansj_tokenizer_factory = text_ansj_tokenizer_factory;
 	}
 
 	public Integer getDynamicfield_i() {

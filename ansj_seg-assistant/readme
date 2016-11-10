@@ -1,0 +1,8 @@
+#compile and copy to solr
+Maven Build... -> Goals:package
+mkdir /opt/solr-4.10.3/contrib/thank
+cp /home/hsiehpinghan/git/assistant/ansj_seg-assistant/target/ansj_seg-assistant-1.0.0.jar /opt/solr-4.10.3/contrib/thank
+cp /home/hsiehpinghan/.m2/repository/org/ansj/ansj_seg/5.0.4/ansj_seg-5.0.4.jar /opt/solr-4.10.3/contrib/thank
+cp /home/hsiehpinghan/.m2/repository/org/nlpcn/nlp-lang/1.7.1/nlp-lang-1.7.1.jar /opt/solr-4.10.3/contrib/thank
+mkdir /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/classes
+cp -r /home/hsiehpinghan/git/assistant/ansj_seg-assistant/src/main/ansj_seg_resource/* /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/classes

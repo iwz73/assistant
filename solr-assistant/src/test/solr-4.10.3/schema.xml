@@ -90,7 +90,9 @@
 		indexed="true" stored="true" />
 	<field name="text_hanlp_tokenizer_factory" type="text_hanlpTokenizerFactory"
 		indexed="true" stored="true" />
-		
+	<field name="text_ansj_tokenizer_factory" type="text_ansjTokenizerFactory"
+		indexed="true" stored="true" />
+
 	<dynamicField name="*_i" type="int" indexed="true" stored="true" />
 	<dynamicField name="*_is" type="int" indexed="true"
 		stored="true" multiValued="true" />
@@ -509,12 +511,12 @@
 		positionIncrementGap="100">
 		<analyzer type="index">
 			<tokenizer
-				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.jieba.JiebaTokenizerFactory"
+				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.JiebaTokenizerFactory"
 				segMode="INDEX" />
 		</analyzer>
 		<analyzer type="query">
 			<tokenizer
-				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.jieba.JiebaTokenizerFactory"
+				class="idv.hsiehpinghan.jiebaanalysisassistant.tokenfactory.JiebaTokenizerFactory"
 				segMode="SEARCH" />
 		</analyzer>
 	</fieldType>
@@ -522,13 +524,26 @@
 		positionIncrementGap="100">
 		<analyzer type="index">
 			<tokenizer
-				class="idv.hsiehpinghan.hanlpassistant.tokenizer.tokenfactory.HanLPTokenizerFactory"
+				class="idv.hsiehpinghan.hanlpassistant.tokenfactory.HanLPTokenizerFactory"
 				enableIndexMode="true" />
 		</analyzer>
 		<analyzer type="query">
 			<tokenizer
-				class="idv.hsiehpinghan.hanlpassistant.tokenizer.tokenfactory.HanLPTokenizerFactory"
+				class="idv.hsiehpinghan.hanlpassistant.tokenfactory.HanLPTokenizerFactory"
 				enableIndexMode="false" />
+		</analyzer>
+	</fieldType>
+	<fieldType name="text_ansjTokenizerFactory" class="solr.TextField"
+		positionIncrementGap="100">
+		<analyzer type="index">
+			<tokenizer
+				class="idv.hsiehpinghan.ansjsegassistant.tokenfactory.AnsjTokenizerFactory"
+				isQuery="false" />
+		</analyzer>
+		<analyzer type="query">
+			<tokenizer
+				class="idv.hsiehpinghan.ansjsegassistant.tokenfactory.AnsjTokenizerFactory"
+				isQuery="true" />
 		</analyzer>
 	</fieldType>
 </schema>

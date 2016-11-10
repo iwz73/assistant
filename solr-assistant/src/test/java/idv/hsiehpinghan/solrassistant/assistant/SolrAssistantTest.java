@@ -372,6 +372,15 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(queryResponse.getResults().size(), 1);
 	}
 
+	@Test(dependsOnMethods = { "testHanlpTokenizerFactory" })
+	public void testAnsjTokenizerFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_ansj_tokenizer_factory:測試");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+
 	// @Test(dependsOnMethods = { "queryBean" })
 	public void deleteBean() throws Exception {
 		String id = String.valueOf(defaultDocument.getId());
@@ -432,6 +441,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setField("text_upper_case_token_filter_factory", TEST_TEXT);
 		doc.setField("text_jieba_tokenizer_factory", CHINESE_TEXT);
 		doc.setField("text_hanlp_tokenizer_factory", CHINESE_TEXT);
+		doc.setField("text_ansj_tokenizer_factory", CHINESE_TEXT);
 		doc.setField("dynamicfield_i", DYNAMICFIELD_I);
 		doc.setField("dynamicfield_is", DYNAMICFIELD_IS);
 		doc.setField("dynamicField_s", DYNAMICFIELD_S);
@@ -506,6 +516,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setText_upper_case_token_filter_factory(TEST_TEXT);
 		doc.setText_jieba_tokenizer_factory(CHINESE_TEXT);
 		doc.setText_hanlp_tokenizer_factory(CHINESE_TEXT);
+		doc.setText_ansj_tokenizer_factory(CHINESE_TEXT);
 		doc.setDynamicfield_i(DYNAMICFIELD_I);
 		doc.setDynamicfield_is(DYNAMICFIELD_IS);
 		doc.setDynamicfield_s(DYNAMICFIELD_S);

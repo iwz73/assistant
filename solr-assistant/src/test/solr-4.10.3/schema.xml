@@ -88,7 +88,9 @@
 		indexed="true" stored="true" />
 	<field name="text_jieba_tokenizer_factory" type="text_jiebaTokenizerFactory"
 		indexed="true" stored="true" />
-
+	<field name="text_hanlp_tokenizer_factory" type="text_hanlpTokenizerFactory"
+		indexed="true" stored="true" />
+		
 	<dynamicField name="*_i" type="int" indexed="true" stored="true" />
 	<dynamicField name="*_is" type="int" indexed="true"
 		stored="true" multiValued="true" />
@@ -516,5 +518,17 @@
 				segMode="SEARCH" />
 		</analyzer>
 	</fieldType>
-
+	<fieldType name="text_hanlpTokenizerFactory" class="solr.TextField"
+		positionIncrementGap="100">
+		<analyzer type="index">
+			<tokenizer
+				class="idv.hsiehpinghan.hanlpassistant.tokenizer.tokenfactory.HanLPTokenizerFactory"
+				enableIndexMode="true" />
+		</analyzer>
+		<analyzer type="query">
+			<tokenizer
+				class="idv.hsiehpinghan.hanlpassistant.tokenizer.tokenfactory.HanLPTokenizerFactory"
+				enableIndexMode="false" />
+		</analyzer>
+	</fieldType>
 </schema>

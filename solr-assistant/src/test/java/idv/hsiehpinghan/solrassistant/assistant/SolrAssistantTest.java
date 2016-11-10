@@ -53,7 +53,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 	private static final String PAYLOADS = "payloads";
 	private static final String TEST_TEXT = "#Yummm :) Drinking a latte at Caffé Grecco in SF's historic North Beach... Learning text analysis with #SolrInAction by @ManningBooks on my i-Pad https://www.google.com.tw/?gws_rd=ssl thank@gmail.com drinking";
 	private static final String HTML_TEXT = "111<a href=\"www.foo.bar\">link</a>222<script><!-- f('<!--internal--></script>'); --></script>333&#65444";
-	private static final String CHINESE_TEXT = "這是測試資料(jieba test)";
+	private static final String CHINESE_TEXT = "這是測試資料";
 	private static final Integer DYNAMICFIELD_I = Integer.MAX_VALUE;
 	private static final List<Integer> DYNAMICFIELD_IS = generateIntegerList();
 	private static final String DYNAMICFIELD_S = "dynamicField_s";
@@ -363,6 +363,15 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(queryResponse.getResults().size(), 1);
 	}
 
+	@Test(dependsOnMethods = { "testJiebaTokenizerFactory" })
+	public void testHanlpTokenizerFactory() throws Exception {
+		SolrQuery query = new SolrQuery();
+		query.setQuery("id :" + solrInputDocument.getFieldValue("id") + " AND text_hanlp_tokenizer_factory:測試");
+		QueryResponse queryResponse = solrAssistant.query(query);
+		Assert.assertEquals(queryResponse.getStatus(), 0);
+		Assert.assertEquals(queryResponse.getResults().size(), 1);
+	}
+
 	// @Test(dependsOnMethods = { "queryBean" })
 	public void deleteBean() throws Exception {
 		String id = String.valueOf(defaultDocument.getId());
@@ -422,6 +431,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setField("text_synonym_filter_factory", TEST_TEXT);
 		doc.setField("text_upper_case_token_filter_factory", TEST_TEXT);
 		doc.setField("text_jieba_tokenizer_factory", CHINESE_TEXT);
+		doc.setField("text_hanlp_tokenizer_factory", CHINESE_TEXT);
 		doc.setField("dynamicfield_i", DYNAMICFIELD_I);
 		doc.setField("dynamicfield_is", DYNAMICFIELD_IS);
 		doc.setField("dynamicField_s", DYNAMICFIELD_S);
@@ -495,6 +505,7 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.setText_synonym_filter_factory(TEST_TEXT);
 		doc.setText_upper_case_token_filter_factory(TEST_TEXT);
 		doc.setText_jieba_tokenizer_factory(CHINESE_TEXT);
+		doc.setText_hanlp_tokenizer_factory(CHINESE_TEXT);
 		doc.setDynamicfield_i(DYNAMICFIELD_I);
 		doc.setDynamicfield_is(DYNAMICFIELD_IS);
 		doc.setDynamicfield_s(DYNAMICFIELD_S);

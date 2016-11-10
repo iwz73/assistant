@@ -16,6 +16,7 @@ cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/schema.x
 mv /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt_original
 cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/synonyms.txt /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt
 cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/wdfftypes.txt /opt/solr-4.10.3/example/solr/collection1/conf/wdfftypes.txt
+#compile and copy to solr (check up jieba-analysis-assistant, hanlp-assistant)
 Maven Build... -> Goals:package
 mkdir /opt/solr-4.10.3/contrib/thank
 cp /home/hsiehpinghan/git/assistant/solr-assistant/target/solr-assistant-1.0.0.jar /opt/solr-4.10.3/contrib/thank
@@ -23,10 +24,10 @@ uncomment solrconfig.xml and schema.xml
 cp -f /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/solrconfig.xml /opt/solr-4.10.3/example/solr/collection1/conf/solrconfig.xml
 cp -f /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/schema.xml /opt/solr-4.10.3/example/solr/collection1/conf/schema.xml
 /opt/solr-4.10.3/bin/solr stop -all
-/opt/solr-4.10.3/bin/solr start
+/opt/solr-4.10.3/bin/solr start -a "-Dsolr.clustering.enabled=true"
 
 # add jts.jar for polygon search
-cp /home/thank/git/assistant/solr-assistant/src/main/lib/jts-1.13.jar /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/lib
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/main/lib/jts-1.13.jar /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/lib
 
 modify the query parser
   /select?q={!edismax}hello world

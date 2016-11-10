@@ -19,7 +19,7 @@ public class IndexAnalysisAssistantTest extends AbstractTestNGSpringContextTests
 
 	@Test
 	public void parse() {
-		UserDefineLibrary.insertWord("食品", "n", 1000);
+//		UserDefineLibrary.insertWord("食品", "n", 1000);
 		Result result = IndexAnalysis.parse("主副食品");
 		 System.out.println(result);
 		// System.out.println(IndexAnalysis.parse("上海虹桥机场南路"));

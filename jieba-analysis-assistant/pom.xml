@@ -20,7 +20,7 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<lucene.version>4.10.3</lucene.version>
 		<jieba-analysis.version>1.0.0</jieba-analysis.version>
-<!-- 		<stanford.version>3.6.0</stanford.version> -->
+		<!-- <stanford.version>3.6.0</stanford.version> -->
 	</properties>
 
 	<dependencies>
@@ -81,11 +81,11 @@
 		</dependency>
 
 		<!-- stanford -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>edu.stanford.nlp</groupId> -->
-<!-- 			<artifactId>stanford-corenlp</artifactId> -->
-<!-- 			<version>${stanford.version}</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>edu.stanford.nlp</groupId> -->
+		<!-- <artifactId>stanford-corenlp</artifactId> -->
+		<!-- <version>${stanford.version}</version> -->
+		<!-- </dependency> -->
 
 	</dependencies>
 	<build>
@@ -95,6 +95,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
 				<configuration>
+					<skipTests>true</skipTests>
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>

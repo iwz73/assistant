@@ -8,10 +8,10 @@
 		class="idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration" />
 
 	<batch:job id="linearFlowJob">
-		<batch:step id="linearFlowTaskletStep" next="readWriteStep">
+		<batch:step id="linearFlowTaskletStep" next="linearFlowReaderProcessorWriterStep">
 			<tasklet ref="linearFlowTasklet"></tasklet>
 		</batch:step>
-		<batch:step id="readWriteStep">
+		<batch:step id="linearFlowReaderProcessorWriterStep">
 			<tasklet>
 				<chunk reader="linearFlowReader" processor="linearFlowProcessor"
 					writer="linearFlowWriter" commit-interval="3">
@@ -34,4 +34,5 @@
 	<bean id="linearFlowWriter"
 		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter">
 	</bean>
+
 </beans>

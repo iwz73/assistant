@@ -7,21 +7,31 @@
 	<bean id="springConfiguration"
 		class="idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration" />
 
-	<batch:job id="LinearFlowJob">
-		<!-- <batch:step id="decompressStep" next="readWriteStep"> -->
-		<batch:step id="decompressStep">
-			<batch:tasklet ref="copyFileTasklet"></batch:tasklet>
+	<batch:job id="linearFlowJob">
+		<batch:step id="linearFlowTaskletStep" next="readWriteStep">
+			<tasklet ref="linearFlowTasklet"></tasklet>
 		</batch:step>
-		<!-- <batch:step id="readWriteStep" next="cleanStep"></batch:step> -->
-		<!-- <batch:step id="cleanStep"></batch:step> -->
+		<batch:step id="readWriteStep">
+			<tasklet>
+				<chunk reader="linearFlowReader" processor="linearFlowProcessor"
+					writer="linearFlowWriter" commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
 	</batch:job>
 
-	<bean id="copyFileTasklet"
-		class="idv.hsiehpinghan.springbatchassistant.tasklet.CopyFileTasklet"
+	<bean id="linearFlowTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.LinearFlowTasklet"
 		scope="step">
-		<property name="fileResource"
-			value="file:#{jobParameters['targetDirectory']+jobParameters['fileResource']}" />
-		<property name="targetDirectory" value="#{jobParameters['targetDirectory']}" />
-		<property name="targetFile" value="#{jobParameters['targetFile']}" />
+	</bean>
+
+	<bean id="linearFlowReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.LinearFlowReader">
+	</bean>
+	<bean id="linearFlowProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.LinearFlowProcessor">
+	</bean>
+	<bean id="linearFlowWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter">
 	</bean>
 </beans>

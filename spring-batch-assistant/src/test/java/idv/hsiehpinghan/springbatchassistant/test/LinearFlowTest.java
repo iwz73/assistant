@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
-
-//@ContextConfiguration(classes = { SpringConfiguration.class })
 @ContextConfiguration(locations = { "classpath:/batch/LinearFlow.xml" })
 public class LinearFlowTest extends AbstractTestNGSpringContextTests {
+	private final String FILE_RESOURCE = "fileResource";
+	private final String TARGET_DIRECTORY = "targetDirectory";
+	private final String TARGET_FILE = "targetFile";
+
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
@@ -26,23 +26,23 @@ public class LinearFlowTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		builder.addString("targetDirectory", "222kkjjjj");
-		builder.addString("targetFile", "targetFilefffffj");
+		builder.addString("fileResource", FILE_RESOURCE + "tttjj");
+		builder.addString("targetDirectory", TARGET_DIRECTORY);
+		builder.addString("targetFile", TARGET_FILE);
 		JobParameters jobParameters = builder.toJobParameters();
 
-		JobExecution jobExecution = jobLauncher.run(job,jobParameters);
-//		Assert.assertEquals(jobExecution.getStepExecutions().size(), 1);
-//		jobExecution = jobLauncher.run(job,
-//				builder.toJobParameters());
-//		Assert.assertEquals(jobExecution.getStepExecutions().size(), 1);
-		
-		
-//		jobLauncher.run(job, new JobParametersBuilder()
-//				.addString("inputResource", "classpath:/input/products.zip")
-//				.addString("targetDirectory", "./target/importproductsbatch/")
-//				.addString("targetFile","products.txt")
-//				.addLong("timestamp", System.currentTimeMillis())
-//				.toJobParameters()
-//			);
+		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
+		// Assert.assertEquals(jobExecution.getStepExecutions().size(), 1);
+		// jobExecution = jobLauncher.run(job,
+		// builder.toJobParameters());
+		// Assert.assertEquals(jobExecution.getStepExecutions().size(), 1);
+
+		// jobLauncher.run(job, new JobParametersBuilder()
+		// .addString("inputResource", "classpath:/input/products.zip")
+		// .addString("targetDirectory", "./target/importproductsbatch/")
+		// .addString("targetFile","products.txt")
+		// .addLong("timestamp", System.currentTimeMillis())
+		// .toJobParameters()
+		// );
 	}
 }

@@ -4,23 +4,24 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
-<bean id="batchConfiguration" class="idv.hsiehpinghan.springbatchassistant.configuration.BatchConfiguration" />
+	<bean id="springConfiguration"
+		class="idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration" />
 
 	<batch:job id="LinearFlowJob">
-<!-- 		<batch:step id="decompressStep" next="readWriteStep"> -->
-<batch:step id="decompressStep">
-			<batch:tasklet ref="decompressTasklet"></batch:tasklet>
+		<!-- <batch:step id="decompressStep" next="readWriteStep"> -->
+		<batch:step id="decompressStep">
+			<batch:tasklet ref="copyFileTasklet"></batch:tasklet>
 		</batch:step>
-<!-- 		<batch:step id="readWriteStep" next="cleanStep"></batch:step> -->
-<!-- 		<batch:step id="cleanStep"></batch:step> -->
+		<!-- <batch:step id="readWriteStep" next="cleanStep"></batch:step> -->
+		<!-- <batch:step id="cleanStep"></batch:step> -->
 	</batch:job>
 
-	<bean id="decompressTasklet" name="decompressTasklet"
-		class="idv.hsiehpinghan.springbatchassistant.tasklet.DecompressTasklet" scope="step">
-<!-- 		<property name="inputResource" -->
-<!-- 			value="file:#{jobParameters['targetDirectory']}" /> -->
+	<bean id="copyFileTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.CopyFileTasklet"
+		scope="step">
+		<property name="fileResource"
+			value="file:#{jobParameters['targetDirectory']+jobParameters['fileResource']}" />
 		<property name="targetDirectory" value="#{jobParameters['targetDirectory']}" />
-<!-- 		<property name="targetFile" value="products.txt" /> -->
-
+		<property name="targetFile" value="#{jobParameters['targetFile']}" />
 	</bean>
 </beans>

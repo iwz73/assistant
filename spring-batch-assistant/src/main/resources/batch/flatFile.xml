@@ -23,7 +23,9 @@
 		<property name="strict" value="#{jobParameters['strict']}" />
 		<property name="resource" value="file:#{jobParameters['inputResource']}" />
 		<property name="comments" value="#{jobParameters['comments']}"></property>
+		<property name="bufferedReaderFactory" ref="defaultBufferedReaderFactory"></property>
 		<property name="lineMapper" ref="defaultLineMapper" />
+		<property name="recordSeparatorPolicy" ref="defaultRecordSeparatorPolicy"></property>
 	</bean>
 
 	<!-- writer -->
@@ -42,6 +44,10 @@
 		<property name="footerCallback" ref="flatFileFlatFileFooterCallback" />
 	</bean>
 
+	<!-- bufferedReaderFactory -->
+	<bean id="defaultBufferedReaderFactory"
+		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
+
 	<!-- callback -->
 	<bean id="flatFileFlatFileHeaderCallback"
 		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
@@ -49,6 +55,10 @@
 	<bean id="flatFileFlatFileFooterCallback"
 		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
 	</bean>
+
+	<!-- separatorPolicy -->
+	<bean id="defaultRecordSeparatorPolicy"
+		class="org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy"></bean>
 
 	<!-- lineMapper -->
 	<bean id="defaultLineMapper"

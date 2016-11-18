@@ -26,6 +26,7 @@
 		<property name="bufferedReaderFactory" ref="defaultBufferedReaderFactory"></property>
 		<property name="lineMapper" ref="defaultLineMapper" />
 		<property name="recordSeparatorPolicy" ref="defaultRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileLineCallbackHandler"></property>
 	</bean>
 
 	<!-- writer -->
@@ -43,6 +44,10 @@
 		<property name="headerCallback" ref="flatFileFlatFileHeaderCallback" />
 		<property name="footerCallback" ref="flatFileFlatFileFooterCallback" />
 	</bean>
+
+	<!-- callbackHandler -->
+	<bean id="flatFileLineCallbackHandler"
+		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
 
 	<!-- bufferedReaderFactory -->
 	<bean id="defaultBufferedReaderFactory"

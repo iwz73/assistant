@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.scope.StepScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,6 +45,11 @@ public class SpringConfiguration {
 	// private JobBuilderFactory jobBuilders;
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
+
+//	@Bean
+//	public StepScope stepScope() {
+//		return new StepScope();
+//	}
 
 	@Bean
 	public DataSource dataSource(Environment environment) throws PropertyVetoException {

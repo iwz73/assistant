@@ -19,7 +19,6 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 
-//@ContextConfiguration(locations = { "classpath:/batch/LinearFlow.xml" })
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class LinearFlowTest extends AbstractTestNGSpringContextTests {
 	private final Date DATE_VALUE = Date

@@ -15,7 +15,10 @@
 		<batch:step id="linearFlowReaderProcessorWriterStep">
 			<tasklet>
 				<chunk reader="linearFlowReader" processor="linearFlowProcessor"
-					writer="linearFlowWriter" commit-interval="3">
+					writer="linearFlowWriter" commit-interval="3" skip-limit="3">
+					<batch:skippable-exception-classes>
+						<batch:include class="java.lang.ArithmeticException" />
+					</batch:skippable-exception-classes>
 				</chunk>
 			</tasklet>
 		</batch:step>

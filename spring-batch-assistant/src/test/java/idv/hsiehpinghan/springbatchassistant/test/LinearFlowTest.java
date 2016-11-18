@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.springbatchassistant.test;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.springframework.batch.core.ExitStatus;
@@ -17,7 +19,8 @@ import org.testng.annotations.Test;
 
 @ContextConfiguration(locations = { "classpath:/batch/LinearFlow.xml" })
 public class LinearFlowTest extends AbstractTestNGSpringContextTests {
-	private final Date DATE_VALUE = new Date();
+	private final Date DATE_VALUE = Date
+			.from(LocalDate.of(2016, 11, 18).atStartOfDay(ZoneId.systemDefault()).toInstant());
 	private final Double DOUBLE_VALUE = Double.MAX_VALUE;
 	private final Long LONG_VALUE = Long.MAX_VALUE;
 	private final String STRING_VALUE = "string";

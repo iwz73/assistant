@@ -10,5 +10,4 @@ public class LinearFlowWriter implements ItemWriter<Integer> {
 	public void write(List<? extends Integer> items) throws Exception {
 		System.err.println("LinearFlow write items(" + items + ")");
 	}
-
 }

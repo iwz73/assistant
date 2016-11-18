@@ -24,13 +24,23 @@
 	<!-- job -->
 	<batch:job id="jobOperatorJob">
 		<batch:step id="jobOperatorTaskletStep">
-			<tasklet ref="jobOperatorTasklet"></tasklet>
+			<tasklet>
+				<chunk reader="jobOperatorReader" writer="jobOperatorWriter"
+					commit-interval="3">
+				</chunk>
+			</tasklet>
 		</batch:step>
 	</batch:job>
 
-	<!-- tasklet -->
-	<bean id="jobOperatorTasklet"
-		class="idv.hsiehpinghan.springbatchassistant.tasklet.JobOperatorTasklet"
+	<!-- reader -->
+	<bean id="jobOperatorReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.JobOperatorReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="jobOperatorWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.JobOperatorWriter"
 		scope="step">
 	</bean>
 

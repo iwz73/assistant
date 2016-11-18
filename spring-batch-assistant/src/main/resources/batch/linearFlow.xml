@@ -32,6 +32,7 @@
 		</batch:step>
 	</batch:job>
 
+	<!-- tasklet -->
 	<bean id="linearFlowTasklet"
 		class="idv.hsiehpinghan.springbatchassistant.tasklet.LinearFlowTasklet"
 		scope="step">
@@ -41,14 +42,19 @@
 		<property name="doubleValue" value="#{jobParameters['doubleValue']}" />
 	</bean>
 
+	<!-- reader -->
 	<bean id="linearFlowReader"
 		class="idv.hsiehpinghan.springbatchassistant.reader.LinearFlowReader"
 		scope="step">
 	</bean>
+
+	<!-- processor -->
 	<bean id="linearFlowProcessor"
 		class="idv.hsiehpinghan.springbatchassistant.processor.LinearFlowProcessor"
 		scope="step">
 	</bean>
+
+	<!-- writer -->
 	<bean id="linearFlowWriter"
 		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter"
 		scope="step">

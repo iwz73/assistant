@@ -36,7 +36,7 @@ public class JobOperatorTest extends AbstractTestNGSpringContextTests {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		Set<Long> RunningExecutions = jobOperator.getRunningExecutions(job.getName());
 		Iterator<Long> iterator = RunningExecutions.iterator();
 		while (iterator.hasNext()) {
@@ -45,7 +45,7 @@ public class JobOperatorTest extends AbstractTestNGSpringContextTests {
 			System.err.println("stop message sent !!!");
 			Assert.assertTrue(isStopMessageSent);
 		}
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.STOPPED.getExitCode());
 	}
 }

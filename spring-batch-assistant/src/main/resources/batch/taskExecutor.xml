@@ -21,6 +21,7 @@
 		</batch:step>
 	</batch:job>
 
+	<!-- tasklet -->
 	<bean id="taskExecutorTasklet"
 		class="idv.hsiehpinghan.springbatchassistant.tasklet.TaskExecutorTasklet"
 		scope="step">

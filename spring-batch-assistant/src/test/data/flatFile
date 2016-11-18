@@ -1,0 +1,6 @@
+LONG_VALUE,STRING_VALUE
+0,"string_0"
+! comment 1
+1,"string_1"
+# comment 2
+2,"string_2"

@@ -20,12 +20,17 @@
 			<tasklet>
 				<chunk reader="linearFlowReader" processor="linearFlowProcessor"
 					writer="linearFlowWriter" commit-interval="3" skip-limit="3">
-					<batch:listeners>
-						<batch:listener ref="chunkListenerListener"></batch:listener>
-					</batch:listeners>
 					<batch:skippable-exception-classes>
 						<batch:include class="java.lang.ArithmeticException" />
 					</batch:skippable-exception-classes>
+					<batch:listeners>
+						<batch:listener ref="stepExecutionListenerListener"></batch:listener>
+						<batch:listener ref="skipListenerListener"></batch:listener>
+						<batch:listener ref="chunkListenerListener"></batch:listener>
+						<batch:listener ref="itemReadListenerListener"></batch:listener>
+						<batch:listener ref="itemProcessListenerListener"></batch:listener>
+						<batch:listener ref="itemWriteListenerListener"></batch:listener>
+					</batch:listeners>
 				</chunk>
 			</tasklet>
 		</batch:step>
@@ -54,8 +59,23 @@
 	<bean id="jobExecutionListenerListener"
 		class="idv.hsiehpinghan.springbatchassistant.listener.JobExecutionListenerListener">
 	</bean>
+	<bean id="stepExecutionListenerListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.StepExecutionListenerListener">
+	</bean>
+	<bean id="skipListenerListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.SkipListenerListener">
+	</bean>
 	<bean id="chunkListenerListener"
 		class="idv.hsiehpinghan.springbatchassistant.listener.ChunkListenerListener">
+	</bean>
+	<bean id="itemReadListenerListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.ItemReadListenerListener">
+	</bean>
+	<bean id="itemProcessListenerListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.ItemProcessListenerListener">
+	</bean>
+	<bean id="itemWriteListenerListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.ItemWriteListenerListener">
 	</bean>
 
 	<!-- validator -->

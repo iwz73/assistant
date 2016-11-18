@@ -19,13 +19,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+@EnableScheduling
 @EnableBatchProcessing
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
-@ImportResource(value = { "classpath:/batch/applicationContext.xml" })
+@ImportResource(value = { "classpath:/applicationContext.xml" })
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
 	@Autowired
@@ -39,16 +41,13 @@ public class SpringConfiguration {
 	// @Autowired
 	// private JobRegistry jobRegistry;
 	// @Autowired
+	// private JobExplorer jobExplorer;
+	// @Autowired
 	// private PlatformTransactionManager transactionManager;
 	// @Autowired
 	// private JobBuilderFactory jobBuilders;
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
-
-	// @Bean
-	// public StepScope stepScope() {
-	// return new StepScope();
-	// }
 
 	@Bean
 	public DataSource dataSource(Environment environment) throws PropertyVetoException {

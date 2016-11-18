@@ -8,6 +8,5 @@
 		having context holder for step scope -->
 	<bean class="org.springframework.batch.core.scope.StepScope" />
 
-	<import resource="classpath:/batch/linearFlow.xml" />
-	<import resource="classpath:/batch/taskExecutor.xml" />
+	<import resource="classpath:/batch/*.xml" />
 </beans>

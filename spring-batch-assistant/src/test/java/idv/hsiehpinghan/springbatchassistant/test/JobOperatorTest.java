@@ -1,5 +1,8 @@
 package idv.hsiehpinghan.springbatchassistant.test;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -17,29 +20,32 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class TaskExecutorTest extends AbstractTestNGSpringContextTests {
+public class JobOperatorTest extends AbstractTestNGSpringContextTests {
 	@Autowired
-	@Qualifier("taskExecutorJobLauncher")
+	@Qualifier("jobOperatorJobLauncher")
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("taskExecutorJob")
+	@Qualifier("jobOperatorJob")
 	private Job job;
-
 	@Autowired
+	@Qualifier("jobOperatorjobOperator")
 	private JobOperator jobOperator;
 
 	@Test
 	public void test() throws Exception {
-
-		System.err.println(jobOperator);
-
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-		for (int i = 0; i < 5; ++i) {
-			System.err.println("TaskExecutorTest waiting job finishing...");
-			Thread.sleep(1000);
+		Thread.sleep(3000);
+		Set<Long> RunningExecutions = jobOperator.getRunningExecutions(job.getName());
+		Iterator<Long> iterator = RunningExecutions.iterator();
+		while (iterator.hasNext()) {
+			Long executionId = iterator.next();
+			boolean isStopMessageSent = jobOperator.stop(executionId);
+			System.err.println("stop message sent !!!");
+			Assert.assertTrue(isStopMessageSent);
 		}
-		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());
+		Thread.sleep(3000);
+		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.STOPPED.getExitCode());
 	}
 }

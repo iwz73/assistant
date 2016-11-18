@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.scope.StepScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,8 +25,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableBatchProcessing
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
-//@ImportResource(value = { "classpath:/batch/LinearFlow.xml" })
-@ImportResource(value = { "classpath:/batch/Inheritance.xml" })
+@ImportResource(value = { "classpath:/batch/applicationContext.xml" })
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
 	@Autowired
@@ -47,10 +45,10 @@ public class SpringConfiguration {
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
 
-//	@Bean
-//	public StepScope stepScope() {
-//		return new StepScope();
-//	}
+	// @Bean
+	// public StepScope stepScope() {
+	// return new StepScope();
+	// }
 
 	@Bean
 	public DataSource dataSource(Environment environment) throws PropertyVetoException {

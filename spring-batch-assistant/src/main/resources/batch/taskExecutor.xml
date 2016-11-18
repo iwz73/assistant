@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- setting -->
+	<task:executor id="taskExecutorExecutor" pool-size="3"></task:executor>
+	<bean id="taskExecutorJobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository"></property>
+		<property name="taskExecutor" ref="taskExecutorExecutor"></property>
+	</bean>
+
+	<!-- job -->
 	<batch:job id="taskExecutorJob">
-		<batch:step id="linearFlowTaskletStep" next="linearFlowReaderProcessorWriterStep">
-			<tasklet ref="linearFlowTasklet"></tasklet>
+		<batch:step id="taskExecutorTaskletStep">
+			<tasklet ref="taskExecutorTasklet"></tasklet>
 		</batch:step>
 	</batch:job>
 

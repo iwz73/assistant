@@ -10,7 +10,7 @@ public class TaskExecutorTasklet implements Tasklet {
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 		System.err.println("TaskExecutorTasklet execute begin !!!");
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 3; ++i) {
 			Thread.sleep(1000);
 		}
 		System.err.println("TaskExecutorTasklet execute finish !!!");

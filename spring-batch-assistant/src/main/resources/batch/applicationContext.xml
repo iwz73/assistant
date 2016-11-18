@@ -9,4 +9,5 @@
 	<bean class="org.springframework.batch.core.scope.StepScope" />
 
 	<import resource="classpath:/batch/linearFlow.xml" />
+	<import resource="classpath:/batch/taskExecutor.xml" />
 </beans>

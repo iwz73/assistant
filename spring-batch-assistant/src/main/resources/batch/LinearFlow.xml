@@ -4,8 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
-	<bean id="springConfiguration"
-		class="idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration" />
+	<!-- add context holder for step scope -->
+	<bean class="org.springframework.batch.core.scope.StepScope" />
 
 	<batch:job id="linearFlowJob">
 		<batch:validator ref="defaultJobParametersValidator"></batch:validator>

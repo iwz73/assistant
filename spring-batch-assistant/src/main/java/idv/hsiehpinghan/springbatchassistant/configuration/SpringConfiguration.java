@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -24,6 +25,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableBatchProcessing
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
+@ImportResource(value = { "classpath:/batch/LinearFlow.xml" })
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
 	@Autowired

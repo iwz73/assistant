@@ -26,7 +26,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableBatchProcessing
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
-@ImportResource(value = { "classpath:/batch/LinearFlow.xml" })
+//@ImportResource(value = { "classpath:/batch/LinearFlow.xml" })
+@ImportResource(value = { "classpath:/batch/Inheritance.xml" })
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
 	@Autowired

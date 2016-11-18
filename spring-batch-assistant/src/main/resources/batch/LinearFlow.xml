@@ -26,8 +26,6 @@
 					<batch:listeners>
 						<batch:listener ref="stepExecutionListenerListener"></batch:listener>
 						<batch:listener ref="skipListenerListener"></batch:listener>
-						<batch:listener ref="repeatListenerListener"></batch:listener>
-						<batch:listener ref="retryListenerListener"></batch:listener>
 						<batch:listener ref="chunkListenerListener"></batch:listener>
 						<batch:listener ref="itemReadListenerListener"></batch:listener>
 						<batch:listener ref="itemProcessListenerListener"></batch:listener>
@@ -66,12 +64,6 @@
 	</bean>
 	<bean id="skipListenerListener"
 		class="idv.hsiehpinghan.springbatchassistant.listener.SkipListenerListener">
-	</bean>
-	<bean id="repeatListenerListener"
-		class="idv.hsiehpinghan.springbatchassistant.listener.RepeatListenerListener">
-	</bean>
-	<bean id="retryListenerListener"
-		class="idv.hsiehpinghan.springbatchassistant.listener.RetryListenerListener">
 	</bean>
 	<bean id="chunkListenerListener"
 		class="idv.hsiehpinghan.springbatchassistant.listener.ChunkListenerListener">

@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.springbatchassistant.test;
 
+import java.util.Date;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -15,6 +17,10 @@ import org.testng.annotations.Test;
 
 @ContextConfiguration(locations = { "classpath:/batch/LinearFlow.xml" })
 public class LinearFlowTest extends AbstractTestNGSpringContextTests {
+	private final Date DATE_VALUE = new Date();
+	private final Double DOUBLE_VALUE = Double.MAX_VALUE;
+	private final Long LONG_VALUE = Long.MAX_VALUE;
+	private final String STRING_VALUE = "string";
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
@@ -24,6 +30,10 @@ public class LinearFlowTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+		jobParametersBuilder.addDate("dateValue", DATE_VALUE);
+		jobParametersBuilder.addDouble("doubleValue", DOUBLE_VALUE);
+		jobParametersBuilder.addLong("longValue", LONG_VALUE);
+		jobParametersBuilder.addString("stringValue", STRING_VALUE);
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

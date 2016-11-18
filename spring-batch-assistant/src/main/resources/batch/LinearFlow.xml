@@ -8,6 +8,7 @@
 		class="idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration" />
 
 	<batch:job id="linearFlowJob">
+		<batch:validator ref="defaultJobParametersValidator"></batch:validator>
 		<batch:step id="linearFlowTaskletStep" next="linearFlowReaderProcessorWriterStep">
 			<tasklet ref="linearFlowTasklet"></tasklet>
 		</batch:step>
@@ -23,6 +24,10 @@
 	<bean id="linearFlowTasklet"
 		class="idv.hsiehpinghan.springbatchassistant.tasklet.LinearFlowTasklet"
 		scope="step">
+		<property name="longValue" value="#{jobParameters['longValue']}" />
+		<property name="stringValue" value="#{jobParameters['stringValue']}" />
+		<property name="dateValue" value="#{jobParameters['dateValue']}" />
+		<property name="doubleValue" value="#{jobParameters['doubleValue']}" />
 	</bean>
 
 	<bean id="linearFlowReader"
@@ -35,4 +40,19 @@
 		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter">
 	</bean>
 
+	<bean id="defaultJobParametersValidator"
+		class="org.springframework.batch.core.job.DefaultJobParametersValidator">
+		<property name="requiredKeys">
+			<set>
+				<value>longValue</value>
+				<value>stringValue</value>
+			</set>
+		</property>
+		<property name="optionalKeys">
+			<set>
+				<value>doubleValue</value>
+				<value>dateValue</value>
+			</set>
+		</property>
+	</bean>
 </beans>

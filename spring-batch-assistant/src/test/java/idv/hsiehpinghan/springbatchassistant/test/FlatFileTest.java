@@ -20,7 +20,7 @@ public class FlatFileTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("flatFileItemReaderJob")
+	@Qualifier("flatFileJob")
 	private Job job;
 
 	@Test

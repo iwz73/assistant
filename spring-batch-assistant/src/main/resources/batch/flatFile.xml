@@ -5,8 +5,8 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<!-- job -->
-	<batch:job id="flatFileItemReaderJob">
-		<batch:step id="flatFileItemReaderStep">
+	<batch:job id="flatFileJob">
+		<batch:step id="flatFileStep">
 			<tasklet>
 				<chunk reader="flatFileItemReader" writer="flatFileItemWriter"
 					commit-interval="1">
@@ -23,10 +23,7 @@
 		<property name="strict" value="#{jobParameters['strict']}" />
 		<property name="resource" value="file:#{jobParameters['inputResource']}" />
 		<property name="comments" value="#{jobParameters['comments']}"></property>
-		<!-- <property name="recordSeparatorPolicy" ref="defaultRecordSeparatorPolicy" -->
-		<!-- /> -->
 		<property name="lineMapper" ref="defaultLineMapper" />
-		<!-- <property name="skippedLinesCallback" ref="skippedLinesCallback" /> -->
 	</bean>
 
 	<!-- writer -->
@@ -44,10 +41,6 @@
 		<property name="headerCallback" ref="flatFileFlatFileHeaderCallback" />
 		<property name="footerCallback" ref="flatFileFlatFileFooterCallback" />
 	</bean>
-
-	<!-- <bean id="defaultRecordSeparatorPolicy" -->
-	<!-- class="org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy"> -->
-	<!-- </bean> -->
 
 	<!-- callback -->
 	<bean id="flatFileFlatFileHeaderCallback"

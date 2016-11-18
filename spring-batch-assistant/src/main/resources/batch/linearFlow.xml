@@ -42,13 +42,16 @@
 	</bean>
 
 	<bean id="linearFlowReader"
-		class="idv.hsiehpinghan.springbatchassistant.reader.LinearFlowReader">
+		class="idv.hsiehpinghan.springbatchassistant.reader.LinearFlowReader"
+		scope="step">
 	</bean>
 	<bean id="linearFlowProcessor"
-		class="idv.hsiehpinghan.springbatchassistant.processor.LinearFlowProcessor">
+		class="idv.hsiehpinghan.springbatchassistant.processor.LinearFlowProcessor"
+		scope="step">
 	</bean>
 	<bean id="linearFlowWriter"
-		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter">
+		class="idv.hsiehpinghan.springbatchassistant.writer.LinearFlowWriter"
+		scope="step">
 	</bean>
 
 	<!-- listener -->

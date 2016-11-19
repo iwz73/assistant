@@ -36,8 +36,8 @@ public class CustomDictionaryAssistant {
 	 * @return
 	 */
 	public List<Item> parseText(String text) {
-		List<Item> items = new ArrayList<>();
-		char[] charArray = text.toCharArray();
+		final List<Item> items = new ArrayList<>();
+		final char[] charArray = text.toCharArray();
 		AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute> processor = new AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute>() {
 			@Override
 			public void hit(int begin, int end, CoreDictionary.Attribute value) {

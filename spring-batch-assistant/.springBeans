@@ -11,6 +11,8 @@
 		<config>src/main/resources/batch/jobOperator.xml</config>
 		<config>src/main/resources/batch/taskExecutor.xml</config>
 		<config>src/main/resources/batch/flatFileDelimited.xml</config>
+		<config>src/main/resources/batch/flatFileJson.xml</config>
+		<config>src/main/resources/batch/flatFileFixedLength.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

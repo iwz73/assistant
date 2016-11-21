@@ -75,19 +75,6 @@
 		class="org.springframework.batch.item.file.mapping.JsonLineMapper">
 	</bean>
 
-	<!-- lineTokenizer -->
-	<bean id="flatFileJsonDelimitedLineTokenizer"
-		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
-		<property name="names" value="longValue,stringValue" />
-		<property name="delimiter" value=","/>
-	</bean>
-
-	<!-- fieldSetMapper -->
-	<bean id="flatFileJsonDeanWrapperFieldSetMapper"
-		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-		<property name="prototypeBeanName" value="flatFileJsonFlatFileVo"></property>
-	</bean>
-
 	<!-- lineAggregator -->
 	<bean id="flatFileJsonLineAggregator"
 		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
@@ -101,7 +88,4 @@
 		<property name="names" value="longValue,stringValue" />
 	</bean>
 
-	<!-- vo -->
-	<bean id="flatFileJsonFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
-		scope="prototype" />
 </beans>

@@ -13,6 +13,7 @@
 		<config>src/main/resources/batch/flatFileDelimited.xml</config>
 		<config>src/main/resources/batch/flatFileJson.xml</config>
 		<config>src/main/resources/batch/flatFileFixedLength.xml</config>
+		<config>src/main/resources/batch/flatFileXml.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

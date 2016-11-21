@@ -46,47 +46,4 @@
 		</property>
 	</bean>
 
-	<!-- callbackHandler -->
-	<bean id="flatFileXmlLineCallbackHandler"
-		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
-
-	<!-- bufferedReaderFactory -->
-	<bean id="flatFileXmlDefaultBufferedReaderFactory"
-		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
-
-	<!-- callback -->
-	<bean id="flatFileXmlFlatFileHeaderCallback"
-		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
-	</bean>
-	<bean id="flatFileXmlFlatFileFooterCallback"
-		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
-	</bean>
-
-	<!-- separatorPolicy -->
-	<bean id="flatFileXmlJsonRecordSeparatorPolicy"
-		class="org.springframework.batch.item.file.separator.JsonRecordSeparatorPolicy"></bean>
-
-	<!-- lineMapper -->
-	<bean id="flatFileXmlLineMapper"
-		class="idv.hsiehpinghan.springbatchassistant.mapper.FlatFileJsonLineMapper">
-		<property name="delegate" ref="flatFileXmlJsonLineMapper">
-		</property>
-	</bean>
-	<bean id="flatFileXmlJsonLineMapper"
-		class="org.springframework.batch.item.file.mapping.JsonLineMapper">
-	</bean>
-
-	<!-- lineAggregator -->
-	<bean id="flatFileXmlLineAggregator"
-		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
-		<property name="delimiter" value=";" />
-		<property name="fieldExtractor" ref="flatFileXmlBeanWrapperFieldExtractor"></property>
-	</bean>
-
-	<!-- fieldExtractor -->
-	<bean id="flatFileXmlBeanWrapperFieldExtractor"
-		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
-		<property name="names" value="longValue,stringValue" />
-	</bean>
-
 </beans>

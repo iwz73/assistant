@@ -5,6 +5,7 @@
       "floatValue":0.0
    }
 }
+! comment 1
 {
    "longValue":1,
    "stringValue":"string_1",
@@ -12,6 +13,7 @@
       "floatValue":1.1
    }
 }
+# comment 2
 {
    "longValue":2,
    "stringValue":"string_2",

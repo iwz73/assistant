@@ -1,0 +1,14 @@
+<items>
+	<item attributeValue="attr_0">
+		<longValue>0</longValue>
+		<stringValue>string_0</stringValue>
+	</item>
+	<item attributeValue="attr_1">
+		<longValue>1</longValue>
+		<stringValue>string_1</stringValue>
+	</item>
+	<item attributeValue="attr_2">
+		<longValue>2</longValue>
+		<stringValue>string_2</stringValue>
+	</item>
+</items>

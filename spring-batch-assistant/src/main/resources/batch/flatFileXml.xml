@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="flatFileXmlJob">
+		<batch:step id="flatFileXmlStep">
+			<tasklet>
+				<chunk reader="flatFileXmlItemReader" writer="flatFileXmlItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="flatFileXmlItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader"
+		scope="step">
+		<property name="fragmentRootElementName" value="#{jobParameters['fragmentRootElementName']}" />
+		<property name="resource" value="file:#{jobParameters['inputResource']}" />
+		<property name="strict" value="#{jobParameters['strict']}" />
+		<property name="unmarshaller" ref="flatFileXmlMarshaller" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="flatFileXmlItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
+		<property name="saveState" value="#{jobParameters['saveState']}" />
+		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
+		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
+		<property name="transactional" value="#{jobParameters['transactional']}" />
+		<property name="resource" value="file:#{jobParameters['outputResource']}" />
+		<property name="lineAggregator" ref="flatFileXmlLineAggregator" />
+		<property name="headerCallback" ref="flatFileXmlFlatFileHeaderCallback" />
+		<property name="footerCallback" ref="flatFileXmlFlatFileFooterCallback" />
+	</bean>
+
+	<!-- marshaller -->
+	<bean id="flatFileXmlMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				<value>idv.hsiehpinghan.springbatchassistant.vo.FlatFileXmlVo
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- callbackHandler -->
+	<bean id="flatFileXmlLineCallbackHandler"
+		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
+
+	<!-- bufferedReaderFactory -->
+	<bean id="flatFileXmlDefaultBufferedReaderFactory"
+		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
+
+	<!-- callback -->
+	<bean id="flatFileXmlFlatFileHeaderCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
+	</bean>
+	<bean id="flatFileXmlFlatFileFooterCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
+	</bean>
+
+	<!-- separatorPolicy -->
+	<bean id="flatFileXmlJsonRecordSeparatorPolicy"
+		class="org.springframework.batch.item.file.separator.JsonRecordSeparatorPolicy"></bean>
+
+	<!-- lineMapper -->
+	<bean id="flatFileXmlLineMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.FlatFileJsonLineMapper">
+		<property name="delegate" ref="flatFileXmlJsonLineMapper">
+		</property>
+	</bean>
+	<bean id="flatFileXmlJsonLineMapper"
+		class="org.springframework.batch.item.file.mapping.JsonLineMapper">
+	</bean>
+
+	<!-- lineAggregator -->
+	<bean id="flatFileXmlLineAggregator"
+		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+		<property name="delimiter" value=";" />
+		<property name="fieldExtractor" ref="flatFileXmlBeanWrapperFieldExtractor"></property>
+	</bean>
+
+	<!-- fieldExtractor -->
+	<bean id="flatFileXmlBeanWrapperFieldExtractor"
+		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+		<property name="names" value="longValue,stringValue" />
+	</bean>
+
+</beans>

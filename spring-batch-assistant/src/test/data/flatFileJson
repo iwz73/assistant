@@ -1,12 +1,21 @@
 {
    "longValue":0,
-   "stringValue":"string_0"
+   "stringValue":"string_0",
+   "mapValue":{
+      "floatValue":0.0
+   }
 }
 {
    "longValue":1,
-   "stringValue":"string_1"
+   "stringValue":"string_1",
+   "mapValue":{
+      "floatValue":1.1
+   }
 }
 {
    "longValue":2,
-   "stringValue":"string_2"
+   "stringValue":"string_2",
+   "mapValue":{
+      "floatValue":2.2
+   }
 }

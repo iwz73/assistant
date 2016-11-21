@@ -89,9 +89,9 @@
 
 	<!-- lineAggregator -->
 	<bean id="flatFileFixedLengthLineAggregator"
-		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
-		<property name="delimiter" value=";" />
+		class="org.springframework.batch.item.file.transform.FormatterLineAggregator">
 		<property name="fieldExtractor" ref="flatFileFixedLengthBeanWrapperFieldExtractor"></property>
+		<property name="format" value="%5.5s|%-10.10s|" />
 	</bean>
 
 	<!-- fieldExtractor -->

@@ -25,19 +25,15 @@
 	</bean>
 
 	<!-- writer -->
-	<bean id="flatFileXmlItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+	<bean id="flatFileXmlItemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter"
 		scope="step">
-		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
 		<property name="encoding" value="#{jobParameters['encoding']}" />
-		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
 		<property name="saveState" value="#{jobParameters['saveState']}" />
 		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
-		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
 		<property name="transactional" value="#{jobParameters['transactional']}" />
 		<property name="resource" value="file:#{jobParameters['outputResource']}" />
-		<property name="lineAggregator" ref="flatFileXmlLineAggregator" />
-		<property name="headerCallback" ref="flatFileXmlFlatFileHeaderCallback" />
-		<property name="footerCallback" ref="flatFileXmlFlatFileFooterCallback" />
+		<property name="rootTagName" value="#{jobParameters['rootTagName']}" />
+		<property name="marshaller" ref="flatFileXmlMarshaller" />
 	</bean>
 
 	<!-- marshaller -->

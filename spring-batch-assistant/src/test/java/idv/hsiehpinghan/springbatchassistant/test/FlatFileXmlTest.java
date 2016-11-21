@@ -31,13 +31,11 @@ public class FlatFileXmlTest extends AbstractTestNGSpringContextTests {
 		jobParametersBuilder.addString("strict", "true");
 		jobParametersBuilder.addString("inputResource",
 				"/home/thank/git/assistant/spring-batch-assistant/src/test/data/flatFileXml");
-		jobParametersBuilder.addString("appendAllowed", "false");
-		jobParametersBuilder.addString("lineSeparator", System.lineSeparator());
 		jobParametersBuilder.addString("saveState", "true");
 		jobParametersBuilder.addString("shouldDeleteIfEmpty", "false");
-		jobParametersBuilder.addString("shouldDeleteIfExists", "true");
 		jobParametersBuilder.addString("transactional", "true");
 		jobParametersBuilder.addString("outputResource", "/tmp/flatFileXml");
+		jobParametersBuilder.addString("rootTagName", "items");
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

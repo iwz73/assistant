@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="multiResourceJob">
+		<batch:step id="multiResourceStep">
+			<tasklet>
+				<chunk reader="multiResourceItemReader" writer="multiResourceItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="multiResourceItemReader"
+		class="org.springframework.batch.item.file.MultiResourceItemReader"
+		scope="step">
+		<property name="resources" value="file:#{jobParameters['inputResources']}" />
+		<property name="delegate" ref="flatFileFixedLengthItemReader" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="multiResourceItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
+		<property name="saveState" value="#{jobParameters['saveState']}" />
+		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
+		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
+		<property name="transactional" value="#{jobParameters['transactional']}" />
+		<property name="resource" value="file:#{jobParameters['outputResource']}" />
+		<property name="lineAggregator" ref="multiResourceLineAggregator" />
+	</bean>
+
+	<!-- lineAggregator -->
+	<bean id="multiResourceLineAggregator"
+		class="org.springframework.batch.item.file.transform.FormatterLineAggregator">
+		<property name="fieldExtractor" ref="multiResourceBeanWrapperFieldExtractor"></property>
+		<property name="format" value="%5.5s|%-10.10s|" />
+	</bean>
+
+	<!-- fieldExtractor -->
+	<bean id="multiResourceBeanWrapperFieldExtractor"
+		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+		<property name="names" value="longValue,stringValue" />
+	</bean>
+
+	<!-- vo -->
+	<bean id="multiResourceFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
+		scope="prototype" />
+</beans>

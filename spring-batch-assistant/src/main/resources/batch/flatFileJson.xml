@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="flatFileJsonJob">
+		<batch:step id="flatFileJsonStep">
+			<tasklet>
+				<chunk reader="flatFileJsonItemReader" writer="flatFileJsonItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="flatFileJsonItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="linesToSkip" value="#{jobParameters['linesToSkip']}" />
+		<property name="strict" value="#{jobParameters['strict']}" />
+		<property name="resource" value="file:#{jobParameters['inputResource']}" />
+		<property name="comments" value="#{jobParameters['comments']}"></property>
+		<property name="bufferedReaderFactory" ref="flatFileJsonDefaultBufferedReaderFactory"></property>
+		<property name="lineMapper" ref="flatFileJsonLineMapper" />
+		<property name="recordSeparatorPolicy" ref="flatFileJsonJsonRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileJsonLineCallbackHandler"></property>
+	</bean>
+
+	<!-- writer -->
+	<bean id="flatFileJsonItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
+		<property name="saveState" value="#{jobParameters['saveState']}" />
+		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
+		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
+		<property name="transactional" value="#{jobParameters['transactional']}" />
+		<property name="resource" value="file:#{jobParameters['outputResource']}" />
+		<property name="lineAggregator" ref="flatFileJsonLineAggregator" />
+		<property name="headerCallback" ref="flatFileJsonFlatFileHeaderCallback" />
+		<property name="footerCallback" ref="flatFileJsonFlatFileFooterCallback" />
+	</bean>
+
+	<!-- callbackHandler -->
+	<bean id="flatFileJsonLineCallbackHandler"
+		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
+
+	<!-- bufferedReaderFactory -->
+	<bean id="flatFileJsonDefaultBufferedReaderFactory"
+		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
+
+	<!-- callback -->
+	<bean id="flatFileJsonFlatFileHeaderCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
+	</bean>
+	<bean id="flatFileJsonFlatFileFooterCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
+	</bean>
+
+	<!-- separatorPolicy -->
+	<bean id="flatFileJsonJsonRecordSeparatorPolicy"
+		class="org.springframework.batch.item.file.separator.JsonRecordSeparatorPolicy"></bean>
+
+	<!-- lineMapper -->
+	<bean id="flatFileJsonLineMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.FlatFileJsonLineMapper">
+		<property name="delegate" ref="flatFileJsonJsonLineMapper">
+		</property>
+	</bean>
+	<bean id="flatFileJsonJsonLineMapper"
+		class="org.springframework.batch.item.file.mapping.JsonLineMapper">
+	</bean>
+
+	<!-- lineTokenizer -->
+	<bean id="flatFileJsonDelimitedLineTokenizer"
+		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+		<property name="names" value="longValue,stringValue" />
+		<property name="delimiter" value=","/>
+	</bean>
+
+	<!-- fieldSetMapper -->
+	<bean id="flatFileJsonDeanWrapperFieldSetMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="flatFileJsonFlatFileVo"></property>
+	</bean>
+
+	<!-- lineAggregator -->
+	<bean id="flatFileJsonLineAggregator"
+		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+		<property name="delimiter" value=";" />
+		<property name="fieldExtractor" ref="flatFileJsonBeanWrapperFieldExtractor"></property>
+	</bean>
+
+	<!-- fieldExtractor -->
+	<bean id="flatFileJsonBeanWrapperFieldExtractor"
+		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+		<property name="names" value="longValue,stringValue" />
+	</bean>
+
+	<!-- vo -->
+	<bean id="flatFileJsonFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
+		scope="prototype" />
+</beans>

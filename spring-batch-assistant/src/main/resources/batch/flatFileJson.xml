@@ -77,15 +77,7 @@
 
 	<!-- lineAggregator -->
 	<bean id="flatFileJsonLineAggregator"
-		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
-		<property name="delimiter" value=";" />
-		<property name="fieldExtractor" ref="flatFileJsonBeanWrapperFieldExtractor"></property>
-	</bean>
-
-	<!-- fieldExtractor -->
-	<bean id="flatFileJsonBeanWrapperFieldExtractor"
-		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
-		<property name="names" value="longValue,stringValue" />
+		class="idv.hsiehpinghan.springbatchassistant.aggregator.FlatFileJsonLineAggregator">
 	</bean>
 
 </beans>

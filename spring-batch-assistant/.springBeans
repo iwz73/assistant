@@ -8,6 +8,9 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>src/main/resources/batch/linearFlow.xml</config>
+		<config>src/main/resources/batch/jobOperator.xml</config>
+		<config>src/main/resources/batch/taskExecutor.xml</config>
+		<config>src/main/resources/batch/flatFileDelimited.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

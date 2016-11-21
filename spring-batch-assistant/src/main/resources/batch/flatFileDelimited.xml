@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="flatFileDelimitedJob">
+		<batch:step id="flatFileDelimitedStep">
+			<tasklet>
+				<chunk reader="flatFileDelimitedItemReader" writer="flatFileDelimitedItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="flatFileDelimitedItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="linesToSkip" value="#{jobParameters['linesToSkip']}" />
+		<property name="strict" value="#{jobParameters['strict']}" />
+		<property name="resource" value="file:#{jobParameters['inputResource']}" />
+		<property name="comments" value="#{jobParameters['comments']}"></property>
+		<property name="bufferedReaderFactory" ref="flatFileDelimitedDefaultBufferedReaderFactory"></property>
+		<property name="lineMapper" ref="flatFileDelimitedDefaultLineMapper" />
+		<property name="recordSeparatorPolicy" ref="flatFileDelimitedDefaultRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileDelimitedLineCallbackHandler"></property>
+	</bean>
+
+	<!-- writer -->
+	<bean id="flatFileDelimitedItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
+		<property name="saveState" value="#{jobParameters['saveState']}" />
+		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
+		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
+		<property name="transactional" value="#{jobParameters['transactional']}" />
+		<property name="resource" value="file:#{jobParameters['outputResource']}" />
+		<property name="lineAggregator" ref="flatFileDelimitedLineAggregator" />
+		<property name="headerCallback" ref="flatFileDelimitedFlatFileHeaderCallback" />
+		<property name="footerCallback" ref="flatFileDelimitedFlatFileFooterCallback" />
+	</bean>
+
+	<!-- callbackHandler -->
+	<bean id="flatFileDelimitedLineCallbackHandler"
+		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
+
+	<!-- bufferedReaderFactory -->
+	<bean id="flatFileDelimitedDefaultBufferedReaderFactory"
+		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
+
+	<!-- callback -->
+	<bean id="flatFileDelimitedFlatFileHeaderCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
+	</bean>
+	<bean id="flatFileDelimitedFlatFileFooterCallback"
+		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
+	</bean>
+
+	<!-- separatorPolicy -->
+	<bean id="flatFileDelimitedDefaultRecordSeparatorPolicy"
+		class="org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy"></bean>
+
+	<!-- lineMapper -->
+	<bean id="flatFileDelimitedDefaultLineMapper"
+		class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+		<property name="lineTokenizer" ref="flatFileDelimitedDelimitedLineTokenizer">
+		</property>
+		<property name="fieldSetMapper" ref="flatFileDelimitedDeanWrapperFieldSetMapper">
+		</property>
+	</bean>
+
+	<!-- lineTokenizer -->
+	<bean id="flatFileDelimitedDelimitedLineTokenizer"
+		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+		<property name="names" value="longValue,stringValue" />
+		<property name="delimiter" value=","/>
+	</bean>
+
+	<!-- fieldSetMapper -->
+	<bean id="flatFileDelimitedDeanWrapperFieldSetMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="flatFileDelimitedFlatFileVo"></property>
+	</bean>
+
+	<!-- lineAggregator -->
+	<bean id="flatFileDelimitedLineAggregator"
+		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+		<property name="delimiter" value=";" />
+		<property name="fieldExtractor" ref="flatFileDelimitedBeanWrapperFieldExtractor"></property>
+	</bean>
+
+	<!-- fieldExtractor -->
+	<bean id="flatFileDelimitedBeanWrapperFieldExtractor"
+		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+		<property name="names" value="longValue,stringValue" />
+	</bean>
+
+	<!-- vo -->
+	<bean id="flatFileDelimitedFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
+		scope="prototype" />
+</beans>

@@ -5,10 +5,10 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<!-- job -->
-	<batch:job id="flatFileJob">
-		<batch:step id="flatFileStep">
+	<batch:job id="flatFileFixedLengthJob">
+		<batch:step id="flatFileFixedLengthStep">
 			<tasklet>
-				<chunk reader="flatFileItemReader" writer="flatFileItemWriter"
+				<chunk reader="flatFileFixedLengthItemReader" writer="flatFileFixedLengthItemWriter"
 					commit-interval="1">
 				</chunk>
 			</tasklet>
@@ -16,21 +16,21 @@
 	</batch:job>
 
 	<!-- reader -->
-	<bean id="flatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+	<bean id="flatFileFixedLengthItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
 		scope="step">
 		<property name="encoding" value="#{jobParameters['encoding']}" />
 		<property name="linesToSkip" value="#{jobParameters['linesToSkip']}" />
 		<property name="strict" value="#{jobParameters['strict']}" />
 		<property name="resource" value="file:#{jobParameters['inputResource']}" />
 		<property name="comments" value="#{jobParameters['comments']}"></property>
-		<property name="bufferedReaderFactory" ref="defaultBufferedReaderFactory"></property>
-		<property name="lineMapper" ref="defaultLineMapper" />
-		<property name="recordSeparatorPolicy" ref="defaultRecordSeparatorPolicy"></property>
-		<property name="skippedLinesCallback" ref="flatFileLineCallbackHandler"></property>
+		<property name="bufferedReaderFactory" ref="flatFileFixedLengthDefaultBufferedReaderFactory"></property>
+		<property name="lineMapper" ref="flatFileFixedLengthDefaultLineMapper" />
+		<property name="recordSeparatorPolicy" ref="flatFileFixedLengthDefaultRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileFixedLengthLineCallbackHandler"></property>
 	</bean>
 
 	<!-- writer -->
-	<bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+	<bean id="flatFileFixedLengthItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
 		scope="step">
 		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
 		<property name="encoding" value="#{jobParameters['encoding']}" />
@@ -40,66 +40,67 @@
 		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
 		<property name="transactional" value="#{jobParameters['transactional']}" />
 		<property name="resource" value="file:#{jobParameters['outputResource']}" />
-		<property name="lineAggregator" ref="lineAggregator" />
-		<property name="headerCallback" ref="flatFileFlatFileHeaderCallback" />
-		<property name="footerCallback" ref="flatFileFlatFileFooterCallback" />
+		<property name="lineAggregator" ref="flatFileFixedLengthLineAggregator" />
+		<property name="headerCallback" ref="flatFileFixedLengthFlatFileHeaderCallback" />
+		<property name="footerCallback" ref="flatFileFixedLengthFlatFileFooterCallback" />
 	</bean>
 
 	<!-- callbackHandler -->
-	<bean id="flatFileLineCallbackHandler"
+	<bean id="flatFileFixedLengthLineCallbackHandler"
 		class="idv.hsiehpinghan.springbatchassistant.handler.FlatFileLineCallbackHandler"></bean>
 
 	<!-- bufferedReaderFactory -->
-	<bean id="defaultBufferedReaderFactory"
+	<bean id="flatFileFixedLengthDefaultBufferedReaderFactory"
 		class="org.springframework.batch.item.file.DefaultBufferedReaderFactory"></bean>
 
 	<!-- callback -->
-	<bean id="flatFileFlatFileHeaderCallback"
+	<bean id="flatFileFixedLengthFlatFileHeaderCallback"
 		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileHeaderCallback">
 	</bean>
-	<bean id="flatFileFlatFileFooterCallback"
+	<bean id="flatFileFixedLengthFlatFileFooterCallback"
 		class="idv.hsiehpinghan.springbatchassistant.callback.FlatFileFlatFileFooterCallback">
 	</bean>
 
 	<!-- separatorPolicy -->
-	<bean id="defaultRecordSeparatorPolicy"
+	<bean id="flatFileFixedLengthDefaultRecordSeparatorPolicy"
 		class="org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy"></bean>
 
 	<!-- lineMapper -->
-	<bean id="defaultLineMapper"
+	<bean id="flatFileFixedLengthDefaultLineMapper"
 		class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-		<property name="lineTokenizer" ref="delimitedLineTokenizer">
+		<property name="lineTokenizer" ref="flatFileFixedLengthDelimitedLineTokenizer">
 		</property>
-		<property name="fieldSetMapper" ref="beanWrapperFieldSetMapper">
+		<property name="fieldSetMapper" ref="flatFileFixedLengthDeanWrapperFieldSetMapper">
 		</property>
 	</bean>
 
 	<!-- lineTokenizer -->
-	<bean id="delimitedLineTokenizer"
-		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+	<bean id="flatFileFixedLengthDelimitedLineTokenizer"
+		class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
 		<property name="names" value="longValue,stringValue" />
+		<property name="columns" value="1,2-9"/>
 	</bean>
 
 	<!-- fieldSetMapper -->
-	<bean id="beanWrapperFieldSetMapper"
+	<bean id="flatFileFixedLengthDeanWrapperFieldSetMapper"
 		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-		<property name="prototypeBeanName" value="flatFileVo"></property>
+		<property name="prototypeBeanName" value="flatFileFixedLengthFlatFileVo"></property>
 	</bean>
 
 	<!-- lineAggregator -->
-	<bean id="lineAggregator"
+	<bean id="flatFileFixedLengthLineAggregator"
 		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
 		<property name="delimiter" value=";" />
-		<property name="fieldExtractor" ref="beanWrapperFieldExtractor"></property>
+		<property name="fieldExtractor" ref="flatFileFixedLengthBeanWrapperFieldExtractor"></property>
 	</bean>
 
 	<!-- fieldExtractor -->
-	<bean id="beanWrapperFieldExtractor"
+	<bean id="flatFileFixedLengthBeanWrapperFieldExtractor"
 		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
 		<property name="names" value="longValue,stringValue" />
 	</bean>
 
 	<!-- vo -->
-	<bean id="flatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
+	<bean id="flatFileFixedLengthFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
 		scope="prototype" />
 </beans>

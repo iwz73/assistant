@@ -16,11 +16,11 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class FlatFileTest extends AbstractTestNGSpringContextTests {
+public class FlatFileFixedLengthTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("flatFileJob")
+	@Qualifier("flatFileFixedLengthJob")
 	private Job job;
 
 	@Test
@@ -30,7 +30,7 @@ public class FlatFileTest extends AbstractTestNGSpringContextTests {
 		jobParametersBuilder.addLong("linesToSkip", 1L);
 		jobParametersBuilder.addString("strict", "true");
 		jobParametersBuilder.addString("inputResource",
-				"/home/thank/git/assistant/spring-batch-assistant/src/test/data/flatFile");
+				"/home/thank/git/assistant/spring-batch-assistant/src/test/data/flatFileFixedLength");
 		jobParametersBuilder.addString("comments", "!,#");
 		jobParametersBuilder.addString("appendAllowed", "false");
 		jobParametersBuilder.addString("lineSeparator", System.lineSeparator());
@@ -38,7 +38,7 @@ public class FlatFileTest extends AbstractTestNGSpringContextTests {
 		jobParametersBuilder.addString("shouldDeleteIfEmpty", "false");
 		jobParametersBuilder.addString("shouldDeleteIfExists", "true");
 		jobParametersBuilder.addString("transactional", "true");
-		jobParametersBuilder.addString("outputResource", "/tmp/flatFile");
+		jobParametersBuilder.addString("outputResource", "/tmp/flatFileFixedLength");
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

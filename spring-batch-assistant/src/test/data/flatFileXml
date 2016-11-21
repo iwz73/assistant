@@ -2,13 +2,40 @@
 	<item attributeValue="attr_0">
 		<longValue>0</longValue>
 		<stringValue>string_0</stringValue>
+		<listValue>
+			<floatValue>0.0</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>0.1</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>0.2</floatValue>
+		</listValue>
 	</item>
 	<item attributeValue="attr_1">
 		<longValue>1</longValue>
 		<stringValue>string_1</stringValue>
+		<listValue>
+			<floatValue>1.0</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>1.1</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>1.2</floatValue>
+		</listValue>
 	</item>
 	<item attributeValue="attr_2">
 		<longValue>2</longValue>
 		<stringValue>string_2</stringValue>
+		<listValue>
+			<floatValue>2.0</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>2.1</floatValue>
+		</listValue>
+		<listValue>
+			<floatValue>2.2</floatValue>
+		</listValue>
 	</item>
 </items>

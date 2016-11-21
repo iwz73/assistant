@@ -11,10 +11,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FlatFileXmlVo {
 	@XmlAttribute(name = "attributeValue")
 	private String attributeValue;
-	@XmlElement(name = "longValue")
+	// @XmlElement(name = "longValue")
 	private Long longValue;
-	@XmlElement(name = "stringValue")
+	// @XmlElement(name = "stringValue")
 	private String stringValue;
+	@XmlElement(name = "listValue")
+	private SubListFlatFileXmlVo[] SubListFlatFileXmlVos;
 
 	public String getAttributeValue() {
 		return attributeValue;
@@ -40,4 +42,24 @@ public class FlatFileXmlVo {
 		this.stringValue = stringValue;
 	}
 
+	public SubListFlatFileXmlVo[] getSubListFlatFileXmlVos() {
+		return SubListFlatFileXmlVos;
+	}
+
+	public void setSubListFlatFileXmlVos(SubListFlatFileXmlVo[] subListFlatFileXmlVos) {
+		SubListFlatFileXmlVos = subListFlatFileXmlVos;
+	}
+
+	public static class SubListFlatFileXmlVo {
+		private Float floatValue;
+
+		public Float getFloatValue() {
+			return floatValue;
+		}
+
+		public void setFloatValue(Float floatValue) {
+			this.floatValue = floatValue;
+		}
+
+	}
 }

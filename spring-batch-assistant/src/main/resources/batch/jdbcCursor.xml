@@ -5,10 +5,10 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<!-- job -->
-	<batch:job id="jdbcJob">
-		<batch:step id="jdbcStep">
+	<batch:job id="jdbcCursorJob">
+		<batch:step id="jdbcCursorStep">
 			<tasklet>
-				<chunk reader="jdbcItemReader" writer="jdbcItemWriter"
+				<chunk reader="jdbcCursorItemReader" writer="jdbcCursorItemWriter"
 					commit-interval="1">
 				</chunk>
 			</tasklet>
@@ -16,18 +16,18 @@
 	</batch:job>
 
 	<!-- reader -->
-	<bean id="jdbcItemReader"
+	<bean id="jdbcCursorItemReader"
 		class="org.springframework.batch.item.database.JdbcCursorItemReader"
 		scope="step">
 		<property name="sql" value="#{jobParameters['sql']}" />
 		<property name="maxRows" value="#{jobParameters['maxRows']}" />
 		<property name="fetchSize" value="#{jobParameters['fetchSize']}" />
 		<property name="dataSource" ref="dataSource" />
-		<property name="rowMapper" ref="jdbcRowMapper" />
+		<property name="rowMapper" ref="jdbcCursorRowMapper" />
 	</bean>
 
 	<!-- writer -->
-	<bean id="jdbcItemWriter"
+	<bean id="jdbcCursorItemWriter"
 		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
 		<property name="assertUpdates" value="true" />
 		<property name="sql">
@@ -39,15 +39,15 @@
 			</value>
 		</property>
 		<property name="dataSource" ref="dataSource" />
-		<property name="itemSqlParameterSourceProvider" ref="jdbcItemSqlParameterSourceProvider" />
+		<property name="itemSqlParameterSourceProvider" ref="jdbcCursorItemSqlParameterSourceProvider" />
 	</bean>
 
 	<!-- rowMapper -->
-	<bean id="jdbcRowMapper"
+	<bean id="jdbcCursorRowMapper"
 		class="idv.hsiehpinghan.springbatchassistant.mapper.JdbcRowMapper"></bean>
 
 	<!-- itemSqlParameterSourceProvider -->
-	<bean id="jdbcItemSqlParameterSourceProvider"
+	<bean id="jdbcCursorItemSqlParameterSourceProvider"
 		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"></bean>
 
 </beans>

@@ -27,7 +27,7 @@ import idv.hsiehpinghan.springbatchassistant.entity.JdbcEntity;
 import idv.hsiehpinghan.springbatchassistant.service.JdbcService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class JdbcTest extends AbstractTestNGSpringContextTests {
+public class JdbcCursorTest extends AbstractTestNGSpringContextTests {
 	private boolean primativeBoolean = true;
 	private byte primativeByte = 0x1;
 	private double primativeDouble = 1.1;
@@ -50,7 +50,7 @@ public class JdbcTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("jdbcJob")
+	@Qualifier("jdbcCursorJob")
 	private Job job;
 
 	@BeforeClass
@@ -69,20 +69,6 @@ public class JdbcTest extends AbstractTestNGSpringContextTests {
 		jobParametersBuilder.addString("sql", "SELECT id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray FROM spring_batch_assistant.jdbcentity");
 		jobParametersBuilder.addLong("maxRows", 10L);
 		jobParametersBuilder.addLong("fetchSize", 1L);
-		
-		jobParametersBuilder.addString("encoding", "utf-8");
-		jobParametersBuilder.addLong("linesToSkip", 1L);
-		jobParametersBuilder.addString("strict", "true");
-		jobParametersBuilder.addString("inputResource",
-				"/home/thank/git/assistant/spring-batch-assistant/src/test/data/jdbc");
-		jobParametersBuilder.addString("comments", "!,#");
-		jobParametersBuilder.addString("appendAllowed", "false");
-		jobParametersBuilder.addString("lineSeparator", System.lineSeparator());
-		jobParametersBuilder.addString("saveState", "true");
-		jobParametersBuilder.addString("shouldDeleteIfEmpty", "false");
-		jobParametersBuilder.addString("shouldDeleteIfExists", "true");
-		jobParametersBuilder.addString("transactional", "true");
-		jobParametersBuilder.addString("outputResource", "/tmp/jdbc");
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

@@ -14,7 +14,7 @@
 		<config>src/main/resources/batch/flatFileJson.xml</config>
 		<config>src/main/resources/batch/flatFileFixedLength.xml</config>
 		<config>src/main/resources/batch/flatFileXml.xml</config>
-		<config>src/main/resources/batch/jdbc.xml</config>
+		<config>src/main/resources/batch/jdbcCursor.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

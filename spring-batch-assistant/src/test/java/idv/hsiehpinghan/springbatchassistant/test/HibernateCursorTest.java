@@ -9,10 +9,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
 
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
@@ -20,8 +27,10 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springbatchassistant.entity.HibernateEntity;
+import idv.hsiehpinghan.springbatchassistant.entity.JdbcEntity;
 import idv.hsiehpinghan.springbatchassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.springbatchassistant.repository.HibernateRepository;
+import idv.hsiehpinghan.springbatchassistant.service.JdbcService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
@@ -68,33 +77,28 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 	private char[] lobCharArray = getCharArray();
 	private Enumeration stringEnumeration = Enumeration.ENUM_2;
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
-	// @Autowired
-	// private JdbcService service;
-	// @Autowired
-	// private DataSource dataSource;
-	// @Autowired
-	// private ResourceLoader resourceLoader;
-	// @Autowired
-	// private JobLauncher jobLauncher;
-	// @Autowired
-	// @Qualifier("hibernateCursorJob")
-	// private Job job;
+	@Autowired
+	private DataSource dataSource;
+	@Autowired
+	private ResourceLoader resourceLoader;
+	@Autowired
+	private JobLauncher jobLauncher;
+	@Autowired
+	@Qualifier("hibernateCursorJob")
+	private Job job;
 	@Autowired
 	private HibernateRepository repository;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
+		Resource resource = resourceLoader.getResource("classpath:/script/postgresql.sql");
+		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
 		clob = new SerialClob(getCharArray());
 		blob = new SerialBlob(getByteArray());
-		HibernateEntity entity = generateHibernateEntity();
-		repository.save(entity);
-		// Resource resource =
-		// resourceLoader.getResource("classpath:/script/postgresql.sql");
-		// ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
-		// for (long i = 0; i < 1003; ++i) {
-		// JdbcEntity entity = generateJdbcEntity(i);
-		// service.insertByPreparedStatementCreator(entity);
-		// }
+		for (long i = 0; i < 3; ++i) {
+			HibernateEntity entity = generateHibernateEntity();
+			repository.save(entity);
+		}
 	}
 
 	@Test

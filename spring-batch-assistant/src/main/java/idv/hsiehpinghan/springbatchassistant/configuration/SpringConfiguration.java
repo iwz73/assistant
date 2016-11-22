@@ -10,7 +10,10 @@ import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +29,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -83,6 +87,13 @@ public class SpringConfiguration {
 		comboPooledDataSource.setPassword(password);
 		return comboPooledDataSource;
 	}
+
+//	@Bean
+//	public JobRepository jobRepository(@Qualifier("transactionManager") PlatformTransactionManager transactionManager)
+//			throws Exception {
+//		MapJobRepositoryFactoryBean mapJobRepositoryFactoryBean = new MapJobRepositoryFactoryBean(transactionManager);
+//		return mapJobRepositoryFactoryBean.getObject();
+//	}
 
 	@Bean
 	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
@@ -175,4 +186,5 @@ public class SpringConfiguration {
 	// DataSourceTransactionManager(dataSource);
 	// return transactionManager;
 	// }
+
 }

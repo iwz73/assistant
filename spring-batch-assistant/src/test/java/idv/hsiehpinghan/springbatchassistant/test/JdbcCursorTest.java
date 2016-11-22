@@ -57,7 +57,7 @@ public class JdbcCursorTest extends AbstractTestNGSpringContextTests {
 	public void beforeClass() throws Exception {
 		Resource resource = resourceLoader.getResource("classpath:/script/postgresql.sql");
 		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
-		for (long i = 0; i < 1003; ++i) {
+		for (long i = 0; i < 3; ++i) {
 			JdbcEntity entity = generateJdbcEntity(i);
 			service.insertByPreparedStatementCreator(entity);
 		}

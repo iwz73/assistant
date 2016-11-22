@@ -9,7 +9,7 @@ import idv.hsiehpinghan.springbatchassistant.entity.JdbcEntity;
 import idv.hsiehpinghan.springbatchassistant.repository.JdbcRepository;
 
 @Service
-@Transactional
+@Transactional("transactionManager")
 public class JdbcService {
 	@Autowired
 	private JdbcRepository repository;

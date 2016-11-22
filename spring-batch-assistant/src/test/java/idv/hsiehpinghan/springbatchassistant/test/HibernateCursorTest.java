@@ -148,8 +148,6 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 		entity.setSqlDate(sqlDate);
 		entity.setSqlTime(sqlTime);
 		entity.setSqlTimestamp(sqlTimestamp);
-		entity.setClob(clob);
-		entity.setBlob(blob);
 		entity.setStringEnumeration(stringEnumeration);
 		entity.setOrdinalEnumeration(ordinalEnumeration);
 		return entity;

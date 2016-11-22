@@ -68,8 +68,6 @@ public class HibernateEntity implements Serializable {
 	private java.sql.Date sqlDate;
 	private java.sql.Time sqlTime;
 	private java.sql.Timestamp sqlTimestamp;
-	private java.sql.Clob clob;
-	private java.sql.Blob blob;
 	@Enumerated(EnumType.STRING)
 	private Enumeration stringEnumeration;
 	@Enumerated(EnumType.ORDINAL)
@@ -355,22 +353,6 @@ public class HibernateEntity implements Serializable {
 		this.sqlTimestamp = sqlTimestamp;
 	}
 
-	public java.sql.Clob getClob() {
-		return clob;
-	}
-
-	public void setClob(java.sql.Clob clob) {
-		this.clob = clob;
-	}
-
-	public java.sql.Blob getBlob() {
-		return blob;
-	}
-
-	public void setBlob(java.sql.Blob blob) {
-		this.blob = blob;
-	}
-
 	public Enumeration getStringEnumeration() {
 		return stringEnumeration;
 	}
@@ -401,8 +383,7 @@ public class HibernateEntity implements Serializable {
 				+ ", dateDate=" + dateDate + ", timeDate=" + timeDate + ", timestampDate=" + timestampDate
 				+ ", calendar=" + calendar + ", dateCalendar=" + dateCalendar + ", timestampCalendar="
 				+ timestampCalendar + ", sqlDate=" + sqlDate + ", sqlTime=" + sqlTime + ", sqlTimestamp=" + sqlTimestamp
-				+ ", clob=" + clob + ", blob=" + blob + ", stringEnumeration=" + stringEnumeration
-				+ ", ordinalEnumeration=" + ordinalEnumeration + "]";
+				+ ", stringEnumeration=" + stringEnumeration + ", ordinalEnumeration=" + ordinalEnumeration + "]";
 	}
 
 }

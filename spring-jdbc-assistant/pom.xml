@@ -31,13 +31,10 @@
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<testng.version>6.9.4</testng.version>
-		<spring.version>4.2.4.RELEASE</spring.version>
+		<spring.version>4.1.2.RELEASE</spring.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
-		<collection-utility.version>1.0.0</collection-utility.version>
-		<stream-utility.version>1.0.0</stream-utility.version>
-		<object-utility.version>1.0.0</object-utility.version>
-		<test-utility.version>1.0.0</test-utility.version>
+		<commons-lang3.version>3.3.2</commons-lang3.version>
 	</properties>
 
 	<dependencies>
@@ -66,13 +63,19 @@
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- postgresql -->
@@ -89,35 +92,12 @@
 			<version>${c3p0.version}</version>
 		</dependency>
 
-		<!-- collection-utility -->
+		<!-- commons-lang3 -->
 		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>collection-utility</artifactId>
-			<version>${collection-utility.version}</version>
-		</dependency>
-		
-		<!-- stream-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>stream-utility</artifactId>
-			<version>${stream-utility.version}</version>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 
-		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>

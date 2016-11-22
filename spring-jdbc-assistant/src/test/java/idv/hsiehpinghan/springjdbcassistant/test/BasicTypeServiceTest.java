@@ -1,19 +1,21 @@
 package idv.hsiehpinghan.springjdbcassistant.test;
 
-import idv.hsiehpinghan.springjdbcassistant.entity.BasicTypeEntity;
-import idv.hsiehpinghan.springjdbcassistant.service.BasicTypeService;
-import idv.hsiehpinghan.springjdbcassistant.suit.TestngSuitSetting;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class BasicTypeServiceTest {
+import idv.hsiehpinghan.springjdbcassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.springjdbcassistant.entity.BasicTypeEntity;
+import idv.hsiehpinghan.springjdbcassistant.service.BasicTypeService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class BasicTypeServiceTest extends AbstractTestNGSpringContextTests {
 	// original field
 	private boolean primativeBoolean = true;
 	private byte primativeByte = 0x1;
@@ -24,12 +26,9 @@ public class BasicTypeServiceTest {
 	private short primativeShort = 1;
 	private String string = "string";
 	private BigDecimal bigDecimal = BigDecimal.ONE;
-	private java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance()
-			.getTimeInMillis());
-	private java.sql.Time sqlTime = new java.sql.Time(Calendar.getInstance()
-			.getTimeInMillis());
-	private java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(Calendar
-			.getInstance().getTimeInMillis());
+	private java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+	private java.sql.Time sqlTime = new java.sql.Time(Calendar.getInstance().getTimeInMillis());
+	private java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
 	private byte[] byteArray = getByteArray();
 	// updated field
 	private boolean primativeBoolean_u = false;
@@ -41,23 +40,13 @@ public class BasicTypeServiceTest {
 	private short primativeShort_u = 2;
 	private String string_u = "string_u";
 	private BigDecimal bigDecimal_u = BigDecimal.TEN;
-	private java.sql.Date sqlDate_u = new java.sql.Date(Calendar.getInstance()
-			.getTimeInMillis());
-	private java.sql.Time sqlTime_u = new java.sql.Time(Calendar.getInstance()
-			.getTimeInMillis());
-	private java.sql.Timestamp sqlTimestamp_u = new java.sql.Timestamp(Calendar
-			.getInstance().getTimeInMillis());
+	private java.sql.Date sqlDate_u = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+	private java.sql.Time sqlTime_u = new java.sql.Time(Calendar.getInstance().getTimeInMillis());
+	private java.sql.Timestamp sqlTimestamp_u = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
 	private byte[] byteArray_u = getByteArray_u();
-
-	private ApplicationContext applicationContext;
-	private BasicTypeService service;
 	private BasicTypeEntity entity;
-
-	@BeforeClass
-	public void beforeClass() throws Exception {
-		applicationContext = TestngSuitSetting.getApplicationContext();
-		service = applicationContext.getBean(BasicTypeService.class);
-	}
+	@Autowired
+	private BasicTypeService service;
 
 	@Test
 	public void insertByPreparedStatementCreator() {
@@ -68,24 +57,19 @@ public class BasicTypeServiceTest {
 
 	@Test(dependsOnMethods = { "insertByPreparedStatementCreator" })
 	public void queryForObjectByRowMapper() throws Exception {
-		BasicTypeEntity entity = service.queryForObjectByRowMapper(this.entity
-				.getId());
+		BasicTypeEntity entity = service.queryForObjectByRowMapper(this.entity.getId());
 		Assert.assertEquals(entity.isPrimativeBoolean(), primativeBoolean);
-		Assert.assertEquals(String.valueOf(entity.getPrimativeByte()),
-				String.valueOf(primativeByte));
+		Assert.assertEquals(String.valueOf(entity.getPrimativeByte()), String.valueOf(primativeByte));
 		Assert.assertEquals(entity.getPrimativeDouble(), primativeDouble);
 		Assert.assertEquals(entity.getPrimativeFloat(), primativeFloat);
 		Assert.assertEquals(entity.getPrimativeInt(), primativeInt);
 		Assert.assertEquals(entity.getPrimativeLong(), primativeLong);
 		Assert.assertEquals(entity.getPrimativeShort(), primativeShort);
 		Assert.assertEquals(entity.getString(), string);
-		Assert.assertEquals(entity.getBigDecimal().doubleValue(),
-				bigDecimal.doubleValue());
-		Assert.assertEquals(
-				DateFormatUtils.format(entity.getSqlDate(), "yyyy/MM/dd"),
+		Assert.assertEquals(entity.getBigDecimal().doubleValue(), bigDecimal.doubleValue());
+		Assert.assertEquals(DateFormatUtils.format(entity.getSqlDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
-		Assert.assertEquals(
-				DateFormatUtils.format(entity.getSqlTime(), "hh:mm:ss"),
+		Assert.assertEquals(DateFormatUtils.format(entity.getSqlTime(), "hh:mm:ss"),
 				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
 		Assert.assertEquals(entity.getSqlTimestamp(), sqlTimestamp);
 		Assert.assertEquals(entity.getByteArray(), byteArray);
@@ -98,24 +82,18 @@ public class BasicTypeServiceTest {
 		int result = service.updateByPreparedStatementCreator(entity);
 		Assert.assertEquals(result, 1);
 		BasicTypeEntity returnEntity = service.queryForObjectByRowMapper(id);
-		Assert.assertEquals(returnEntity.isPrimativeBoolean(),
-				primativeBoolean_u);
-		Assert.assertEquals(String.valueOf(returnEntity.getPrimativeByte()),
-				String.valueOf(primativeByte_u));
-		Assert.assertEquals(returnEntity.getPrimativeDouble(),
-				primativeDouble_u);
+		Assert.assertEquals(returnEntity.isPrimativeBoolean(), primativeBoolean_u);
+		Assert.assertEquals(String.valueOf(returnEntity.getPrimativeByte()), String.valueOf(primativeByte_u));
+		Assert.assertEquals(returnEntity.getPrimativeDouble(), primativeDouble_u);
 		Assert.assertEquals(returnEntity.getPrimativeFloat(), primativeFloat_u);
 		Assert.assertEquals(returnEntity.getPrimativeInt(), primativeInt_u);
 		Assert.assertEquals(returnEntity.getPrimativeLong(), primativeLong_u);
 		Assert.assertEquals(returnEntity.getPrimativeShort(), primativeShort_u);
 		Assert.assertEquals(returnEntity.getString(), string_u);
-		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(),
-				bigDecimal_u.doubleValue());
-		Assert.assertEquals(
-				DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
+		Assert.assertEquals(returnEntity.getBigDecimal().doubleValue(), bigDecimal_u.doubleValue());
+		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(sqlDate_u.getTime(), "yyyy/MM/dd"));
-		Assert.assertEquals(
-				DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
+		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
 				DateFormatUtils.format(sqlTime_u, "hh:mm:ss"));
 		Assert.assertEquals(returnEntity.getSqlTimestamp(), sqlTimestamp_u);
 		Assert.assertEquals(returnEntity.getByteArray(), byteArray_u);

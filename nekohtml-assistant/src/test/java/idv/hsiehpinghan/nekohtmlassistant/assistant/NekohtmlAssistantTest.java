@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -47,7 +48,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println(assistant.getHtmlStructureId(doc));
 	}
 
-	// @Test
+	@Test
 	public void getElementStructureId() {
 		Node bodyNode = assistant.getBodyNode(doc);
 		lastChild = getLatestChild(bodyNode);
@@ -55,11 +56,12 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println("getElementStructureId : " + elementStructureId);
 	}
 
-	// @Test(dependsOnMethods = { "getElementStructureId" })
+	@Test(dependsOnMethods = { "getElementStructureId" })
 	public void getNodeByElementStructureId() {
 		Node node = assistant.getNodeByElementStructureId(doc, elementStructureId);
-		Assert.assertTrue(lastChild.isEqualNode(node));
 		System.err.println("getNodeByElementStructureId : " + node.getTextContent());
+		Assert.assertTrue(lastChild.isEqualNode(node));
+
 	}
 
 	// @Test

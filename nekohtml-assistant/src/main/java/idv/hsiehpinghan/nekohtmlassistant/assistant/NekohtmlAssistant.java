@@ -147,11 +147,65 @@ public class NekohtmlAssistant {
 
 	protected boolean isIgnore(String nodeName) {
 		switch (nodeName) {
-		case "#text":
 		case "#comment":
-		case "SCRIPT":
-		case "NOSCRIPT":
+		case "#text":
+		case "ABBR":
+		case "ACRONYM":
+		case "APPLET":
+		case "AUDIO":
+		case "B":
+		case "BDI":
+		case "BDO":
+		case "BIG":
 		case "BR":
+		case "BUTTON":
+		case "CANVAS":
+		case "CITE":
+		case "DEL":
+		case "DFN":
+		case "EM":
+		case "EMBED":
+		case "FONT":
+		case "FORM":
+		case "FRAME":
+		case "FRAMESET":
+		case "HR":
+		case "I":
+		case "IFRAME":
+		case "INPUT":
+		case "INS":
+		case "KBD":
+		case "KEYGEN":
+		case "MAP":
+		case "MARK":
+		case "METER":
+		case "NOFRAMES":
+		case "NOSCRIPT":
+		case "OBJECT":
+		case "OUTPUT":
+		case "PARAM":
+		case "PROGRESS":
+		case "Q":
+		case "RP":
+		case "RT":
+		case "RUBY":
+		case "S":
+		case "SAMP":
+		case "SCRIPT":
+		case "SELECT":
+		case "SMALL":
+		case "SOURCE":
+		case "STRIKE":
+		case "STRONG":
+		case "STYLE":
+		case "SUB":
+		case "SUP":
+		case "TRACK":
+		case "TT":
+		case "U":
+		case "VAR":
+		case "VIDEO":
+		case "WBR":
 			return true;
 		default:
 			return false;

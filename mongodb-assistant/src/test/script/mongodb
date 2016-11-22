@@ -1,4 +1,4 @@
-mongod --dbpath ~/Desktop/mongo --journal
+mongod --dbpath /home/hsiehpinghan/Desktop/mongo --journal
 mongo
 show dbs
 db

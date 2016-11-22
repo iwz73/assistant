@@ -39,6 +39,8 @@ public class MultiResourceTest extends AbstractTestNGSpringContextTests {
 		jobParametersBuilder.addString("shouldDeleteIfExists", "true");
 		jobParametersBuilder.addString("transactional", "true");
 		jobParametersBuilder.addString("outputResource", "/tmp/multiResource");
+		jobParametersBuilder.addLong("itemCountLimitPerResource", 3L);
+		jobParametersBuilder.addString("saveState", "true");
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

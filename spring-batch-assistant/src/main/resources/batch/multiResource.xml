@@ -24,17 +24,13 @@
 	</bean>
 
 	<!-- writer -->
-	<bean id="multiResourceItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+	<bean id="multiResourceItemWriter"
+		class="org.springframework.batch.item.file.MultiResourceItemWriter"
 		scope="step">
-		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
-		<property name="encoding" value="#{jobParameters['encoding']}" />
-		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
-		<property name="saveState" value="#{jobParameters['saveState']}" />
-		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
-		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
-		<property name="transactional" value="#{jobParameters['transactional']}" />
 		<property name="resource" value="file:#{jobParameters['outputResource']}" />
-		<property name="lineAggregator" ref="multiResourceLineAggregator" />
+		<property name="itemCountLimitPerResource" value="#{jobParameters['itemCountLimitPerResource']}" />
+		<property name="saveState" value="#{jobParameters['saveState']}" />
+		<property name="delegate" ref="flatFileFixedLengthItemWriter" />
 	</bean>
 
 	<!-- lineAggregator -->

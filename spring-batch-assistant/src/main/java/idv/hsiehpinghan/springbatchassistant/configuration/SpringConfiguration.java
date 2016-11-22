@@ -17,6 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -49,6 +51,17 @@ public class SpringConfiguration {
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
 
+	@PostConstruct
+	public void postConstruct() throws ScriptException, SQLException {
+		Connection connection = dataSource.getConnection();
+		Resource schemaDropPostgresqlSql = resourceLoader
+				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");
+		ScriptUtils.executeSqlScript(connection, schemaDropPostgresqlSql);
+		Resource schemaPostgresqlSql = resourceLoader
+				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
+		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
+	}
+
 	@Bean
 	public DataSource dataSource(Environment environment) throws PropertyVetoException {
 		String driverClass = environment.getRequiredProperty("postgresql.driverClass");
@@ -63,16 +76,17 @@ public class SpringConfiguration {
 		return comboPooledDataSource;
 	}
 
-	@PostConstruct
-	public void postConstruct() throws ScriptException, SQLException {
-		Connection connection = dataSource.getConnection();
-		Resource schemaDropPostgresqlSql = resourceLoader
-				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");
-		ScriptUtils.executeSqlScript(connection, schemaDropPostgresqlSql);
-		Resource schemaPostgresqlSql = resourceLoader
-				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
-		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate;
 	}
+
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
 	//
 	// @Bean
 	// public JobExplorer jobExplorer(DataSource dataSource) throws Exception {

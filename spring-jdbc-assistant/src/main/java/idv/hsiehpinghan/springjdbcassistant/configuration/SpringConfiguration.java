@@ -33,14 +33,18 @@ public class SpringConfiguration {
 	@Autowired
 	private DataSource dataSource;
 
+	@PostConstruct
+	protected void postConstruct() throws ScriptException, SQLException {
+		Resource resource = resourceLoader.getResource("classpath:/script/postgresql.sql");
+		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
+	}
+
 	@Bean
 	public DataSource dataSource() throws PropertyVetoException {
-		String driverClass = environment
-				.getRequiredProperty("postgresql.driverClass");
+		String driverClass = environment.getRequiredProperty("postgresql.driverClass");
 		String jdbcUrl = environment.getRequiredProperty("postgresql.jdbcUrl");
 		String user = environment.getRequiredProperty("postgresql.user");
-		String password = environment
-				.getRequiredProperty("postgresql.password");
+		String password = environment.getRequiredProperty("postgresql.password");
 		ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
 		comboPooledDataSource.setDriverClass(driverClass);
 		comboPooledDataSource.setJdbcUrl(jdbcUrl);
@@ -60,10 +64,4 @@ public class SpringConfiguration {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
-	@PostConstruct
-	protected void postConstruct() throws ScriptException, SQLException {
-		Resource resource = resourceLoader
-				.getResource("classpath:/script/postgresql.sql");
-		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
-	}
 }

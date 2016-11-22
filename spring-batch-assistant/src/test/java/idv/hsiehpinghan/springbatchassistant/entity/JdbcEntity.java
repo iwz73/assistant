@@ -2,6 +2,7 @@ package idv.hsiehpinghan.springbatchassistant.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class JdbcEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -158,6 +159,15 @@ public class JdbcEntity implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "JdbcEntity [id=" + id + ", primativeBoolean=" + primativeBoolean + ", primativeByte=" + primativeByte
+				+ ", primativeDouble=" + primativeDouble + ", primativeFloat=" + primativeFloat + ", primativeInt="
+				+ primativeInt + ", primativeLong=" + primativeLong + ", primativeShort=" + primativeShort + ", string="
+				+ string + ", bigDecimal=" + bigDecimal + ", sqlDate=" + sqlDate + ", sqlTime=" + sqlTime
+				+ ", sqlTimestamp=" + sqlTimestamp + ", byteArray=" + Arrays.toString(byteArray) + "]";
 	}
 
 }

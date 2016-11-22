@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="jdbcJob">
+		<batch:step id="jdbcStep">
+			<tasklet>
+				<chunk reader="jdbcItemReader" writer="jdbcItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="jdbcItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="sql" value="#{jobParameters['sql']}" />
+		<property name="maxRows" value="#{jobParameters['maxRows']}" />
+		<property name="fetchSize" value="#{jobParameters['fetchSize']}" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="rowMapper" ref="jdbcRowMapper" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="jdbcItemWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+		<property name="assertUpdates" value="true" />
+		<property name="sql">
+			<value>
+            <![CDATA[
+            	INSERT INTO spring_batch_assistant.jdbcentity(id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray) 
+            	VALUES (:id, :primativeBoolean, :primativeByte, :primativeDouble, :primativeFloat, :primativeInt, :primativeLong, :primativeShort, :string, :bigDecimal, :sqlDate, :sqlTime, :sqlTimestamp, :byteArray);
+            ]]>
+			</value>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="itemSqlParameterSourceProvider" ref="jdbcItemSqlParameterSourceProvider" />
+	</bean>
+
+	<!-- rowMapper -->
+	<bean id="jdbcRowMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.JdbcRowMapper"></bean>
+
+	<!-- itemSqlParameterSourceProvider -->
+	<bean id="jdbcItemSqlParameterSourceProvider"
+		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"></bean>
+
+</beans>

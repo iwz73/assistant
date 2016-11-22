@@ -13,7 +13,11 @@ import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
 
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +26,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -101,19 +106,10 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void test() throws Exception {
-		// JobParametersBuilder jobParametersBuilder = new
-		// JobParametersBuilder();
-		// jobParametersBuilder.addString("sql",
-		// "SELECT id, primativeboolean, primativebyte, primativedouble,
-		// primativefloat, primativeint, primativelong, primativeshort, string,
-		// bigdecimal, sqldate, sqltime, sqltimestamp, bytearray FROM
-		// spring_batch_assistant.jdbcentity");
-		// jobParametersBuilder.addLong("maxRows", 10L);
-		// jobParametersBuilder.addLong("fetchSize", 1L);
-		// JobParameters jobParameters = jobParametersBuilder.toJobParameters();
-		// JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-		// Assert.assertEquals(jobExecution.getExitStatus().getExitCode(),
-		// ExitStatus.COMPLETED.getExitCode());
+		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
+		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
+		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());
 	}
 
 	private HibernateEntity generateHibernateEntity() {
@@ -135,7 +131,6 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 		entity.setPrimativeShort(primativeShort);
 		entity.setWrappedShort(wrappedShort);
 		entity.setString(string);
-		entity.setLobString(lobString);
 		entity.setBigInteger(bigInteger);
 		entity.setBigDecimal(bigDecimal);
 		entity.setLocale(locale);
@@ -155,10 +150,6 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 		entity.setSqlTimestamp(sqlTimestamp);
 		entity.setClob(clob);
 		entity.setBlob(blob);
-		entity.setByteArray(byteArray);
-		entity.setLobByteArray(lobByteArray);
-		entity.setCharArray(charArray);
-		entity.setLobCharArray(lobCharArray);
 		entity.setStringEnumeration(stringEnumeration);
 		entity.setOrdinalEnumeration(ordinalEnumeration);
 		return entity;

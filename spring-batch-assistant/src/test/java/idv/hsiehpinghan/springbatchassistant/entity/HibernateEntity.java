@@ -9,15 +9,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -48,9 +45,6 @@ public class HibernateEntity implements Serializable {
 	private Short wrappedShort;
 	// object
 	private String string;
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private String lobString;
 	private BigInteger bigInteger;
 	private BigDecimal bigDecimal;
 	private Locale locale;
@@ -76,15 +70,6 @@ public class HibernateEntity implements Serializable {
 	private java.sql.Timestamp sqlTimestamp;
 	private java.sql.Clob clob;
 	private java.sql.Blob blob;
-	// array
-	private byte[] byteArray;
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private byte[] lobByteArray;
-	private char[] charArray;
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private char[] lobCharArray;
 	@Enumerated(EnumType.STRING)
 	private Enumeration stringEnumeration;
 	@Enumerated(EnumType.ORDINAL)
@@ -232,14 +217,6 @@ public class HibernateEntity implements Serializable {
 
 	public void setString(String string) {
 		this.string = string;
-	}
-
-	public String getLobString() {
-		return lobString;
-	}
-
-	public void setLobString(String lobString) {
-		this.lobString = lobString;
 	}
 
 	public BigInteger getBigInteger() {
@@ -394,38 +371,6 @@ public class HibernateEntity implements Serializable {
 		this.blob = blob;
 	}
 
-	public byte[] getByteArray() {
-		return byteArray;
-	}
-
-	public void setByteArray(byte[] byteArray) {
-		this.byteArray = byteArray;
-	}
-
-	public byte[] getLobByteArray() {
-		return lobByteArray;
-	}
-
-	public void setLobByteArray(byte[] lobByteArray) {
-		this.lobByteArray = lobByteArray;
-	}
-
-	public char[] getCharArray() {
-		return charArray;
-	}
-
-	public void setCharArray(char[] charArray) {
-		this.charArray = charArray;
-	}
-
-	public char[] getLobCharArray() {
-		return lobCharArray;
-	}
-
-	public void setLobCharArray(char[] lobCharArray) {
-		this.lobCharArray = lobCharArray;
-	}
-
 	public Enumeration getStringEnumeration() {
 		return stringEnumeration;
 	}
@@ -440,6 +385,24 @@ public class HibernateEntity implements Serializable {
 
 	public void setOrdinalEnumeration(Enumeration ordinalEnumeration) {
 		this.ordinalEnumeration = ordinalEnumeration;
+	}
+
+	@Override
+	public String toString() {
+		return "HibernateEntity [id=" + id + ", primativeBoolean=" + primativeBoolean + ", wrappedBoolean="
+				+ wrappedBoolean + ", primativeByte=" + primativeByte + ", wrappedByte=" + wrappedByte
+				+ ", primativeChar=" + primativeChar + ", wrappedChar=" + wrappedChar + ", primativeDouble="
+				+ primativeDouble + ", wrappedDouble=" + wrappedDouble + ", primativeFloat=" + primativeFloat
+				+ ", wrappedFloat=" + wrappedFloat + ", primativeInt=" + primativeInt + ", wrappedInt=" + wrappedInt
+				+ ", primativeLong=" + primativeLong + ", wrappedLong=" + wrappedLong + ", primativeShort="
+				+ primativeShort + ", wrappedShort=" + wrappedShort + ", string=" + string + ", bigInteger="
+				+ bigInteger + ", bigDecimal=" + bigDecimal + ", locale=" + locale + ", timeZone=" + timeZone
+				+ ", currency=" + currency + ", clazz=" + clazz + ", serializable=" + serializable + ", date=" + date
+				+ ", dateDate=" + dateDate + ", timeDate=" + timeDate + ", timestampDate=" + timestampDate
+				+ ", calendar=" + calendar + ", dateCalendar=" + dateCalendar + ", timestampCalendar="
+				+ timestampCalendar + ", sqlDate=" + sqlDate + ", sqlTime=" + sqlTime + ", sqlTimestamp=" + sqlTimestamp
+				+ ", clob=" + clob + ", blob=" + blob + ", stringEnumeration=" + stringEnumeration
+				+ ", ordinalEnumeration=" + ordinalEnumeration + "]";
 	}
 
 }

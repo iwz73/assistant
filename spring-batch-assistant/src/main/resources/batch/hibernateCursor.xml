@@ -8,8 +8,8 @@
 	<batch:job id="hibernateCursorJob">
 		<batch:step id="hibernateCursorStep">
 			<tasklet>
-				<chunk reader="hibernateCursorItemReader" writer="hibernateCursorItemWriter"
-					commit-interval="1">
+				<chunk reader="hibernateCursorItemReader" processor="hibernateCursorItemProcessor"
+					writer="hibernateCursorItemWriter" commit-interval="1">
 				</chunk>
 			</tasklet>
 		</batch:step>
@@ -19,24 +19,20 @@
 	<bean id="hibernateCursorItemReader"
 		class="org.springframework.batch.item.database.HibernateCursorItemReader"
 		scope="step">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="queryString" value="from HibernateEntity"/>
+		<property name="useStatelessSession" value="true" />
+		<property name="queryString" value="from HibernateEntity" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- processor -->
+	<bean id="hibernateCursorItemProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.HibernateProcessor">
 	</bean>
 
 	<!-- writer -->
 	<bean id="hibernateCursorItemWriter"
-		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
-		<property name="assertUpdates" value="true" />
-		<property name="sql">
-			<value>
-            <![CDATA[
-            	INSERT INTO spring_batch_assistant.hibernateentity(id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray) 
-            	VALUES (:id, :primativeBoolean, :primativeByte, :primativeDouble, :primativeFloat, :primativeInt, :primativeLong, :primativeShort, :string, :bigDecimal, :sqlDate, :sqlTime, :sqlTimestamp, :byteArray);
-            ]]>
-			</value>
-		</property>
-		<property name="dataSource" ref="dataSource" />
-		<property name="itemSqlParameterSourceProvider" ref="hibernateCursorItemSqlParameterSourceProvider" />
+		class="org.springframework.batch.item.database.HibernateItemWriter">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<!-- rowMapper -->

@@ -27,7 +27,7 @@ public class JdbcRowMapper implements RowMapper<JdbcEntity> {
 		java.sql.Timestamp sqlTimestamp = rs.getTimestamp("sqltimestamp");
 		byte[] byteArray = rs.getBytes("bytearray");
 		JdbcEntity entity = new JdbcEntity();
-		entity.setId(id + 100);
+		entity.setId(id - 1000);
 		entity.setPrimativeBoolean(primativeBoolean);
 		entity.setPrimativeByte(primativeByte);
 		entity.setPrimativeDouble(primativeDouble);

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="jdbcPagingJob">
+		<batch:step id="jdbcPagingStep">
+			<tasklet>
+				<chunk reader="jdbcPagingItemReader" writer="jdbcPagingItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="jdbcPagingItemReader"
+		class="org.springframework.batch.item.database.JdbcPagingItemReader"
+		scope="step">
+		<property name="pageSize" value="#{jobParameters['pageSize']}" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="queryProvider" ref="jdbcPagingQueryProvider" />
+		<property name="rowMapper" ref="jdbcPagingRowMapper" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="jdbcPagingItemWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+		<property name="assertUpdates" value="true" />
+		<property name="sql">
+			<value>
+            <![CDATA[
+            	INSERT INTO spring_batch_assistant.jdbcentity(id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray) 
+            	VALUES (:id, :primativeBoolean, :primativeByte, :primativeDouble, :primativeFloat, :primativeInt, :primativeLong, :primativeShort, :string, :bigDecimal, :sqlDate, :sqlTime, :sqlTimestamp, :byteArray);
+            ]]>
+			</value>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="itemSqlParameterSourceProvider" ref="jdbcPagingItemSqlParameterSourceProvider" />
+	</bean>
+
+	<!-- rowMapper -->
+	<bean id="jdbcPagingRowMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.JdbcRowMapper"></bean>
+
+	<!-- queryProvider -->
+	<bean id="jdbcPagingQueryProvider"
+		class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="selectClause"
+			value="SELECT id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray" />
+		<property name="fromClause" value="FROM spring_batch_assistant.jdbcentity" />
+		<property name="sortKey" value="id" />
+	</bean>
+
+	<!-- itemSqlParameterSourceProvider -->
+	<bean id="jdbcPagingItemSqlParameterSourceProvider"
+		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"></bean>
+
+</beans>

@@ -27,7 +27,8 @@ import idv.hsiehpinghan.springbatchassistant.entity.JdbcEntity;
 import idv.hsiehpinghan.springbatchassistant.service.JdbcService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class JdbcCursorTest extends AbstractTestNGSpringContextTests {
+public class JdbcPagingTest extends AbstractTestNGSpringContextTests {
+	private final long START_ID = 1000;
 	private boolean primativeBoolean = true;
 	private byte primativeByte = 0x1;
 	private double primativeDouble = 1.1;
@@ -50,14 +51,14 @@ public class JdbcCursorTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("jdbcCursorJob")
+	@Qualifier("jdbcPagingJob")
 	private Job job;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		Resource resource = resourceLoader.getResource("classpath:/script/postgresql.sql");
 		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
-		for (long i = 0; i < 1003; ++i) {
+		for (long i = START_ID; i < START_ID + 10; ++i) {
 			JdbcEntity entity = generateJdbcEntity(i);
 			service.insertByPreparedStatementCreator(entity);
 		}
@@ -66,10 +67,7 @@ public class JdbcCursorTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
-		jobParametersBuilder.addString("sql",
-				"SELECT id, primativeboolean, primativebyte, primativedouble, primativefloat, primativeint, primativelong, primativeshort, string, bigdecimal, sqldate, sqltime, sqltimestamp, bytearray FROM spring_batch_assistant.jdbcentity");
-		jobParametersBuilder.addLong("maxRows", 10L);
-		jobParametersBuilder.addLong("fetchSize", 1L);
+		jobParametersBuilder.addLong("pageSize", 3L);
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

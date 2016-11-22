@@ -8,7 +8,11 @@ public class HibernateProcessor implements ItemProcessor<HibernateEntity, Hibern
 
 	@Override
 	public HibernateEntity process(HibernateEntity entity) throws Exception {
-		entity.setId(null);
+		int id = entity.getId();
+		if (id < 0) {
+			return null;
+		}
+		entity.setId(entity.getId() - 100);
 		return entity;
 	}
 

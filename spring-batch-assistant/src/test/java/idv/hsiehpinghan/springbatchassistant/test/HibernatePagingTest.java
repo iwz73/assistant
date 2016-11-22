@@ -34,7 +34,7 @@ import idv.hsiehpinghan.springbatchassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.springbatchassistant.service.HibernateService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
+public class HibernatePagingTest extends AbstractTestNGSpringContextTests {
 	private boolean primativeBoolean = true;
 	private Boolean wrappedBoolean = true;
 	private byte primativeByte = 0x1;
@@ -78,7 +78,7 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("hibernateCursorJob")
+	@Qualifier("hibernatePagingJob")
 	private Job job;
 	@Autowired
 	private HibernateService hibernateService;
@@ -87,7 +87,7 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 	public void beforeClass() throws Exception {
 		Resource resource = resourceLoader.getResource("classpath:/script/postgresql.sql");
 		ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
-		for (int i = 0; i < 3; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			HibernateEntity entity = generateHibernateEntity(i);
 			hibernateService.save(entity);
 		}

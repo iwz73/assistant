@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="hibernatePagingJob">
+		<batch:step id="hibernatePagingStep">
+			<tasklet>
+				<chunk reader="hibernatePagingItemReader" processor="hibernatePagingItemProcessor"
+					writer="hibernatePagingItemWriter" commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="hibernatePagingItemReader"
+		class="org.springframework.batch.item.database.HibernatePagingItemReader"
+		scope="step">
+		<property name="useStatelessSession" value="true" />
+		<property name="queryString" value="FROM HibernateEntity" />
+		<property name="fetchSize" value="3"></property>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- processor -->
+	<bean id="hibernatePagingItemProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.HibernateProcessor">
+	</bean>
+
+	<!-- writer -->
+	<bean id="hibernatePagingItemWriter"
+		class="org.springframework.batch.item.database.HibernateItemWriter">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- rowMapper -->
+	<bean id="hibernatePagingRowMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.JdbcRowMapper"></bean>
+
+	<!-- itemSqlParameterSourceProvider -->
+	<bean id="hibernatePagingItemSqlParameterSourceProvider"
+		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"></bean>
+
+</beans>

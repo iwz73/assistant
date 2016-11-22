@@ -61,7 +61,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	private short primativeShort = 1;
 	private Short wrappedShort = 1;
 	private String string = "string";
-	private String lobString = "string";
+	private String lobString = "lobString";
 	private BigInteger bigInteger = BigInteger.ONE;
 	private BigDecimal bigDecimal = BigDecimal.ONE;
 	private Locale locale = Locale.CHINESE;
@@ -261,7 +261,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 		entity.setWrappedLong(wrappedLong);
 		entity.setPrimativeShort(primativeShort);
 		entity.setWrappedShort(wrappedShort);
-		entity.setString(lobString);
+		entity.setString(string);
 		entity.setLobString(lobString);
 		entity.setBigInteger(bigInteger);
 		entity.setBigDecimal(bigDecimal);

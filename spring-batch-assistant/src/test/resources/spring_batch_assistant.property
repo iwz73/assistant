@@ -2,3 +2,16 @@ postgresql.driverClass=org.postgresql.Driver
 postgresql.jdbcUrl=jdbc:postgresql://localhost:5432/postgres?currentSchema=spring_batch_assistant
 postgresql.user=thank
 postgresql.password=!)09w5t43w1oJ
+hibernate.packagesToScan=idv.hsiehpinghan.springbatchassistant.**.entity
+hibernate.default_schema=spring_batch_assistant
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.format_sql=true
+# validate, update, create, create-drop
+hibernate.hbm2ddl.auto=update
+hibernate.show_sql=true
+hibernate.generate_statistics=true
+hibernate.use_sql_comments=true
+# 1:READ UNCOMMITTED;2:READ COMMITTED;4:REPEATABLE READ;8:SERIALIZABLE
+hibernate.connection.isolation=2
+hibernate.jdbc.fetch_size=5
+hibernate.jdbc.batch_size=5

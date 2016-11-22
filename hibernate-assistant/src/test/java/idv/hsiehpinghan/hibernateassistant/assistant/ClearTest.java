@@ -1,24 +1,25 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
-import idv.hsiehpinghan.hibernateassistant.entity.ClearEntity;
-import idv.hsiehpinghan.hibernateassistant.service.ClearService;
-import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
-
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class ClearTest {
+import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.hibernateassistant.entity.ClearEntity;
+import idv.hsiehpinghan.hibernateassistant.service.ClearService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class ClearTest extends AbstractTestNGSpringContextTests {
 	private final String STRING = "string";
+	@Autowired
 	private ClearService service;
 	private ClearEntity entity;
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		service = applicationContext.getBean(ClearService.class);
 		entity = generateClearEntity();
 		service.save(entity);
 	}

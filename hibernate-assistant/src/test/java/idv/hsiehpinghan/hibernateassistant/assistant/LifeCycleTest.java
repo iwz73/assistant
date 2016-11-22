@@ -1,27 +1,28 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
-import idv.hsiehpinghan.hibernateassistant.entity.LifeCycleEntity;
-import idv.hsiehpinghan.hibernateassistant.service.LifeCycleService;
-import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
-
 import org.hibernate.LazyInitializationException;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class LifeCycleTest {
+import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.hibernateassistant.entity.LifeCycleEntity;
+import idv.hsiehpinghan.hibernateassistant.service.LifeCycleService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class LifeCycleTest extends AbstractTestNGSpringContextTests {
 	private final Integer INTEGER = Integer.valueOf(0);
 	private final String STRING = "string";
+	@Autowired
 	private LifeCycleService service;
 	private LifeCycleEntity entity;
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		service = applicationContext.getBean(LifeCycleService.class);
 		entity = generateLifeCycleEntity();
 	}
 

@@ -1,24 +1,25 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
-import idv.hsiehpinghan.hibernateassistant.entity.FlushModeEntity;
-import idv.hsiehpinghan.hibernateassistant.service.FlushModeService;
-import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
-
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class FlushModeTest {
+import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.hibernateassistant.entity.FlushModeEntity;
+import idv.hsiehpinghan.hibernateassistant.service.FlushModeService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class FlushModeTest extends AbstractTestNGSpringContextTests {
 	private final String STRING = "string";
+	@Autowired
 	private FlushModeService service;
 	private FlushModeEntity entity;
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		service = applicationContext.getBean(FlushModeService.class);
 		entity = generateFlushModeEntity();
 		service.save(entity);
 	}

@@ -1,30 +1,31 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
-import idv.hsiehpinghan.hibernateassistant.entity.BatchEntity;
-import idv.hsiehpinghan.hibernateassistant.service.BatchService;
-import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class BatchTest {
+import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.hibernateassistant.entity.BatchEntity;
+import idv.hsiehpinghan.hibernateassistant.service.BatchService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class BatchTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 10;
 	private final int BATCH_SIZE = 5;
 	private final String STRING = "string";
 	private final String UPDATE_STRING = "batchUpdate";
+	@Autowired
 	private BatchService service;
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		service = applicationContext.getBean(BatchService.class);
 		service.deleteAll();
 	}
 

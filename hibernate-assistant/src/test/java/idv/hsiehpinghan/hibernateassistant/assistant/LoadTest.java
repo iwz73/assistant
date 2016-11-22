@@ -1,37 +1,37 @@
 package idv.hsiehpinghan.hibernateassistant.assistant;
 
-import idv.hsiehpinghan.hibernateassistant.entity.LoadManyEntity;
-import idv.hsiehpinghan.hibernateassistant.entity.LoadOneEntity;
-import idv.hsiehpinghan.hibernateassistant.service.LoadService;
-import idv.hsiehpinghan.hibernateassistant.suit.TestngSuitSetting;
-
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class LoadTest {
+import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.hibernateassistant.entity.LoadManyEntity;
+import idv.hsiehpinghan.hibernateassistant.entity.LoadOneEntity;
+import idv.hsiehpinghan.hibernateassistant.service.LoadService;
+
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class LoadTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 3;
 	private final String STRING = "string";
+	@Autowired
 	private LoadService service;
 	private LoadOneEntity entity;
 
 	@BeforeClass
 	public void beforeClass() {
-		ApplicationContext applicationContext = TestngSuitSetting
-				.getApplicationContext();
-		service = applicationContext.getBean(LoadService.class);
 		entity = generateLoadOneEntity();
 		service.save(entity);
 	}
 
 	@Test
 	public void findLoadManyEntities() {
-		Collection<LoadManyEntity> loadManyEntities = service
-				.findLoadManyEntities(entity.getId());
+		Collection<LoadManyEntity> loadManyEntities = service.findLoadManyEntities(entity.getId());
 		Assert.assertEquals(loadManyEntities.size(), SIZE);
 	}
 

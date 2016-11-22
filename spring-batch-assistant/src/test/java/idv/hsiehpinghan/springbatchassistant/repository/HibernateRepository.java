@@ -12,14 +12,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import idv.hsiehpinghan.springbatchassistant.entity.HibernateEntity;
 import idv.hsiehpinghan.springbatchassistant.utility.InputStreamUtility;
 import idv.hsiehpinghan.springbatchassistant.utility.ReaderUtility;
 
 @Repository
-@Transactional("hibernateTransactionManager")
 public class HibernateRepository {
 	@Autowired
 	private SessionFactory sessionFactory;

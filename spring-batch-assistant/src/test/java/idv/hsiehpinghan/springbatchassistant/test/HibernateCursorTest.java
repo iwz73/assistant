@@ -27,10 +27,8 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springbatchassistant.entity.HibernateEntity;
-import idv.hsiehpinghan.springbatchassistant.entity.JdbcEntity;
 import idv.hsiehpinghan.springbatchassistant.enumeration.Enumeration;
-import idv.hsiehpinghan.springbatchassistant.repository.HibernateRepository;
-import idv.hsiehpinghan.springbatchassistant.service.JdbcService;
+import idv.hsiehpinghan.springbatchassistant.service.HibernateService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
@@ -87,7 +85,7 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 	@Qualifier("hibernateCursorJob")
 	private Job job;
 	@Autowired
-	private HibernateRepository repository;
+	private HibernateService hibernateService;
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
@@ -97,7 +95,7 @@ public class HibernateCursorTest extends AbstractTestNGSpringContextTests {
 		blob = new SerialBlob(getByteArray());
 		for (long i = 0; i < 3; ++i) {
 			HibernateEntity entity = generateHibernateEntity();
-			repository.save(entity);
+			hibernateService.save(entity);
 		}
 	}
 

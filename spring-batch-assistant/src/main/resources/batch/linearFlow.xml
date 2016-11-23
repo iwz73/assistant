@@ -15,17 +15,17 @@
 			<tasklet>
 				<chunk reader="linearFlowReader" processor="linearFlowProcessor"
 					writer="linearFlowWriter" commit-interval="3" skip-limit="3">
-					<batch:skippable-exception-classes>
+					<skippable-exception-classes>
 						<batch:include class="java.lang.ArithmeticException" />
-					</batch:skippable-exception-classes>
-					<batch:listeners>
+					</skippable-exception-classes>
+					<listeners>
 						<batch:listener ref="stepExecutionListenerListener"></batch:listener>
 						<batch:listener ref="skipListenerListener"></batch:listener>
 						<batch:listener ref="chunkListenerListener"></batch:listener>
 						<batch:listener ref="itemReadListenerListener"></batch:listener>
 						<batch:listener ref="itemProcessListenerListener"></batch:listener>
 						<batch:listener ref="itemWriteListenerListener"></batch:listener>
-					</batch:listeners>
+					</listeners>
 				</chunk>
 			</tasklet>
 		</batch:step>

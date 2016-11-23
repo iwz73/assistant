@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="skipJob">
+		<batch:step id="skipReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="skipReader" processor="skipProcessor" writer="skipWriter"
+					commit-interval="3" skip-policy="skipSkipPolicy">
+					<listeners>
+						<listener ref="skipSkipListener"></listener>
+					</listeners>
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="skipReader" class="idv.hsiehpinghan.springbatchassistant.reader.SkipReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="skipProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.SkipProcessor"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="skipWriter" class="idv.hsiehpinghan.springbatchassistant.writer.SkipWriter"
+		scope="step">
+	</bean>
+
+	<!-- skipPolicy -->
+	<bean id="skipSkipPolicy"
+		class="idv.hsiehpinghan.springbatchassistant.policy.SkipSkipPolicy">
+	</bean>
+
+	<!-- listener -->
+	<bean id="skipSkipListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.SkipListenerListener">
+	</bean>
+</beans>

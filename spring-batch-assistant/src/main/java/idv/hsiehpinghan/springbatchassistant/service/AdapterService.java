@@ -17,6 +17,13 @@ public class AdapterService {
 		return vo;
 	}
 
+	public AdapterVo adapterProcess(AdapterVo vo) {
+		long longValue = vo.getLongValue();
+		vo.setLongValue(longValue + 1);
+		System.err.println("AdapterService adaptProcess : vo(" + vo + ")");
+		return vo;
+	}
+
 	public void adaptWrite(AdapterVo vo) {
 		System.err.println("AdapterService adaptWrite : vo(" + vo + ")");
 	}

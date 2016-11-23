@@ -8,8 +8,8 @@
 	<batch:job id="adapterJob">
 		<batch:step id="adapterStep">
 			<tasklet>
-				<chunk reader="adapterItemReader" writer="adapterItemWriter"
-					commit-interval="3">
+				<chunk reader="adapterItemReader" processor="adapterItemProcessor"
+					writer="adapterItemWriter" commit-interval="3">
 				</chunk>
 			</tasklet>
 		</batch:step>
@@ -20,6 +20,14 @@
 		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
 		scope="step">
 		<property name="targetMethod" value="adapterRead" />
+		<property name="targetObject" ref="adapterService" />
+	</bean>
+
+	<!-- processor -->
+	<bean id="adapterItemProcessor"
+		class="org.springframework.batch.item.adapter.ItemProcessorAdapter"
+		scope="step">
+		<property name="targetMethod" value="adapterProcess" />
 		<property name="targetObject" ref="adapterService" />
 	</bean>
 

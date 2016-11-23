@@ -31,4 +31,10 @@ public class AdapterVo {
 		this.bigDecimalValue = bigDecimalValue;
 	}
 
+	@Override
+	public String toString() {
+		return "AdapterVo [longValue=" + longValue + ", stringValue=" + stringValue + ", bigDecimalValue="
+				+ bigDecimalValue + "]";
+	}
+
 }

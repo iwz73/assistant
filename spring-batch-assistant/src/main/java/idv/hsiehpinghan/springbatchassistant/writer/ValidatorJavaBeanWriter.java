@@ -10,6 +10,6 @@ public class ValidatorJavaBeanWriter implements ItemWriter<ValidatorJavaBeanVo> 
 
 	@Override
 	public void write(List<? extends ValidatorJavaBeanVo> vos) throws Exception {
-		System.err.println("ValidatorWriter write items(" + vos + ")");
+		System.err.println("ValidatorJavaBeanWriter write items(" + vos + ")");
 	}
 }

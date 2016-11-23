@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="compositeItemProcessorJob">
+		<batch:step id="compositeItemProcessorReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="compositeItemProcessorReader" processor="compositeItemProcessorProcessor"
+					writer="compositeItemProcessorWriter" commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="compositeItemProcessorReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.CompositeItemProcessorReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="compositeItemProcessorProcessor"
+		class="org.springframework.batch.item.support.CompositeItemProcessor"
+		scope="step">
+		<property name="delegates">
+			<list>
+				<ref bean="compositeItemProcessorProcessor_0" />
+				<ref bean="compositeItemProcessorProcessor_1" />
+			</list>
+		</property>
+	</bean>
+	<bean id="compositeItemProcessorProcessor_0"
+		class="idv.hsiehpinghan.springbatchassistant.processor.CompositeItemProcessor_0"
+		scope="step">
+	</bean>
+	<bean id="compositeItemProcessorProcessor_1"
+		class="idv.hsiehpinghan.springbatchassistant.processor.CompositeItemProcessor_1"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="compositeItemProcessorWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.CompositeItemProcessorWriter"
+		scope="step">
+	</bean>
+
+</beans>

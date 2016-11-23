@@ -19,6 +19,12 @@
 		<config>src/main/resources/batch/hibernateCursor.xml</config>
 		<config>src/main/resources/batch/hibernatePaging.xml</config>
 		<config>src/main/resources/batch/multiResource.xml</config>
+		<config>src/main/resources/batch/adapterWithMethodArgument.xml</config>
+		<config>src/main/resources/batch/email.xml</config>
+		<config>src/main/resources/batch/adapter.xml</config>
+		<config>src/main/resources/batch/validator.xml</config>
+		<config>src/main/resources/batch/validatorJavaBean.xml</config>
+		<config>src/main/resources/batch/compositeItemProcessor.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

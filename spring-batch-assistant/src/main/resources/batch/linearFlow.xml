@@ -5,7 +5,6 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<batch:job id="linearFlowJob">
-		<batch:validator ref="defaultJobParametersValidator"></batch:validator>
 		<batch:listeners>
 			<batch:listener ref="jobExecutionListenerListener"></batch:listener>
 		</batch:listeners>
@@ -83,20 +82,4 @@
 		class="idv.hsiehpinghan.springbatchassistant.listener.ItemWriteListenerListener">
 	</bean>
 
-	<!-- validator -->
-	<bean id="defaultJobParametersValidator"
-		class="org.springframework.batch.core.job.DefaultJobParametersValidator">
-		<property name="requiredKeys">
-			<set>
-				<value>longValue</value>
-				<value>stringValue</value>
-			</set>
-		</property>
-		<property name="optionalKeys">
-			<set>
-				<value>doubleValue</value>
-				<value>dateValue</value>
-			</set>
-		</property>
-	</bean>
 </beans>

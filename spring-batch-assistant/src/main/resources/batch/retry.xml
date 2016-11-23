@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="retryJob">
+		<batch:step id="retryReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="retryReader" processor="retryProcessor" writer="retryWriter"
+					commit-interval="3" retry-limit="5">
+					<retryable-exception-classes>
+						<include class="java.lang.RuntimeException" />
+					</retryable-exception-classes>
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="retryReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.RetryReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="retryProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.RetryProcessor"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="retryWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.RetryWriter"
+		scope="step">
+	</bean>
+
+</beans>

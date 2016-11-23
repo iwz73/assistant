@@ -8,8 +8,8 @@
 	<batch:job id="emailJob">
 		<batch:step id="emailStep">
 			<tasklet>
-				<chunk reader="emailItemReader" writer="emailItemWriter"
-					commit-interval="3">
+				<chunk reader="emailItemReader" processor="emailItemProcessor"
+					writer="emailItemWriter" commit-interval="3">
 				</chunk>
 			</tasklet>
 		</batch:step>
@@ -17,21 +17,20 @@
 
 	<!-- reader -->
 	<bean id="emailItemReader"
-		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
+		class="idv.hsiehpinghan.springbatchassistant.reader.EmailReader"
 		scope="step">
-		<property name="targetMethod" value="emailRead" />
-		<property name="targetObject" ref="emailService" />
+	</bean>
+
+	<!-- processor -->
+	<bean id="emailItemProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.EmailProcessor"
+		scope="step">
 	</bean>
 
 	<!-- writer -->
 	<bean id="emailItemWriter"
-		class="org.springframework.batch.item.adapter.ItemWriterAdapter">
-		<property name="targetMethod" value="adaptWrite" />
-		<property name="targetObject" ref="emailService" />
+		class="org.springframework.batch.item.mail.SimpleMailMessageItemWriter">
+		<property name="mailSender" ref="javaMailSender" />
 	</bean>
-
-	<!-- targetObject -->
-	<bean id="emailService"
-		class="idv.hsiehpinghan.springbatchassistant.service.AdapterService"></bean>
 
 </beans>

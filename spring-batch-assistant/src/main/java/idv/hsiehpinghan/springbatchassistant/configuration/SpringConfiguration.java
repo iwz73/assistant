@@ -23,6 +23,8 @@ import org.springframework.dao.annotation.PersistenceExceptionTranslationPostPro
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -109,6 +111,42 @@ public class SpringConfiguration {
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
 		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
+	@Bean
+	public JavaMailSender javaMailSender() {
+		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+		javaMailSender.setHost("smtp.gmail.com");
+		javaMailSender.setPort(587);
+		javaMailSender.setUsername(getUsername());
+		javaMailSender.setPassword(getPassword());
+		javaMailSender.setJavaMailProperties(getProperties());
+		return javaMailSender;
+	}
+
+	private String getUsername() {
+		String usernameProp = "spring_batch_assistant_username";
+		String username = environment.getProperty(usernameProp);
+		if (username == null) {
+			throw new RuntimeException(usernameProp + " not set !!!");
+		}
+		return username;
+	}
+
+	private String getPassword() {
+		String passwordProp = "spring_batch_assistant_password";
+		String password = environment.getProperty(passwordProp);
+		if (password == null) {
+			throw new RuntimeException(passwordProp + " not set !!!");
+		}
+		return password;
+	}
+
+	private Properties getProperties() {
+		Properties prop = new Properties();
+		prop.setProperty("mail.smtp.auth", "true");
+		prop.setProperty("mail.smtp.starttls.enable", "true");
+		return prop;
 	}
 
 	private Properties getHibernateProperties() {

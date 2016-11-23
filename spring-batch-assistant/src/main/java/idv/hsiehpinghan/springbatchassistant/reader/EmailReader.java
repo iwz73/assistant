@@ -14,7 +14,8 @@ public class EmailReader implements ItemReader<String> {
 		if (index >= EMAILS.length) {
 			return null;
 		}
+		String email = EMAILS[index];
 		++index;
-		return EMAILS[index];
+		return email;
 	}
 }

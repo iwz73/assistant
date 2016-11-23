@@ -10,7 +10,7 @@ public class RetryProcessor implements ItemProcessor<RetryVo, RetryVo> {
 	@Override
 	public RetryVo process(RetryVo item) throws Exception {
 		String stringValue = item.getStringValue();
-		if (stringValue.equals("6") && (retryAmount < 2)) {
+		if (stringValue.equals("6") && (retryAmount < 5)) {
 			System.err.println("RetryProcessor retryAmount(" + retryAmount + ") !!!");
 			++retryAmount;
 			throw new RuntimeException();

@@ -4,33 +4,37 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
-	<batch:job id="retryJob">
-		<batch:step id="retryReaderProcessorWriterStep">
+	<batch:job id="retryThenSkipJob">
+		<batch:step id="retryThenSkipReaderProcessorWriterStep">
 			<tasklet>
-				<chunk reader="retryReader" processor="retryProcessor" writer="retryWriter"
-					commit-interval="3" retry-limit="8">
+				<chunk reader="retryThenSkipReader" processor="retryThenSkipProcessor"
+					writer="retryThenSkipWriter" commit-interval="3" retry-limit="1"
+					skip-limit="1">
 					<retryable-exception-classes>
 						<include class="java.lang.RuntimeException" />
 					</retryable-exception-classes>
+					<skippable-exception-classes>
+						<include class="java.lang.RuntimeException" />
+					</skippable-exception-classes>
 				</chunk>
 			</tasklet>
 		</batch:step>
 	</batch:job>
 
 	<!-- reader -->
-	<bean id="retryReader"
+	<bean id="retryThenSkipReader"
 		class="idv.hsiehpinghan.springbatchassistant.reader.RetryReader"
 		scope="step">
 	</bean>
 
 	<!-- processor -->
-	<bean id="retryProcessor"
+	<bean id="retryThenSkipProcessor"
 		class="idv.hsiehpinghan.springbatchassistant.processor.RetryProcessor"
 		scope="step">
 	</bean>
 
 	<!-- writer -->
-	<bean id="retryWriter"
+	<bean id="retryThenSkipWriter"
 		class="idv.hsiehpinghan.springbatchassistant.writer.RetryWriter"
 		scope="step">
 	</bean>

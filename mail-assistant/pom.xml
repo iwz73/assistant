@@ -33,9 +33,6 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<mail.version>1.4.7</mail.version>
-		<data-type-utility.version>1.0.0</data-type-utility.version>
-		<object-utility.version>1.0.0</object-utility.version>
-		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -72,6 +69,12 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- mail -->
 		<dependency>
@@ -80,27 +83,5 @@
 			<version>${mail.version}</version>
 		</dependency>
 
-		<!-- data-type-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>data-type-utility</artifactId>
-			<version>${data-type-utility.version}</version>
-		</dependency>
-
-		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>

@@ -9,7 +9,7 @@
 		<batch:step id="adapterWithMethodArgumentStep">
 			<tasklet>
 				<chunk reader="adapterWithMethodArgumentItemReader" writer="adapterWithMethodArgumentItemWriter"
-					commit-interval="1">
+					commit-interval="3">
 				</chunk>
 			</tasklet>
 		</batch:step>

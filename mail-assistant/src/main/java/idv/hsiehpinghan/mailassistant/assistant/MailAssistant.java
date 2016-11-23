@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.mailassistant.assistant;
 
-import idv.hsiehpinghan.datatypeutility.utility.StringUtility;
-
 import java.io.File;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,13 +14,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MailAssistant {
-	public static final String UTF_8 = StringUtility.UTF_8;
-	
+	public static final String UTF_8 = "utf-8";
+
 	@Autowired
 	private JavaMailSender sender;
 
-	public void sendMail(String from, String to, String subject, String text,
-			boolean isHtml) throws MessagingException {
+	public void sendMail(String from, String to, String subject, String text, boolean isHtml)
+			throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, UTF_8);
 		helper.setFrom(from);
@@ -32,9 +30,8 @@ public class MailAssistant {
 		sender.send(message);
 	}
 
-	public void sendMailWithAttachment(String from, String to, String subject,
-			String text, boolean isHtml, Map<String, File> map)
-			throws MessagingException {
+	public void sendMailWithAttachment(String from, String to, String subject, String text, boolean isHtml,
+			Map<String, File> map) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8);
 		helper.setFrom(from);
@@ -47,8 +44,8 @@ public class MailAssistant {
 		sender.send(message);
 	}
 
-	public void sendMailWithInline(String from, String to, String subject,
-			String text, boolean isHtml, Map<String, File> map) throws MessagingException {
+	public void sendMailWithInline(String from, String to, String subject, String text, boolean isHtml,
+			Map<String, File> map) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8);
 		helper.setFrom(from);

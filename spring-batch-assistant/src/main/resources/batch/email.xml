@@ -5,10 +5,10 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<!-- job -->
-	<batch:job id="adapterJob">
-		<batch:step id="adapterStep">
+	<batch:job id="emailJob">
+		<batch:step id="emailStep">
 			<tasklet>
-				<chunk reader="adapterItemReader" writer="adapterItemWriter"
+				<chunk reader="emailItemReader" writer="emailItemWriter"
 					commit-interval="3">
 				</chunk>
 			</tasklet>
@@ -16,22 +16,22 @@
 	</batch:job>
 
 	<!-- reader -->
-	<bean id="adapterItemReader"
+	<bean id="emailItemReader"
 		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
 		scope="step">
-		<property name="targetMethod" value="adapterRead" />
-		<property name="targetObject" ref="adapterService" />
+		<property name="targetMethod" value="emailRead" />
+		<property name="targetObject" ref="emailService" />
 	</bean>
 
 	<!-- writer -->
-	<bean id="adapterItemWriter"
+	<bean id="emailItemWriter"
 		class="org.springframework.batch.item.adapter.ItemWriterAdapter">
 		<property name="targetMethod" value="adaptWrite" />
-		<property name="targetObject" ref="adapterService" />
+		<property name="targetObject" ref="emailService" />
 	</bean>
 
 	<!-- targetObject -->
-	<bean id="adapterService"
+	<bean id="emailService"
 		class="idv.hsiehpinghan.springbatchassistant.service.AdapterService"></bean>
 
 </beans>

@@ -25,6 +25,9 @@
 		<config>src/main/resources/batch/validator.xml</config>
 		<config>src/main/resources/batch/validatorJavaBean.xml</config>
 		<config>src/main/resources/batch/compositeItemProcessor.xml</config>
+		<config>src/main/resources/batch/retryThenSkip.xml</config>
+		<config>src/main/resources/batch/skip.xml</config>
+		<config>src/main/resources/batch/retry.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

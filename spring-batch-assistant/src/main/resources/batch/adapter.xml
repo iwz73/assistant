@@ -19,15 +19,15 @@
 	<bean id="adapterItemReader"
 		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
 		scope="step">
-		<property name="targetObject" ref="adapterService" />
 		<property name="targetMethod" value="adapterRead" />
+		<property name="targetObject" ref="adapterService" />
 	</bean>
 
 	<!-- writer -->
 	<bean id="adapterItemWriter"
 		class="org.springframework.batch.item.adapter.ItemWriterAdapter">
-		<property name="targetObject" ref="adapterService" />
 		<property name="targetMethod" value="adaptWrite" />
+		<property name="targetObject" ref="adapterService" />
 	</bean>
 
 	<!-- targetObject -->

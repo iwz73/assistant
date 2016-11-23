@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="adapterWithMethodArgumentJob">
+		<batch:step id="adapterWithMethodArgumentStep">
+			<tasklet>
+				<chunk reader="adapterWithMethodArgumentItemReader" writer="adapterWithMethodArgumentItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="adapterWithMethodArgumentItemReader"
+		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
+		scope="step">
+		<property name="targetMethod" value="adapterRead" />
+		<property name="targetObject" ref="adapterWithMethodArgumentService" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="adapterWithMethodArgumentItemWriter"
+		class="org.springframework.batch.item.adapter.PropertyExtractingDelegatingItemWriter">
+		<property name="targetMethod" value="adaptWrite" />
+		<property name="fieldsUsedAsTargetMethodArguments">
+			<list>
+				<value>longValue</value>
+				<value>stringValue</value>
+				<value>bigDecimalValue</value>
+			</list>
+		</property>
+		<property name="targetObject" ref="adapterWithMethodArgumentService" />
+	</bean>
+
+	<!-- targetObject -->
+	<bean id="adapterWithMethodArgumentService"
+		class="idv.hsiehpinghan.springbatchassistant.service.AdapterWithMethodArgumentService"></bean>
+
+</beans>

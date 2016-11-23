@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import idv.hsiehpinghan.springbatchassistant.vo.AdapterVo;
 
-public class AdapterService {
+public class AdapterWithMethodArgumentService {
 	private static int index = 0;
 
 	public AdapterVo adapterRead() {
@@ -13,12 +13,13 @@ public class AdapterService {
 		}
 		++index;
 		AdapterVo vo = generateAdapterVo(index);
-		System.err.println("AdapterService adapterRead : vo(" + vo + ")");
+		System.err.println("AdapterWithMethodArgumentService adapterRead : vo(" + vo + ")");
 		return vo;
 	}
 
-	public void adaptWrite(AdapterVo vo) {
-		System.err.println("AdapterService adaptWrite : vo(" + vo + ")");
+	public void adaptWrite(long longValue, String stringValue, BigDecimal bigDecimalValue) {
+		System.err.println("AdapterWithMethodArgumentService write : longValue(" + longValue + "),stringValue(" + stringValue
+				+ "), bigDecimalValue(" + bigDecimalValue + ")");
 	}
 
 	private AdapterVo generateAdapterVo(long i) {

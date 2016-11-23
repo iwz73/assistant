@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="validatorJavaBeanJob">
+		<batch:step id="validatorJavaBeanReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="validatorJavaBeanReader" processor="validatorJavaBeanProcessor"
+					writer="validatorJavaBeanWriter" commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="validatorJavaBeanReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.ValidatorJavaBeanReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="validatorJavaBeanProcessor"
+		class="org.springframework.batch.item.validator.ValidatingItemProcessor"
+		scope="step">
+		<property name="filter" value="true" />
+		<property name="validator" ref="validatorJavaBeanValidator" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="validatorJavaBeanWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.ValidatorJavaBeanWriter"
+		scope="step">
+	</bean>
+
+	<!-- validator -->
+	<bean id="validatorJavaBeanValidator"
+		class="idv.hsiehpinghan.springbatchassistant.validator.ValidatorJavaBeanValidator">
+	</bean>
+</beans>

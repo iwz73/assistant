@@ -16,6 +16,9 @@
 		<config>src/main/resources/batch/flatFileXml.xml</config>
 		<config>src/main/resources/batch/jdbcCursor.xml</config>
 		<config>src/main/resources/batch/jdbcPaging.xml</config>
+		<config>src/main/resources/batch/hibernateCursor.xml</config>
+		<config>src/main/resources/batch/hibernatePaging.xml</config>
+		<config>src/main/resources/batch/multiResource.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="adapterJob">
+		<batch:step id="adapterStep">
+			<tasklet>
+				<chunk reader="adapterItemReader" writer="adapterItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="adapterItemReader"
+		class="org.springframework.batch.item.adapter.ItemReaderAdapter"
+		scope="step">
+		<property name="targetObject" ref="adapterService" />
+		<property name="targetMethod" value="adapterRead" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="adapterItemWriter"
+		class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+		<property name="targetObject" ref="adapterService" />
+		<property name="targetMethod" value="adaptWrite" />
+	</bean>
+
+	<!-- targetObject -->
+	<bean id="adapterService"
+		class="idv.hsiehpinghan.springbatchassistant.service.AdapterService"></bean>
+
+</beans>

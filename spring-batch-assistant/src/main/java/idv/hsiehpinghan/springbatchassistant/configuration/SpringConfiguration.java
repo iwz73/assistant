@@ -61,16 +61,16 @@ public class SpringConfiguration {
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
 
-//	@PostConstruct
-//	public void postConstruct() throws ScriptException, SQLException {
-//		Connection connection = dataSource.getConnection();
-//		Resource schemaDropPostgresqlSql = resourceLoader
-//				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");
-//		ScriptUtils.executeSqlScript(connection, schemaDropPostgresqlSql);
-//		Resource schemaPostgresqlSql = resourceLoader
-//				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
-//		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
-//	}
+	@PostConstruct
+	public void postConstruct() throws ScriptException, SQLException {
+		Connection connection = dataSource.getConnection();
+		Resource schemaDropPostgresqlSql = resourceLoader
+				.getResource("classpath:/org/springframework/batch/core/schema-drop-postgresql.sql");
+		ScriptUtils.executeSqlScript(connection, schemaDropPostgresqlSql);
+		Resource schemaPostgresqlSql = resourceLoader
+				.getResource("classpath:/org/springframework/batch/core/schema-postgresql.sql");
+		ScriptUtils.executeSqlScript(connection, schemaPostgresqlSql);
+	}
 
 	@Bean
 	public DataSource dataSource(Environment environment) throws PropertyVetoException {

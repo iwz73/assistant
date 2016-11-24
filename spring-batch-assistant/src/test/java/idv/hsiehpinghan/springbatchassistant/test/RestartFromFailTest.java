@@ -27,9 +27,9 @@ public class RestartFromFailTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void test() throws Exception {
 		for (int i = 0; i < START_COUNT; ++i) {
-			Assert.assertEquals(run(), ExitStatus.COMPLETED.getExitCode());
+			Assert.assertEquals(run(), ExitStatus.FAILED.getExitCode());
 		}
-		// Assert.assertEquals(run(), ExitStatus.FAILED.getExitCode());
+		Assert.assertEquals(run(), ExitStatus.COMPLETED.getExitCode());
 	}
 
 	private String run() throws Exception {

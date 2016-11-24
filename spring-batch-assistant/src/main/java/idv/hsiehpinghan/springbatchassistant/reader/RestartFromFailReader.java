@@ -13,12 +13,15 @@ import idv.hsiehpinghan.springbatchassistant.constant.SpringBatchAssistantConsta
 public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 	private final static String[] ITEMS = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 	private static int index = 0;
-	private static boolean isThrowed = false;
+	private static boolean isRestart = false;
 
 	@Override
 	public void open(ExecutionContext executionContext) throws ItemStreamException {
 		System.err.println("RestartFromFailReader open index(" + index + ")");
-		executionContext.getInt(SpringBatchAssistantConstant.INDEX_KEY, 0);
+		index = executionContext.getInt(SpringBatchAssistantConstant.INDEX_KEY, 0);
+		if (index == 3) {
+			isRestart = true;
+		}
 	}
 
 	@Override
@@ -33,9 +36,8 @@ public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 			return null;
 		}
 		String item = ITEMS[index];
-		if (item.equals("3") && (isThrowed == false)) {
+		if (item.equals("3") && (isRestart == false)) {
 			System.err.println("RestartFromFailReader RuntimeException item(" + item + ")");
-			isThrowed = true;
 			throw new RuntimeException();
 		}
 		++index;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="restartFromFailJob">
+		<batch:step id="restartFromFailReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="restartFromFailReader" processor="restartFromFailProcessor"
+					writer="restartFromFailWriter" commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="restartFromFailReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.RestartFromFailReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="restartFromFailProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.RestartFromFailProcessor"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="restartFromFailWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.RestartFromFailWriter"
+		scope="step">
+	</bean>
+
+</beans>

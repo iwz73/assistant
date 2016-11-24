@@ -32,6 +32,12 @@ public class HibernateRepository {
 		return (HibernateEntity) session.get(HibernateEntity.class, id);
 	}
 
+	public Long count() {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("select count(1) from HibernateEntity ");
+		return (Long) query.uniqueResult();
+	}
+
 	public String findClobAsString(int id) throws SQLException, IOException {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("select clob from HibernateEntity bte where bte.id = :id ");

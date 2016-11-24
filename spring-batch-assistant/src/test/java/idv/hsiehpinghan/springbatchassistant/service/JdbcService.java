@@ -26,12 +26,12 @@ public class JdbcService {
 		repository.deleteByPreparedStatementCreator(id);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Transactional(value = "transactionManager", readOnly = true, propagation = Propagation.SUPPORTS)
 	public JdbcEntity queryForObjectByRowMapper(long id) {
 		return repository.queryForObjectByRowMapper(id);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Transactional(value = "transactionManager", readOnly = true, propagation = Propagation.SUPPORTS)
 	public boolean exists(long id) {
 		return repository.exists(id);
 	}

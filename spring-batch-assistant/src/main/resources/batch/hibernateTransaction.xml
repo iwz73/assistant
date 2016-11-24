@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- job -->
+	<batch:job id="hibernateTransactionJob">
+		<batch:step id="hibernateTransactionStep">
+			<tasklet>
+				<chunk reader="hibernateTransactionItemReader" processor="hibernateTransactionItemProcessor"
+					writer="hibernateTransactionItemWriter" commit-interval="3"
+					processor-transactional="true">
+				</chunk>
+				<transaction-attributes isolation="DEFAULT"
+					propagation="REQUIRED" />
+				<batch:no-rollback-exception-classes>
+					<batch:include class="java.lang.RuntimeException" />
+				</batch:no-rollback-exception-classes>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="hibernateTransactionItemReader"
+		class="org.springframework.batch.item.database.HibernateCursorItemReader"
+		scope="step">
+		<property name="useStatelessSession" value="true" />
+		<property name="queryString" value="from HibernateEntity" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- processor -->
+	<bean id="hibernateTransactionItemProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.HibernateTransactionProcessor">
+	</bean>
+
+	<!-- writer -->
+	<bean id="hibernateTransactionItemWriter"
+		class="org.springframework.batch.item.database.HibernateItemWriter">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- rowMapper -->
+	<bean id="hibernateTransactionRowMapper"
+		class="idv.hsiehpinghan.springbatchassistant.mapper.JdbcRowMapper"></bean>
+
+	<!-- itemSqlParameterSourceProvider -->
+	<bean id="hibernateTransactionItemSqlParameterSourceProvider"
+		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"></bean>
+
+</beans>

@@ -28,6 +28,8 @@
 		<config>src/main/resources/batch/retryThenSkip.xml</config>
 		<config>src/main/resources/batch/skip.xml</config>
 		<config>src/main/resources/batch/retry.xml</config>
+		<config>src/main/resources/batch/restart.xml</config>
+		<config>src/main/resources/batch/restartFromFail.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

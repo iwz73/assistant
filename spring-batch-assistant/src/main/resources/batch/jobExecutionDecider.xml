@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="jobExecutionDeciderJob">
+		<batch:step id="jobExecutionDeciderTaskletStep_0" next="jobExecutionDeciderDecision">
+			<tasklet>
+				<chunk reader="jobExecutionDeciderReader" writer="jobExecutionDeciderWriter"
+					commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+		<batch:decision id="jobExecutionDeciderDecision"
+			decider="jobExecutionDeciderDecider">
+			<batch:next on="*" to="jobExecutionDeciderTaskletStep_1_0" />
+			<batch:next on="JOB_EXECUTION_DECIDER_EXIT_CODE" to="jobExecutionDeciderTaskletStep_1_1" />
+		</batch:decision>
+		<batch:step id="jobExecutionDeciderTaskletStep_1_0">
+			<tasklet ref="jobExecutionDeciderTasklet_1_0"></tasklet>
+		</batch:step>
+		<batch:step id="jobExecutionDeciderTaskletStep_1_1">
+			<tasklet ref="jobExecutionDeciderTasklet_1_1"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="jobExecutionDeciderReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.JobExecutionDeciderReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="jobExecutionDeciderWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.JobExecutionDeciderWriter"
+		scope="step">
+	</bean>
+
+	<!-- tasklet -->
+	<bean id="jobExecutionDeciderTasklet_1_0"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.JobExecutionDeciderTasklet_1_0"
+		scope="step">
+	</bean>
+	<bean id="jobExecutionDeciderTasklet_1_1"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.JobExecutionDeciderTasklet_1_1"
+		scope="step">
+	</bean>
+
+	<!-- decider -->
+	<bean id="jobExecutionDeciderDecider"
+		class="idv.hsiehpinghan.springbatchassistant.decider.JobExecutionDeciderDecider">
+	</bean>
+
+</beans>

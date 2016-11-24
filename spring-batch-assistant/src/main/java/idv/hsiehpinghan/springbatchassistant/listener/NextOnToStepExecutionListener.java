@@ -16,7 +16,7 @@ public class NextOnToStepExecutionListener implements StepExecutionListener {
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		System.err.println("NextOnToStepExecutionListener afterStep change exist code to NEXT_ON_EXIT_CODE !!!");
+		System.err.println("NextOnToStepExecutionListener change exist code to NEXT_ON_EXIT_CODE !!!");
 		return new ExitStatus("NEXT_ON_EXIT_CODE");
 	}
 

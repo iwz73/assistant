@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="nextOnToJob">
+		<batch:step id="nextOnToTaskletStep_0">
+			<tasklet>
+				<chunk reader="nextOnToReader" writer="nextOnToWriter"
+					commit-interval="3">
+					<listeners>
+						<batch:listener ref="nextOnToStepExecutionListener"></batch:listener>
+					</listeners>
+				</chunk>
+			</tasklet>
+			<batch:next on="*" to="nextOnToTaskletStep_1_0" />
+			<batch:next on="NEXT_ON_EXIT_CODE" to="nextOnToTaskletStep_1_1" />
+		</batch:step>
+		<batch:step id="nextOnToTaskletStep_1_0">
+			<tasklet ref="nextOnToTasklet_1_0"></tasklet>
+		</batch:step>
+		<batch:step id="nextOnToTaskletStep_1_1">
+			<tasklet ref="nextOnToTasklet_1_1"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="nextOnToReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.NextOnToReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="nextOnToWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.NextOnToWriter"
+		scope="step">
+	</bean>
+
+	<!-- tasklet -->
+	<bean id="nextOnToTasklet_1_0"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.NextOnToTasklet_1_0"
+		scope="step">
+	</bean>
+	<bean id="nextOnToTasklet_1_1"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.NextOnToTasklet_1_1"
+		scope="step">
+	</bean>
+
+	<!-- listener -->
+	<bean id="nextOnToStepExecutionListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.NextOnToStepExecutionListener">
+	</bean>
+</beans>

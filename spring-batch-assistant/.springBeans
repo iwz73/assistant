@@ -30,6 +30,8 @@
 		<config>src/main/resources/batch/retry.xml</config>
 		<config>src/main/resources/batch/restart.xml</config>
 		<config>src/main/resources/batch/restartFromFail.xml</config>
+		<config>src/main/resources/batch/nextOnTo.xml</config>
+		<config>src/main/resources/batch/hibernateTransaction.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

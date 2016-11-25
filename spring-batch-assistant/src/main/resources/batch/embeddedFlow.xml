@@ -4,18 +4,19 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
-	<batch:job id="flowJob">
-		<batch:flow parent="flowFlow" id="flowJobFlow" next="flowTaskletStep"></batch:flow>
-		<batch:step id="flowTaskletStep">
-			<tasklet ref="flowTasklet"></tasklet>
+	<batch:job id="embeddedFlowJob">
+		<batch:flow parent="embeddedFlowFlow" id="embeddedFlowJobFlow"
+			next="embeddedFlowTaskletStep"></batch:flow>
+		<batch:step id="embeddedFlowTaskletStep">
+			<tasklet ref="embeddedFlowTasklet"></tasklet>
 		</batch:step>
 	</batch:job>
 
 	<!-- flow -->
-	<batch:flow id="flowFlow">
-		<batch:step id="flowReaderProcessorWriterStep">
+	<batch:flow id="embeddedFlowFlow">
+		<batch:step id="embeddedFlowReaderProcessorWriterStep">
 			<tasklet>
-				<chunk reader="flowReader" writer="flowWriter"
+				<chunk reader="embeddedFlowReader" writer="embeddedFlowWriter"
 					commit-interval="3">
 				</chunk>
 			</tasklet>
@@ -23,18 +24,20 @@
 	</batch:flow>
 
 	<!-- reader -->
-	<bean id="flowReader" class="idv.hsiehpinghan.springbatchassistant.reader.FlowReader"
+	<bean id="embeddedFlowReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.EmbeddedFlowReader"
 		scope="step">
 	</bean>
 
 	<!-- writer -->
-	<bean id="flowWriter" class="idv.hsiehpinghan.springbatchassistant.writer.FlowWriter"
+	<bean id="embeddedFlowWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.EmbeddedFlowWriter"
 		scope="step">
 	</bean>
 
 	<!-- tasklet -->
-	<bean id="flowTasklet"
-		class="idv.hsiehpinghan.springbatchassistant.tasklet.FlowTasklet"
+	<bean id="embeddedFlowTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.EmbeddedFlowTasklet"
 		scope="step">
 	</bean>
 

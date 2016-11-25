@@ -5,11 +5,11 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-public class FlowTasklet implements Tasklet {
+public class EmbeddedFlowTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		System.err.println("FlowTasklet !!!");
+		System.err.println("EmbeddedFlowTasklet !!!");
 		return RepeatStatus.FINISHED;
 	}
 

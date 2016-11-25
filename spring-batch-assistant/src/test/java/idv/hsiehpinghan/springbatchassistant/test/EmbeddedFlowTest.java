@@ -16,11 +16,11 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.springbatchassistant.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class FlowTest extends AbstractTestNGSpringContextTests {
+public class EmbeddedFlowTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("flowJob")
+	@Qualifier("embeddedFlowJob")
 	private Job job;
 
 	@Test

@@ -5,7 +5,7 @@ import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 
-public class FlowReader implements ItemReader<String> {
+public class EmbeddedFlowReader implements ItemReader<String> {
 	private final static String[] ITEMS = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 	private static int index = 0;
 
@@ -15,7 +15,7 @@ public class FlowReader implements ItemReader<String> {
 			return null;
 		}
 		String item = ITEMS[index++];
-		System.err.println("FlowReader read item(" + item + ")");
+		System.err.println("EmbeddedFlowReader read item(" + item + ")");
 		return item;
 	}
 }

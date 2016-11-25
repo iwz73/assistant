@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="embeddedJobJob_1">
+		<batch:step id="embeddedJobJobStep" next="embeddedJobTaskletStep">
+			<batch:job ref="embeddedJobJob_0" />
+		</batch:step>
+		<batch:step id="embeddedJobTaskletStep">
+			<tasklet ref="embeddedJobTasklet"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<batch:job id="embeddedJobJob_0">
+		<batch:step id="embeddedJobReaderProcessorWriterStep">
+			<tasklet>
+				<chunk reader="embeddedJobReader" writer="embeddedJobWriter"
+					commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="embeddedJobReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.EmbeddedJobReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="embeddedJobWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.EmbeddedJobWriter"
+		scope="step">
+	</bean>
+
+	<!-- tasklet -->
+	<bean id="embeddedJobTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.EmbeddedJobTasklet"
+		scope="step">
+	</bean>
+
+</beans>

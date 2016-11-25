@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -12,18 +12,17 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class TaskletAdapterTest extends AbstractTestNGSpringContextTests {
+public class JobExecutionDeciderTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("methodInvokingTaskletAdapterJob")
-	private Job methodInvokingTaskletAdapterJob;
+	@Qualifier("jobExecutionDeciderJob")
+	private Job jobExecutionDeciderJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		jobLauncher.run(methodInvokingTaskletAdapterJob,
-				builder.toJobParameters());
+		jobLauncher.run(jobExecutionDeciderJob, builder.toJobParameters());
 	}
 
 }

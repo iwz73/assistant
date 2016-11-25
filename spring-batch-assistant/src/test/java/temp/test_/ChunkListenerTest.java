@@ -1,13 +1,13 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import java.util.Collection;
 
-import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,41 +18,40 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class EndTest extends AbstractTestNGSpringContextTests {
-
+public class ChunkListenerTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("endJob")
-	private Job endJob;
+	@Qualifier("chunkListenerJob")
+	private Job chunkListenerJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		JobExecution jobExecution = jobLauncher.run(endJob,
+		JobExecution jobExecution = jobLauncher.run(chunkListenerJob,
 				builder.toJobParameters());
-		assertEndJobExecution(jobExecution);
-		assertEndStepExecutions(jobExecution.getStepExecutions());
+		assertBasicStepExecutions(jobExecution.getStepExecutions());
 	}
 
-	private void assertEndJobExecution(JobExecution jobExecution) {
-		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(),
-				"END TEST");
-		Assert.assertEquals(jobExecution.getStatus(), BatchStatus.COMPLETED);
-	}
-
-	private void assertEndStepExecutions(
+	private void assertBasicStepExecutions(
 			Collection<StepExecution> stepExecutions) {
 		StepExecution[] stepExecutionArr = new StepExecution[stepExecutions
 				.size()];
 		stepExecutions.toArray(stepExecutionArr);
-		assertEndStep_0Execution(stepExecutionArr[0]);
+		assertBasicStep_0Execution(stepExecutionArr[0]);
 	}
 
-	private void assertEndStep_0Execution(StepExecution stepExecution) {
-		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
-				"FAILED");
-		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.FAILED);
+	private void assertBasicStep_0Execution(StepExecution stepExecution) {
+		assertBasicStep_0ExecutionContext(stepExecution.getExecutionContext());
 	}
 
+	private void assertBasicStep_0ExecutionContext(
+			ExecutionContext executionContext) {
+		Assert.assertEquals(executionContext.getString("beforeChunk"),
+				"beforeChunk");
+		Assert.assertEquals(executionContext.getString("afterChunk"),
+				"afterChunk");
+		Assert.assertEquals(executionContext.getString("afterChunkError"),
+				"afterChunkError");
+	}
 }

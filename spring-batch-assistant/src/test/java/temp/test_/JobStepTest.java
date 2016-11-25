@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -12,17 +12,17 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class ItemWriteListenerTest extends AbstractTestNGSpringContextTests {
+public class JobStepTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("itemWriteListenerJob")
-	private Job itemWriteListenerJob;
+	@Qualifier("jobStepJob")
+	private Job jobStepJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		jobLauncher.run(itemWriteListenerJob, builder.toJobParameters());
+		jobLauncher.run(jobStepJob, builder.toJobParameters());
 	}
 
 }

@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import java.util.Collection;
 

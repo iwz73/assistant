@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.suit_;
+package temp.suit_;
 
 public class TestngSuitSetting {
 //	private static ApplicationContext applicationContext;

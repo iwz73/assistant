@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -12,17 +12,17 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class ConditionalFlowTest extends AbstractTestNGSpringContextTests {
+public class ItemProcessListenerTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("conditionalFlowJob")
-	private Job conditionalFlowJob;
+	@Qualifier("itemProcessListenerJob")
+	private Job itemProcessListenerJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		jobLauncher.run(conditionalFlowJob, builder.toJobParameters());
+		jobLauncher.run(itemProcessListenerJob, builder.toJobParameters());
 	}
 
 }

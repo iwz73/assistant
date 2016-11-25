@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import java.util.Collection;
 
@@ -8,7 +8,6 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,41 +18,41 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class StepExecutionListenerTest extends AbstractTestNGSpringContextTests {
+public class SkipTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("stepExecutionListenerJob")
-	private Job stepExecutionListenerJob;
+	@Qualifier("skipJob")
+	private Job skipJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		JobExecution jobExecution = jobLauncher.run(stepExecutionListenerJob,
+		JobExecution jobExecution = jobLauncher.run(skipJob,
 				builder.toJobParameters());
-		assertBasicStepExecutions(jobExecution.getStepExecutions());
+		assertSkipStepExecutions(jobExecution.getStepExecutions());
 	}
 
-	private void assertBasicStepExecutions(
+	private void assertSkipStepExecutions(
 			Collection<StepExecution> stepExecutions) {
 		StepExecution[] stepExecutionArr = new StepExecution[stepExecutions
 				.size()];
 		stepExecutions.toArray(stepExecutionArr);
-		assertBasicStep_0Execution(stepExecutionArr[0]);
+		assertSkipStep_0Execution(stepExecutionArr[0]);
 	}
 
-	private void assertBasicStep_0Execution(StepExecution stepExecution) {
-		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
-				"UNKNOWN");
-		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.COMPLETED);
-		assertBasicStep_0ExecutionContext(stepExecution.getExecutionContext());
+	private void assertSkipStep_0Execution(StepExecution stepExecution) {
+		Assert.assertEquals(stepExecution.getCommitCount(), 1);
+		Assert.assertEquals("FAILED", stepExecution.getExitStatus()
+				.getExitCode());
+		Assert.assertEquals(stepExecution.getFilterCount(), 0);
+		Assert.assertEquals(stepExecution.getProcessSkipCount(), 0);
+		Assert.assertEquals(stepExecution.getReadCount(), 4);
+		Assert.assertEquals(stepExecution.getReadSkipCount(), 3);
+		Assert.assertEquals(stepExecution.getRollbackCount(), 1);
+		Assert.assertEquals(stepExecution.getSkipCount(), 3);
+		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.FAILED);
+		Assert.assertEquals(stepExecution.getStepName(), "skipStep_0");
 	}
 
-	private void assertBasicStep_0ExecutionContext(
-			ExecutionContext executionContext) {
-		Assert.assertEquals(executionContext.getString("beforeStep"),
-				"beforeStep");
-		Assert.assertEquals(executionContext.getString("afterStep"),
-				"afterStep");
-	}
 }

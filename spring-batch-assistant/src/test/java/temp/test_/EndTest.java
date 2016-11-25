@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import java.util.Collection;
 
@@ -18,41 +18,41 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class SkipTest extends AbstractTestNGSpringContextTests {
+public class EndTest extends AbstractTestNGSpringContextTests {
+
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("skipJob")
-	private Job skipJob;
+	@Qualifier("endJob")
+	private Job endJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		JobExecution jobExecution = jobLauncher.run(skipJob,
+		JobExecution jobExecution = jobLauncher.run(endJob,
 				builder.toJobParameters());
-		assertSkipStepExecutions(jobExecution.getStepExecutions());
+		assertEndJobExecution(jobExecution);
+		assertEndStepExecutions(jobExecution.getStepExecutions());
 	}
 
-	private void assertSkipStepExecutions(
+	private void assertEndJobExecution(JobExecution jobExecution) {
+		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(),
+				"END TEST");
+		Assert.assertEquals(jobExecution.getStatus(), BatchStatus.COMPLETED);
+	}
+
+	private void assertEndStepExecutions(
 			Collection<StepExecution> stepExecutions) {
 		StepExecution[] stepExecutionArr = new StepExecution[stepExecutions
 				.size()];
 		stepExecutions.toArray(stepExecutionArr);
-		assertSkipStep_0Execution(stepExecutionArr[0]);
+		assertEndStep_0Execution(stepExecutionArr[0]);
 	}
 
-	private void assertSkipStep_0Execution(StepExecution stepExecution) {
-		Assert.assertEquals(stepExecution.getCommitCount(), 1);
-		Assert.assertEquals("FAILED", stepExecution.getExitStatus()
-				.getExitCode());
-		Assert.assertEquals(stepExecution.getFilterCount(), 0);
-		Assert.assertEquals(stepExecution.getProcessSkipCount(), 0);
-		Assert.assertEquals(stepExecution.getReadCount(), 4);
-		Assert.assertEquals(stepExecution.getReadSkipCount(), 3);
-		Assert.assertEquals(stepExecution.getRollbackCount(), 1);
-		Assert.assertEquals(stepExecution.getSkipCount(), 3);
+	private void assertEndStep_0Execution(StepExecution stepExecution) {
+		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
+				"FAILED");
 		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.FAILED);
-		Assert.assertEquals(stepExecution.getStepName(), "skipStep_0");
 	}
 
 }

@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -12,17 +12,17 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class ItemProcessListenerTest extends AbstractTestNGSpringContextTests {
+public class SplitFlowTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("itemProcessListenerJob")
-	private Job itemProcessListenerJob;
+	@Qualifier("splitFlowJob")
+	private Job splitFlowJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		jobLauncher.run(itemProcessListenerJob, builder.toJobParameters());
+		jobLauncher.run(splitFlowJob, builder.toJobParameters());
 	}
 
 }

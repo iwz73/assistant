@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.springbatchassistant.test_;
+package temp.test_;
 
 import java.util.Collection;
 
@@ -8,6 +8,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,41 +19,41 @@ import org.testng.annotations.Test;
 import temp.configuration_.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class FailTest extends AbstractTestNGSpringContextTests {
-
+public class StepExecutionListenerTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("failJob")
-	private Job failJob;
+	@Qualifier("stepExecutionListenerJob")
+	private Job stepExecutionListenerJob;
 
 	@Test
 	public void test() throws Exception {
 		JobParametersBuilder builder = new JobParametersBuilder();
-		JobExecution jobExecution = jobLauncher.run(failJob,
+		JobExecution jobExecution = jobLauncher.run(stepExecutionListenerJob,
 				builder.toJobParameters());
-		assertFailJobExecution(jobExecution);
-		assertFailStepExecutions(jobExecution.getStepExecutions());
+		assertBasicStepExecutions(jobExecution.getStepExecutions());
 	}
 
-	private void assertFailJobExecution(JobExecution jobExecution) {
-		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(),
-				"FAILED");
-		Assert.assertEquals(jobExecution.getStatus(), BatchStatus.FAILED);
-	}
-
-	private void assertFailStepExecutions(
+	private void assertBasicStepExecutions(
 			Collection<StepExecution> stepExecutions) {
 		StepExecution[] stepExecutionArr = new StepExecution[stepExecutions
 				.size()];
 		stepExecutions.toArray(stepExecutionArr);
-		assertFailStep_0Execution(stepExecutionArr[0]);
+		assertBasicStep_0Execution(stepExecutionArr[0]);
 	}
 
-	private void assertFailStep_0Execution(StepExecution stepExecution) {
+	private void assertBasicStep_0Execution(StepExecution stepExecution) {
 		Assert.assertEquals(stepExecution.getExitStatus().getExitCode(),
-				"COMPLETED");
+				"UNKNOWN");
 		Assert.assertEquals(stepExecution.getStatus(), BatchStatus.COMPLETED);
+		assertBasicStep_0ExecutionContext(stepExecution.getExecutionContext());
 	}
 
+	private void assertBasicStep_0ExecutionContext(
+			ExecutionContext executionContext) {
+		Assert.assertEquals(executionContext.getString("beforeStep"),
+				"beforeStep");
+		Assert.assertEquals(executionContext.getString("afterStep"),
+				"afterStep");
+	}
 }

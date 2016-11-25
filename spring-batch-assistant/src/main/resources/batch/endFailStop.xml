@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="endFailStopJob">
+		<batch:step id="endFailStopTaskletStep">
+			<tasklet>
+				<chunk reader="endFailStopReader" writer="endFailStopWriter"
+					commit-interval="3">
+					<listeners>
+						<batch:listener ref="endFailStopStepExecutionListener"></batch:listener>
+					</listeners>
+				</chunk>
+			</tasklet>
+			<batch:end on="BATCH_STATUS_COMPLETED" />
+			<batch:fail on="BATCH_STATUS_FAILED" />
+			<batch:stop on="BATCH_STATUS_STOPPED" restart="endFailStopTaskletStep" />
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="endFailStopReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.EndFailStopReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="endFailStopWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.EndFailStopWriter"
+		scope="step">
+	</bean>
+
+	<!-- listener -->
+	<bean id="endFailStopStepExecutionListener"
+		class="idv.hsiehpinghan.springbatchassistant.listener.EndFailStopStepExecutionListener"
+		scope="step">
+		<property name="batchStatus" value="#{jobParameters['batchStatus']}" />
+	</bean>
+</beans>

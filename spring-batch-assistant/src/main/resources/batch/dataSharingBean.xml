@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="dataSharingBeanJob">
+		<batch:step id="dataSharingBeanReaderProcessorWriterStep"
+			next="dataSharingBeanTaskletStep">
+			<tasklet>
+				<chunk reader="dataSharingBeanReader" writer="dataSharingBeanWriter"
+					commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+		<batch:step id="dataSharingBeanTaskletStep">
+			<tasklet ref="dataSharingBeanTasklet"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="dataSharingBeanReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.DataSharingBeanReader"
+		scope="step">
+		<property name="vo" ref="dataSharingBeanVo" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="dataSharingBeanWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.DataSharingBeanWriter"
+		scope="step">
+		<property name="longValue" value="#{dataSharingBeanVo.getLongValue()}" />
+	</bean>
+
+	<!-- tasklet -->
+	<bean id="dataSharingBeanTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.DataSharingBeanTasklet"
+		scope="step">
+		<property name="stringValue" value="#{dataSharingBeanVo.getStringValue()}" />
+	</bean>
+
+	<!-- vo -->
+	<bean id="dataSharingBeanVo"
+		class="idv.hsiehpinghan.springbatchassistant.vo.DataSharingBeanVo">
+	</bean>
+</beans>

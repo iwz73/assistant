@@ -32,6 +32,8 @@
 		<config>src/main/resources/batch/restartFromFail.xml</config>
 		<config>src/main/resources/batch/nextOnTo.xml</config>
 		<config>src/main/resources/batch/hibernateTransaction.xml</config>
+		<config>src/main/resources/batch/dataSharingBean.xml</config>
+		<config>src/main/resources/batch/context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

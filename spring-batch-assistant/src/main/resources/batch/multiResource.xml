@@ -28,25 +28,10 @@
 		class="org.springframework.batch.item.file.MultiResourceItemWriter"
 		scope="step">
 		<property name="resource" value="file:#{jobParameters['outputResource']}" />
-		<property name="itemCountLimitPerResource" value="#{jobParameters['itemCountLimitPerResource']}" />
+		<property name="itemCountLimitPerResource"
+			value="#{jobParameters['itemCountLimitPerResource']}" />
 		<property name="saveState" value="#{jobParameters['saveState']}" />
 		<property name="delegate" ref="flatFileFixedLengthItemWriter" />
 	</bean>
 
-	<!-- lineAggregator -->
-	<bean id="multiResourceLineAggregator"
-		class="org.springframework.batch.item.file.transform.FormatterLineAggregator">
-		<property name="fieldExtractor" ref="multiResourceBeanWrapperFieldExtractor"></property>
-		<property name="format" value="%5.5s|%-10.10s|" />
-	</bean>
-
-	<!-- fieldExtractor -->
-	<bean id="multiResourceBeanWrapperFieldExtractor"
-		class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
-		<property name="names" value="longValue,stringValue" />
-	</bean>
-
-	<!-- vo -->
-	<bean id="multiResourceFlatFileVo" class="idv.hsiehpinghan.springbatchassistant.vo.FlatFileVo"
-		scope="prototype" />
 </beans>

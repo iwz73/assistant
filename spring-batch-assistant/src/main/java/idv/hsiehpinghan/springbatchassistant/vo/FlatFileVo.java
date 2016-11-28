@@ -20,4 +20,9 @@ public class FlatFileVo {
 		this.stringValue = stringValue;
 	}
 
+	@Override
+	public String toString() {
+		return "FlatFileVo [longValue=" + longValue + ", stringValue=" + stringValue + "]";
+	}
+
 }

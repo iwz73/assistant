@@ -20,7 +20,7 @@ public class MultiResourcePartitionerTest extends AbstractTestNGSpringContextTes
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	@Qualifier("multiResourceJob")
+	@Qualifier("multiResourcePartitionerJob")
 	private Job job;
 
 	@Test

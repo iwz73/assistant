@@ -18,6 +18,7 @@
 	<bean id="multiResourcePartitionerMultiResourcePartitioner"
 		class="org.springframework.batch.core.partition.support.MultiResourcePartitioner"
 		scope="step">
+		<property name="keyName" value="fileName" />
 		<property name="resources" value="file:#{jobParameters['inputResources']}" />
 	</bean>
 
@@ -38,36 +39,30 @@
 	</batch:step>
 
 	<!-- reader -->
-	<bean id="multiResourcePartitionerReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+	<bean id="multiResourcePartitionerReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultiResourcePartitionerReader"
+		scope="step">
+		<property name="delegate" ref="multiResourcePartitionerDelegateReader" />
+	</bean>
+	<bean id="multiResourcePartitionerDelegateReader" class="org.springframework.batch.item.file.FlatFileItemReader"
 		scope="step">
 		<property name="encoding" value="#{jobParameters['encoding']}" />
 		<property name="linesToSkip" value="#{jobParameters['linesToSkip']}" />
 		<property name="strict" value="#{jobParameters['strict']}" />
+		<property name="resource" value="#{stepExecutionContext[fileName]}" />
 		<property name="comments" value="#{jobParameters['comments']}"></property>
 		<property name="bufferedReaderFactory"
-			ref="multiResourcePartitionerDefaultBufferedReaderFactory"></property>
-		<property name="lineMapper" ref="multiResourcePartitionerDefaultLineMapper" />
+			ref="flatFileFixedLengthDefaultBufferedReaderFactory"></property>
+		<property name="lineMapper" ref="flatFileFixedLengthDefaultLineMapper" />
 		<property name="recordSeparatorPolicy"
-			ref="multiResourcePartitionerDefaultRecordSeparatorPolicy"></property>
-		<property name="skippedLinesCallback" ref="multiResourcePartitionerLineCallbackHandler"></property>
+			ref="flatFileFixedLengthDefaultRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileFixedLengthLineCallbackHandler"></property>
 	</bean>
 
 	<!-- writer -->
-	<bean id="multiResourcePartitionerWriter" class="org.springframework.batch.item.file.FlatFileItemWriter"
+	<bean id="multiResourcePartitionerWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MultiResourcePartitionerWriter"
 		scope="step">
-		<property name="appendAllowed" value="#{jobParameters['appendAllowed']}" />
-		<property name="encoding" value="#{jobParameters['encoding']}" />
-		<property name="lineSeparator" value="#{jobParameters['lineSeparator']}" />
-		<property name="saveState" value="#{jobParameters['saveState']}" />
-		<property name="shouldDeleteIfEmpty" value="#{jobParameters['shouldDeleteIfEmpty']}" />
-		<property name="shouldDeleteIfExists" value="#{jobParameters['shouldDeleteIfExists']}" />
-		<property name="transactional" value="#{jobParameters['transactional']}" />
-		<property name="resource" value="file:#{jobParameters['outputResource']}" />
-		<property name="lineAggregator" ref="multiResourcePartitionerLineAggregator" />
-		<property name="headerCallback"
-			ref="multiResourcePartitionerFlatFileHeaderCallback" />
-		<property name="footerCallback"
-			ref="multiResourcePartitionerFlatFileFooterCallback" />
 	</bean>
 
 </beans>

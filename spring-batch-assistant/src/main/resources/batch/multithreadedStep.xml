@@ -6,7 +6,8 @@
 
 	<batch:job id="multithreadedStepJob">
 		<batch:step id="multithreadedStepReaderProcessorWriterStep">
-			<tasklet task-executor="taskExecutor" throttle-limit="3">
+			<tasklet task-executor="multithreadedStepTaskExecutor"
+				throttle-limit="3">
 				<chunk reader="multithreadedStepReader" processor="multithreadedStepProcessor"
 					writer="multithreadedStepWriter" commit-interval="3">
 				</chunk>
@@ -38,11 +39,10 @@
 	</bean>
 
 	<!-- taskExecutor -->
-	<bean id="taskExecutor"
+	<bean id="multithreadedStepTaskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="3" />
 		<property name="maxPoolSize" value="3" />
 	</bean>
-
 
 </beans>

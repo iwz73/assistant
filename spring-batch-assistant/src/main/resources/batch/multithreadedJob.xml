@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="multithreadedJobJob">
+		<batch:step id="multithreadedJobTaskletStep_0" next="multithreadedJobSplit">
+			<tasklet ref="multithreadedJobTasklet_0"></tasklet>
+		</batch:step>
+		<batch:split id="multithreadedJobSplit" task-executor="multithreadedJobTaskExecutor"
+			next="multithreadedJobTaskletStep_1">
+			<batch:flow>
+				<batch:step id="multithreadedJobSplit_0">
+					<tasklet>
+						<chunk reader="multithreadedJobReader_0" writer="multithreadedJobWriter_0"
+							commit-interval="3">
+						</chunk>
+					</tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="multithreadedJobSplit_1">
+					<tasklet>
+						<chunk reader="multithreadedJobReader_1" writer="multithreadedJobWriter_1"
+							commit-interval="3">
+						</chunk>
+					</tasklet>
+				</batch:step>
+			</batch:flow>
+		</batch:split>
+		<batch:step id="multithreadedJobTaskletStep_1">
+			<tasklet ref="multithreadedJobTasklet_1"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- tasklet -->
+	<bean id="multithreadedJobTasklet_0"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.MultithreadedJobTasklet_0"
+		scope="step">
+	</bean>
+	<bean id="multithreadedJobTasklet_1"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.MultithreadedJobTasklet_1"
+		scope="step">
+	</bean>
+
+	<!-- reader -->
+	<bean id="multithreadedJobReader_0"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultithreadedJobReader_0"
+		scope="step">
+	</bean>
+	<bean id="multithreadedJobReader_1"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultithreadedJobReader_1"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="multithreadedJobProcessor_0"
+		class="idv.hsiehpinghan.springbatchassistant.processor.MultithreadedJobProcessor_0"
+		scope="step">
+	</bean>
+	<bean id="multithreadedJobProcessor_1"
+		class="idv.hsiehpinghan.springbatchassistant.processor.MultithreadedJobProcessor_1"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="multithreadedJobWriter_0"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MultithreadedJobWriter_0"
+		scope="step">
+	</bean>
+	<bean id="multithreadedJobWriter_1"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MultithreadedJobWriter_1"
+		scope="step">
+	</bean>
+
+	<!-- taskExecutor -->
+	<bean id="multithreadedJobTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="2" />
+		<property name="maxPoolSize" value="2" />
+	</bean>
+
+</beans>

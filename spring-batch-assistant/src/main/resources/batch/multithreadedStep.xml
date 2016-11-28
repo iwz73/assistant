@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="multithreadedStepJob">
+		<batch:step id="multithreadedStepReaderProcessorWriterStep">
+			<tasklet task-executor="multithreadedStepTaskExecutor"
+				throttle-limit="3">
+				<chunk reader="multithreadedStepReader" processor="multithreadedStepProcessor"
+					writer="multithreadedStepWriter" commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="multithreadedStepReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultithreadedStepReader"
+		scope="step">
+		<property name="delegate" ref="multithreadedStepDelegateReader"></property>
+	</bean>
+	<bean id="multithreadedStepDelegateReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultithreadedStepDelegateReader"
+		scope="step">
+	</bean>
+
+	<!-- processor -->
+	<bean id="multithreadedStepProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.MultithreadedStepProcessor"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="multithreadedStepWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MultithreadedStepWriter"
+		scope="step">
+	</bean>
+
+	<!-- taskExecutor -->
+	<bean id="multithreadedStepTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="3" />
+		<property name="maxPoolSize" value="3" />
+	</bean>
+
+</beans>

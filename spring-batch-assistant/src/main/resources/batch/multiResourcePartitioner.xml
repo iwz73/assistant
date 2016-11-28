@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="multiResourcePartitionerJob">
+		<batch:step id="multiResourcePartitionerOuterStep">
+			<batch:partition partitioner="multiResourcePartitionerMultiResourcePartitioner"
+				step="multiResourcePartitionerInnerStep">
+				<batch:handler grid-size="3"
+					task-executor="multiResourcePartitionerTaskExecutor" />
+			</batch:partition>
+		</batch:step>
+	</batch:job>
+
+	<!-- partitioner -->
+	<bean id="multiResourcePartitionerMultiResourcePartitioner"
+		class="org.springframework.batch.core.partition.support.MultiResourcePartitioner"
+		scope="step">
+		<property name="keyName" value="fileName" />
+		<property name="resources" value="file:#{jobParameters['inputResources']}" />
+	</bean>
+
+	<!-- taskExecutor -->
+	<bean id="multiResourcePartitionerTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="3" />
+		<property name="maxPoolSize" value="3" />
+	</bean>
+
+	<!-- step -->
+	<batch:step id="multiResourcePartitionerInnerStep">
+		<tasklet>
+			<chunk reader="multiResourcePartitionerReader" writer="multiResourcePartitionerWriter"
+				commit-interval="1">
+			</chunk>
+		</tasklet>
+	</batch:step>
+
+	<!-- reader -->
+	<bean id="multiResourcePartitionerReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MultiResourcePartitionerReader"
+		scope="step">
+		<property name="delegate" ref="multiResourcePartitionerDelegateReader" />
+	</bean>
+	<bean id="multiResourcePartitionerDelegateReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="encoding" value="#{jobParameters['encoding']}" />
+		<property name="linesToSkip" value="#{jobParameters['linesToSkip']}" />
+		<property name="strict" value="#{jobParameters['strict']}" />
+		<property name="resource" value="#{stepExecutionContext[fileName]}" />
+		<property name="comments" value="#{jobParameters['comments']}"></property>
+		<property name="bufferedReaderFactory"
+			ref="flatFileFixedLengthDefaultBufferedReaderFactory"></property>
+		<property name="lineMapper" ref="flatFileFixedLengthDefaultLineMapper" />
+		<property name="recordSeparatorPolicy"
+			ref="flatFileFixedLengthDefaultRecordSeparatorPolicy"></property>
+		<property name="skippedLinesCallback" ref="flatFileFixedLengthLineCallbackHandler"></property>
+	</bean>
+
+	<!-- writer -->
+	<bean id="multiResourcePartitionerWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MultiResourcePartitionerWriter"
+		scope="step">
+	</bean>
+
+</beans>

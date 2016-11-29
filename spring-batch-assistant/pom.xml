@@ -37,7 +37,6 @@
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
-		<commons-io.version>2.5</commons-io.version>
 		<jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
 		<mail.version>1.4.7</mail.version>
 		<object-utility.version>1.0.0</object-utility.version>

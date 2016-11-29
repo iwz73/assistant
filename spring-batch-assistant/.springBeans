@@ -34,6 +34,16 @@
 		<config>src/main/resources/batch/hibernateTransaction.xml</config>
 		<config>src/main/resources/batch/dataSharingBean.xml</config>
 		<config>src/main/resources/batch/context.xml</config>
+		<config>src/main/resources/batch/multithreadedStep.xml</config>
+		<config>src/main/resources/batch/embeddedJob.xml</config>
+		<config>src/main/resources/batch/endFailStop.xml</config>
+		<config>src/main/resources/batch/embeddedFlow.xml</config>
+		<config>src/main/resources/batch/multiResourcePartitioner.xml</config>
+		<config>src/main/resources/batch/multithreadedJob.xml</config>
+		<config>src/main/resources/batch/springBatchAssistant.xml</config>
+		<config>src/main/resources/batch/jobExplorer.xml</config>
+		<config>src/main/resources/batch/customizedPartitioner.xml</config>
+		<config>src/main/resources/batch/jobExecutionDecider.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

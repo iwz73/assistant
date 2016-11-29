@@ -19,8 +19,6 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<spring-data-mongodb.version>1.7.0.RELEASE</spring-data-mongodb.version>
-		<object-utility.version>1.0.0</object-utility.version>
-		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -52,6 +50,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- spring-data-mongodb -->
 		<dependency>
@@ -60,20 +64,5 @@
 			<version>${spring-data-mongodb.version}</version>
 		</dependency>
 
-		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>

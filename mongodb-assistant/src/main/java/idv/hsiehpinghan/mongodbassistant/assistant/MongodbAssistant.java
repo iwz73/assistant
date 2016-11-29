@@ -1,14 +1,13 @@
 package idv.hsiehpinghan.mongodbassistant.assistant;
 
-import java.net.UnknownHostException;
-
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 @Component
 public class MongodbAssistant {
@@ -17,12 +16,23 @@ public class MongodbAssistant {
 	@Autowired
 	private MongoClient mongoClient;
 
-	public MongoOperations getMongoOperations(String databaseName)
-			throws UnknownHostException {
-		MongoTemplate mongoTemplate = new MongoTemplate(mongoClient,
-				databaseName);
-		mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
-		return mongoTemplate;
+	public void insertOne(String databaseName, String collectionName, Document document) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		collection.insertOne(document);
+	}
+
+	public Document findFirst(String databaseName, String collectionName, Bson bson) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.find(bson).first();
+	}
+
+	private MongoCollection<Document> getCollection(String databaseName, String collectionName) {
+		MongoDatabase db = getDatabase(databaseName);
+		return db.getCollection(collectionName);
+	}
+
+	private MongoDatabase getDatabase(String databaseName) {
+		return mongoClient.getDatabase(databaseName);
 	}
 
 }

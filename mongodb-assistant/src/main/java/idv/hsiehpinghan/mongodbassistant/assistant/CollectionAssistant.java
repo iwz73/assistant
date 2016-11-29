@@ -17,7 +17,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 @Component
-public class MongodbAssistant {
+public class CollectionAssistant {
 	// private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Autowired

@@ -24,10 +24,10 @@ import com.mongodb.client.result.UpdateResult;
 import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
+public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 10;
-	private final String DATABASE_NAME = "Mongodb_Assistant_Database";
-	private final String COLLECTION_NAME = "Mongodb_Assistant_Collection";
+	private final String DATABASE_NAME = "Mongodb_Assistant_Collection_Database";
+	private final String COLLECTION_NAME = "Collection";
 	private final ObjectId ID = new ObjectId();
 	private final double DOUBLE = 1.1; // double
 	private final String STRING = "string"; // string
@@ -51,7 +51,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	// Max key 127 “maxKey”
 
 	@Autowired
-	private MongodbAssistant assistant;
+	private CollectionAssistant assistant;
 
 	@BeforeClass
 	public void beforeClass() {

@@ -208,6 +208,9 @@ db.fsyncUnlock()
 # restore
 <<!!!new console>> mongorestore -h 127.0.0.1 -d nutch --drop /tmp/backup/nutch
 
+# drop database
+db.dropDatabase()
+
 # exit
 db.collection.drop()
 exit

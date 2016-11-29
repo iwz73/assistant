@@ -1,12 +1,17 @@
 package idv.hsiehpinghan.mongodbassistant.assistant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 @Component
@@ -21,9 +26,45 @@ public class MongodbAssistant {
 		collection.insertOne(document);
 	}
 
+	public void insertMany(String databaseName, String collectionName, List<? extends Document> documents) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		collection.insertMany(documents);
+	}
+
+	public void drop(String databaseName, String collectionName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		collection.drop();
+	}
+
 	public Document findFirst(String databaseName, String collectionName, Bson bson) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		return collection.find(bson).first();
+	}
+
+	public List<Document> find(String databaseName, String collectionName, Bson bson) {
+		List<Document> result = new ArrayList<>();
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		FindIterable<Document> iterable = collection.find(bson);
+		try (MongoCursor<Document> cursor = iterable.iterator()) {
+			while (cursor.hasNext()) {
+				result.add(cursor.next());
+			}
+		}
+		return result;
+	}
+
+	public long count(String databaseName, String collectionName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.count();
+	}
+
+	public void printAllDocument(String databaseName, String collectionName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		try (MongoCursor<Document> cursor = collection.find().iterator()) {
+			while (cursor.hasNext()) {
+				System.err.println(cursor.next().toJson());
+			}
+		}
 	}
 
 	private MongoCollection<Document> getCollection(String databaseName, String collectionName) {

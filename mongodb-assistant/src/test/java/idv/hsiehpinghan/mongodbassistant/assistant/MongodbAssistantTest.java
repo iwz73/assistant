@@ -1,5 +1,6 @@
 package idv.hsiehpinghan.mongodbassistant.assistant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.mongodb.client.model.Filters;
@@ -20,6 +23,7 @@ import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
+	private final int SIZE = 10;
 	private final String DATABASE_NAME = "Mongodb_Assistant_Database";
 	private final String COLLECTION_NAME = "Mongodb_Assistant_Collection";
 	private final ObjectId ID = new ObjectId();
@@ -47,9 +51,14 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private MongodbAssistant assistant;
 
+	@BeforeClass
+	public void beforeClass() {
+		assistant.drop(DATABASE_NAME, COLLECTION_NAME);
+	}
+
 	@Test
 	public void insertOne() throws Exception {
-		Document document = generateDocument();
+		Document document = generateDocument(ID, INT);
 		assistant.insertOne(DATABASE_NAME, COLLECTION_NAME, document);
 	}
 
@@ -58,6 +67,56 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Bson bson = Filters.eq("_id", ID);
 		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
 		assertEquals(document);
+	}
+
+	@Test(dependsOnMethods = { "findFirst" })
+	public void insertMany() {
+		List<Document> documents = new ArrayList<>(SIZE);
+		for (int i = 0; i < SIZE; ++i) {
+			ObjectId objectId = new ObjectId();
+			Document document = generateDocument(objectId, i);
+			documents.add(document);
+		}
+		assistant.insertMany(DATABASE_NAME, COLLECTION_NAME, documents);
+	}
+
+	@Test(dependsOnMethods = { "insertMany" })
+	public void count() {
+		long amount = assistant.count(DATABASE_NAME, COLLECTION_NAME);
+		Assert.assertEquals(amount, SIZE + 1);
+	}
+
+	@Test(dependsOnMethods = { "insertMany" })
+	public void find() {
+		testGt();
+		testLte();
+		testAnd();
+	}
+
+	@AfterClass
+	public void afterClass() {
+		assistant.printAllDocument(DATABASE_NAME, COLLECTION_NAME);
+	}
+
+	private void testGt() {
+		Bson bson = Filters.gt("int", 3);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(amount, 7);
+	}
+
+	private void testLte() {
+		Bson bson = Filters.lte("int", 5);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(amount, 6);
+	}
+
+	private void testAnd() {
+		List<Bson> filters = new ArrayList<>();
+		filters.add(Filters.gt("int", 3));
+		filters.add(Filters.lte("int", 5));
+		Bson bson = Filters.and(filters);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(amount, 2);
 	}
 
 	private void assertEquals(Document document) {
@@ -73,8 +132,8 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(document.getLong("long"), LONG);
 	}
 
-	private Document generateDocument() {
-		Document doc = new Document("_id", ID);
+	private Document generateDocument(ObjectId objectId, int i) {
+		Document doc = new Document("_id", objectId);
 		doc.append("double", DOUBLE);
 		doc.append("string", STRING);
 		doc.append("array", ARRAY);
@@ -83,7 +142,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.append("bool", BOOL);
 		doc.append("date", DATE);
 		doc.append("null", NULL);
-		doc.append("int", INT);
+		doc.append("int", i);
 		doc.append("long", LONG);
 		return doc;
 	}

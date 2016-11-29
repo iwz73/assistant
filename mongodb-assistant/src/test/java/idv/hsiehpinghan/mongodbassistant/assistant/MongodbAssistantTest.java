@@ -18,6 +18,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 
@@ -66,7 +68,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	public void findFirst() {
 		Bson bson = Filters.eq("_id", ID);
 		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
-		assertEquals(document);
+		assertEquals(document, INT);
 	}
 
 	@Test(dependsOnMethods = { "findFirst" })
@@ -91,6 +93,54 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		testGt();
 		testLte();
 		testAnd();
+	}
+
+	@Test(dependsOnMethods = { "find" })
+	public void updateOne() {
+		final int I = 50;
+		Bson filter = Filters.eq("_id", ID);
+		Bson update = new Document("$set", new Document("int", I));
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		assertEquals(document, I);
+	}
+
+	@Test(dependsOnMethods = { "updateOne" })
+	public void updateMany() {
+		final int I = 100;
+		Bson filter = Filters.lte("int", 5);
+		Bson update = new Document("$set", new Document("int", I));
+		UpdateResult updateResult = assistant.updateMany(DATABASE_NAME, COLLECTION_NAME, filter, update);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 6);
+		Bson bson = Filters.eq("int", I);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(amount, 6);
+	}
+
+	@Test(dependsOnMethods = { "updateMany" })
+	public void deleteOne() {
+		Bson filter = Filters.eq("_id", ID);
+		DeleteResult deleteResult = assistant.deleteOne(DATABASE_NAME, COLLECTION_NAME, filter);
+		long deletedCount = deleteResult.getDeletedCount();
+		Assert.assertEquals(deletedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Assert.assertNull(document);
+	}
+
+	@Test(dependsOnMethods = { "deleteOne" })
+	public void deleteMany() {
+		Bson filter = Filters.lte("int", 9);
+		DeleteResult deleteResult = assistant.deleteMany(DATABASE_NAME, COLLECTION_NAME, filter);
+		long deletedCount = deleteResult.getDeletedCount();
+		Assert.assertEquals(deletedCount, 4);
+		Bson bson = Filters.lte("int", 9);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(amount, 0);
 	}
 
 	@AfterClass
@@ -119,7 +169,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(amount, 2);
 	}
 
-	private void assertEquals(Document document) {
+	private void assertEquals(Document document, int i) {
 		Assert.assertEquals(document.getDouble("double"), DOUBLE);
 		Assert.assertEquals(document.getString("string"), STRING);
 		Assert.assertEquals(document.get("array"), ARRAY);
@@ -128,7 +178,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals((Boolean) document.getBoolean("bool"), (Boolean) BOOL);
 		Assert.assertEquals(document.getDate("date"), DATE);
 		Assert.assertEquals(document.get("null"), NULL);
-		Assert.assertEquals((Integer) document.getInteger("int"), (Integer) INT);
+		Assert.assertEquals((Integer) document.getInteger("int"), (Integer) i);
 		Assert.assertEquals(document.getLong("long"), LONG);
 	}
 

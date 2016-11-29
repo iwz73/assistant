@@ -13,6 +13,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 @Component
 public class MongodbAssistant {
@@ -29,6 +31,26 @@ public class MongodbAssistant {
 	public void insertMany(String databaseName, String collectionName, List<? extends Document> documents) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		collection.insertMany(documents);
+	}
+
+	public UpdateResult updateOne(String databaseName, String collectionName, Bson filter, Bson update) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.updateOne(filter, update);
+	}
+
+	public UpdateResult updateMany(String databaseName, String collectionName, Bson filter, Bson update) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.updateMany(filter, update);
+	}
+
+	public DeleteResult deleteOne(String databaseName, String collectionName, Bson filter) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.deleteOne(filter);
+	}
+
+	public DeleteResult deleteMany(String databaseName, String collectionName, Bson filter) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.deleteMany(filter);
 	}
 
 	public void drop(String databaseName, String collectionName) {

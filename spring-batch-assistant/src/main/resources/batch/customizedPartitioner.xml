@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="customizedPartitionerJob">
+		<batch:step id="customizedPartitionerOuterStep">
+			<batch:partition partitioner="customizedPartitionerPartitioner"
+				step="customizedPartitionerInnerStep">
+				<batch:handler grid-size="3"
+					task-executor="customizedPartitionerTaskExecutor" />
+			</batch:partition>
+		</batch:step>
+	</batch:job>
+
+	<!-- partitioner -->
+	<bean id="customizedPartitionerPartitioner"
+		class="idv.hsiehpinghan.springbatchassistant.partitioner.CustomizedPartitioner"
+		scope="step">
+		<property name="keyName" value="fileName" />
+	</bean>
+
+	<!-- taskExecutor -->
+	<bean id="customizedPartitionerTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="3" />
+		<property name="maxPoolSize" value="3" />
+	</bean>
+
+	<!-- step -->
+	<batch:step id="customizedPartitionerInnerStep">
+		<tasklet>
+			<chunk reader="customizedPartitionerReader" writer="customizedPartitionerWriter"
+				commit-interval="1">
+			</chunk>
+		</tasklet>
+	</batch:step>
+
+	<!-- reader -->
+	<bean id="customizedPartitionerReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.CustomizedPartitionerReader"
+		scope="step">
+		<property name="start" value="#{stepExecutionContext[start]}" />
+		<property name="end" value="#{stepExecutionContext[end]}" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="customizedPartitionerWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.CustomizedPartitionerWriter"
+		scope="step">
+	</bean>
+
+</beans>

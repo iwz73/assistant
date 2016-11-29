@@ -24,7 +24,7 @@
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<querydsl.version>4.0.6</querydsl.version>
-		<object-utility.version>1.0.0</object-utility.version>
+		<!-- <object-utility.version>1.0.0</object-utility.version> -->
 		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
@@ -136,12 +136,12 @@
 		</dependency>
 
 		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>idv.hsiehpinghan</groupId> -->
+		<!-- <artifactId>object-utility</artifactId> -->
+		<!-- <version>${object-utility.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
 
 		<!-- test-utility -->
 		<dependency>

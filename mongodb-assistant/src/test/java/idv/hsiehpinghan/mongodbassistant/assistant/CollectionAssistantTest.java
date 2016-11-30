@@ -21,6 +21,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -104,15 +105,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "find" })
 	public void updateOne() {
-		final int I = 50;
-		Bson filter = Filters.eq("_id", ID);
-		Bson update = new Document("$set", new Document("int", I));
-		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
-		long modifiedCount = updateResult.getModifiedCount();
-		Assert.assertEquals(modifiedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
-		assertEquals(document, I);
+		testSetUpdate();
+		testUpdatesUpdate();
 	}
 
 	@Test(dependsOnMethods = { "updateOne" })
@@ -400,6 +394,35 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		for (int i = 0; i < length_0; ++i) {
 			Assert.assertEquals(bytes_0[i], bytes_1[i]);
 		}
+	}
+
+	private void testSetUpdate() {
+		final int I = 50;
+		Bson filter = Filters.eq("_id", ID);
+		Bson update = new Document("$set", new Document("int", I));
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		assertEquals(document, I);
+	}
+
+	private void testUpdatesUpdate() {
+		final int I = 49;
+		Bson filter = Filters.eq("_id", ID);
+		Bson[] updates = generateUpdatesSets(I);
+		Bson update = Updates.combine(updates);
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		assertEquals(document, I);
+	}
+
+	private Bson[] generateUpdatesSets(int i) {
+		return new Bson[] { Updates.set("int", i) };
 	}
 
 }

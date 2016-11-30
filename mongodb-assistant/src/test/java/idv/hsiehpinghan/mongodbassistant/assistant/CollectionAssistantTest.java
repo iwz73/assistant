@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -97,6 +98,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		testGt();
 		testLte();
 		testAnd();
+		testProjection();
+		testSort();
 	}
 
 	@Test(dependsOnMethods = { "find" })
@@ -222,6 +225,42 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(amount, 2);
 	}
 
+	private void testProjection() {
+		Bson bson = Filters.eq("_id", ID);
+		Bson projection = generateProjection();
+		List<Document> documents = assistant.findWithProjection(DATABASE_NAME, COLLECTION_NAME, bson, projection);
+		for (Document document : documents) {
+			assertProjectionEquals(document);
+		}
+	}
+
+	private void testSort() {
+		List<Bson> filters = new ArrayList<>();
+		filters.add(Filters.gt("int", 3));
+		filters.add(Filters.lte("int", 5));
+		Bson bson = Filters.and(filters);
+		Bson sort = generateSort();
+		List<Document> documents = assistant.findWithSort(DATABASE_NAME, COLLECTION_NAME, bson, sort);
+		Double beforeDouble = Double.MAX_VALUE;
+		for (Document document : documents) {
+			Double currentDouble = document.getDouble("double");
+			Assert.assertTrue(currentDouble.compareTo(beforeDouble) < 0);
+		}
+	}
+
+	private Bson generateProjection() {
+		Document document = new Document();
+		document.append("_id", 0);
+		document.append("double", 1);
+		document.append("string", 1);
+		return document;
+	}
+
+	private Bson generateSort() {
+		String[] sorts = new String[] { "double" };
+		return Sorts.descending(sorts);
+	}
+
 	private void assertEquals(Document document, int i) {
 		Assert.assertEquals(document.getDouble("double"), DOUBLE);
 		Assert.assertEquals(document.getString("string"), STRING);
@@ -234,6 +273,21 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals((Integer) document.getInteger("int"), (Integer) i);
 		Assert.assertEquals(document.getLong("long"), LONG);
 		assertSubDocumentEquals((Document) document.get("document"));
+	}
+
+	private void assertProjectionEquals(Document document) {
+		Assert.assertNull(document.get("_id"));
+		Assert.assertEquals(document.getDouble("double"), DOUBLE);
+		Assert.assertEquals(document.getString("string"), STRING);
+		Assert.assertNull(document.get("array"));
+		Assert.assertNull(document.get("binData"));
+		Assert.assertNull(document.getObjectId("objectId"));
+		Assert.assertNull(document.getBoolean("bool"));
+		Assert.assertNull(document.getDate("date"));
+		Assert.assertNull(document.get("null"));
+		Assert.assertNull(document.getInteger("int"));
+		Assert.assertNull(document.getLong("long"));
+		Assert.assertNull(document.get("document"));
 	}
 
 	private void assertSubDocumentEquals(Document document) {
@@ -306,54 +360,30 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private Document generateMultiLineStringLocation() {
 		Document doc = new Document();
 		doc.append("type", "MultiLineString");
-		doc.append("coordinates", Arrays.asList(
-			Arrays.asList(
-				Arrays.asList(1, 1), 
-				Arrays.asList(11, 11)
-			),
-			Arrays.asList(
-					Arrays.asList(2, 2), 
-					Arrays.asList(22, 22)
-			),
-			Arrays.asList(
-					Arrays.asList(3, 3), 
-					Arrays.asList(33, 33)
-			)
-		));
+		doc.append("coordinates",
+				Arrays.asList(Arrays.asList(Arrays.asList(1, 1), Arrays.asList(11, 11)),
+						Arrays.asList(Arrays.asList(2, 2), Arrays.asList(22, 22)),
+						Arrays.asList(Arrays.asList(3, 3), Arrays.asList(33, 33))));
 		return doc;
 	}
 
 	private Document generateMultiPolygonLocation() {
 		Document doc = new Document();
 		doc.append("type", "MultiPolygon");
-		doc.append("coordinates", Arrays.asList(
-			Arrays.asList(
+		doc.append("coordinates",
 				Arrays.asList(
-					Arrays.asList(-73.958, 40.8003), 
-					Arrays.asList(-73.9498, 40.7968),
-					Arrays.asList(-73.9737, 40.7648),
-					Arrays.asList(-73.9814, 40.7681),
-					Arrays.asList(-73.958, 40.8003)
-				)),
-				Arrays.asList(
-					Arrays.asList(
-							Arrays.asList(-73.958, 40.8003), 
-							Arrays.asList(-73.9498, 40.7968),
-							Arrays.asList(-73.9737, 40.7648),
-							Arrays.asList(-73.958, 40.8003)
-					)
-				))
-		);
+						Arrays.asList(Arrays.asList(Arrays.asList(-73.958, 40.8003), Arrays.asList(-73.9498, 40.7968),
+								Arrays.asList(-73.9737, 40.7648), Arrays.asList(-73.9814, 40.7681),
+								Arrays.asList(-73.958, 40.8003))),
+						Arrays.asList(Arrays.asList(Arrays.asList(-73.958, 40.8003), Arrays.asList(-73.9498, 40.7968),
+								Arrays.asList(-73.9737, 40.7648), Arrays.asList(-73.958, 40.8003)))));
 		return doc;
 	}
-	
+
 	private Document generateGeometryCollectionLocation() {
 		Document doc = new Document();
 		doc.append("type", "GeometryCollection");
-		doc.append("geometries", Arrays.asList(
-				generateMultiPointLocation(),
-				generateMultiLineStringLocation()
-		));
+		doc.append("geometries", Arrays.asList(generateMultiPointLocation(), generateMultiLineStringLocation()));
 		return doc;
 	}
 

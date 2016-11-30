@@ -98,15 +98,15 @@ public class CollectionAssistant {
 	}
 
 	public List<Document> find(String databaseName, String collectionName, Bson bson) {
-		List<Document> result = new ArrayList<>();
-		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		FindIterable<Document> iterable = collection.find(bson);
-		try (MongoCursor<Document> cursor = iterable.iterator()) {
-			while (cursor.hasNext()) {
-				result.add(cursor.next());
-			}
-		}
-		return result;
+		return find(databaseName, collectionName, bson, null, null);
+	}
+
+	public List<Document> findWithProjection(String databaseName, String collectionName, Bson bson, Bson projection) {
+		return find(databaseName, collectionName, bson, projection, null);
+	}
+
+	public List<Document> findWithSort(String databaseName, String collectionName, Bson bson, Bson sort) {
+		return find(databaseName, collectionName, bson, null, sort);
 	}
 
 	public long count(String databaseName, String collectionName) {
@@ -121,6 +121,24 @@ public class CollectionAssistant {
 				System.err.println(cursor.next().toJson());
 			}
 		}
+	}
+
+	private List<Document> find(String databaseName, String collectionName, Bson bson, Bson projection, Bson sort) {
+		List<Document> result = new ArrayList<>();
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		FindIterable<Document> iterable = collection.find(bson);
+		if (projection != null) {
+			iterable = iterable.projection(projection);
+		}
+		if (sort != null) {
+			iterable = iterable.sort(sort);
+		}
+		try (MongoCursor<Document> cursor = iterable.iterator()) {
+			while (cursor.hasNext()) {
+				result.add(cursor.next());
+			}
+		}
+		return result;
 	}
 
 	private MongoCollection<Document> getCollection(String databaseName, String collectionName) {

@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -26,6 +27,7 @@ import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 10;
+	private final int SUB_DOCUMENT_SIZE = 3;
 	private final String DATABASE_NAME = "Mongodb_Assistant_Collection_Database";
 	private final String COLLECTION_NAME = "Collection";
 	private final ObjectId ID = new ObjectId();
@@ -143,6 +145,33 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(amount, 0);
 	}
 
+	@Test(dependsOnMethods = { "deleteMany" })
+	public void createIndex() {
+		boolean isAscending = true;
+		String[] fieldNames = new String[] { "string", "int" };
+		String indexName = assistant.createIndex(DATABASE_NAME, COLLECTION_NAME, isAscending, fieldNames);
+		Assert.assertEquals(indexName, "string_1_int_1");
+	}
+
+	@Test(dependsOnMethods = { "createIndex" })
+	public void createCompoundIndex() {
+		Bson bson = Indexes.compoundIndex(Indexes.descending("double"), Indexes.ascending("long"));
+		String indexName = assistant.createCompoundIndex(DATABASE_NAME, COLLECTION_NAME, bson);
+		Assert.assertEquals(indexName, "double_-1_long_1");
+	}
+
+	@Test(dependsOnMethods = { "createCompoundIndex" })
+	public void createTextIndex() {
+		String indexName = assistant.createTextIndex(DATABASE_NAME, COLLECTION_NAME, "array");
+		Assert.assertEquals(indexName, "array_text");
+	}
+
+	@Test(dependsOnMethods = { "createTextIndex" })
+	public void createHashedIndex() {
+		String indexName = assistant.createHashedIndex(DATABASE_NAME, COLLECTION_NAME, "objectId");
+		Assert.assertEquals(indexName, "objectId_hashed");
+	}
+
 	@AfterClass
 	public void afterClass() {
 		assistant.printAllDocument(DATABASE_NAME, COLLECTION_NAME);
@@ -180,6 +209,13 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(document.get("null"), NULL);
 		Assert.assertEquals((Integer) document.getInteger("int"), (Integer) i);
 		Assert.assertEquals(document.getLong("long"), LONG);
+		assertSubDocumentEquals((Document) document.get("document"));
+	}
+
+	private void assertSubDocumentEquals(Document document) {
+		for (int i = 0; i < SUB_DOCUMENT_SIZE; ++i) {
+			Assert.assertEquals(document.get("key_" + i), "value_" + i);
+		}
 	}
 
 	private Document generateDocument(ObjectId objectId, int i) {
@@ -194,6 +230,15 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.append("null", NULL);
 		doc.append("int", i);
 		doc.append("long", LONG);
+		doc.append("document", generateSubDocument());
+		return doc;
+	}
+
+	private Document generateSubDocument() {
+		Document doc = new Document();
+		for (int i = 0; i < SUB_DOCUMENT_SIZE; ++i) {
+			doc.append("key_" + i, "value_" + i);
+		}
 		return doc;
 	}
 
@@ -211,4 +256,5 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(bytes_0[i], bytes_1[i]);
 		}
 	}
+
 }

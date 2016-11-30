@@ -13,6 +13,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -23,6 +24,37 @@ public class CollectionAssistant {
 	@Autowired
 	private MongoClient mongoClient;
 
+	public String createIndex(String databaseName, String collectionName, boolean isAscending, String... fieldNames) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		Bson bson = null;
+		if (isAscending == true) {
+			bson = Indexes.ascending(fieldNames);
+		} else {
+			bson = Indexes.descending(fieldNames);
+		}
+		return collection.createIndex(bson);
+	}
+
+	public String createCompoundIndex(String databaseName, String collectionName, Bson bson) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.createIndex(bson);
+	}
+
+	public String createTextIndex(String databaseName, String collectionName, String textFieldName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.createIndex(Indexes.text(textFieldName));
+	}
+
+	public String createHashedIndex(String databaseName, String collectionName, String fieldName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.createIndex(Indexes.hashed(fieldName));
+	}
+
+	public String createGeo2dsphereIndex(String databaseName, String collectionName, String fieldName) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.createIndex(Indexes.geo2dsphere("contact.location"));
+	}
+	
 	public void insertOne(String databaseName, String collectionName, Document document) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		collection.insertOne(document);

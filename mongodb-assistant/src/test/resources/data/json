@@ -1,0 +1,21 @@
+{
+	"_id" : ObjectId("583d4c919828c43b8e80ab29"),
+	"double" : 1.1,
+	"string" : "string",
+	"array" : [
+		"array_0",
+		"array_1",
+		"array_2"
+	],
+	"objectId" : ObjectId("583d4c909828c43b8e80ab17"),
+	"bool" : true,
+	"date" : ISODate("2016-11-29T09:38:24.292Z"),
+	"null" : null,
+	"int" : 100,
+	"long" : NumberLong(18),
+	"document": {
+		"key_0": "value_0",
+		"key_1": "value_1",
+		"key_2": "value_2"
+	}
+}

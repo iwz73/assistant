@@ -77,6 +77,11 @@ public class CollectionAssistant {
 		return collection.updateMany(filter, update);
 	}
 
+	public UpdateResult replaceOne(String databaseName, String collectionName, Bson filter, Document replacement) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.replaceOne(filter, replacement);
+	}
+	
 	public DeleteResult deleteOne(String databaseName, String collectionName, Bson filter) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		return collection.deleteOne(filter);

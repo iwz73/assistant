@@ -107,6 +107,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	public void updateOne() {
 		testSetUpdate();
 		testUpdatesUpdate();
+		testUpdatesCurrentDateAndTimestamp();
 	}
 
 	@Test(dependsOnMethods = { "updateOne" })
@@ -123,6 +124,21 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "updateMany" })
+	public void replaceOne() {
+		final Double DOUBLE_VALUE = 3.3;
+		final String STRING_VALUE = "stringValue";
+		Bson filter = Filters.eq("_id", ID);
+		Document replacement = generateReplacement(DOUBLE_VALUE, STRING_VALUE);
+		UpdateResult updateResult = assistant.replaceOne(DATABASE_NAME, COLLECTION_NAME, filter, replacement);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Assert.assertEquals(document.getDouble("double"), DOUBLE_VALUE);
+		Assert.assertEquals(document.getString("string"), STRING_VALUE);
+	}
+	
+	@Test(dependsOnMethods = { "replaceOne" })
 	public void deleteOne() {
 		Bson filter = Filters.eq("_id", ID);
 		DeleteResult deleteResult = assistant.deleteOne(DATABASE_NAME, COLLECTION_NAME, filter);
@@ -313,6 +329,13 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		return doc;
 	}
 
+	private Document generateReplacement(Double doubleValue, String stringValue) {
+		Document doc = new Document();
+		doc.append("double", doubleValue);
+		doc.append("string", stringValue);
+		return doc;
+	}
+	
 	private Document generateSubDocument() {
 		Document doc = new Document();
 		for (int i = 0; i < SUB_DOCUMENT_SIZE; ++i) {
@@ -411,7 +434,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private void testUpdatesUpdate() {
 		final int I = 49;
 		Bson filter = Filters.eq("_id", ID);
-		Bson[] updates = generateUpdatesSets(I);
+		Bson[] updates = new Bson[] { Updates.set("int", I) };
 		Bson update = Updates.combine(updates);
 		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
 		long modifiedCount = updateResult.getModifiedCount();
@@ -421,8 +444,18 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		assertEquals(document, I);
 	}
 
-	private Bson[] generateUpdatesSets(int i) {
-		return new Bson[] { Updates.set("int", i) };
+	private void testUpdatesCurrentDateAndTimestamp() {
+		Bson filter = Filters.eq("_id", ID);
+		Bson[] updates = new Bson[] { Updates.currentDate("currentDate"),
+				Updates.currentTimestamp("currentTimestamp") };
+		Bson update = Updates.combine(updates);
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson bson = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Assert.assertNotNull(document.getDate("currentDate"));
+		Assert.assertNotNull(document.get("currentTimestamp"));
 	}
 
 }

@@ -13,6 +13,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -40,9 +41,10 @@ public class CollectionAssistant {
 		return collection.createIndex(bson);
 	}
 
-	public String createTextIndex(String databaseName, String collectionName, String textFieldName) {
+	public String createTextIndex(String databaseName, String collectionName, String textFieldName,
+			IndexOptions indexOptions) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		return collection.createIndex(Indexes.text(textFieldName));
+		return collection.createIndex(Indexes.text(textFieldName), indexOptions);
 	}
 
 	public String createHashedIndex(String databaseName, String collectionName, String fieldName) {
@@ -52,9 +54,9 @@ public class CollectionAssistant {
 
 	public String createGeo2dsphereIndex(String databaseName, String collectionName, String fieldName) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		return collection.createIndex(Indexes.geo2dsphere("contact.location"));
+		return collection.createIndex(Indexes.geo2dsphere(fieldName));
 	}
-	
+
 	public void insertOne(String databaseName, String collectionName, Document document) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		collection.insertOne(document);

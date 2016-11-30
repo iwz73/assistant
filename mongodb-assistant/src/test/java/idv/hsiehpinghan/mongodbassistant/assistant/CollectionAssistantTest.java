@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -28,13 +29,14 @@ import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 10;
 	private final int SUB_DOCUMENT_SIZE = 3;
+	private final String TRADITIONAL_CHINESE = "traditional chinese";
 	private final String DATABASE_NAME = "Mongodb_Assistant_Collection_Database";
 	private final String COLLECTION_NAME = "Collection";
 	private final ObjectId ID = new ObjectId();
 	private final double DOUBLE = 1.1; // double
 	private final String STRING = "string"; // string
 	// Object 3 “object”
-	private final List<String> ARRAY = Arrays.asList("array_0", "array_1", "array_2"); // array
+	private final List<String> ARRAY = Arrays.asList("繁體中文字串測試_0", "其他不相關字串_1", "array_2"); // array
 	private final byte[] BIN_DATA = getBinData(); // binData
 	// Undefined 6 “undefined” Deprecated.
 	private final ObjectId OBJECT_ID = new ObjectId(); // objectId
@@ -162,7 +164,10 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "createCompoundIndex" })
 	public void createTextIndex() {
-		String indexName = assistant.createTextIndex(DATABASE_NAME, COLLECTION_NAME, "array");
+		IndexOptions indexOptions = new IndexOptions();
+		// indexOptions.defaultLanguage(TRADITIONAL_CHINESE); because vesion is
+		// 3.0.4, not test yet !!!
+		String indexName = assistant.createTextIndex(DATABASE_NAME, COLLECTION_NAME, "array", indexOptions);
 		Assert.assertEquals(indexName, "array_text");
 	}
 
@@ -170,6 +175,25 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	public void createHashedIndex() {
 		String indexName = assistant.createHashedIndex(DATABASE_NAME, COLLECTION_NAME, "objectId");
 		Assert.assertEquals(indexName, "objectId_hashed");
+	}
+
+	@Test(dependsOnMethods = { "createHashedIndex" })
+	public void createGeo2dsphereIndex() {
+		String indexName = null;
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "pointLocation");
+		Assert.assertEquals(indexName, "pointLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "lineStringLocation");
+		Assert.assertEquals(indexName, "lineStringLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "polygonLocation");
+		Assert.assertEquals(indexName, "polygonLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "multiPointLocation");
+		Assert.assertEquals(indexName, "multiPointLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "multiLineStringLocation");
+		Assert.assertEquals(indexName, "multiLineStringLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "multiPolygonLocation");
+		Assert.assertEquals(indexName, "multiPolygonLocation_2dsphere");
+		indexName = assistant.createGeo2dsphereIndex(DATABASE_NAME, COLLECTION_NAME, "geometryCollectionLocation");
+		Assert.assertEquals(indexName, "geometryCollectionLocation_2dsphere");
 	}
 
 	@AfterClass
@@ -231,6 +255,13 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.append("int", i);
 		doc.append("long", LONG);
 		doc.append("document", generateSubDocument());
+		doc.append("pointLocation", generatePointLocation());
+		doc.append("lineStringLocation", generateLineStringLocation());
+		doc.append("polygonLocation", generatePolygonLocation());
+		doc.append("multiPointLocation", generateMultiPointLocation());
+		doc.append("multiLineStringLocation", generateMultiLineStringLocation());
+		doc.append("multiPolygonLocation", generateMultiPolygonLocation());
+		doc.append("geometryCollectionLocation", generateGeometryCollectionLocation());
 		return doc;
 	}
 
@@ -241,6 +272,128 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 		return doc;
 	}
+
+	private Document generatePointLocation() {
+		Document doc = new Document();
+		doc.append("type", "Point");
+		doc.append("coordinates", Arrays.asList(121, 23.5));
+		return doc;
+	}
+
+	private Document generateLineStringLocation() {
+		Document doc = new Document();
+		doc.append("type", "LineString");
+		doc.append("coordinates", Arrays.asList(Arrays.asList(121, 23.5), Arrays.asList(123, 22)));
+		return doc;
+	}
+
+	private Document generatePolygonLocation() {
+		Document doc = new Document();
+		doc.append("type", "Polygon");
+		doc.append("coordinates", Arrays.asList(Arrays.asList(Arrays.asList(120, 23.5), Arrays.asList(121, 24),
+				Arrays.asList(122, 23), Arrays.asList(120, 23.5))));
+		return doc;
+	}
+
+	private Document generateMultiPointLocation() {
+		Document doc = new Document();
+		doc.append("type", "MultiPoint");
+		doc.append("coordinates", Arrays.asList(Arrays.asList(120, 23.5), Arrays.asList(83, 86), Arrays.asList(142, 45),
+				Arrays.asList(156, 76)));
+		return doc;
+	}
+
+	private Document generateMultiLineStringLocation() {
+		Document doc = new Document();
+		doc.append("type", "MultiLineString");
+		doc.append("coordinates", Arrays.asList(
+			Arrays.asList(
+				Arrays.asList(1, 1), 
+				Arrays.asList(11, 11)
+			),
+			Arrays.asList(
+					Arrays.asList(2, 2), 
+					Arrays.asList(22, 22)
+			),
+			Arrays.asList(
+					Arrays.asList(3, 3), 
+					Arrays.asList(33, 33)
+			)
+		));
+		return doc;
+	}
+
+	private Document generateMultiPolygonLocation() {
+		Document doc = new Document();
+		doc.append("type", "MultiPolygon");
+		doc.append("coordinates", Arrays.asList(
+			Arrays.asList(
+				Arrays.asList(
+					Arrays.asList(-73.958, 40.8003), 
+					Arrays.asList(-73.9498, 40.7968),
+					Arrays.asList(-73.9737, 40.7648),
+					Arrays.asList(-73.9814, 40.7681),
+					Arrays.asList(-73.958, 40.8003)
+				)),
+				Arrays.asList(
+					Arrays.asList(
+							Arrays.asList(-73.958, 40.8003), 
+							Arrays.asList(-73.9498, 40.7968),
+							Arrays.asList(-73.9737, 40.7648),
+							Arrays.asList(-73.958, 40.8003)
+					)
+				))
+		);
+		return doc;
+	}
+	
+//    [ [ [ -73.958, 40.8003 ], [ -73.9498, 40.7968 ], [ -73.9737, 40.7648 ], [ -73.9814, 40.7681 ], [ -73.958, 40.8003 ] ] ],
+//    [ [ [ -73.958, 40.8003 ], [ -73.9498, 40.7968 ], [ -73.9737, 40.7648 ], [ -73.958, 40.8003 ] ] ]
+    		
+	private Document generateGeometryCollectionLocation() {
+		Document doc = new Document();
+		doc.append("type", "GeometryCollection");
+		doc.append("geometries", Arrays.asList(
+				generateMultiPointLocation(),
+				generateMultiLineStringLocation()
+		));
+		return doc;
+	}
+	
+//	 { "type": "GeometryCollection",
+//		    "geometries": [
+//		      { "type": "Point",
+//		        "coordinates": [100.0, 0.0]
+//		        },
+//		      { "type": "LineString",
+//		        "coordinates": [ [101.0, 0.0], [102.0, 1.0] ]
+//		        }
+//		    ]
+//		  }
+	 
+//	{
+//		  type: "GeometryCollection",
+//		  geometries: [
+//		     {
+//		       type: "MultiPoint",
+//		       coordinates: [
+//		          [ -73.9580, 40.8003 ],
+//		          [ -73.9498, 40.7968 ],
+//		          [ -73.9737, 40.7648 ],
+//		          [ -73.9814, 40.7681 ]
+//		       ]
+//		     },
+//		     {
+//		       type: "MultiLineString",
+//		       coordinates: [
+//		          [ [ -73.96943, 40.78519 ], [ -73.96082, 40.78095 ] ],
+//		          [ [ -73.96415, 40.79229 ], [ -73.95544, 40.78854 ] ],
+//		          [ [ -73.97162, 40.78205 ], [ -73.96374, 40.77715 ] ],
+//		          [ [ -73.97880, 40.77247 ], [ -73.97036, 40.76811 ] ]
+//		       ]
+//		     }
+//		  ]
+//		}
 
 	private byte[] getBinData() {
 		return new byte[] { 0x1, 0x2, 0x3 };

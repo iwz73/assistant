@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -81,7 +82,7 @@ public class CollectionAssistant {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		return collection.replaceOne(filter, replacement);
 	}
-	
+
 	public DeleteResult deleteOne(String databaseName, String collectionName, Bson filter) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		return collection.deleteOne(filter);
@@ -104,6 +105,18 @@ public class CollectionAssistant {
 
 	public List<Document> find(String databaseName, String collectionName, Bson bson) {
 		return find(databaseName, collectionName, bson, null, null);
+	}
+
+	public List<Document> aggregate(String databaseName, String collectionName, List<? extends Bson> pipeline) {
+		List<Document> result = new ArrayList<>();
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		AggregateIterable<Document> iterable = collection.aggregate(pipeline);
+		try (MongoCursor<Document> cursor = iterable.iterator()) {
+			while (cursor.hasNext()) {
+				result.add(cursor.next());
+			}
+		}
+		return result;
 	}
 
 	public List<Document> findWithProjection(String databaseName, String collectionName, Bson bson, Bson projection) {

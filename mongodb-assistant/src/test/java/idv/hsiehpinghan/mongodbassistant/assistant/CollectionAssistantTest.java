@@ -17,6 +17,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
@@ -94,7 +96,17 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(amount, SIZE + 1);
 	}
 
-	@Test(dependsOnMethods = { "insertMany" })
+	@Test(dependsOnMethods = { "count" })
+	public void aggregate() {
+		List<? extends Bson> pipeline = generateAggregatePipeline();
+		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
+		for (Document document : documents) {
+			Assert.assertEquals(document.get("_id"), "string");
+			Assert.assertEquals(document.getInteger("count"), (Integer) 5);
+		}
+	}
+
+	@Test(dependsOnMethods = { "aggregate" })
 	public void find() {
 		testGt();
 		testLte();
@@ -137,7 +149,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(document.getDouble("double"), DOUBLE_VALUE);
 		Assert.assertEquals(document.getString("string"), STRING_VALUE);
 	}
-	
+
 	@Test(dependsOnMethods = { "replaceOne" })
 	public void deleteOne() {
 		Bson filter = Filters.eq("_id", ID);
@@ -335,13 +347,18 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.append("string", stringValue);
 		return doc;
 	}
-	
+
 	private Document generateSubDocument() {
 		Document doc = new Document();
 		for (int i = 0; i < SUB_DOCUMENT_SIZE; ++i) {
 			doc.append("key_" + i, "value_" + i);
 		}
 		return doc;
+	}
+
+	private List<? extends Bson> generateAggregatePipeline() {
+		return Arrays.asList(Aggregates.match(Filters.lt("int", 5)),
+				Aggregates.group("$string", Accumulators.sum("count", 1)));
 	}
 
 	private Document generatePointLocation() {

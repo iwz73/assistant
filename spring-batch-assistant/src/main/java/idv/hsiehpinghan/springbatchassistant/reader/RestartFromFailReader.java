@@ -25,12 +25,6 @@ public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 	}
 
 	@Override
-	public void update(ExecutionContext executionContext) throws ItemStreamException {
-		System.err.println("RestartFromFailReader update index(" + index + ")");
-		executionContext.putInt(SpringBatchAssistantConstant.INDEX_KEY, index);
-	}
-
-	@Override
 	public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 		if (index >= ITEMS.length) {
 			return null;
@@ -43,6 +37,12 @@ public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 		++index;
 		System.err.println("RestartFromFailReader read item(" + item + ")");
 		return item;
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext) throws ItemStreamException {
+		System.err.println("RestartFromFailReader update index(" + index + ")");
+		executionContext.putInt(SpringBatchAssistantConstant.INDEX_KEY, index);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.springdatamongodbassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springdatamongodbassistant.entity.BasicDocument;
+import idv.hsiehpinghan.springdatamongodbassistant.entity.BasicDocument.SubDocument;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
@@ -40,6 +41,9 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	private final Long LONG = 18L; // long
 	// Min key -1 “minKey”
 	// Max key 127 “maxKey”
+	private final String STRING_0 = "string_0";
+	private final String STRING_1 = "string_1";
+	private final String STRING_2 = "string_2";
 
 	@Autowired
 	private MongoTemplateAssistant assistant;
@@ -68,16 +72,23 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(basicDocument.getArrayValue(), ARRAY);
 		assertEquals(basicDocument.getBinDataValue(), BIN_DATA);
 		Assert.assertEquals(basicDocument.getObjectIdValue(), OBJECT_ID);
-		Assert.assertEquals(basicDocument.getBoolValue(), BOOL);
+		Assert.assertEquals(basicDocument.isBoolValue(), BOOL);
 		Assert.assertEquals(basicDocument.getDateValue(), DATE);
 		Assert.assertEquals(basicDocument.getNullValue(), NULL);
 		Assert.assertEquals(basicDocument.getIntValue(), INT);
 		Assert.assertEquals(basicDocument.getLongValue(), LONG);
-		// assertSubDocumentEquals((Document) document.get("document"));
+		assertSubDocumentEquals(basicDocument.getSubDocument());
+	}
+
+	private void assertSubDocumentEquals(SubDocument subDocument) {
+		Assert.assertEquals(subDocument.getString_0(), STRING_0);
+		Assert.assertEquals(subDocument.getString_1(), STRING_1);
+		Assert.assertEquals(subDocument.getString_2(), STRING_2);
 	}
 
 	private BasicDocument generateBasicDocument() {
-		return new BasicDocument(ID, DOUBLE, STRING, ARRAY, BIN_DATA, OBJECT_ID, BOOL, DATE, NULL, INT, LONG);
+		return new BasicDocument(ID, DOUBLE, STRING, ARRAY, BIN_DATA, OBJECT_ID, BOOL, DATE, NULL, INT, LONG, STRING_0,
+				STRING_1, STRING_2);
 	}
 
 	private byte[] getBinData() {

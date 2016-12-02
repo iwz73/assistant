@@ -22,10 +22,14 @@ public class BasicDocument {
 	private Object nullValue;
 	private int intValue;
 	private Long longValue;
+	private SubDocument subDocument;
+
+	public BasicDocument() {
+	}
 
 	public BasicDocument(ObjectId idValue, double doubleValue, String stringValue, List<String> arrayValue,
 			byte[] binDataValue, ObjectId objectIdValue, boolean boolValue, Date dateValue, Object nullValue,
-			int intValue, Long longValue) {
+			int intValue, Long longValue, String string_0, String string_1, String string_2) {
 		super();
 		this.idValue = idValue;
 		this.doubleValue = doubleValue;
@@ -38,6 +42,7 @@ public class BasicDocument {
 		this.nullValue = nullValue;
 		this.intValue = intValue;
 		this.longValue = longValue;
+		this.subDocument = new SubDocument(string_0, string_1, string_2);
 	}
 
 	public ObjectId getIdValue() {
@@ -88,7 +93,7 @@ public class BasicDocument {
 		this.objectIdValue = objectIdValue;
 	}
 
-	public boolean getBoolValue() {
+	public boolean isBoolValue() {
 		return boolValue;
 	}
 
@@ -128,12 +133,62 @@ public class BasicDocument {
 		this.longValue = longValue;
 	}
 
+	public SubDocument getSubDocument() {
+		return subDocument;
+	}
+
+	public void setSubDocument(SubDocument subDocument) {
+		this.subDocument = subDocument;
+	}
+
 	@Override
 	public String toString() {
 		return "BasicDocument [idValue=" + idValue + ", doubleValue=" + doubleValue + ", stringValue=" + stringValue
 				+ ", arrayValue=" + arrayValue + ", binDataValue=" + Arrays.toString(binDataValue) + ", objectIdValue="
 				+ objectIdValue + ", boolValue=" + boolValue + ", dateValue=" + dateValue + ", nullValue=" + nullValue
-				+ ", intValue=" + intValue + ", longValue=" + longValue + "]";
+				+ ", intValue=" + intValue + ", longValue=" + longValue + ", subDocument=" + subDocument + "]";
 	}
 
+	public static class SubDocument {
+		private String string_0;
+		private String string_1;
+		private String string_2;
+
+		public SubDocument(String string_0, String string_1, String string_2) {
+			super();
+			this.string_0 = string_0;
+			this.string_1 = string_1;
+			this.string_2 = string_2;
+		}
+
+		public String getString_0() {
+			return string_0;
+		}
+
+		public void setString_0(String string_0) {
+			this.string_0 = string_0;
+		}
+
+		public String getString_1() {
+			return string_1;
+		}
+
+		public void setString_1(String string_1) {
+			this.string_1 = string_1;
+		}
+
+		public String getString_2() {
+			return string_2;
+		}
+
+		public void setString_2(String string_2) {
+			this.string_2 = string_2;
+		}
+
+		@Override
+		public String toString() {
+			return "SubDocument [string_0=" + string_0 + ", string_1=" + string_1 + ", string_2=" + string_2 + "]";
+		}
+
+	}
 }

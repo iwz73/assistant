@@ -28,18 +28,18 @@ public class CollectionAssistant {
 
 	public String createIndex(String databaseName, String collectionName, boolean isAscending, String... fieldNames) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		Bson bson = null;
+		Bson keys = null;
 		if (isAscending == true) {
-			bson = Indexes.ascending(fieldNames);
+			keys = Indexes.ascending(fieldNames);
 		} else {
-			bson = Indexes.descending(fieldNames);
+			keys = Indexes.descending(fieldNames);
 		}
-		return collection.createIndex(bson);
+		return collection.createIndex(keys);
 	}
 
-	public String createCompoundIndex(String databaseName, String collectionName, Bson bson) {
+	public String createCompoundIndex(String databaseName, String collectionName, Bson keys) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		return collection.createIndex(bson);
+		return collection.createIndex(keys);
 	}
 
 	public String createTextIndex(String databaseName, String collectionName, String textFieldName,
@@ -98,25 +98,25 @@ public class CollectionAssistant {
 		collection.drop();
 	}
 
-	public Document findFirst(String databaseName, String collectionName, Bson bson) {
+	public Document findFirst(String databaseName, String collectionName, Bson filter) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		return collection.find(bson).first();
+		return collection.find(filter).first();
 	}
 
-	public List<Document> find(String databaseName, String collectionName, Bson bson) {
-		return find(databaseName, collectionName, bson, null, null, null);
+	public List<Document> find(String databaseName, String collectionName, Bson filter) {
+		return find(databaseName, collectionName, filter, null, null, null);
 	}
 
-	public List<Document> findWithLimit(String databaseName, String collectionName, Bson bson, Integer limit) {
-		return find(databaseName, collectionName, bson, limit, null, null);
+	public List<Document> findWithLimit(String databaseName, String collectionName, Bson filter, Integer limit) {
+		return find(databaseName, collectionName, filter, limit, null, null);
 	}
 
-	public List<Document> findWithProjection(String databaseName, String collectionName, Bson bson, Bson projection) {
-		return find(databaseName, collectionName, bson, null, projection, null);
+	public List<Document> findWithProjection(String databaseName, String collectionName, Bson filter, Bson projection) {
+		return find(databaseName, collectionName, filter, null, projection, null);
 	}
 
-	public List<Document> findWithSort(String databaseName, String collectionName, Bson bson, Bson sort) {
-		return find(databaseName, collectionName, bson, null, null, sort);
+	public List<Document> findWithSort(String databaseName, String collectionName, Bson filter, Bson sort) {
+		return find(databaseName, collectionName, filter, null, null, sort);
 	}
 
 	public List<Document> aggregate(String databaseName, String collectionName, List<? extends Bson> pipeline) {
@@ -145,11 +145,11 @@ public class CollectionAssistant {
 		}
 	}
 
-	private List<Document> find(String databaseName, String collectionName, Bson bson, Integer limit, Bson projection,
+	private List<Document> find(String databaseName, String collectionName, Bson filter, Integer limit, Bson projection,
 			Bson sort) {
 		List<Document> result = new ArrayList<>();
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		FindIterable<Document> iterable = collection.find(bson);
+		FindIterable<Document> iterable = collection.find(filter);
 		if (limit != null) {
 			iterable.limit(limit);
 		}

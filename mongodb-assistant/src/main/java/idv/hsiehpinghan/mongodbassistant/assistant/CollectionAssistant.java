@@ -104,7 +104,19 @@ public class CollectionAssistant {
 	}
 
 	public List<Document> find(String databaseName, String collectionName, Bson bson) {
-		return find(databaseName, collectionName, bson, null, null);
+		return find(databaseName, collectionName, bson, null, null, null);
+	}
+
+	public List<Document> findWithLimit(String databaseName, String collectionName, Bson bson, Integer limit) {
+		return find(databaseName, collectionName, bson, limit, null, null);
+	}
+
+	public List<Document> findWithProjection(String databaseName, String collectionName, Bson bson, Bson projection) {
+		return find(databaseName, collectionName, bson, null, projection, null);
+	}
+
+	public List<Document> findWithSort(String databaseName, String collectionName, Bson bson, Bson sort) {
+		return find(databaseName, collectionName, bson, null, null, sort);
 	}
 
 	public List<Document> aggregate(String databaseName, String collectionName, List<? extends Bson> pipeline) {
@@ -117,14 +129,6 @@ public class CollectionAssistant {
 			}
 		}
 		return result;
-	}
-
-	public List<Document> findWithProjection(String databaseName, String collectionName, Bson bson, Bson projection) {
-		return find(databaseName, collectionName, bson, projection, null);
-	}
-
-	public List<Document> findWithSort(String databaseName, String collectionName, Bson bson, Bson sort) {
-		return find(databaseName, collectionName, bson, null, sort);
 	}
 
 	public long count(String databaseName, String collectionName) {
@@ -141,10 +145,14 @@ public class CollectionAssistant {
 		}
 	}
 
-	private List<Document> find(String databaseName, String collectionName, Bson bson, Bson projection, Bson sort) {
+	private List<Document> find(String databaseName, String collectionName, Bson bson, Integer limit, Bson projection,
+			Bson sort) {
 		List<Document> result = new ArrayList<>();
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		FindIterable<Document> iterable = collection.find(bson);
+		if (limit != null) {
+			iterable.limit(limit);
+		}
 		if (projection != null) {
 			iterable = iterable.projection(projection);
 		}

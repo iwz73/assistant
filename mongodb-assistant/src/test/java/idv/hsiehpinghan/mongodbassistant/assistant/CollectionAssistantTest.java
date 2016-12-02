@@ -113,6 +113,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		testGt();
 		testLte();
 		testAnd();
+		testLimit();
 		testProjection();
 		testSort();
 	}
@@ -247,6 +248,16 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Bson bson = Filters.and(filters);
 		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
 		Assert.assertEquals(amount, 2);
+	}
+
+	private void testLimit() {
+		final Integer LIMIT = 1;
+		List<Bson> filters = new ArrayList<>();
+		filters.add(Filters.gt("int", 3));
+		filters.add(Filters.lte("int", 5));
+		Bson bson = Filters.and(filters);
+		long amount = assistant.findWithLimit(DATABASE_NAME, COLLECTION_NAME, bson, LIMIT).size();
+		Assert.assertEquals(amount, 1);
 	}
 
 	private void testProjection() {

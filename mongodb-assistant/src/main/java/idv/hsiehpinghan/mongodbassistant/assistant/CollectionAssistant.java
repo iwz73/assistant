@@ -149,7 +149,10 @@ public class CollectionAssistant {
 			Bson sort) {
 		List<Document> result = new ArrayList<>();
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		FindIterable<Document> iterable = collection.find(filter);
+		FindIterable<Document> iterable = collection.find();
+		if (filter != null) {
+			iterable.filter(filter);
+		}
 		if (limit != null) {
 			iterable.limit(limit);
 		}

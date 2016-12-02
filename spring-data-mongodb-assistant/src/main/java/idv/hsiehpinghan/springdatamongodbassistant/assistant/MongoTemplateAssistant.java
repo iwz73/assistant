@@ -25,11 +25,19 @@ public class MongoTemplateAssistant {
 		mongoTemplate.insert(entity);
 	}
 
+	public void insertOrUpdate(BasicDocument entity) {
+		mongoTemplate.save(entity);
+	}
+
 	public BasicDocument findOne(Query query) {
 		return mongoTemplate.findOne(query, ENTITY_CLASS);
 	}
-	
+
 	public WriteResult updateFirst(Query query, Update update) {
 		return mongoTemplate.updateFirst(query, update, ENTITY_CLASS);
+	}
+
+	public WriteResult remove(BasicDocument entity) {
+		return mongoTemplate.remove(entity);
 	}
 }

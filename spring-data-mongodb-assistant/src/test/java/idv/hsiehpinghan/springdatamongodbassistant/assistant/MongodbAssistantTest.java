@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -47,6 +48,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	private final String STRING_0 = "string_0";
 	private final String STRING_1 = "string_1";
 	private final String STRING_2 = "string_2";
+	BasicDocument basicDocument;
 
 	@Autowired
 	private MongoTemplateAssistant assistant;
@@ -58,17 +60,28 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void insert() throws Exception {
-		BasicDocument basicDocument = generateBasicDocument();
+		basicDocument = generateBasicDocument();
 		assistant.insert(basicDocument);
 	}
 
 	@Test(dependsOnMethods = { "insert" })
 	public void findOne() throws Exception {
+		testCriteriaQuery();
+		testBasicQuery();
+	}
+	
+	private void testCriteriaQuery() {
 		Query query = new Query(Criteria.where("_id").is(ID));
 		BasicDocument basicDocument = assistant.findOne(query);
 		assertEquals(basicDocument, INT);
 	}
 
+	private void testBasicQuery() {
+		Query query = new BasicQuery("{ intValue : { $eq : " + INT + " } }");
+		BasicDocument basicDocument = assistant.findOne(query);
+		assertEquals(basicDocument, INT);
+	}
+	
 	@Test(dependsOnMethods = { "findOne" })
 	public void updateFirst() throws Exception {
 		final int NEW_INT = 100;
@@ -79,6 +92,25 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(modifiedCount, 1);
 		BasicDocument basicDocument = assistant.findOne(query);
 		assertEquals(basicDocument, NEW_INT);
+	}
+
+	@Test(dependsOnMethods = { "updateFirst" })
+	public void remove() throws Exception {
+		WriteResult writeResult = assistant.remove(basicDocument);
+		int modifiedCount = writeResult.getN();
+		Assert.assertEquals(modifiedCount, 1);
+		Query query = new Query(Criteria.where("_id").is(ID));
+		BasicDocument returnBasicDocument = assistant.findOne(query);
+		Assert.assertNull(returnBasicDocument);
+	}
+
+	@Test(dependsOnMethods = { "remove" })
+	public void insertOrUpdate() throws Exception {
+		basicDocument = generateBasicDocument();
+		assistant.insertOrUpdate(basicDocument);
+		Query query = new Query(Criteria.where("_id").is(ID));
+		BasicDocument basicDocument = assistant.findOne(query);
+		assertEquals(basicDocument, INT);
 	}
 
 	private void assertEquals(BasicDocument basicDocument, int i) {

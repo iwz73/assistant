@@ -21,8 +21,8 @@ public class SpringConfiguration {
 
 	@Bean
 	public MongoClient mongoClient() throws IOException {
-		String host = env.getRequiredProperty("host");
-		int port = Integer.valueOf(env.getRequiredProperty("port"));
+		String host = env.getRequiredProperty("mongodb.host");
+		int port = Integer.valueOf(env.getRequiredProperty("mongodb.port"));
 		MongoClient mongoClient = new MongoClient(host, port);
 		return mongoClient;
 	}

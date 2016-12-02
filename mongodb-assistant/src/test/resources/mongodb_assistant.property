@@ -1,2 +1,2 @@
-host=localhost
-port=27017
+mongodb.host=localhost
+mongodb.port=27017

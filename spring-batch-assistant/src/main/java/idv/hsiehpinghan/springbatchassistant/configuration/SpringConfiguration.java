@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.springbatchassistant.configuration;
 
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -20,6 +21,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -31,6 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mongodb.MongoClient;
 
 @EnableScheduling
 @EnableBatchProcessing
@@ -40,6 +43,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @ImportResource(value = { "classpath:/applicationContext.xml" })
 @ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
+	@Autowired
+	private Environment env;
 	@Autowired
 	private Environment environment;
 	@Autowired
@@ -60,6 +65,21 @@ public class SpringConfiguration {
 	// private JobBuilderFactory jobBuilders;
 	// @Autowired
 	// private StepBuilderFactory stepBuilders;
+
+	@Bean
+	public MongoClient mongoClient() throws IOException {
+		String host = env.getRequiredProperty("mongodb.host");
+		int port = Integer.valueOf(env.getRequiredProperty("mongodb.port"));
+		MongoClient mongoClient = new MongoClient(host, port);
+		return mongoClient;
+	}
+
+	@Bean
+	public MongoTemplate mongoTemplate(MongoClient mongoClient) {
+		String databaseName = env.getRequiredProperty("mongodb.databaseName");
+		MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, databaseName);
+		return mongoTemplate;
+	}
 
 	@PostConstruct
 	public void postConstruct() throws ScriptException, SQLException {

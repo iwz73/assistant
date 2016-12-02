@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<!-- job -->
+	<batch:job id="mongodbJob">
+		<batch:step id="mongodbStep">
+			<tasklet>
+				<chunk reader="mongodbItemReader" writer="mongodbItemWriter"
+					commit-interval="3">
+				</chunk>
+			</tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="mongodbItemReader" class="org.springframework.batch.item.data.MongoItemReader"
+		scope="step">
+		<property name="collection" value="#{jobParameters['collection']}" />
+		<property name="query" value="#{jobParameters['query']}" />
+		<property name="targetType" ref="" />
+		<property name="sort">
+			<map>
+				<entry key="_id"
+					value="#{T(org.springframework.data.domain.Sort.Direction).ASC}" />
+			</map>
+		</property>
+		<property name="template" ref="mongoTemplate" />
+	</bean>
+
+	<!-- writer -->
+	<bean id="mongodbItemWriter" class="org.springframework.batch.item.data.MongoItemWriter">
+		<property name="collection" value="#{jobParameters['collection']}" />
+		<property name="template" ref="mongoTemplate" />
+	</bean>
+
+</beans>

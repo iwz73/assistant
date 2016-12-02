@@ -33,6 +33,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<spring-batch.version>3.0.6.RELEASE</spring-batch.version>
+		<spring-data-mongodb.version>1.9.5.RELEASE</spring-data-mongodb.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
@@ -104,6 +105,13 @@
 			<groupId>org.springframework.batch</groupId>
 			<artifactId>spring-batch-core</artifactId>
 			<version>${spring-batch.version}</version>
+		</dependency>
+
+		<!-- spring-data-mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${spring-data-mongodb.version}</version>
 		</dependency>
 
 		<!-- hibernate -->

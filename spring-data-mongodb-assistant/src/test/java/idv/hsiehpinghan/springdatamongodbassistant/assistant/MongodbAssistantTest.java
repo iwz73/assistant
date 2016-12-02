@@ -8,11 +8,14 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.mongodb.WriteResult;
 
 import idv.hsiehpinghan.springdatamongodbassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springdatamongodbassistant.entity.BasicDocument;
@@ -63,10 +66,22 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	public void findOne() throws Exception {
 		Query query = new Query(Criteria.where("_id").is(ID));
 		BasicDocument basicDocument = assistant.findOne(query);
-		assertEquals(basicDocument);
+		assertEquals(basicDocument, INT);
 	}
 
-	private void assertEquals(BasicDocument basicDocument) {
+	@Test(dependsOnMethods = { "findOne" })
+	public void updateFirst() throws Exception {
+		final int NEW_INT = 100;
+		Query query = new Query(Criteria.where("_id").is(ID));
+		Update update = Update.update("intValue", Integer.valueOf(NEW_INT));
+		WriteResult writeResult = assistant.updateFirst(query, update);
+		int modifiedCount = writeResult.getN();
+		Assert.assertEquals(modifiedCount, 1);
+		BasicDocument basicDocument = assistant.findOne(query);
+		assertEquals(basicDocument, NEW_INT);
+	}
+
+	private void assertEquals(BasicDocument basicDocument, int i) {
 		Assert.assertEquals(basicDocument.getDoubleValue(), DOUBLE);
 		Assert.assertEquals(basicDocument.getStringValue(), STRING);
 		Assert.assertEquals(basicDocument.getArrayValue(), ARRAY);
@@ -75,7 +90,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(basicDocument.isBoolValue(), BOOL);
 		Assert.assertEquals(basicDocument.getDateValue(), DATE);
 		Assert.assertEquals(basicDocument.getNullValue(), NULL);
-		Assert.assertEquals(basicDocument.getIntValue(), INT);
+		Assert.assertEquals(basicDocument.getIntValue(), i);
 		Assert.assertEquals(basicDocument.getLongValue(), LONG);
 		assertSubDocumentEquals(basicDocument.getSubDocument());
 	}

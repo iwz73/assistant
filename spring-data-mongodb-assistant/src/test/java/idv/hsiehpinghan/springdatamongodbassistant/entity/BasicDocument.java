@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import idv.hsiehpinghan.springdatamongodbassistant.enumeration.Enumeration;
+
 @Document
 public class BasicDocument {
 	@Id
@@ -22,6 +24,7 @@ public class BasicDocument {
 	private Object nullValue;
 	private int intValue;
 	private Long longValue;
+	private Enumeration enumerationValue;
 	private SubDocument subDocument;
 
 	public BasicDocument() {
@@ -29,7 +32,8 @@ public class BasicDocument {
 
 	public BasicDocument(ObjectId idValue, double doubleValue, String stringValue, List<String> arrayValue,
 			byte[] binDataValue, ObjectId objectIdValue, boolean boolValue, Date dateValue, Object nullValue,
-			int intValue, Long longValue, String string_0, String string_1, String string_2) {
+			int intValue, Long longValue, Enumeration enumerationValue, String string_0, String string_1,
+			String string_2) {
 		super();
 		this.idValue = idValue;
 		this.doubleValue = doubleValue;
@@ -42,6 +46,7 @@ public class BasicDocument {
 		this.nullValue = nullValue;
 		this.intValue = intValue;
 		this.longValue = longValue;
+		this.enumerationValue = enumerationValue;
 		this.subDocument = new SubDocument(string_0, string_1, string_2);
 	}
 
@@ -141,12 +146,21 @@ public class BasicDocument {
 		this.subDocument = subDocument;
 	}
 
+	public Enumeration getEnumerationValue() {
+		return enumerationValue;
+	}
+
+	public void setEnumerationValue(Enumeration enumerationValue) {
+		this.enumerationValue = enumerationValue;
+	}
+
 	@Override
 	public String toString() {
 		return "BasicDocument [idValue=" + idValue + ", doubleValue=" + doubleValue + ", stringValue=" + stringValue
 				+ ", arrayValue=" + arrayValue + ", binDataValue=" + Arrays.toString(binDataValue) + ", objectIdValue="
 				+ objectIdValue + ", boolValue=" + boolValue + ", dateValue=" + dateValue + ", nullValue=" + nullValue
-				+ ", intValue=" + intValue + ", longValue=" + longValue + ", subDocument=" + subDocument + "]";
+				+ ", intValue=" + intValue + ", longValue=" + longValue + ", enumerationValue=" + enumerationValue
+				+ ", subDocument=" + subDocument + "]";
 	}
 
 	public static class SubDocument {

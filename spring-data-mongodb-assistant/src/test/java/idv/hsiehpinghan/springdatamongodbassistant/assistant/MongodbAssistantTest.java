@@ -21,6 +21,7 @@ import com.mongodb.WriteResult;
 import idv.hsiehpinghan.springdatamongodbassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springdatamongodbassistant.entity.BasicDocument;
 import idv.hsiehpinghan.springdatamongodbassistant.entity.BasicDocument.SubDocument;
+import idv.hsiehpinghan.springdatamongodbassistant.enumeration.Enumeration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
@@ -45,6 +46,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	private final Long LONG = 18L; // long
 	// Min key -1 “minKey”
 	// Max key 127 “maxKey”
+	private final Enumeration ENUMERATION = Enumeration.ENUM_2;
 	private final String STRING_0 = "string_0";
 	private final String STRING_1 = "string_1";
 	private final String STRING_2 = "string_2";
@@ -69,7 +71,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		testCriteriaQuery();
 		testBasicQuery();
 	}
-	
+
 	private void testCriteriaQuery() {
 		Query query = new Query(Criteria.where("_id").is(ID));
 		BasicDocument basicDocument = assistant.findOne(query);
@@ -81,7 +83,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		BasicDocument basicDocument = assistant.findOne(query);
 		assertEquals(basicDocument, INT);
 	}
-	
+
 	@Test(dependsOnMethods = { "findOne" })
 	public void updateFirst() throws Exception {
 		final int NEW_INT = 100;
@@ -124,6 +126,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(basicDocument.getNullValue(), NULL);
 		Assert.assertEquals(basicDocument.getIntValue(), i);
 		Assert.assertEquals(basicDocument.getLongValue(), LONG);
+		Assert.assertEquals(basicDocument.getEnumerationValue(), ENUMERATION);
 		assertSubDocumentEquals(basicDocument.getSubDocument());
 	}
 
@@ -134,8 +137,8 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private BasicDocument generateBasicDocument() {
-		return new BasicDocument(ID, DOUBLE, STRING, ARRAY, BIN_DATA, OBJECT_ID, BOOL, DATE, NULL, INT, LONG, STRING_0,
-				STRING_1, STRING_2);
+		return new BasicDocument(ID, DOUBLE, STRING, ARRAY, BIN_DATA, OBJECT_ID, BOOL, DATE, NULL, INT, LONG,
+				ENUMERATION, STRING_0, STRING_1, STRING_2);
 	}
 
 	private byte[] getBinData() {

@@ -25,6 +25,7 @@
 		scope="step">
 		<property name="collection" value="#{jobParameters['collection']}" />
 		<property name="query" value="#{jobParameters['query']}" />
+		<property name="pageSize" value="#{jobParameters['pageSize']}" />
 		<property name="targetType" value="#{jobParameters['targetType']}" />
 		<property name="sort">
 			<map>

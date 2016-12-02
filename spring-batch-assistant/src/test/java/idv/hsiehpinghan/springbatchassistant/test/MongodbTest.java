@@ -46,10 +46,8 @@ public class MongodbTest extends AbstractTestNGSpringContextTests {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
 		jobParametersBuilder.addString("collection", COLLECTION_NAME);
 		jobParametersBuilder.addString("query", "{ longValue : { $lt : 5 } }");
+		jobParametersBuilder.addLong("pageSize", 3L);
 		jobParametersBuilder.addString("targetType", MongodbDocument.class.getName());
-
-		System.err.println(MongodbDocument.class.getName());
-
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

@@ -8,19 +8,24 @@
 	<batch:job id="mongodbJob">
 		<batch:step id="mongodbStep">
 			<tasklet>
-				<chunk reader="mongodbItemReader" writer="mongodbItemWriter"
-					commit-interval="3">
+				<chunk reader="mongodbReader" processor="mongodbProcessor"
+					writer="mongodbWriter" commit-interval="3">
 				</chunk>
 			</tasklet>
 		</batch:step>
 	</batch:job>
 
 	<!-- reader -->
-	<bean id="mongodbItemReader" class="org.springframework.batch.item.data.MongoItemReader"
+	<bean id="mongodbReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.MongodbReader"
+		scope="step">
+		<property name="delegate" ref="mongodbMongoItemReader" />
+	</bean>
+	<bean id="mongodbMongoItemReader" class="org.springframework.batch.item.data.MongoItemReader"
 		scope="step">
 		<property name="collection" value="#{jobParameters['collection']}" />
 		<property name="query" value="#{jobParameters['query']}" />
-		<property name="targetType" ref="" />
+		<property name="targetType" value="#{jobParameters['targetType']}" />
 		<property name="sort">
 			<map>
 				<entry key="_id"
@@ -30,8 +35,20 @@
 		<property name="template" ref="mongoTemplate" />
 	</bean>
 
+	<!-- processor -->
+	<bean id="mongodbProcessor"
+		class="idv.hsiehpinghan.springbatchassistant.processor.MongodbProcessor"
+		scope="step">
+	</bean>
+
 	<!-- writer -->
-	<bean id="mongodbItemWriter" class="org.springframework.batch.item.data.MongoItemWriter">
+	<bean id="mongodbWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.MongodbWriter"
+		scope="step">
+		<property name="delegate" ref="mongodbMongoItemWriter" />
+	</bean>
+	<bean id="mongodbMongoItemWriter" class="org.springframework.batch.item.data.MongoItemWriter"
+		scope="step">
 		<property name="collection" value="#{jobParameters['collection']}" />
 		<property name="template" ref="mongoTemplate" />
 	</bean>

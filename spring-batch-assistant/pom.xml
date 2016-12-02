@@ -31,7 +31,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
-		<spring.version>4.1.2.RELEASE</spring.version>
+		<spring.version>4.2.8.RELEASE</spring.version>
 		<spring-batch.version>3.0.6.RELEASE</spring-batch.version>
 		<spring-data-mongodb.version>1.9.5.RELEASE</spring-data-mongodb.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>

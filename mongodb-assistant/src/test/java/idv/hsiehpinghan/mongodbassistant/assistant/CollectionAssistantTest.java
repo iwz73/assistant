@@ -28,6 +28,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.mongodbassistant.enumeration.Enumeration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
@@ -57,6 +58,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private final Long LONG = 18L; // long
 	// Min key -1 “minKey”
 	// Max key 127 “maxKey”
+	private final Enumeration ENUMERATION = Enumeration.ENUM_2;
 
 	@Autowired
 	private CollectionAssistant assistant;
@@ -294,6 +296,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(document.get("null"), NULL);
 		Assert.assertEquals((Integer) document.getInteger("int"), (Integer) i);
 		Assert.assertEquals(document.getLong("long"), LONG);
+		Assert.assertEquals(Enumeration.valueOf(document.get("enumeration").toString()), ENUMERATION);
 		assertSubDocumentEquals((Document) document.get("document"));
 	}
 
@@ -330,6 +333,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		doc.append("null", NULL);
 		doc.append("int", i);
 		doc.append("long", LONG);
+		doc.append("enumeration", ENUMERATION.toString());
 		doc.append("document", generateSubDocument());
 		doc.append("pointLocation", generatePointLocation());
 		doc.append("lineStringLocation", generateLineStringLocation());

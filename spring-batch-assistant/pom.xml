@@ -36,12 +36,11 @@
 		<spring-data-mongodb.version>1.9.5.RELEASE</spring-data-mongodb.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+		<javax.el-api.version>3.0.0</javax.el-api.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
 		<mail.version>1.4.7</mail.version>
-		<object-utility.version>1.0.0</object-utility.version>
-		<test-utility.version>1.0.0</test-utility.version>
 	</properties>
 
 	<dependencies>
@@ -128,6 +127,13 @@
 			<version>${hibernate-validator.version}</version>
 		</dependency>
 
+		<!-- javax.el-api.version -->
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>${javax.el-api.version}</version>
+		</dependency>
+
 		<!-- postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -156,20 +162,5 @@
 			<version>${mail.version}</version>
 		</dependency>
 
-		<!-- object-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>object-utility</artifactId>
-			<version>${object-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- test-utility -->
-		<dependency>
-			<groupId>idv.hsiehpinghan</groupId>
-			<artifactId>test-utility</artifactId>
-			<version>${test-utility.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>

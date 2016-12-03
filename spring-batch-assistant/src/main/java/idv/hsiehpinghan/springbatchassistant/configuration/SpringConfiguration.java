@@ -48,8 +48,6 @@ import com.mongodb.MongoClient;
 				Configuration.class }))
 public class SpringConfiguration {
 	@Autowired
-	private Environment env;
-	@Autowired
 	private Environment environment;
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -72,15 +70,15 @@ public class SpringConfiguration {
 
 	@Bean
 	public MongoClient mongoClient() throws IOException {
-		String host = env.getRequiredProperty("mongodb.host");
-		int port = Integer.valueOf(env.getRequiredProperty("mongodb.port"));
+		String host = environment.getRequiredProperty("mongodb.host");
+		int port = Integer.valueOf(environment.getRequiredProperty("mongodb.port"));
 		MongoClient mongoClient = new MongoClient(host, port);
 		return mongoClient;
 	}
 
 	@Bean
 	public MongoTemplate mongoTemplate(MongoClient mongoClient) {
-		String databaseName = env.getRequiredProperty("mongodb.databaseName");
+		String databaseName = environment.getRequiredProperty("mongodb.databaseName");
 		MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, databaseName);
 		return mongoTemplate;
 	}
@@ -150,19 +148,13 @@ public class SpringConfiguration {
 
 	private String getUsername() {
 		String usernameProp = "spring_batch_assistant_username";
-		String username = environment.getProperty(usernameProp);
-		if (username == null) {
-			throw new RuntimeException(usernameProp + " not set !!!");
-		}
+		String username = environment.getRequiredProperty(usernameProp);
 		return username;
 	}
 
 	private String getPassword() {
 		String passwordProp = "spring_batch_assistant_password";
-		String password = environment.getProperty(passwordProp);
-		if (password == null) {
-			throw new RuntimeException(passwordProp + " not set !!!");
-		}
+		String password = environment.getRequiredProperty(passwordProp);
 		return password;
 	}
 

@@ -17,6 +17,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -71,8 +72,16 @@ public class CollectionAssistant {
 	}
 
 	public UpdateResult updateOne(String databaseName, String collectionName, Bson filter, Bson update) {
+		return updateOne(databaseName, collectionName, filter, update, null);
+	}
+
+	public UpdateResult updateOne(String databaseName, String collectionName, Bson filter, Bson update,
+			UpdateOptions updateOptions) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
-		return collection.updateOne(filter, update);
+		if (updateOptions == null) {
+			return collection.updateOne(filter, update);
+		}
+		return collection.updateOne(filter, update, updateOptions);
 	}
 
 	public UpdateResult updateMany(String databaseName, String collectionName, Bson filter, Bson update) {

@@ -30,6 +30,7 @@ import com.mongodb.client.model.ReplaceOneModel;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.UpdateManyModel;
 import com.mongodb.client.model.UpdateOneModel;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
@@ -131,6 +132,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		testSetUpdate();
 		testUpdatesUpdate();
 		testUpdatesCurrentDateAndTimestamp();
+		testUpsertUpdate();
+		testUpsertInsert();
 	}
 
 	@Test(dependsOnMethods = { "updateOne" })
@@ -611,4 +614,36 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertNotNull(document.get("currentTimestamp"));
 	}
 
+	private void testUpsertUpdate() {
+		final int I = 88;
+		Bson filter = Filters.eq("_id", ID);
+		Bson update = new Document("$set", new Document("int", I));
+		UpdateOptions updateOptions = new UpdateOptions();
+		updateOptions.upsert(true);
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update, updateOptions);
+		long matchedCount = updateResult.getMatchedCount();
+		Assert.assertEquals(matchedCount, 1);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 1);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
+		assertEquals(document, I);
+	}
+
+	private void testUpsertInsert() {
+		final ObjectId ID = new ObjectId();
+		final int I = 99;
+		Bson filter = Filters.eq("_id", ID);
+		Bson update = new Document("$set", new Document("int", I));
+		UpdateOptions updateOptions = new UpdateOptions();
+		updateOptions.upsert(true);
+		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update, updateOptions);
+		long matchedCount = updateResult.getMatchedCount();
+		Assert.assertEquals(matchedCount, 0);
+		long modifiedCount = updateResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 0);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
+		System.err.println("testUpsertInsert document(" + document + ")");
+	}
 }

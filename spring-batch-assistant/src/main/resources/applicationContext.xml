@@ -4,8 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- because using javaconfig as context vonfiguration, add below line to 
-		having context holder for step scope -->
+	<!-- add below line to having context holder for job scope -->
+	<bean class="org.springframework.batch.core.scope.JobScope" />
+	<!-- add below line to having context holder for step scope -->
 	<bean class="org.springframework.batch.core.scope.StepScope" />
 
 	<import resource="classpath:/batch/*.xml" />

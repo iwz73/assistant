@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("step")
 public class JavaconfigProcessor implements ItemProcessor<String, String> {
-	@Value("#{jobParameters['commitInterval']}")
-	private Integer limit;
+	@Value("#{jobParameters['value']}")
+	private String value;
 
 	@Override
 	public String process(String item) throws Exception {
-		System.err.println("JavaconfigProcessor write process item(" + item + "), limit(" + limit + ")");
+		System.err.println("JavaconfigProcessor write process item(" + item + "), value(" + value + ")");
 		return item;
 	}
 }

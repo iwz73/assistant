@@ -27,6 +27,7 @@ public class JavaconfigTest extends AbstractTestNGSpringContextTests {
 	public void test() throws Exception {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
 		jobParametersBuilder.addLong("commitInterval", 3L);
+		jobParametersBuilder.addString("value", "string");
 		JobParameters jobParameters = jobParametersBuilder.toJobParameters();
 		JobExecution jobExecution = jobLauncher.run(job, jobParameters);
 		Assert.assertEquals(jobExecution.getExitStatus().getExitCode(), ExitStatus.COMPLETED.getExitCode());

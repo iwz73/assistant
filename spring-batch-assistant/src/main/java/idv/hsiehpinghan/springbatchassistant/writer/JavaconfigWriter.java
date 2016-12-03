@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("step")
 public class JavaconfigWriter implements ItemWriter<Integer> {
-	@Value("#{jobParameters['commitInterval']}")
-	private Integer limit;
+	@Value("#{jobParameters['value']}")
+	private String value;
 
 	@Override
 	public void write(List<? extends Integer> items) throws Exception {
-		System.err.println("JavaconfigWriter write items(" + items + "), limit(" + limit + ")");
+		System.err.println("JavaconfigWriter write items(" + items + "), value(" + value + ")");
 	}
 }

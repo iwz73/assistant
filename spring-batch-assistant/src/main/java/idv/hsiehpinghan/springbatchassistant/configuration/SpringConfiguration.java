@@ -39,13 +39,11 @@ import com.mongodb.MongoClient;
 @EnableScheduling
 @EnableBatchProcessing
 @EnableTransactionManagement
-@Import(value = { JavaconfigConfiguration.class })
+@Import(value = { JavaconfigJobConfiguration.class })
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
 @ImportResource(value = { "classpath:/applicationContext.xml" })
-@ComponentScan(basePackages = {
-		"idv.hsiehpinghan.springbatchassistant" }, excludeFilters = @ComponentScan.Filter(value = {
-				Configuration.class }))
+@ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
 public class SpringConfiguration {
 	@Autowired
 	private Environment environment;

@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("step")
 public class JavaconfigTasklet implements Tasklet {
-	@Value("#{jobParameters['commitInterval']}")
-	private Integer limit;
+	@Value("#{jobParameters['value']}")
+	private String value;
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		System.err.println("JavaconfigTasklet execute : limit(" + limit + ")");
+		System.err.println("JavaconfigTasklet execute : value(" + value + ")");
 		return RepeatStatus.FINISHED;
 	}
 

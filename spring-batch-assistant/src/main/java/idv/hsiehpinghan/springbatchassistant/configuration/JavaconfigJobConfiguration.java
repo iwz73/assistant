@@ -10,11 +10,13 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class JavaconfigConfiguration {
+public class JavaconfigJobConfiguration {
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
 	@Autowired
@@ -27,15 +29,18 @@ public class JavaconfigConfiguration {
 	}
 
 	@Bean
+	@Scope("job")
 	public Step javaconfigTaskletStep(@Qualifier("javaconfigTasklet") Tasklet tasklet) {
 		return stepBuilderFactory.get("javaconfigTaskletStep").tasklet(tasklet).build();
 	}
 
 	@Bean
+	@Scope("job")
 	public Step javaconfigChunkStep(@Qualifier("javaconfigReader") ItemReader<String> reader,
 			@Qualifier("javaconfigProcessor") ItemProcessor<String, Integer> processor,
-			@Qualifier("javaconfigWriter") ItemWriter<Integer> writer) {
-		return stepBuilderFactory.get("javaconfigChunkStep").<String, Integer>chunk(3).reader(reader)
+			@Qualifier("javaconfigWriter") ItemWriter<Integer> writer,
+			@Value("#{jobParameters['commitInterval']}") Integer commitInterval) {
+		return stepBuilderFactory.get("javaconfigChunkStep").<String, Integer>chunk(commitInterval).reader(reader)
 				.processor(processor).writer(writer).build();
 	}
 

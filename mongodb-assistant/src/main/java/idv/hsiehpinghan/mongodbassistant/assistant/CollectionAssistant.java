@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClient;
+import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -16,6 +17,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -93,6 +95,12 @@ public class CollectionAssistant {
 		return collection.deleteMany(filter);
 	}
 
+	public BulkWriteResult bulkWrite(String databaseName, String collectionName,
+			List<? extends WriteModel<? extends Document>> requests) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		return collection.bulkWrite(requests);
+	}
+
 	public void drop(String databaseName, String collectionName) {
 		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
 		collection.drop();
@@ -109,6 +117,10 @@ public class CollectionAssistant {
 
 	public List<Document> findWithLimit(String databaseName, String collectionName, Bson filter, Integer limit) {
 		return find(databaseName, collectionName, filter, limit, null, null);
+	}
+
+	public List<Document> findWithProjection(String databaseName, String collectionName, Bson projection) {
+		return find(databaseName, collectionName, null, null, projection, null);
 	}
 
 	public List<Document> findWithProjection(String databaseName, String collectionName, Bson filter, Bson projection) {

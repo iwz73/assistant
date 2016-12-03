@@ -17,13 +17,21 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.DeleteManyModel;
+import com.mongodb.client.model.DeleteOneModel;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.InsertOneModel;
+import com.mongodb.client.model.ReplaceOneModel;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.UpdateManyModel;
+import com.mongodb.client.model.UpdateOneModel;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
@@ -70,14 +78,14 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void insertOne() throws Exception {
-		Document document = generateDocument(ID, INT);
+		Document document = generateDocument(ID, INT, STRING);
 		assistant.insertOne(DATABASE_NAME, COLLECTION_NAME, document);
 	}
 
 	@Test(dependsOnMethods = { "insertOne" })
 	public void findFirst() {
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson filter = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, filter);
 		assertEquals(document, INT);
 	}
 
@@ -86,7 +94,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		List<Document> documents = new ArrayList<>(SIZE);
 		for (int i = 0; i < SIZE; ++i) {
 			ObjectId objectId = new ObjectId();
-			Document document = generateDocument(objectId, i);
+			Document document = generateDocument(objectId, i, STRING);
 			documents.add(document);
 		}
 		assistant.insertMany(DATABASE_NAME, COLLECTION_NAME, documents);
@@ -133,8 +141,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		UpdateResult updateResult = assistant.updateMany(DATABASE_NAME, COLLECTION_NAME, filter, update);
 		long modifiedCount = updateResult.getModifiedCount();
 		Assert.assertEquals(modifiedCount, 6);
-		Bson bson = Filters.eq("int", I);
-		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Bson fltr = Filters.eq("int", I);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, fltr).size();
 		Assert.assertEquals(amount, 6);
 	}
 
@@ -147,8 +155,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		UpdateResult updateResult = assistant.replaceOne(DATABASE_NAME, COLLECTION_NAME, filter, replacement);
 		long modifiedCount = updateResult.getModifiedCount();
 		Assert.assertEquals(modifiedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		Assert.assertEquals(document.getDouble("double"), DOUBLE_VALUE);
 		Assert.assertEquals(document.getString("string"), STRING_VALUE);
 	}
@@ -159,23 +167,38 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		DeleteResult deleteResult = assistant.deleteOne(DATABASE_NAME, COLLECTION_NAME, filter);
 		long deletedCount = deleteResult.getDeletedCount();
 		Assert.assertEquals(deletedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		Assert.assertNull(document);
 	}
 
 	@Test(dependsOnMethods = { "deleteOne" })
 	public void deleteMany() {
-		Bson filter = Filters.lte("int", 9);
+		final int LTE_INT_TO_DELETE = 8;
+		Bson filter = Filters.lte("int", LTE_INT_TO_DELETE);
 		DeleteResult deleteResult = assistant.deleteMany(DATABASE_NAME, COLLECTION_NAME, filter);
 		long deletedCount = deleteResult.getDeletedCount();
-		Assert.assertEquals(deletedCount, 4);
-		Bson bson = Filters.lte("int", 9);
-		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Assert.assertEquals(deletedCount, 3);
+		Bson fltr = Filters.lte("int", LTE_INT_TO_DELETE);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, fltr).size();
 		Assert.assertEquals(amount, 0);
 	}
 
 	@Test(dependsOnMethods = { "deleteMany" })
+	public void bulkWrite() {
+		List<? extends WriteModel<? extends Document>> requests = generateBulkWriteRequests();
+		BulkWriteResult bulkWriteResult = assistant.bulkWrite(DATABASE_NAME, COLLECTION_NAME, requests);
+		int insertedCount = bulkWriteResult.getInsertedCount();
+		Assert.assertEquals(insertedCount, 1);
+		int matchedCount = bulkWriteResult.getMatchedCount();
+		Assert.assertEquals(matchedCount, 4);
+		int modifiedCount = bulkWriteResult.getModifiedCount();
+		Assert.assertEquals(modifiedCount, 4);
+		int deletedCount = bulkWriteResult.getDeletedCount();
+		Assert.assertEquals(deletedCount, 3);
+	}
+
+	@Test(dependsOnMethods = { "bulkWrite" })
 	public void createIndex() {
 		boolean isAscending = true;
 		String[] fieldNames = new String[] { "string", "int" };
@@ -185,8 +208,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "createIndex" })
 	public void createCompoundIndex() {
-		Bson bson = Indexes.compoundIndex(Indexes.descending("double"), Indexes.ascending("long"));
-		String indexName = assistant.createCompoundIndex(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson keys = Indexes.compoundIndex(Indexes.descending("double"), Indexes.ascending("long"));
+		String indexName = assistant.createCompoundIndex(DATABASE_NAME, COLLECTION_NAME, keys);
 		Assert.assertEquals(indexName, "double_-1_long_1");
 	}
 
@@ -229,15 +252,100 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		assistant.printAllDocument(DATABASE_NAME, COLLECTION_NAME);
 	}
 
+	private List<WriteModel<Document>> generateBulkWriteRequests() {
+		Bson projection = generateBulkWriteProjection();
+		List<Document> documents = assistant.findWithProjection(DATABASE_NAME, COLLECTION_NAME, projection);
+		List<WriteModel<Document>> requests = new ArrayList<>();
+		InsertOneModel<Document> insertOneModel = generateInsertOneModel();
+		requests.add(insertOneModel);
+		ReplaceOneModel<Document> replaceOneModel = generateReplaceOneModel(documents.get(0));
+		requests.add(replaceOneModel);
+		UpdateOneModel<Document> updateOneModel = generateUpdateOneModel(documents.get(1));
+		requests.add(updateOneModel);
+		UpdateManyModel<Document> updateManyModel = generateUpdateManyModel(documents.subList(2, 4));
+		requests.add(updateManyModel);
+		DeleteOneModel<Document> deleteOneModel = generateDeleteOneModel(documents.get(4));
+		requests.add(deleteOneModel);
+		DeleteManyModel<Document> deleteManyModel = generateDeleteManyModel(documents.subList(5, 7));
+		requests.add(deleteManyModel);
+		return requests;
+	}
+
+	private InsertOneModel<Document> generateInsertOneModel() {
+		final String STRING_VALUE = "InsertOneModel";
+		ObjectId objectId = new ObjectId();
+		Document document = generateDocument(objectId, INT, STRING_VALUE);
+		InsertOneModel<Document> insertOneModel = new InsertOneModel<>(document);
+		return insertOneModel;
+	}
+
+	private ReplaceOneModel<Document> generateReplaceOneModel(Document document) {
+		final Double DOUBLE_VALUE = 11.11;
+		final String STRING_VALUE = "ReplaceOneModel";
+		ObjectId objectId = (ObjectId) document.get("_id");
+		Bson filter = Filters.eq("_id", objectId);
+		Document replacement = generateReplacement(DOUBLE_VALUE, STRING_VALUE);
+		ReplaceOneModel<Document> replaceOneModel = new ReplaceOneModel<>(filter, replacement);
+		return replaceOneModel;
+	}
+
+	private UpdateOneModel<Document> generateUpdateOneModel(Document document) {
+		final Double DOUBLE_VALUE = 22.22;
+		final String STRING_VALUE = "UpdateOneModel";
+		ObjectId objectId = (ObjectId) document.get("_id");
+		Bson filter = Filters.eq("_id", objectId);
+		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
+		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update);
+		return updateOneModel;
+	}
+
+	private UpdateManyModel<Document> generateUpdateManyModel(List<Document> documents) {
+		final int SIZE = documents.size();
+		final Double DOUBLE_VALUE = 33.33;
+		final String STRING_VALUE = "UpdateManyModel";
+		List<Bson> filters = new ArrayList<>(SIZE);
+		for (Document document : documents) {
+			ObjectId objectId = (ObjectId) document.get("_id");
+			Bson filter = Filters.eq("_id", objectId);
+			filters.add(filter);
+		}
+		Bson fltr = Filters.or(filters);
+		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
+		UpdateManyModel<Document> updateManyModel = new UpdateManyModel<>(fltr, update);
+		return updateManyModel;
+	}
+
+	private DeleteOneModel<Document> generateDeleteOneModel(Document document) {
+		ObjectId objectId = (ObjectId) document.get("_id");
+		Bson filter = Filters.eq("_id", objectId);
+		DeleteOneModel<Document> deleteOneModel = new DeleteOneModel<>(filter);
+		System.err.println("add objectId(" + objectId + ") to DeleteOneModel.");
+		return deleteOneModel;
+	}
+
+	private DeleteManyModel<Document> generateDeleteManyModel(List<Document> documents) {
+		final int SIZE = documents.size();
+		List<Bson> filters = new ArrayList<>(SIZE);
+		for (Document document : documents) {
+			ObjectId objectId = (ObjectId) document.get("_id");
+			Bson filter = Filters.eq("_id", objectId);
+			filters.add(filter);
+			System.err.println("add objectId(" + objectId + ") to DeleteManyModel.");
+		}
+		Bson fltr = Filters.or(filters);
+		DeleteManyModel<Document> deleteManyModel = new DeleteManyModel<>(fltr);
+		return deleteManyModel;
+	}
+
 	private void testGt() {
-		Bson bson = Filters.gt("int", 3);
-		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Bson filter = Filters.gt("int", 3);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, filter).size();
 		Assert.assertEquals(amount, 7);
 	}
 
 	private void testLte() {
-		Bson bson = Filters.lte("int", 5);
-		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Bson filter = Filters.lte("int", 5);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, filter).size();
 		Assert.assertEquals(amount, 6);
 	}
 
@@ -245,8 +353,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		List<Bson> filters = new ArrayList<>();
 		filters.add(Filters.gt("int", 3));
 		filters.add(Filters.lte("int", 5));
-		Bson bson = Filters.and(filters);
-		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, bson).size();
+		Bson filter = Filters.and(filters);
+		long amount = assistant.find(DATABASE_NAME, COLLECTION_NAME, filter).size();
 		Assert.assertEquals(amount, 2);
 	}
 
@@ -255,15 +363,15 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		List<Bson> filters = new ArrayList<>();
 		filters.add(Filters.gt("int", 3));
 		filters.add(Filters.lte("int", 5));
-		Bson bson = Filters.and(filters);
-		long amount = assistant.findWithLimit(DATABASE_NAME, COLLECTION_NAME, bson, LIMIT).size();
+		Bson filter = Filters.and(filters);
+		long amount = assistant.findWithLimit(DATABASE_NAME, COLLECTION_NAME, filter, LIMIT).size();
 		Assert.assertEquals(amount, 1);
 	}
 
 	private void testProjection() {
-		Bson bson = Filters.eq("_id", ID);
+		Bson filter = Filters.eq("_id", ID);
 		Bson projection = generateProjection();
-		List<Document> documents = assistant.findWithProjection(DATABASE_NAME, COLLECTION_NAME, bson, projection);
+		List<Document> documents = assistant.findWithProjection(DATABASE_NAME, COLLECTION_NAME, filter, projection);
 		for (Document document : documents) {
 			assertProjectionEquals(document);
 		}
@@ -273,9 +381,9 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		List<Bson> filters = new ArrayList<>();
 		filters.add(Filters.gt("int", 3));
 		filters.add(Filters.lte("int", 5));
-		Bson bson = Filters.and(filters);
+		Bson filter = Filters.and(filters);
 		Bson sort = generateSort();
-		List<Document> documents = assistant.findWithSort(DATABASE_NAME, COLLECTION_NAME, bson, sort);
+		List<Document> documents = assistant.findWithSort(DATABASE_NAME, COLLECTION_NAME, filter, sort);
 		Double beforeDouble = Double.MAX_VALUE;
 		for (Document document : documents) {
 			Double currentDouble = document.getDouble("double");
@@ -288,6 +396,12 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		document.append("_id", 0);
 		document.append("double", 1);
 		document.append("string", 1);
+		return document;
+	}
+
+	private Bson generateBulkWriteProjection() {
+		Document document = new Document();
+		document.append("_id", 1);
 		return document;
 	}
 
@@ -332,10 +446,10 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 	}
 
-	private Document generateDocument(ObjectId objectId, int i) {
+	private Document generateDocument(ObjectId objectId, int i, String s) {
 		Document doc = new Document("_id", objectId);
 		doc.append("double", DOUBLE);
-		doc.append("string", STRING);
+		doc.append("string", s);
 		doc.append("array", ARRAY);
 		doc.append("binData", BIN_DATA);
 		doc.append("objectId", OBJECT_ID);
@@ -357,6 +471,13 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private Document generateReplacement(Double doubleValue, String stringValue) {
+		Document doc = new Document();
+		doc.append("double", doubleValue);
+		doc.append("string", stringValue);
+		return doc;
+	}
+
+	private Document generateUpdate(Double doubleValue, String stringValue) {
 		Document doc = new Document();
 		doc.append("double", doubleValue);
 		doc.append("string", stringValue);
@@ -458,8 +579,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
 		long modifiedCount = updateResult.getModifiedCount();
 		Assert.assertEquals(modifiedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		assertEquals(document, I);
 	}
 
@@ -471,8 +592,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
 		long modifiedCount = updateResult.getModifiedCount();
 		Assert.assertEquals(modifiedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		assertEquals(document, I);
 	}
 
@@ -484,8 +605,8 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		UpdateResult updateResult = assistant.updateOne(DATABASE_NAME, COLLECTION_NAME, filter, update);
 		long modifiedCount = updateResult.getModifiedCount();
 		Assert.assertEquals(modifiedCount, 1);
-		Bson bson = Filters.eq("_id", ID);
-		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, bson);
+		Bson fltr = Filters.eq("_id", ID);
+		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		Assert.assertNotNull(document.getDate("currentDate"));
 		Assert.assertNotNull(document.get("currentTimestamp"));
 	}

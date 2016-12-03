@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.mongodb.bulk.BulkWriteResult;
+import com.mongodb.bulk.BulkWriteUpsert;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.DeleteManyModel;
@@ -194,11 +195,14 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		int insertedCount = bulkWriteResult.getInsertedCount();
 		Assert.assertEquals(insertedCount, 1);
 		int matchedCount = bulkWriteResult.getMatchedCount();
-		Assert.assertEquals(matchedCount, 4);
+		Assert.assertEquals(matchedCount, 5);
 		int modifiedCount = bulkWriteResult.getModifiedCount();
-		Assert.assertEquals(modifiedCount, 4);
+		Assert.assertEquals(modifiedCount, 5);
 		int deletedCount = bulkWriteResult.getDeletedCount();
 		Assert.assertEquals(deletedCount, 3);
+		List<BulkWriteUpsert> bulkWriteUpserts = bulkWriteResult.getUpserts();
+		int bulkWriteUpsertsSize = bulkWriteUpserts.size();
+		Assert.assertEquals(bulkWriteUpsertsSize, 1);
 	}
 
 	@Test(dependsOnMethods = { "bulkWrite" })
@@ -271,6 +275,11 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		requests.add(deleteOneModel);
 		DeleteManyModel<Document> deleteManyModel = generateDeleteManyModel(documents.subList(5, 7));
 		requests.add(deleteManyModel);
+		UpdateOneModel<Document> updateOneModelForUpsertUpdate = generateUpdateOneModelForUpsertUpdate(
+				documents.get(7));
+		requests.add(updateOneModelForUpsertUpdate);
+		UpdateOneModel<Document> updateOneModelForUpsertInsert = generateUpdateOneModelForUpsertInsert();
+		requests.add(updateOneModelForUpsertInsert);
 		return requests;
 	}
 
@@ -338,6 +347,30 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Bson fltr = Filters.or(filters);
 		DeleteManyModel<Document> deleteManyModel = new DeleteManyModel<>(fltr);
 		return deleteManyModel;
+	}
+
+	private UpdateOneModel<Document> generateUpdateOneModelForUpsertUpdate(Document document) {
+		final Double DOUBLE_VALUE = 44.44;
+		final String STRING_VALUE = "UpsertUpdate";
+		ObjectId objectId = (ObjectId) document.get("_id");
+		Bson filter = Filters.eq("_id", objectId);
+		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
+		UpdateOptions updateOptions = new UpdateOptions();
+		updateOptions.upsert(true);
+		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update, updateOptions);
+		return updateOneModel;
+	}
+
+	private UpdateOneModel<Document> generateUpdateOneModelForUpsertInsert() {
+		final Double DOUBLE_VALUE = 55.55;
+		final String STRING_VALUE = "UpsertInsert";
+		ObjectId objectId = new ObjectId();
+		Bson filter = Filters.eq("_id", objectId);
+		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
+		UpdateOptions updateOptions = new UpdateOptions();
+		updateOptions.upsert(true);
+		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update, updateOptions);
+		return updateOneModel;
 	}
 
 	private void testGt() {

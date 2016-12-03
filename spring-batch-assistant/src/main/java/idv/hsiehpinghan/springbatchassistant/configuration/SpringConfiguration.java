@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -38,10 +39,13 @@ import com.mongodb.MongoClient;
 @EnableScheduling
 @EnableBatchProcessing
 @EnableTransactionManagement
+@Import(value = { JavaconfigConfiguration.class })
 @Configuration("springBatchAssistantSpringConfiguration")
 @PropertySource("classpath:/spring_batch_assistant.property")
 @ImportResource(value = { "classpath:/applicationContext.xml" })
-@ComponentScan(basePackages = { "idv.hsiehpinghan.springbatchassistant" })
+@ComponentScan(basePackages = {
+		"idv.hsiehpinghan.springbatchassistant" }, excludeFilters = @ComponentScan.Filter(value = {
+				Configuration.class }))
 public class SpringConfiguration {
 	@Autowired
 	private Environment env;

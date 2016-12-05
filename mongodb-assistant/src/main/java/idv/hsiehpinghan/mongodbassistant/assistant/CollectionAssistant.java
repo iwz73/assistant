@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.mongodb.MongoClient;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -138,6 +139,19 @@ public class CollectionAssistant {
 
 	public List<Document> findWithSort(String databaseName, String collectionName, Bson filter, Bson sort) {
 		return find(databaseName, collectionName, filter, null, null, sort);
+	}
+
+	public <TResult> List<TResult> distinct(String databaseName, String collectionName, String fieldName,
+			Class<TResult> resultClass) {
+		MongoCollection<Document> collection = getCollection(databaseName, collectionName);
+		List<TResult> result = new ArrayList<>();
+		DistinctIterable<TResult> iterable = collection.distinct(fieldName, resultClass);
+		try (MongoCursor<TResult> cursor = iterable.iterator()) {
+			while (cursor.hasNext()) {
+				result.add(cursor.next());
+			}
+		}
+		return result;
 	}
 
 	public List<Document> aggregate(String databaseName, String collectionName, List<? extends Bson> pipeline) {

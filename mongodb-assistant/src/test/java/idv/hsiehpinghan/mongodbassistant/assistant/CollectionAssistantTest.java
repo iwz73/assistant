@@ -114,24 +114,6 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		testAccumulatorsMax();
 	}
 
-	private void testAccumulatorsSum() {
-		List<? extends Bson> pipeline = generateAccumulatorsSumPipeline();
-		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
-		for (Document document : documents) {
-			Assert.assertEquals(document.get("_id"), "string");
-			Assert.assertEquals(document.getInteger("count"), (Integer) 5);
-		}
-	}
-
-	private void testAccumulatorsMax() {
-		List<? extends Bson> pipeline = generateAccumulatorsMaxPipeline();
-		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
-		for (Document document : documents) {
-			Assert.assertEquals(document.get("_id"), "string");
-			Assert.assertEquals(document.getInteger("maxInt"), (Integer) 5);
-		}
-	}
-
 	@Test(dependsOnMethods = { "aggregate" })
 	public void find() {
 		testGt();
@@ -228,6 +210,13 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "createIndex" })
+	public void distinct() {
+		final String FIELD_NAME = "string";
+		List<String> strings = assistant.distinct(DATABASE_NAME, COLLECTION_NAME, FIELD_NAME, String.class);
+		Assert.assertEquals(strings.size(), 6);
+	}
+
+	@Test(dependsOnMethods = { "distinct" })
 	public void createCompoundIndex() {
 		Bson keys = Indexes.compoundIndex(Indexes.descending("double"), Indexes.ascending("long"));
 		String indexName = assistant.createCompoundIndex(DATABASE_NAME, COLLECTION_NAME, keys);
@@ -698,4 +687,23 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		Document document = assistant.findFirst(DATABASE_NAME, COLLECTION_NAME, fltr);
 		System.err.println("testUpsertInsert document(" + document + ")");
 	}
+
+	private void testAccumulatorsSum() {
+		List<? extends Bson> pipeline = generateAccumulatorsSumPipeline();
+		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
+		for (Document document : documents) {
+			Assert.assertEquals(document.get("_id"), "string");
+			Assert.assertEquals(document.getInteger("count"), (Integer) 5);
+		}
+	}
+
+	private void testAccumulatorsMax() {
+		List<? extends Bson> pipeline = generateAccumulatorsMaxPipeline();
+		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
+		for (Document document : documents) {
+			Assert.assertEquals(document.get("_id"), "string");
+			Assert.assertEquals(document.getInteger("maxInt"), (Integer) 5);
+		}
+	}
+
 }

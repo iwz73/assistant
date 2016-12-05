@@ -30,4 +30,11 @@ public class InfoService {
 				+ appAccessToken;
 		return UrlUtility.getContent(httpsUrl);
 	}
+
+	public String getFacebookType(String pageId) throws IOException {
+		String appAccessToken = tokenService.getAppAccessToken().split("=")[1];
+		final String httpsUrl = "https://graph.facebook.com/" + pageId
+				+ "?fields=metadata{type}&metadata=1&access_token=" + appAccessToken;
+		return UrlUtility.getContent(httpsUrl);
+	}
 }

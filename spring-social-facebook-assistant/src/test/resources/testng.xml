@@ -7,10 +7,12 @@
 				name="idv.hsiehpinghan.springsocialfacebookassistant.suit.TestngSuitSetting" />
 		</classes>
 	</test>
-	<test name="other">
+	<test name="test">
 		<classes>
 			<class
 				name="org.springframework.social.facebook.api.impl.FacebookTemplateTest" />
+			<class
+				name="idv.hsiehpinghan.springsocialfacebookassistant.service.InfoServiceTest" />
 		</classes>
 	</test>
 </suite>

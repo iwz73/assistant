@@ -2,9 +2,9 @@ package idv.hsiehpinghan.springsocialfacebookassistant.utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -24,21 +24,29 @@ public class UrlUtility {
 		return connection;
 	}
 
-	private static String getContent(HttpsURLConnection connection) throws IOException {
-		final int SIZE = 1024;
-		BufferedReader reader = null;
+	public static String getContent(HttpsURLConnection connection) throws IOException {
+		InputStream inputStream = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			inputStream = connection.getInputStream();
+			inputStreamReader = new InputStreamReader(inputStream);
+			bufferedReader = new BufferedReader(inputStreamReader);
 			StringBuilder sb = new StringBuilder();
-			char[] cbuf = new char[SIZE];
-			while (reader.read(cbuf) != -1) {
-				sb.append(cbuf);
-				Arrays.fill(cbuf, '\0');
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				sb.append(line);
 			}
 			return sb.toString();
 		} finally {
-			if (reader != null) {
-				reader.close();
+			if (bufferedReader != null) {
+				bufferedReader.close();
+			}
+			if (inputStreamReader != null) {
+				inputStreamReader.close();
+			}
+			if (inputStream != null) {
+				inputStream.close();
 			}
 		}
 	}

@@ -110,11 +110,25 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "count" })
 	public void aggregate() {
-		List<? extends Bson> pipeline = generateAggregatePipeline();
+		testAccumulatorsSum();
+		testAccumulatorsMax();
+	}
+
+	private void testAccumulatorsSum() {
+		List<? extends Bson> pipeline = generateAccumulatorsSumPipeline();
 		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
 		for (Document document : documents) {
 			Assert.assertEquals(document.get("_id"), "string");
 			Assert.assertEquals(document.getInteger("count"), (Integer) 5);
+		}
+	}
+
+	private void testAccumulatorsMax() {
+		List<? extends Bson> pipeline = generateAccumulatorsMaxPipeline();
+		List<Document> documents = assistant.aggregate(DATABASE_NAME, COLLECTION_NAME, pipeline);
+		for (Document document : documents) {
+			Assert.assertEquals(document.get("_id"), "string");
+			Assert.assertEquals(document.getInteger("maxInt"), (Integer) 5);
 		}
 	}
 
@@ -528,9 +542,14 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		return doc;
 	}
 
-	private List<? extends Bson> generateAggregatePipeline() {
+	private List<? extends Bson> generateAccumulatorsSumPipeline() {
 		return Arrays.asList(Aggregates.match(Filters.lt("int", 5)),
 				Aggregates.group("$string", Accumulators.sum("count", 1)));
+	}
+
+	private List<? extends Bson> generateAccumulatorsMaxPipeline() {
+		return Arrays.asList(Aggregates.match(Filters.lte("int", 5)),
+				Aggregates.group("$string", Accumulators.max("maxInt", "$int")));
 	}
 
 	private Document generatePointLocation() {

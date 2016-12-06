@@ -18,9 +18,9 @@ public class ContextTasklet implements Tasklet {
 
 	private void printAttribute(ChunkContext chunkContext) {
 		StepContext stepContext = chunkContext.getStepContext();
-		ExecutionContext jobExecutionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
+		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
 		System.err.println("ContextTasklet chunkContext : " + chunkContext.getAttribute("chunkContext")
-				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", jobExecutionContext : "
-				+ jobExecutionContext.getString("jobExecutionContext"));
+				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", executionContext : "
+				+ executionContext.getString("executionContext"));
 	}
 }

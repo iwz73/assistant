@@ -24,9 +24,9 @@ public class ContextWriter implements ItemWriter<Integer> {
 
 	private void printAttribute() {
 		StepContext stepContext = chunkContext.getStepContext();
-		ExecutionContext jobExecutionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
+		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
 		System.err.println("ContextWriter chunkContext : " + chunkContext.getAttribute("chunkContext")
-				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", jobExecutionContext : "
-				+ jobExecutionContext.getString("jobExecutionContext"));
+				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", executionContext : "
+				+ executionContext.getString("executionContext"));
 	}
 }

@@ -34,7 +34,7 @@ public class ContextReader implements ItemReader<String> {
 		chunkContext.setAttribute("chunkContext", "chunkContext");
 		StepContext stepContext = chunkContext.getStepContext();
 		stepContext.setAttribute("stepContext", "stepContext");
-		ExecutionContext jobExecutionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
-		jobExecutionContext.putString("jobExecutionContext", "jobExecutionContext");
+		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
+		executionContext.putString("executionContext", "executionContext");
 	}
 }

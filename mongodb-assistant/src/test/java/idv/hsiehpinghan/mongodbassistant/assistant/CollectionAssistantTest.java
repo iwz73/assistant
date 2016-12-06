@@ -39,6 +39,7 @@ import com.mongodb.client.result.UpdateResult;
 
 import idv.hsiehpinghan.mongodbassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.mongodbassistant.enumeration.Enumeration;
+import idv.hsiehpinghan.mongodbassistant.utility.MongodbUtility;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
@@ -270,7 +271,7 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		requests.add(insertOneModel);
 		ReplaceOneModel<Document> replaceOneModel = generateReplaceOneModel(documents.get(0));
 		requests.add(replaceOneModel);
-		UpdateOneModel<Document> updateOneModel = generateUpdateOneModel(documents.get(1));
+		UpdateOneModel<Document> updateOneModel = generateSetUpdateOneModel(documents.get(1));
 		requests.add(updateOneModel);
 		UpdateManyModel<Document> updateManyModel = generateUpdateManyModel(documents.subList(2, 4));
 		requests.add(updateManyModel);
@@ -278,10 +279,10 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		requests.add(deleteOneModel);
 		DeleteManyModel<Document> deleteManyModel = generateDeleteManyModel(documents.subList(5, 7));
 		requests.add(deleteManyModel);
-		UpdateOneModel<Document> updateOneModelForUpsertUpdate = generateUpdateOneModelForUpsertUpdate(
+		UpdateOneModel<Document> updateOneModelForUpsertUpdate = generateSetUpdateOneModelForUpsertUpdate(
 				documents.get(7));
 		requests.add(updateOneModelForUpsertUpdate);
-		UpdateOneModel<Document> updateOneModelForUpsertInsert = generateUpdateOneModelForUpsertInsert();
+		UpdateOneModel<Document> updateOneModelForUpsertInsert = generateSetUpdateOneModelForUpsertInsert();
 		requests.add(updateOneModelForUpsertInsert);
 		return requests;
 	}
@@ -289,91 +290,61 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 	private InsertOneModel<Document> generateInsertOneModel() {
 		final String STRING_VALUE = "InsertOneModel";
 		ObjectId objectId = new ObjectId();
-		Document document = generateDocument(objectId, INT, STRING_VALUE);
-		InsertOneModel<Document> insertOneModel = new InsertOneModel<>(document);
-		return insertOneModel;
+		Document insert = generateDocument(objectId, INT, STRING_VALUE);
+		return MongodbUtility.generateInsertOneModel(insert);
 	}
 
 	private ReplaceOneModel<Document> generateReplaceOneModel(Document document) {
+		final ObjectId OBJECT_ID = document.getObjectId("_id");
 		final Double DOUBLE_VALUE = 11.11;
 		final String STRING_VALUE = "ReplaceOneModel";
-		ObjectId objectId = (ObjectId) document.get("_id");
-		Bson filter = Filters.eq("_id", objectId);
-		Document replacement = generateReplacement(DOUBLE_VALUE, STRING_VALUE);
-		ReplaceOneModel<Document> replaceOneModel = new ReplaceOneModel<>(filter, replacement);
-		return replaceOneModel;
+		Document replacement = generateReplacement(OBJECT_ID, DOUBLE_VALUE, STRING_VALUE);
+		return MongodbUtility.generateReplaceOneModelById(replacement);
 	}
 
-	private UpdateOneModel<Document> generateUpdateOneModel(Document document) {
+	private UpdateOneModel<Document> generateSetUpdateOneModel(Document document) {
+		final ObjectId OBJECT_ID = document.getObjectId("_id");
 		final Double DOUBLE_VALUE = 22.22;
 		final String STRING_VALUE = "UpdateOneModel";
-		ObjectId objectId = (ObjectId) document.get("_id");
-		Bson filter = Filters.eq("_id", objectId);
-		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
-		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update);
-		return updateOneModel;
+		Document update = generateUpdate(OBJECT_ID, DOUBLE_VALUE, STRING_VALUE);
+		return MongodbUtility.generateSetUpdateOneModelById(update);
 	}
 
 	private UpdateManyModel<Document> generateUpdateManyModel(List<Document> documents) {
-		final int SIZE = documents.size();
 		final Double DOUBLE_VALUE = 33.33;
 		final String STRING_VALUE = "UpdateManyModel";
-		List<Bson> filters = new ArrayList<>(SIZE);
-		for (Document document : documents) {
-			ObjectId objectId = (ObjectId) document.get("_id");
-			Bson filter = Filters.eq("_id", objectId);
-			filters.add(filter);
-		}
-		Bson fltr = Filters.or(filters);
-		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
-		UpdateManyModel<Document> updateManyModel = new UpdateManyModel<>(fltr, update);
-		return updateManyModel;
+		Document update = generateUpdate(DOUBLE_VALUE, STRING_VALUE);
+		return MongodbUtility.generateSetUpdateManyModelById(update, documents);
 	}
 
 	private DeleteOneModel<Document> generateDeleteOneModel(Document document) {
-		ObjectId objectId = (ObjectId) document.get("_id");
-		Bson filter = Filters.eq("_id", objectId);
-		DeleteOneModel<Document> deleteOneModel = new DeleteOneModel<>(filter);
-		System.err.println("add objectId(" + objectId + ") to DeleteOneModel.");
+		DeleteOneModel<Document> deleteOneModel = MongodbUtility.generateDeleteOneModelById(document);
+		System.err.println("add objectId(" + document.getObjectId("_id") + ") to DeleteOneModel.");
 		return deleteOneModel;
 	}
 
 	private DeleteManyModel<Document> generateDeleteManyModel(List<Document> documents) {
-		final int SIZE = documents.size();
-		List<Bson> filters = new ArrayList<>(SIZE);
 		for (Document document : documents) {
-			ObjectId objectId = (ObjectId) document.get("_id");
-			Bson filter = Filters.eq("_id", objectId);
-			filters.add(filter);
-			System.err.println("add objectId(" + objectId + ") to DeleteManyModel.");
+			System.err.println("add objectId(" + document.getObjectId("_id") + ") to DeleteManyModel.");
 		}
-		Bson fltr = Filters.or(filters);
-		DeleteManyModel<Document> deleteManyModel = new DeleteManyModel<>(fltr);
+		DeleteManyModel<Document> deleteManyModel = MongodbUtility.generateDeleteManyModelById(documents);
 		return deleteManyModel;
 	}
 
-	private UpdateOneModel<Document> generateUpdateOneModelForUpsertUpdate(Document document) {
+	private UpdateOneModel<Document> generateSetUpdateOneModelForUpsertUpdate(Document document) {
+		final ObjectId OBJECT_ID = (ObjectId) document.get("_id");
 		final Double DOUBLE_VALUE = 44.44;
 		final String STRING_VALUE = "UpsertUpdate";
-		ObjectId objectId = (ObjectId) document.get("_id");
-		Bson filter = Filters.eq("_id", objectId);
-		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
-		UpdateOptions updateOptions = new UpdateOptions();
-		updateOptions.upsert(true);
-		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update, updateOptions);
-		return updateOneModel;
+		Document update = generateUpdate(OBJECT_ID, DOUBLE_VALUE, STRING_VALUE);
+		return MongodbUtility.generateSetUpdateOneModelForUpsertById(update);
 	}
 
-	private UpdateOneModel<Document> generateUpdateOneModelForUpsertInsert() {
+	private UpdateOneModel<Document> generateSetUpdateOneModelForUpsertInsert() {
+		final ObjectId OBJECT_ID = new ObjectId();
 		final Double DOUBLE_VALUE = 55.55;
 		final String STRING_VALUE = "UpsertInsert";
-		ObjectId objectId = new ObjectId();
-		Bson filter = Filters.eq("_id", objectId);
-		Document update = new Document("$set", generateUpdate(DOUBLE_VALUE, STRING_VALUE));
-		UpdateOptions updateOptions = new UpdateOptions();
-		updateOptions.upsert(true);
-		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, update, updateOptions);
-		return updateOneModel;
+		Document update = generateUpdate(OBJECT_ID, DOUBLE_VALUE, STRING_VALUE);
+		return MongodbUtility.generateSetUpdateOneModelForUpsertById(update);
 	}
 
 	private void testGt() {
@@ -509,8 +480,22 @@ public class CollectionAssistantTest extends AbstractTestNGSpringContextTests {
 		return doc;
 	}
 
+	private Document generateReplacement(ObjectId objectId, Double doubleValue, String stringValue) {
+		Document doc = generateReplacement(doubleValue, stringValue);
+		doc.append("_id", objectId);
+		return doc;
+	}
+
 	private Document generateReplacement(Double doubleValue, String stringValue) {
 		Document doc = new Document();
+		doc.append("double", doubleValue);
+		doc.append("string", stringValue);
+		return doc;
+	}
+
+	private Document generateUpdate(ObjectId objectId, Double doubleValue, String stringValue) {
+		Document doc = new Document();
+		doc.append("_id", objectId);
 		doc.append("double", doubleValue);
 		doc.append("string", stringValue);
 		return doc;

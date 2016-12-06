@@ -17,8 +17,8 @@ import com.mongodb.client.model.UpdateOneModel;
 import com.mongodb.client.model.UpdateOptions;
 
 public class MongodbUtility {
-	public static InsertOneModel<Document> generateInsertOneModel(Document document) {
-		InsertOneModel<Document> insertOneModel = new InsertOneModel<>(document);
+	public static InsertOneModel<Document> generateInsertOneModel(Document insert) {
+		InsertOneModel<Document> insertOneModel = new InsertOneModel<>(insert);
 		return insertOneModel;
 	}
 
@@ -31,6 +31,19 @@ public class MongodbUtility {
 		Object id = replacement.get("_id");
 		Bson filter = Filters.eq("_id", id);
 		return generateReplaceOneModel(replacement, filter);
+	}
+
+	public static UpdateOneModel<Document> generateSetUpdateOneModel(Document update, Bson filter) {
+		Document setUpdate = new Document("$set", update);
+		UpdateOneModel<Document> updateOneModel = new UpdateOneModel<>(filter, setUpdate);
+		return updateOneModel;
+	}
+
+	public static UpdateOneModel<Document> generateSetUpdateOneModelById(Document update) {
+		Object id = update.get("_id");
+		Bson filter = Filters.eq("_id", id);
+		UpdateOneModel<Document> updateOneModel = generateSetUpdateOneModel(update, filter);
+		return updateOneModel;
 	}
 
 	public static UpdateManyModel<Document> generateSetUpdateManyModel(Document update, Bson filter) {

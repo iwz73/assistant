@@ -17,6 +17,16 @@ import com.mongodb.client.model.UpdateOneModel;
 import com.mongodb.client.model.UpdateOptions;
 
 public class MongodbUtility {
+	public static Document generateCopiedDocument(Document document, String[] fields) {
+		Document doc = new Document();
+		for (int i = 0, size = fields.length; i < size; ++i) {
+			String key = fields[i];
+			Object value = document.get(key);
+			doc.append(key, value);
+		}
+		return doc;
+	}
+
 	public static InsertOneModel<Document> generateInsertOneModel(Document insert) {
 		InsertOneModel<Document> insertOneModel = new InsertOneModel<>(insert);
 		return insertOneModel;

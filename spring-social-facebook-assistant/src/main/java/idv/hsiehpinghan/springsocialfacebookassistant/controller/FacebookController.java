@@ -42,13 +42,13 @@ public class FacebookController {
 	@RequestMapping(value = "/longLivedToken", method = RequestMethod.GET)
 	public String longLivedToken(LongLivedTokenCriteria criteria) throws IOException {
 		String shortLivedToken = criteria.getAccessToken();
-		return tokenService.getLongLivedToken(shortLivedToken);
+		return tokenService.getLongLivedTokenContent(shortLivedToken);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/appAccessToken", method = RequestMethod.GET)
 	public String appAccessToken() throws IOException {
-		return tokenService.getAppAccessToken();
+		return tokenService.getAppAccessTokenContent();
 	}
 
 	@ResponseBody
@@ -61,8 +61,9 @@ public class FacebookController {
 	@ResponseBody
 	@RequestMapping(value = "/tokenInfo", method = RequestMethod.GET)
 	public String tokenInfo(TokenInfoCriteria criteria) throws IOException {
-		String accessToken = criteria.getAccessToken();
-		return infoService.getTokenInfo(accessToken);
+		String inputToken = criteria.getAccessToken();
+		String appAccessToken = tokenService.getAppAccessToken();
+		return infoService.getTokenInfo(inputToken, appAccessToken);
 	}
 
 	@RequestMapping(value = "/socialPlugin", method = RequestMethod.GET)
@@ -79,7 +80,8 @@ public class FacebookController {
 	@RequestMapping(value = "/getFeeds", method = RequestMethod.GET)
 	public String getFeeds(GetFeedsCriteria criteria) throws IOException {
 		String pageId = criteria.getPageId();
-		String str = infoService.getFeeds(pageId);
+		String appAccessToken = tokenService.getAppAccessToken();
+		String str = infoService.getFeeds(pageId, appAccessToken);
 		return str;
 	}
 }

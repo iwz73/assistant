@@ -14,11 +14,14 @@ import idv.hsiehpinghan.springsocialfacebookassistant.configuration.SpringConfig
 public class InfoServiceTest extends AbstractTestNGSpringContextTests {
 	private final String pageId = "162608724089621";
 	@Autowired
-	private InfoService service;
+	private InfoService infoService;
+	@Autowired
+	private TokenService tokenService;
 
 	@Test
 	public void getNodeType() throws Exception {
-		String nodeType = service.getNodeType(pageId);
+		String appAccessToken = tokenService.getAppAccessToken();
+		String nodeType = infoService.getNodeType(pageId, appAccessToken);
 		Assert.assertEquals(nodeType, "{\"metadata\":{\"type\":\"page\"},\"id\":\"162608724089621\"}");
 	}
 }

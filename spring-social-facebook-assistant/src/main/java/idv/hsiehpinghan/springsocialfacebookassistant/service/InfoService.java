@@ -26,9 +26,9 @@ public class InfoService {
 		return UrlUtility.getContent(httpsUrl);
 	}
 
-	public String getNodeMetadata(String pageId, String appAccessToken) throws IOException {
+	public String getNodeMetadata(String nodeId, String appAccessToken) throws IOException {
 		final String httpsUrl = String.format(
-				"https://graph.facebook.com/%s?fields=metadata{type}&metadata=1&access_token=%s", pageId,
+				"https://graph.facebook.com/%s?fields=metadata{type}&metadata=1&access_token=%s", nodeId,
 				appAccessToken);
 		return UrlUtility.getContent(httpsUrl);
 	}

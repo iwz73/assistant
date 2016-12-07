@@ -21,7 +21,7 @@ public class InfoServiceTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void getNodeType() throws Exception {
 		String appAccessToken = tokenService.getAppAccessToken();
-		String nodeType = infoService.getNodeType(pageId, appAccessToken);
+		String nodeType = infoService.getNodeMetadata(pageId, appAccessToken);
 		Assert.assertEquals(nodeType, "{\"metadata\":{\"type\":\"page\"},\"id\":\"162608724089621\"}");
 	}
 }

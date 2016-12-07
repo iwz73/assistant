@@ -17,8 +17,8 @@ public class InfoServiceTest extends AbstractTestNGSpringContextTests {
 	private InfoService service;
 
 	@Test
-	public void getFacebookType() throws Exception {
-		String facebookType = service.getFacebookType(pageId);
-		Assert.assertEquals(facebookType, "{\"metadata\":{\"type\":\"page\"},\"id\":\"162608724089621\"}");
+	public void getNodeType() throws Exception {
+		String nodeType = service.getNodeType(pageId);
+		Assert.assertEquals(nodeType, "{\"metadata\":{\"type\":\"page\"},\"id\":\"162608724089621\"}");
 	}
 }

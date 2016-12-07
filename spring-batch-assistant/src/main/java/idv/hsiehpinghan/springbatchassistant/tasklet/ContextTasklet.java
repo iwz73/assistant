@@ -8,19 +8,42 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 
 public class ContextTasklet implements Tasklet {
+	private ChunkContext chunkContext;
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		printAttribute(chunkContext);
+		this.chunkContext = chunkContext;
 		System.err.println("ContextTasklet !!!");
+		print();
 		return RepeatStatus.FINISHED;
 	}
 
-	private void printAttribute(ChunkContext chunkContext) {
+	private void print() {
+		printChunkContext();
+		printStepContext();
+		printStepExecutionContext();
+		printJobExecutionContext();
+	}
+
+	private void printChunkContext() {
+		System.err.println("ContextTasklet chunkContext(" + chunkContext.getAttribute("chunkContext") + ")");
+	}
+
+	private void printStepContext() {
 		StepContext stepContext = chunkContext.getStepContext();
-		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
-		System.err.println("ContextTasklet chunkContext : " + chunkContext.getAttribute("chunkContext")
-				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", executionContext : "
-				+ executionContext.getString("executionContext"));
+		System.err.println("ContextTasklet stepContext(" + stepContext.getAttribute("stepContext") + ")");
+	}
+
+	private void printStepExecutionContext() {
+		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
+		System.err.println("ContextTasklet stepExecutionContext("
+				+ stepExecutionContext.getString("stepExecutionContext", null) + ")");
+	}
+
+	private void printJobExecutionContext() {
+		ExecutionContext jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution()
+				.getExecutionContext();
+		System.err.println("ContextTasklet jobExecutionContext("
+				+ jobExecutionContext.getString("jobExecutionContext", null) + ")");
 	}
 }

@@ -18,15 +18,36 @@ public class ContextWriter implements ItemWriter<Integer> {
 
 	@Override
 	public void write(List<? extends Integer> items) throws Exception {
-		printAttribute();
+		print();
 		System.err.println("ContextWriter write items(" + items + ")");
 	}
 
-	private void printAttribute() {
+	private void print() {
+		printChunkContext();
+		printStepContext();
+		printStepExecutionContext();
+		printJobExecutionContext();
+	}
+
+	private void printChunkContext() {
+		System.err.println("ContextWriter chunkContext(" + chunkContext.getAttribute("chunkContext") + ")");
+	}
+
+	private void printStepContext() {
 		StepContext stepContext = chunkContext.getStepContext();
-		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
-		System.err.println("ContextWriter chunkContext : " + chunkContext.getAttribute("chunkContext")
-				+ ", stepContext : " + stepContext.getAttribute("stepContext") + ", executionContext : "
-				+ executionContext.getString("executionContext"));
+		System.err.println("ContextWriter stepContext(" + stepContext.getAttribute("stepContext") + ")");
+	}
+
+	private void printStepExecutionContext() {
+		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
+		System.err.println(
+				"ContextWriter stepExecutionContext(" + stepExecutionContext.getString("stepExecutionContext") + ")");
+	}
+
+	private void printJobExecutionContext() {
+		ExecutionContext jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution()
+				.getExecutionContext();
+		System.err.println(
+				"ContextWriter jobExecutionContext(" + jobExecutionContext.getString("jobExecutionContext") + ")");
 	}
 }

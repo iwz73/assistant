@@ -21,7 +21,7 @@ public class ContextReader implements ItemReader<String> {
 
 	@Override
 	public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-		addAttribute();
+		add();
 		if (index >= ITEMS.length) {
 			return null;
 		}
@@ -30,11 +30,30 @@ public class ContextReader implements ItemReader<String> {
 		return item;
 	}
 
-	private void addAttribute() {
+	private void add() {
+		addChunkContext();
+		addStepContext();
+		addStepExecutionContext();
+		addJobExecutionContext();
+	}
+
+	private void addChunkContext() {
 		chunkContext.setAttribute("chunkContext", "chunkContext");
+	}
+
+	private void addStepContext() {
 		StepContext stepContext = chunkContext.getStepContext();
 		stepContext.setAttribute("stepContext", "stepContext");
-		ExecutionContext executionContext = stepContext.getStepExecution().getJobExecution().getExecutionContext();
-		executionContext.putString("executionContext", "executionContext");
+	}
+
+	private void addStepExecutionContext() {
+		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
+		stepExecutionContext.putString("stepExecutionContext", "stepExecutionContext");
+	}
+
+	private void addJobExecutionContext() {
+		ExecutionContext jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution()
+				.getExecutionContext();
+		jobExecutionContext.putString("jobExecutionContext", "jobExecutionContext");
 	}
 }

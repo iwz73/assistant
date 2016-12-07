@@ -26,11 +26,14 @@ public class PromotionTasklet implements Tasklet {
 		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
 		System.err.println(
 				"PromotionTasklet stepExecutionContext(" + stepExecutionContext.getString("data_0", null) + ")");
+		System.err.println(
+				"PromotionTasklet stepExecutionContext(" + stepExecutionContext.getString("data_1", null) + ")");
 	}
 
 	private void printJobExecutionContext() {
 		ExecutionContext jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution()
 				.getExecutionContext();
 		System.err.println("PromotionTasklet jobExecutionContext(" + jobExecutionContext.getString("data_0") + ")");
+		System.err.println("PromotionTasklet jobExecutionContext(" + jobExecutionContext.getString("data_1") + ")");
 	}
 }

@@ -32,6 +32,7 @@ public class PromotionReader implements ItemReader<String> {
 	private void addStepExecutionContext() {
 		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
 		stepExecutionContext.putString("data_0", "data_0");
+		stepExecutionContext.putString("data_1", "data_1");
 	}
 
 }

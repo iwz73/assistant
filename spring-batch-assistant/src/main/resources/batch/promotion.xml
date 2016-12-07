@@ -41,7 +41,12 @@
 	<!-- listener -->
 	<bean id="promotionListener"
 		class="org.springframework.batch.core.listener.ExecutionContextPromotionListener">
-		<property name="keys" value="data_0" />
+		<property name="keys">
+			<array value-type="java.lang.String">
+				<value>data_0</value>
+				<value>data_1</value>
+			</array>
+		</property>
 	</bean>
 
 </beans>

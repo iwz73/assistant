@@ -23,8 +23,8 @@ public class PromotionWriter implements ItemWriter<Integer> {
 
 	private void printStepExecutionContext() {
 		ExecutionContext stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
-		System.err.println(
-				"PromotionWriter stepExecutionContext(" + stepExecutionContext.getString("data_0") + ")");
+		System.err.println("PromotionWriter stepExecutionContext(" + stepExecutionContext.getString("data_0") + ")");
+		System.err.println("PromotionWriter stepExecutionContext(" + stepExecutionContext.getString("data_1") + ")");
 	}
 
 }

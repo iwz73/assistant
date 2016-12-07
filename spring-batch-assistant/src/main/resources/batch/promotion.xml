@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<batch:job id="promotionJob">
+		<batch:step id="promotionReaderProcessorWriterStep" next="promotionTaskletStep">
+			<tasklet>
+				<chunk reader="promotionReader" writer="promotionWriter"
+					commit-interval="3">
+					<listeners>
+						<listener ref="promotionListener" />
+					</listeners>
+				</chunk>
+			</tasklet>
+		</batch:step>
+		<batch:step id="promotionTaskletStep">
+			<tasklet ref="promotionTasklet"></tasklet>
+		</batch:step>
+	</batch:job>
+
+	<!-- reader -->
+	<bean id="promotionReader"
+		class="idv.hsiehpinghan.springbatchassistant.reader.PromotionReader"
+		scope="step">
+	</bean>
+
+	<!-- writer -->
+	<bean id="promotionWriter"
+		class="idv.hsiehpinghan.springbatchassistant.writer.PromotionWriter"
+		scope="step">
+	</bean>
+
+	<!-- tasklet -->
+	<bean id="promotionTasklet"
+		class="idv.hsiehpinghan.springbatchassistant.tasklet.PromotionTasklet"
+		scope="step">
+	</bean>
+
+	<!-- listener -->
+	<bean id="promotionListener"
+		class="org.springframework.batch.core.listener.ExecutionContextPromotionListener">
+		<property name="keys" value="data_0" />
+	</bean>
+
+</beans>

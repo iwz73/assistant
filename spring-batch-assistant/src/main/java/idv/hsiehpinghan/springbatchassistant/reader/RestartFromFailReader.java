@@ -16,9 +16,9 @@ public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 	private static boolean isRestart = false;
 
 	@Override
-	public void open(ExecutionContext executionContext) throws ItemStreamException {
+	public void open(ExecutionContext stepExecutionContext) throws ItemStreamException {
 		System.err.println("RestartFromFailReader open index(" + index + ")");
-		index = executionContext.getInt(SpringBatchAssistantConstant.INDEX_KEY, 0);
+		index = stepExecutionContext.getInt(SpringBatchAssistantConstant.INDEX_KEY, 0);
 		if (index == 3) {
 			isRestart = true;
 		}
@@ -40,9 +40,9 @@ public class RestartFromFailReader implements ItemReader<String>, ItemStream {
 	}
 
 	@Override
-	public void update(ExecutionContext executionContext) throws ItemStreamException {
+	public void update(ExecutionContext stepExecutionContext) throws ItemStreamException {
 		System.err.println("RestartFromFailReader update index(" + index + ")");
-		executionContext.putInt(SpringBatchAssistantConstant.INDEX_KEY, index);
+		stepExecutionContext.putInt(SpringBatchAssistantConstant.INDEX_KEY, index);
 	}
 
 	@Override

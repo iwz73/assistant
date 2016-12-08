@@ -1,0 +1,10 @@
+# start mongodb client
+mongo
+
+# help
+<<console>>mongo --help
+help
+
+# show
+show dbs
+show collections

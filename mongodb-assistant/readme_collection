@@ -1,0 +1,154 @@
+# insert
+db.mongodb_collection.insert([
+	{
+		"_id" : 0,
+		"double" : 0.0,
+		"string" : "string_0",
+		"array" : [
+			"繁體中文字串測試_0",
+			"其他不相關字串_0",
+			"text_0"
+		],
+		"binData" : BinData(0,"AQID"),
+		"objectId" : ObjectId("58463b0aa33dac208c802f20"),
+		"bool" : true,
+		"date" : ISODate("2016-12-06T04:14:02.210Z"),
+		"null" : null,
+		"int" : 0,
+		"long" : NumberLong(0),
+		"document" : {
+			"key_0" : "value_0_0",
+			"key_1" : "value_0_1",
+			"key_2" : "value_0_2"
+		},
+		"pointLocation" : {
+			"type" : "Point",
+			"coordinates" : [
+				120,
+				23.5
+			]
+		}
+	},
+	{
+		"_id" : 1,
+		"double" : 1.1,
+		"string" : "string_1",
+		"array" : [
+			"繁體中文字串測試_1",
+			"其他不相關字串_1",
+			"text_1"
+		],
+		"binData" : BinData(0,"AQID"),
+		"objectId" : ObjectId("58463b0aa33dac208c802f21"),
+		"bool" : false,
+		"date" : ISODate("2016-12-06T04:14:02.211Z"),
+		"null" : null,
+		"int" : 1,
+		"long" : NumberLong(1),
+		"document" : {
+			"key_0" : "value_1_0",
+			"key_1" : "value_1_1",
+			"key_2" : "value_1_2"
+		},
+		"pointLocation" : {
+			"type" : "Point",
+			"coordinates" : [
+				121,
+				23.5
+			]
+		}
+	}
+])
+
+# find
+db.mongodb_collection.find().pretty()
+db.mongodb_collection.find({ 
+	"document.key_0" : "value_1_0" 
+}).pretty()
+db.mongodb_collection.find({
+	"double" : 0.0,
+	"string" : "string_0"
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$gte" : 1.1 }
+}).pretty()
+
+
+db.mongodb_collection.find({
+	$and : [
+		{ "double" : 0.0 },
+		{ "string" : "string_0" }
+	]
+}).pretty()
+db.mongodb_collection.find({
+	$or : [
+		{ "double" : 0.0 },
+		{ "string" : "string_1" }
+	]
+}).pretty()
+
+# count
+db.mongodb_collection.count()
+
+# update
+#	only update single document
+db.mongodb_collection.update(
+	{ "null" : null }, 
+	{
+		$set : {
+			"null" : "not null"
+		}
+	}
+)
+db.mongodb_collection.update(
+	{ "null" : null },
+	{
+		$addToSet : { "array" : "text_0" }
+	}
+)
+db.mongodb_collection.update(
+	{ "null" : null }, 
+	{ "null" : "not null" }
+)
+db.mongodb_collection.update(
+	{ "null" : null }, 
+	{
+		$unset : {
+			"null" : 1
+		}
+	}
+)
+#	update all document
+db.mongodb_collection.update(
+	{ "null" : null },
+	{
+		$addToSet : { "array" : "text_0" }
+	},
+	false,
+	true
+)
+
+# remove
+db.mongodb_collection.remove({})
+
+# drop
+db.mongodb_collection.drop()
+
+# index
+db.mongodb_collection.createIndex(
+	{ string: 1 }
+)
+db.mongodb_collection.getIndexes()
+
+# status
+db.mongodb_collection.stats()
+
+# explain
+db.mongodb_collection.find({
+	"double" : 0.0,
+	"string" : "string_0"
+}).explain("executionStats")
+
+# help
+db.mongodb_collection.help()
+

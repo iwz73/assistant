@@ -1,0 +1,9 @@
+# show function
+db.runCommand
+
+# loop
+for(i = 0; i < 100; ++i) {
+	db.mongodb_collection.save({ "i" : i});
+}
+
+

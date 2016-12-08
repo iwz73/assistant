@@ -1,0 +1,8 @@
+# switch 
+use mongodb_database
+
+# run command
+db.runCommand({ dbstats : 1})
+
+# show status
+db.stats()

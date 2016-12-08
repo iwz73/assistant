@@ -93,13 +93,15 @@ db.mongodb_collection.insert([
 ])
 
 # find
+db.mongodb_collection.find().next()
+db.mongodb_collection.find().toArray()
 db.mongodb_collection.find().pretty()
 db.mongodb_collection.find(
-	{}, 
-	{ 
-		"_id" : 1,
-		"string" : 1
-	}
+    {}, 
+    { 
+        "_id" : 1,
+        "string" : 1
+    }
 ).pretty()
 db.mongodb_collection.find({ 
     "document.key_0" : "value_1_0" 
@@ -166,41 +168,41 @@ db.mongodb_collection.find({
         "$size" : 2
     }
 }).pretty()
-#	$where
+#    $where
 db.mongodb_collection.find({
     "$where" : "function() { return this.string == 'string_1' }"
 }).pretty()
 db.mongodb_collection.find({
     "$where" : "this.string == 'string_1'"
 }).pretty()
-# 	$regex
+#     $regex
 db.mongodb_collection.find({
     "string" : {
-    	"$regex" : "^STR",
-    	"$options" : "i"
+        "$regex" : "^STR",
+        "$options" : "i"
     }
 }).pretty()
-# 	$mod / $type / $text
+#     $mod / $type / $text
 db.mongodb_collection.find({
     "int" : { 
-    	"$mod" : [2, 0]
+        "$mod" : [2, 0]
     }
 }).pretty()
 db.mongodb_collection.find({
     "double" : { "$type" : 1 }
 }).pretty()
-# 	$slice
+#     $slice
 db.mongodb_collection.find(
-	{},
-	{ 
-    	"array" : { "$slice" : 2 } 
-	}
+    {},
+    { 
+        "array" : { "$slice" : 2 } 
+    }
 ).pretty()
 db.mongodb_collection.find(
-	{},
-	{ 
-    	"array" : { "$slice" : [1, 2] } 
-	}
+    {},
+    { 
+        "array" : { "$slice" : [1, 2] } 
+    }
 ).pretty()
 db.mongodb_collection.find({
     "null" : null
@@ -213,9 +215,68 @@ db.mongodb_collection.find({
 }).sort({
     "_id" : -1
 }).pretty()
+db.mongodb_collection.find().forEach(function(doc) {
+    doc.newAttribute="newAttribute";
+    db.mongodb_forEach.insert(doc) 
+})
 db.mongodb_collection.findOne({
     "null" : null
 })
+
+# aggregation
+#     SELECT    :    $project / $group functions : $sum, $min, $avg...
+#     FROM      :    db.mongodb_collection.aggregate(...)
+#     JOIN      :    $unwind
+#     WHERE     :    $match
+#     ORDER BY  :    $sort
+#     GROUP BY  :    $group
+#     HAVING    :    $match
+#     LIMIT     :    $limit
+#     export    :    $out
+#     flatten   :    $unwind
+#     skip      :    $skip
+#     geo       :    $geoNear
+#     ???       :    $redact
+db.mongodb_collection.aggregate([
+    {
+        "$group" : { "_id" : "$null" }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$match" : { 
+            "int" : { "$gte" : 0 } 
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$out" : "mongodb_out"
+    },    
+])
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "string" : 1,
+            "int" : 1
+        }
+    },    
+])
+db.mongodb_collection.aggregate([
+    {
+        "$unwind" : "$array"
+    }
+]).pretty()   
+db.mongodb_collection.aggregate([
+    {
+        "$limit" : 1
+    }
+]).pretty()  
+db.mongodb_collection.aggregate([
+    {
+        "$skip" : 1
+    }
+]).pretty() 
 
 # count
 db.mongodb_collection.count()

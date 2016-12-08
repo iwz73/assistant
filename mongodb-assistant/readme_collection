@@ -1,132 +1,265 @@
 # insert
 db.mongodb_collection.insert([
-	{
-		"_id" : 0,
-		"double" : 0.0,
-		"string" : "string_0",
-		"array" : [
-			"繁體中文字串測試_0",
-			"其他不相關字串_0",
-			"text_0"
-		],
-		"binData" : BinData(0,"AQID"),
-		"objectId" : ObjectId("58463b0aa33dac208c802f20"),
-		"bool" : true,
-		"date" : ISODate("2016-12-06T04:14:02.210Z"),
-		"null" : null,
-		"int" : 0,
-		"long" : NumberLong(0),
-		"document" : {
-			"key_0" : "value_0_0",
-			"key_1" : "value_0_1",
-			"key_2" : "value_0_2"
-		},
-		"pointLocation" : {
-			"type" : "Point",
-			"coordinates" : [
-				120,
-				23.5
-			]
-		}
-	},
-	{
-		"_id" : 1,
-		"double" : 1.1,
-		"string" : "string_1",
-		"array" : [
-			"繁體中文字串測試_1",
-			"其他不相關字串_1",
-			"text_1"
-		],
-		"binData" : BinData(0,"AQID"),
-		"objectId" : ObjectId("58463b0aa33dac208c802f21"),
-		"bool" : false,
-		"date" : ISODate("2016-12-06T04:14:02.211Z"),
-		"null" : null,
-		"int" : 1,
-		"long" : NumberLong(1),
-		"document" : {
-			"key_0" : "value_1_0",
-			"key_1" : "value_1_1",
-			"key_2" : "value_1_2"
-		},
-		"pointLocation" : {
-			"type" : "Point",
-			"coordinates" : [
-				121,
-				23.5
-			]
-		}
-	}
+    {
+        "_id" : 0,
+        "double" : 0.0,
+        "string" : "string_0",
+        "array" : [
+            "繁體中文字串測試_0",
+            "其他不相關字串_0",
+            "text_0"
+        ],
+        "binData" : BinData(0,"AQID"),
+        "objectId" : ObjectId("58463b0aa33dac208c802f20"),
+        "bool" : true,
+        "date" : ISODate("2016-12-06T04:14:02.210Z"),
+        "ttl" : new Date(),
+        "null" : null,
+        "int" : 0,
+        "long" : NumberLong(0),
+        "document" : {
+            "_id" : ObjectId("58463b0aa33dac208c802f00"),
+            "key_0" : "value_0_0",
+            "key_1" : "value_0_1",
+            "key_2" : "value_0_2"
+        },
+        "documents" : [
+            {
+                "_id" : ObjectId("58463b0aa33dac208c802f01"),
+                "key_0" : "value_0_0_0",
+                "key_1" : "value_0_0_1",
+                "key_2" : "value_0_0_2"
+            },
+            {
+                "_id" : ObjectId("58463b0aa33dac208c802f02"),
+                "key_0" : "value_0_1_0",
+                "key_1" : "value_0_1_1",
+                "key_2" : "value_0_1_2"
+            }
+        ],
+        "pointLocation" : {
+            "type" : "Point",
+            "coordinates" : [
+                120,
+                23.5
+            ]
+        }
+    },
+    {
+        "_id" : 1,
+        "double" : 1.1,
+        "string" : "string_1",
+        "array" : [
+            "繁體中文字串測試_1",
+            "其他不相關字串_1",
+            "text_1"
+        ],
+        "binData" : BinData(0,"AQID"),
+        "objectId" : ObjectId("58463b0aa33dac208c802f21"),
+        "bool" : false,
+        "date" : ISODate("2016-12-06T04:14:02.211Z"),
+        "ttl" : new Date(),
+        "null" : null,
+        "int" : 1,
+        "long" : NumberLong(1),
+        "document" : {
+            "_id" : ObjectId("58463b0aa33dac208c802f10"),
+            "key_0" : "value_1_0",
+            "key_1" : "value_1_1",
+            "key_2" : "value_1_2"
+        },
+        "documents" : [
+            {
+                "_id" : ObjectId("58463b0aa33dac208c802f11"),
+                "key_0" : "value_1_0_0",
+                "key_1" : "value_1_0_1",
+                "key_2" : "value_1_0_2"
+            },
+            {
+                "_id" : ObjectId("58463b0aa33dac208c802f12"),
+                "key_0" : "value_1_1_0",
+                "key_1" : "value_1_1_1",
+                "key_2" : "value_1_1_2"
+            }
+        ],
+        "pointLocation" : {
+            "type" : "Point",
+            "coordinates" : [
+                121,
+                23.5
+            ]
+        }
+    }
 ])
 
 # find
 db.mongodb_collection.find().pretty()
+db.mongodb_collection.find(
+	{}, 
+	{ 
+		"_id" : 1,
+		"string" : 1
+	}
+).pretty()
 db.mongodb_collection.find({ 
-	"document.key_0" : "value_1_0" 
+    "document.key_0" : "value_1_0" 
+}).pretty()
+db.mongodb_collection.find({ 
+    "array" : "繁體中文字串測試_0"
+}).pretty()
+db.mongodb_collection.find({ 
+    "array.0" : "繁體中文字串測試_0"
 }).pretty()
 db.mongodb_collection.find({
-	"double" : 0.0,
-	"string" : "string_0"
+    "double" : 0.0,
+    "string" : "string_0"
 }).pretty()
 db.mongodb_collection.find({
-	"double" : { "$gte" : 1.1 }
+    "string" : /^str/
 }).pretty()
-
-
+#     $lt / $gt / $lte /$gte
 db.mongodb_collection.find({
-	$and : [
-		{ "double" : 0.0 },
-		{ "string" : "string_0" }
-	]
+    "string" : { "$gte" : "string_1" }
 }).pretty()
 db.mongodb_collection.find({
-	$or : [
-		{ "double" : 0.0 },
-		{ "string" : "string_1" }
-	]
+    "double" : { 
+        "$gt" : 1,
+        "$lt" : 2
+    }
 }).pretty()
+#     $in / $all / $nin
+db.mongodb_collection.find({
+    "string" : { "$in" : ["string_1", "string_2", "string_3"] }
+}).pretty()
+#     $ne / $not / $or / $nor / $and / $exists
+db.mongodb_collection.find({
+    "double" : {
+        "$not" : { "$gte" : 1.1 }
+    }
+}).pretty()
+db.mongodb_collection.find({
+    $and : [
+        { "double" : 0.0 },
+        { "string" : "string_0" }
+    ]
+}).pretty()
+db.mongodb_collection.find({
+    $or : [
+        { "double" : 0.0 },
+        { "string" : "string_1" }
+    ]
+}).pretty()
+db.mongodb_collection.find({
+    "null" : { "$exists" : true }
+}).pretty()
+#     $elemMatch / $size
+db.mongodb_collection.find({
+    "documents" : { 
+        "$elemMatch" : {
+                "key_0" : "value_0_1_0",
+                "key_2" : "value_0_1_2"
+        }
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "documents" : { 
+        "$size" : 2
+    }
+}).pretty()
+#	$where
+db.mongodb_collection.find({
+    "$where" : "function() { return this.string == 'string_1' }"
+}).pretty()
+db.mongodb_collection.find({
+    "$where" : "this.string == 'string_1'"
+}).pretty()
+# 	$regex
+db.mongodb_collection.find({
+    "string" : {
+    	"$regex" : "^STR",
+    	"$options" : "i"
+    }
+}).pretty()
+# 	$mod / $type / $text
+db.mongodb_collection.find({
+    "int" : { 
+    	"$mod" : [2, 0]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "double" : { "$type" : 1 }
+}).pretty()
+# 	$slice
+db.mongodb_collection.find(
+	{},
+	{ 
+    	"array" : { "$slice" : 2 } 
+	}
+).pretty()
+db.mongodb_collection.find(
+	{},
+	{ 
+    	"array" : { "$slice" : [1, 2] } 
+	}
+).pretty()
+db.mongodb_collection.find({
+    "null" : null
+}).limit(1).pretty()
+db.mongodb_collection.find({
+    "null" : null
+}).skip(1).pretty()
+db.mongodb_collection.find({
+    "null" : null
+}).sort({
+    "_id" : -1
+}).pretty()
+db.mongodb_collection.findOne({
+    "null" : null
+})
 
 # count
 db.mongodb_collection.count()
 
 # update
-#	only update single document
+#    only update single document
 db.mongodb_collection.update(
-	{ "null" : null }, 
-	{
-		$set : {
-			"null" : "not null"
-		}
-	}
+    { "null" : null }, 
+    {
+        $set : {
+            "null" : "not null"
+        }
+    }
 )
 db.mongodb_collection.update(
-	{ "null" : null },
-	{
-		$addToSet : { "array" : "text_0" }
-	}
+    { "null" : null },
+    {
+        $addToSet : { "array" : "text_0" }
+    }
 )
 db.mongodb_collection.update(
-	{ "null" : null }, 
-	{ "null" : "not null" }
+    { "null" : null }, 
+    { "null" : "not null" }
 )
 db.mongodb_collection.update(
-	{ "null" : null }, 
-	{
-		$unset : {
-			"null" : 1
-		}
-	}
+    { "null" : null }, 
+    {
+        $unset : {
+            "null" : 1
+        }
+    }
 )
-#	update all document
+#    update all document
 db.mongodb_collection.update(
-	{ "null" : null },
-	{
-		$addToSet : { "array" : "text_0" }
-	},
-	false,
-	true
+    { "null" : null },
+    {
+        $addToSet : { "array" : "text_0" }
+    },
+    false,
+    true
 )
+
+# rename
+db.mongodb_collection.renameCollection("rename_collection")
 
 # remove
 db.mongodb_collection.remove({})
@@ -136,7 +269,16 @@ db.mongodb_collection.drop()
 
 # index
 db.mongodb_collection.createIndex(
-	{ string: 1 }
+    { string: 1 }
+)
+db.mongodb_collection.createIndex(
+    { ttl: 1 },
+    { expireAfterSeconds: 10 }
+)
+
+db.mongodb_collection.createIndex(
+    { long: 1 }, 
+    { unique : true }
 )
 db.mongodb_collection.getIndexes()
 
@@ -145,10 +287,12 @@ db.mongodb_collection.stats()
 
 # explain
 db.mongodb_collection.find({
-	"double" : 0.0,
-	"string" : "string_0"
+    "double" : 0.0,
+    "string" : "string_0"
 }).explain("executionStats")
 
 # help
 db.mongodb_collection.help()
 
+# system info
+db.system.indexes.find()

@@ -238,6 +238,7 @@ db.mongodb_collection.findOne({
 #     string    :    $concat / $strcasecmp / $substr / $toLower / $toUpper
 #     arithmetic:    $add / $divide / $mod / $multiply / $subtract
 #     date      :    $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond
+#     logical   :    $and / $cmp / $cond / $eq / $gt / $gte / $ifNull / $lt / $lte / $ne / $not / $or
 #     geo       :    $geoNear
 #     ???       :    $redact
 db.mongodb_collection.aggregate([
@@ -354,34 +355,10 @@ db.mongodb_collection.aggregate([
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "concatString" : { "$concat" : [ "--", "$string" , "--" ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "substrString" : { "$substr" : [ "$string" , 2, 1 ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "toLowerString" : { "$toLower" : "$string" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
+            "concatString" : { "$concat" : [ "--", "$string" , "--" ] },
+            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] },
+            "substrString" : { "$substr" : [ "$string" , 2, 1 ] },
+            "toLowerString" : { "$toLower" : "$string" },
             "toUpperString" : { "$toUpper" : "$string" }
         }
     }
@@ -389,35 +366,52 @@ db.mongodb_collection.aggregate([
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "addDouble" : { "$add" : [ "$double", 3 ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "divideDouble" : { "$divide" : [ "$double", 3 ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "modDouble" : { "$mod" : [ "$double", 3 ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
+            "addDouble" : { "$add" : [ "$double", 3 ] },
+            "divideDouble" : { "$divide" : [ "$double", 3 ] },
+            "modDouble" : { "$mod" : [ "$double", 3 ] },
+            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] },
             "subtractDouble" : { "$subtract" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "dayOfYear" : { "$dayOfYear" : "$date" },
+            "dayOfMonth" : { "$dayOfMonth" : "$date" },
+            "dayOfWeek" : { "$dayOfWeek" : "$date" },
+            "year" : { "$year" : "$date" },
+            "month" : { "$month" : "$date" },
+            "week" : { "$week" : "$date" },
+            "hour" : { "$hour" : "$date" },
+            "minute" : { "$minute" : "$date" },
+            "second" : { "$second" : "$date" },
+            "millisecond" : { "$millisecond" : "$date" },
+            
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "and" : { "$and" : [ true, true, true ] },
+            "cmp" : { "$cmp" : [ "$double", 1.1 ] },
+            "cond" : { 
+				$cond : { 
+					if: true, 
+					then: "Y" ,
+					else: "N"
+				}
+            },
+            "eq" : { "$eq" : [ "$double", 1.1 ] },
+            "gt" : { "$gt" : [ "$double", 1 ] },
+            "gte" : { "$gte" : [ "$double", 1 ] },
+            "ifNull" : { "$ifNull" : [ "$null", "if null" ] },
+            "lt" : { "$lt" : [ "$double", 1 ] },
+            "lte" : { "$lte" : [ "$double", 1 ] },
+            "ne" : { "$ne" : [ "$double", 1.1 ] },
+            "not" : { "$not" : true },
+            "or" : { "$or" : [ false, false, true ] }
         }
     }
 ]).pretty()

@@ -3,7 +3,7 @@ db.mongodb_collection.insert([
     {
         "_id" : 0,
         "double" : 0.0,
-        "string" : "string_0",
+        "string" : "String_0",
         "array" : [
             "繁體中文字串測試_0",
             "其他不相關字串_0",
@@ -48,7 +48,7 @@ db.mongodb_collection.insert([
     {
         "_id" : 1,
         "double" : 1.1,
-        "string" : "string_1",
+        "string" : "String_1",
         "array" : [
             "繁體中文字串測試_1",
             "其他不相關字串_1",
@@ -224,7 +224,7 @@ db.mongodb_collection.findOne({
 })
 
 # aggregation
-#     SELECT    :    $project / $group functions : $sum, $min, $avg...
+#     SELECT    :    $project / $group($addToSet, $first, $last, $max, $min, $avg, $push, $sum)
 #     FROM      :    db.mongodb_collection.aggregate(...)
 #     JOIN      :    $unwind
 #     WHERE     :    $match
@@ -235,6 +235,9 @@ db.mongodb_collection.findOne({
 #     export    :    $out
 #     flatten   :    $unwind
 #     skip      :    $skip
+#     string    :    $concat / $strcasecmp / $substr / $toLower / $toUpper
+#     arithmetic:    $add / $divide / $mod / $multiply / $subtract
+#     date      :    $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond
 #     geo       :    $geoNear
 #     ???       :    $redact
 db.mongodb_collection.aggregate([
@@ -244,9 +247,95 @@ db.mongodb_collection.aggregate([
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
+        "$group" : {
+        	"_id" : "$null",
+        	"strings" : { "$addToSet" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"firstString" : { "$first" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"lastString" : { "$last" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"maxDouble" : { "$max" : "$double" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"minDouble" : { "$min" : "$double" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"avgDouble" : { "$avg" : "$double" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"pushString" : { "$push" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+        	"_id" : "$null",
+        	"addToSetString" : { "$addToSet" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
         "$match" : { 
             "int" : { "$gte" : 0 } 
         }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$sort" : { 
+            "int" : -1 
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$skip" : 1
+    }
+]).pretty() 
+db.mongodb_collection.aggregate([
+    {
+        "$limit" : 1
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$unwind" : "$array"
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
@@ -264,19 +353,74 @@ db.mongodb_collection.aggregate([
 ])
 db.mongodb_collection.aggregate([
     {
-        "$unwind" : "$array"
+        "$project" : {
+            "concatString" : { "$concat" : [ "--", "$string" , "--" ] }
+        }
     }
-]).pretty()   
+]).pretty()
 db.mongodb_collection.aggregate([
     {
-        "$limit" : 1
+        "$project" : {
+            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] }
+        }
     }
-]).pretty()  
+]).pretty()
 db.mongodb_collection.aggregate([
     {
-        "$skip" : 1
+        "$project" : {
+            "substrString" : { "$substr" : [ "$string" , 2, 1 ] }
+        }
     }
-]).pretty() 
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "toLowerString" : { "$toLower" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "toUpperString" : { "$toUpper" : "$string" }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "addDouble" : { "$add" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "divideDouble" : { "$divide" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "modDouble" : { "$mod" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "subtractDouble" : { "$subtract" : [ "$double", 3 ] }
+        }
+    }
+]).pretty()
 
 # count
 db.mongodb_collection.count()

@@ -1,3 +1,18 @@
+db.mongodb_collection.aggregate(
+	[
+	    {
+	        "$match" : { 
+	            "int" : { "$gte" : 0 } 
+	        }
+	    }
+	],
+    {
+        "explain" : true,
+        "allowDiskUse" : true,
+        "cursor" : { "batchSize" : 1 }
+    }
+)
+
 # Stage Operators
 #     $project     :    SELECT
 #     $match       :    WHERE
@@ -195,8 +210,8 @@ db.mongodb_collection.aggregate([
             "let" : { 
                 "$let" : {
                     vars : {
-                    	"newInt" : "$int",
-                    	"newDouble" : "$double"
+                        "newInt" : "$int",
+                        "newDouble" : "$double"
                     },
                     in : { "$add" : [ "$$newInt", "$$newDouble" ] }
                 }

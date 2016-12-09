@@ -239,6 +239,8 @@ db.mongodb_collection.findOne({
 #     arithmetic:    $add / $divide / $mod / $multiply / $subtract
 #     date      :    $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond
 #     logical   :    $and / $cmp / $cond / $eq / $gt / $gte / $ifNull / $lt / $lte / $ne / $not / $or
+#     set       :    $setEquals / $setIntersection / $setDifference / $setUnion / $setIsSubset / $anyElementTrue / $allElementsTrue 
+#     other     :    $meta / $size / $map / $let / $literal 
 #     geo       :    $geoNear
 #     ???       :    $redact
 db.mongodb_collection.aggregate([
@@ -386,8 +388,7 @@ db.mongodb_collection.aggregate([
             "hour" : { "$hour" : "$date" },
             "minute" : { "$minute" : "$date" },
             "second" : { "$second" : "$date" },
-            "millisecond" : { "$millisecond" : "$date" },
-            
+            "millisecond" : { "$millisecond" : "$date" }
         }
     }
 ]).pretty()
@@ -415,6 +416,23 @@ db.mongodb_collection.aggregate([
         }
     }
 ]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "setEquals" : { "$setEquals" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setIntersection" : { "$setIntersection" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setDifference" : { "$setDifference" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setUnion" : { "$setUnion" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setIsSubset" : { "$setIsSubset" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0","other_0"] ] },
+            "anyElementTrue" : { "$anyElementTrue" : [ [ false, false, true ] ] },
+            "allElementsTrue" : { "$allElementsTrue" : [ [ true, true, true ] ] }
+        }
+    }
+]).pretty()
+
+$meta / $size / $map / $let / $literal 
+aaa
+
 
 # count
 db.mongodb_collection.count()

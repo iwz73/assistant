@@ -1,9 +1,14 @@
 # insert
+db.mongodb_collection.createIndex( { "pointLocation" : "2dsphere" } )
+db.mongodb_collection.createIndex({
+	"string" : "text",
+	"array" : "text"
+})
 db.mongodb_collection.insert([
     {
         "_id" : 0,
         "double" : 0.0,
-        "string" : "String_0",
+        "string" : "string_0",
         "array" : [
             "繁體中文字串測試_0",
             "其他不相關字串_0",
@@ -48,7 +53,7 @@ db.mongodb_collection.insert([
     {
         "_id" : 1,
         "double" : 1.1,
-        "string" : "String_1",
+        "string" : "string_1",
         "array" : [
             "繁體中文字串測試_1",
             "其他不相關字串_1",
@@ -85,8 +90,8 @@ db.mongodb_collection.insert([
         "pointLocation" : {
             "type" : "Point",
             "coordinates" : [
-                121,
-                23.5
+                151,
+                53.5
             ]
         }
     }

@@ -1,24 +1,3 @@
-# aggregation
-#     SELECT    :    $project / $group($addToSet, $first, $last, $max, $min, $avg, $push, $sum)
-#     FROM      :    db.mongodb_collection.aggregate(...)
-#     JOIN      :    $unwind
-#     WHERE     :    $match
-#     ORDER BY  :    $sort
-#     GROUP BY  :    $group
-#     HAVING    :    $match
-#     LIMIT     :    $limit
-#     export    :    $out
-#     flatten   :    $unwind
-#     skip      :    $skip
-#     string    :    $concat / $strcasecmp / $substr / $toLower / $toUpper
-#     arithmetic:    $add / $divide / $mod / $multiply / $subtract
-#     date      :    $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond
-#     logical   :    $and / $cmp / $cond / $eq / $gt / $gte / $ifNull / $lt / $lte / $ne / $not / $or
-#     set       :    $setEquals / $setIntersection / $setDifference / $setUnion / $setIsSubset / $anyElementTrue / $allElementsTrue 
-#     other     :    $meta / $size / $map / $let / $literal 
-#     geo       :    $geoNear
-#     ???       :    $redact
-
 # Stage Operators
 #     $project     :    SELECT
 #     $match       :    WHERE
@@ -48,95 +27,22 @@ db.mongodb_collection.aggregate([
 db.mongodb_collection.aggregate([
     {
         $redact: {
-			$cond: {
-				if: {
-					"$or" : [
-						{ "$eq" : [ "$string", "string_0" ] },
-						{ "$eq" : [ "$key_0", "value_0_0_0" ] }
-					]	
-				},
-				then: "$$DESCEND",
-				else: "$$PRUNE"
-			}
-        }
-    }
-]).pretty()
-   
-db.mongodb_collection.aggregate([
-    {
-        "$group" : { "_id" : "$null" }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"strings" : { "$addToSet" : "$string" }
+            $cond: {
+                if: {
+                    "$or" : [
+                        { "$eq" : [ "$string", "string_0" ] },
+                        { "$eq" : [ "$key_0", "value_0_0_0" ] }
+                    ]    
+                },
+                then: "$$DESCEND",
+                else: "$$PRUNE"
+            }
         }
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
-        "$group" : {
-        	"_id" : "$null",
-        	"firstString" : { "$first" : "$string" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"lastString" : { "$last" : "$string" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"maxDouble" : { "$max" : "$double" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"minDouble" : { "$min" : "$double" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"avgDouble" : { "$avg" : "$double" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"pushString" : { "$push" : "$string" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$group" : {
-        	"_id" : "$null",
-        	"addToSetString" : { "$addToSet" : "$string" }
-        }
-    }
-]).pretty()
-
-db.mongodb_collection.aggregate([
-    {
-        "$sort" : { 
-            "int" : -1 
-        }
+        "$limit" : 1
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
@@ -146,12 +52,31 @@ db.mongodb_collection.aggregate([
 ]).pretty() 
 db.mongodb_collection.aggregate([
     {
-        "$limit" : 1
+        "$unwind" : "$array"
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
-        "$unwind" : "$array"
+        "$group" : { "_id" : "$null" }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$sort" : { 
+            "int" : -1 
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$geoNear" : { 
+            spherical: true,
+            near: { type: "Point", coordinates: [ 120, 23.5 ] },
+            distanceField: "dist.calculated",
+            includeLocs: "dist.location",
+            maxDistance: 1,
+            num: 10
+        }
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
@@ -160,28 +85,138 @@ db.mongodb_collection.aggregate([
     },    
 ])
 
+# Boolean Operators ( $and / $or / $not )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "concatString" : { "$concat" : [ "--", "$string" , "--" ] },
-            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] },
-            "substrString" : { "$substr" : [ "$string" , 2, 1 ] },
-            "toLowerString" : { "$toLower" : "$string" },
-            "toUpperString" : { "$toUpper" : "$string" }
+            "and" : { "$and" : [ true, true, true ] },
+            "or" : { "$or" : [ false, false, true ] },
+            "not" : { "$not" : true }
         }
     }
 ]).pretty()
+
+# Set Operators ( $setEquals / $setIntersection / $setUnion / $setDifference / $setIsSubset / $anyElementTrue / $allElementsTrue )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "setEquals" : { "$setEquals" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setIntersection" : { "$setIntersection" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setUnion" : { "$setUnion" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setDifference" : { "$setDifference" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
+            "setIsSubset" : { "$setIsSubset" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0","other_0"] ] },
+            "anyElementTrue" : { "$anyElementTrue" : [ [ false, false, true ] ] },
+            "allElementsTrue" : { "$allElementsTrue" : [ [ true, true, true ] ] }
+        }
+    }
+]).pretty()
+
+# Comparison Operators ( $cmp / $eq / $gt / $gte / $lt / $lte / $ne )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "cmp" : { "$cmp" : [ "$double", 1.1 ] },
+            "eq" : { "$eq" : [ "$double", 1.1 ] },
+            "gt" : { "$gt" : [ "$double", 1 ] },
+            "gte" : { "$gte" : [ "$double", 1 ] },
+            "lt" : { "$lt" : [ "$double", 1 ] },
+            "lte" : { "$lte" : [ "$double", 1 ] },
+            "ne" : { "$ne" : [ "$double", 1.1 ] }
+        }
+    }
+]).pretty()
+
+# Arithmetic Operators ( $add / $subtract / $multiply / $divide / $mod )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
             "addDouble" : { "$add" : [ "$double", 3 ] },
+            "subtractDouble" : { "$subtract" : [ "$double", 3 ] },
+            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] },           
             "divideDouble" : { "$divide" : [ "$double", 3 ] },
-            "modDouble" : { "$mod" : [ "$double", 3 ] },
-            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] },
-            "subtractDouble" : { "$subtract" : [ "$double", 3 ] }
+            "modDouble" : { "$mod" : [ "$double", 3 ] }
         }
     }
 ]).pretty()
+
+# String Operators ( $concat / $substr / $toLower / $toUpper / $strcasecmp )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "concatString" : { "$concat" : [ "--", "$string" , "--" ] },
+            "substrString" : { "$substr" : [ "$string" , 2, 1 ] },
+            "toLowerString" : { "$toLower" : "$string" },
+            "toUpperString" : { "$toUpper" : "$string" },
+            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] }
+        }
+    }
+]).pretty()
+
+# Text Search Operators ( $meta )
+db.mongodb_collection.aggregate([
+    {
+        "$match" : { 
+            "$text" : { "$search" : "string_1" }
+        }
+    },
+    {
+        "$project" : {
+            "meta" : { "$meta" : "textScore" }
+        }
+    }
+]).pretty()
+
+# Array Operators ( $size )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "size" : { "$size" : "$array" }
+        }
+    }
+]).pretty()
+
+# Variable Operators ( $map / $let )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "map" : { 
+                "$map" : {
+                    input : "$array",
+                    as : "item",
+                    in : { "$concat" : [ "--", "$$item" , "--" ] }
+                }
+            }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "let" : { 
+                "$let" : {
+                    vars : {
+                    	"newInt" : "$int",
+                    	"newDouble" : "$double"
+                    },
+                    in : { "$add" : [ "$$newInt", "$$newDouble" ] }
+                }
+            }
+        }
+    }
+]).pretty()
+
+# Literal Operators ( $literal )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "literal" : { 
+                "$literal" : "$string"
+            }
+        }
+    }
+]).pretty()
+
+# Date Operators ( $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond / $dayToString )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
@@ -194,47 +229,42 @@ db.mongodb_collection.aggregate([
             "hour" : { "$hour" : "$date" },
             "minute" : { "$minute" : "$date" },
             "second" : { "$second" : "$date" },
-            "millisecond" : { "$millisecond" : "$date" }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "and" : { "$and" : [ true, true, true ] },
-            "cmp" : { "$cmp" : [ "$double", 1.1 ] },
-            "cond" : { 
-				$cond : { 
-					if: true, 
-					then: "Y" ,
-					else: "N"
-				}
-            },
-            "eq" : { "$eq" : [ "$double", 1.1 ] },
-            "gt" : { "$gt" : [ "$double", 1 ] },
-            "gte" : { "$gte" : [ "$double", 1 ] },
-            "ifNull" : { "$ifNull" : [ "$null", "if null" ] },
-            "lt" : { "$lt" : [ "$double", 1 ] },
-            "lte" : { "$lte" : [ "$double", 1 ] },
-            "ne" : { "$ne" : [ "$double", 1.1 ] },
-            "not" : { "$not" : true },
-            "or" : { "$or" : [ false, false, true ] }
-        }
-    }
-]).pretty()
-db.mongodb_collection.aggregate([
-    {
-        "$project" : {
-            "setEquals" : { "$setEquals" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
-            "setIntersection" : { "$setIntersection" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
-            "setDifference" : { "$setDifference" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
-            "setUnion" : { "$setUnion" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0"] ] },
-            "setIsSubset" : { "$setIsSubset" : [ "$array", ["繁體中文字串測試_0","其他不相關字串_0","text_0","other_0"] ] },
-            "anyElementTrue" : { "$anyElementTrue" : [ [ false, false, true ] ] },
-            "allElementsTrue" : { "$allElementsTrue" : [ [ true, true, true ] ] }
+            "millisecond" : { "$millisecond" : "$date" },
+            "dayToString" : { $dateToString: { format: "%Y-%m-%d %H:%M:%S.%L dayOfYear(%j), dayOfWeek(%w), weekOfYear(%U)", date: "$date" } }
         }
     }
 ]).pretty()
 
-$meta / $size / $map / $let / $literal 
+# Conditional Expressions ( $cond / $ifNull )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "cond" : { 
+                $cond : { 
+                    if: true, 
+                    then: "Y" ,
+                    else: "N"
+                }
+            },
+            "ifNull" : { "$ifNull" : [ "$null", "if null" ] }
+        }
+    }
+]).pretty()
+
+$ Accumulators ( $sum / $avg / $first / $last / $max / $min / $push / $addToSet )
+db.mongodb_collection.aggregate([
+    {
+        "$group" : {
+            "_id" : "$null",
+            "sumDouble" : { "$sum" : "$double" },
+            "avgDouble" : { "$avg" : "$double" },
+            "firstString" : { "$first" : "$string" },
+            "lastString" : { "$last" : "$string" },
+            "maxDouble" : { "$max" : "$double" },
+            "minDouble" : { "$min" : "$double" },
+            "pushString" : { "$push" : "$string" },
+            "addToSetString" : { "$addToSet" : "$string" }
+        }
+    }
+]).pretty()
 

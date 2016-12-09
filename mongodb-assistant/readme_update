@@ -1,0 +1,40 @@
+
+
+# update
+#    only update single document
+db.mongodb_collection.update(
+    { "null" : null }, 
+    {
+        $set : {
+            "null" : "not null"
+        }
+    }
+)
+db.mongodb_collection.update(
+    { "null" : null },
+    {
+        $addToSet : { "array" : "text_0" }
+    }
+)
+db.mongodb_collection.update(
+    { "null" : null }, 
+    { "null" : "not null" }
+)
+db.mongodb_collection.update(
+    { "null" : null }, 
+    {
+        $unset : {
+            "null" : 1
+        }
+    }
+)
+#    update all document
+db.mongodb_collection.update(
+    { "null" : null },
+    {
+        $addToSet : { "array" : "text_0" }
+    },
+    false,
+    true
+)
+

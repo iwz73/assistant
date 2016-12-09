@@ -1,0 +1,55 @@
+# Projection Operators ( $ / $$elemMatch / $meta / $slice )
+db.mongodb_collection.find(
+    {
+        "documents" : { 
+            "$elemMatch" : {
+                "key_0" : "value_0_1_0",
+                "key_2" : "value_0_1_2"
+            }
+        }
+    }, 
+    {
+        "documents.$": 1
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    {
+        "documents" : { 
+            "$elemMatch" : {
+                    "key_0" : "value_0_1_0",
+                    "key_2" : "value_0_1_2"
+            }
+        }
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+	    "$text" : { 
+	        "$search" : "string_1",
+	        "$language" : "english"
+	    }
+    },
+    {
+        "score" : { "$meta" : "textScore" }
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    { 
+        "array" : { "$slice" : 2 } 
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    { 
+        "array" : { "$slice" : [1, 2] } 
+    }
+).pretty()
+   

@@ -176,18 +176,6 @@ db.mongodb_collection.find({
         "$lt" : 2
     }
 }).pretty()
-db.mongodb_collection.find(
-    {},
-    { 
-        "array" : { "$slice" : 2 } 
-    }
-).pretty()
-db.mongodb_collection.find(
-    {},
-    { 
-        "array" : { "$slice" : [1, 2] } 
-    }
-).pretty()
 db.mongodb_collection.find({
     "null" : null
 }).limit(1).pretty()

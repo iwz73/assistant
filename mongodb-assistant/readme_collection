@@ -151,6 +151,11 @@ db.mongodb_collection.getIndexes()
 # status
 db.mongodb_collection.stats()
 
+# comment
+db.mongodb_collection.find({
+    "string" : "string_1"
+}).comment("comment test.").pretty()
+
 # explain
 db.mongodb_collection.find({
     "double" : 0.0,

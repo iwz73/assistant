@@ -137,12 +137,6 @@ db.mongodb_collection.find({
     }
 }).pretty()
 
-# Comments ( $comment )
-db.mongodb_collection.find({
-    "string" : "string_1",
-    "$comment" : "comment test."
-}).pretty()
-
 # other
 db.mongodb_collection.find().next()
 db.mongodb_collection.find().toArray()

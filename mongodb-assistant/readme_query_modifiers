@@ -1,0 +1,62 @@
+# Modifiers ( $comment / $explain / $hint / $maxScan / $maxTimeMS / $max / $min / $orderby / $returnKey / $showDiskLoc / $snapshot / $query )
+db.mongodb_collection.find({
+    "string" : "string_1",
+    "$comment" : "comment test."
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "string" : "string_1"
+    },
+    "$explain" : 1
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "string" : "string_1"
+    },
+    "$hint" : { "_fts" : "text", "_ftsx" : 1 }
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    },
+    "$maxScan" : 100
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    },
+    "$maxTimeMS" : 100
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    },
+    "$orderby" : {
+        "int" : -1
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+	    "_id" : 1
+    },
+    "$returnKey" : true
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    },
+    "$showDiskLoc" : true
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    },
+    "$snapshot" : true
+}).pretty()
+db.mongodb_collection.find({
+    "$query" : {
+        "null" : null
+    }
+}).pretty()
+
+

@@ -147,7 +147,7 @@ db.mongodb_collection_tree.insert([
         "reportTo" : "name_2_1"
     }
 ])
-db.mongodb_multiple_collection_tree.insert([
+db.mongodb_collection_graph.insert([
     {
         "_id" : 1000,
         "location" : "location_0",
@@ -161,7 +161,7 @@ db.mongodb_multiple_collection_tree.insert([
     {
         "_id" : 1002,
         "location" : "location_2",
-        "connectTo" : [ "location_0" ]
+        "connectTo" : [ "location_0", "location_4" ]
     },
     {
         "_id" : 1003,

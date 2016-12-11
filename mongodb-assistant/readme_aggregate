@@ -250,7 +250,7 @@ db.mongodb_collection_tree.aggregate([
 db.mongodb_collection_traveler.aggregate([
     {
         "$graphLookup" : {
-            "from" : "mongodb_multiple_collection_tree",
+            "from" : "mongodb_collection_graph",
             "startWith" : "$hometown",
             "connectFromField" : "connectTo",
             "connectToField" : "location",
@@ -260,33 +260,6 @@ db.mongodb_collection_traveler.aggregate([
         }
     }
 ]).pretty()
-
-db.travelers.aggregate( [
-   {
-      $graphLookup: {
-         from: "airports",
-         startWith: "$nearestAirport",
-         connectFromField: "connects",
-         connectToField: "airport",
-         maxDepth: 2,
-         depthField: "numConnections",
-         as: "destinations"
-      }
-   }
-] )
-
-db.employees.aggregate( [
-   {
-      $graphLookup: {
-         from: "employees",
-         startWith: "$reportsTo",
-         connectFromField: "reportsTo",
-         connectToField: "name",
-         as: "reportingHierarchy"
-      }
-   }
-] )
-aaa
 
 # Boolean Operators ( $and / $or / $not )
 db.mongodb_collection.aggregate([

@@ -139,8 +139,8 @@ db.mongodb_collection.aggregate([
     {
         "$lookup" : { 
             "localField" : "string",
-            "from" : "mongodb_collection_1",
-            "foreignField" : "string_1",
+            "from" : "mongodb_collection_join",
+            "foreignField" : "string_join",
             "as" : "lookup"
         }
     }
@@ -163,37 +163,37 @@ db.mongodb_collection.aggregate([
                 { $sortByCount: "$array" }
             ],
             "bucket": [
-            	{
-			        "$match" : { 
-			            "null" : null
-			        }
-            	},
                 {
-                	"$bucket" : {
-	                    "groupBy" : "$double",
-	                    "boundaries" : [ 0, 1, 2, 3 ],
-	                    "default" : "other",
-	                    "output" : {
-	                        "sum": { "$sum" : 1 },
-	                        "ints": { $push: "$int" }
-	                    }
-	                }
+                    "$match" : { 
+                        "null" : null
+                    }
+                },
+                {
+                    "$bucket" : {
+                        "groupBy" : "$double",
+                        "boundaries" : [ 0, 1, 2, 3 ],
+                        "default" : "other",
+                        "output" : {
+                            "sum": { "$sum" : 1 },
+                            "ints": { $push: "$int" }
+                        }
+                    }
                 }
             ],
-			"bucketAuto" : [
-				{
-					"$bucketAuto" : {
-						"groupBy" : "$int",
-						"buckets" : 2
-					}
-				}
-			]
+            "bucketAuto" : [
+                {
+                    "$bucketAuto" : {
+                        "groupBy" : "$int",
+                        "buckets" : 2
+                    }
+                }
+            ]
         }
     }
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
-    	"$bucket" : {
+        "$bucket" : {
             "groupBy" : "$double",
             "boundaries" : [ 0, 1, 2, 3 ],
             "default" : "other",
@@ -206,15 +206,87 @@ db.mongodb_collection.aggregate([
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
-		"$bucketAuto" : {
-			"groupBy" : "$int",
-			"buckets" : 2
-		}
+        "$bucketAuto" : {
+            "groupBy" : "$int",
+            "buckets" : 2
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    { $unwind: "$array" },
+    { $sortByCount: "$array" }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$addFields" : {
+            "sum": { "$sum" : 1 },
+            "addedStringField": "added string field"
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$replaceRoot" : {
+            "newRoot": "$document"
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$count" : "count"
+    }
+]).pretty()
+db.mongodb_collection_tree.aggregate([
+    {
+        "$graphLookup" : {
+            "from" : "mongodb_collection_tree",
+            "startWith" : "$reportTo",
+            "connectFromField" : "reportTo",
+            "connectToField" : "name",
+            "as" : "reportHierarchy"
+        }
+    }
+]).pretty()
+db.mongodb_collection_traveler.aggregate([
+    {
+        "$graphLookup" : {
+            "from" : "mongodb_multiple_collection_tree",
+            "startWith" : "$hometown",
+            "connectFromField" : "connectTo",
+            "connectToField" : "location",
+            "as" : "target",
+            "maxDepth" : 2,
+            "depthField" : "depth",
+        }
     }
 ]).pretty()
 
-aaa
+db.travelers.aggregate( [
+   {
+      $graphLookup: {
+         from: "airports",
+         startWith: "$nearestAirport",
+         connectFromField: "connects",
+         connectToField: "airport",
+         maxDepth: 2,
+         depthField: "numConnections",
+         as: "destinations"
+      }
+   }
+] )
 
+db.employees.aggregate( [
+   {
+      $graphLookup: {
+         from: "employees",
+         startWith: "$reportsTo",
+         connectFromField: "reportsTo",
+         connectToField: "name",
+         as: "reportingHierarchy"
+      }
+   }
+] )
+aaa
 
 # Boolean Operators ( $and / $or / $not )
 db.mongodb_collection.aggregate([

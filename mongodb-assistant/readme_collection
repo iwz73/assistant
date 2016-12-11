@@ -96,10 +96,10 @@ db.mongodb_collection.insert([
         }
     }
 ])
-db.mongodb_collection_1.insert([
+db.mongodb_collection_join.insert([
     {
         "_id" : 10,
-        "string_1" : "string_0",
+        "string_join" : "string_0",
         "array" : [
             "繁體中文字串測試_10",
             "其他不相關字串_10",
@@ -108,12 +108,77 @@ db.mongodb_collection_1.insert([
     },
     {
         "_id" : 11,
-        "string_1" : "string_1",
+        "string_join" : "string_1",
         "array" : [
             "繁體中文字串測試_11",
             "其他不相關字串_11",
             "text_11"
         ]
+    }
+])
+db.mongodb_collection_tree.insert([
+    {
+        "_id" : 100,
+        "name" : "name_0"
+    },
+    {
+        "_id" : 101,
+        "name" : "name_1",
+        "reportTo" : "name_0"
+    },
+    {
+        "_id" : 102,
+        "name" : "name_2_0",
+        "reportTo" : "name_1"
+    },
+    {
+        "_id" : 103,
+        "name" : "name_2_1",
+        "reportTo" : "name_1"
+    },
+    {
+        "_id" : 104,
+        "name" : "name_3_0",
+        "reportTo" : "name_2_0"
+    },
+    {
+        "_id" : 105,
+        "name" : "name_3_1",
+        "reportTo" : "name_2_1"
+    }
+])
+db.mongodb_multiple_collection_tree.insert([
+    {
+        "_id" : 1000,
+        "location" : "location_0",
+        "connectTo" : [ "location_1", "location_2" ]
+    },
+    {
+        "_id" : 1001,
+        "location" : "location_1",
+        "connectTo" : [ "location_0", "location_3" ]
+    },
+    {
+        "_id" : 1002,
+        "location" : "location_2",
+        "connectTo" : [ "location_0" ]
+    },
+    {
+        "_id" : 1003,
+        "location" : "location_3",
+        "connectTo" : [ "location_1", "location_4" ]
+    },
+    {
+        "_id" : 1004,
+        "location" : "location_4",
+        "connectTo" : [ "location_3" ]
+    }
+])
+db.mongodb_collection_traveler.insert([
+    {
+        "_id" : 10000,
+        "name" : "traveler_0",
+        "hometown" : "location_0"
     }
 ])
 

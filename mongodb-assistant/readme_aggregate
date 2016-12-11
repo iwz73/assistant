@@ -266,7 +266,7 @@ db.mongodb_collection.aggregate([
     }
 ]).pretty()
 
-$ Accumulators ( $sum / $avg / $first / $last / $max / $min / $push / $addToSet )
+# Accumulators ( $sum / $avg / $first / $last / $max / $min / $push / $addToSet )
 db.mongodb_collection.aggregate([
     {
         "$group" : {

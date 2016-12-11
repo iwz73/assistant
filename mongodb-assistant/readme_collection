@@ -96,6 +96,26 @@ db.mongodb_collection.insert([
         }
     }
 ])
+db.mongodb_collection_1.insert([
+    {
+        "_id" : 10,
+        "string_1" : "string_0",
+        "array" : [
+            "繁體中文字串測試_10",
+            "其他不相關字串_10",
+            "text_10"
+        ]
+    },
+    {
+        "_id" : 11,
+        "string_1" : "string_1",
+        "array" : [
+            "繁體中文字串測試_11",
+            "其他不相關字串_11",
+            "text_11"
+        ]
+    }
+])
 
 # mapReduce
 map = function() {

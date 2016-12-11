@@ -1,3 +1,6 @@
+# start mongodb server
+mongod --dbpath /home/thank/Desktop/mongo --journal
+
 # start mongodb client
 mongo
 

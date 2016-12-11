@@ -1,11 +1,11 @@
 db.mongodb_collection.aggregate(
-	[
-	    {
-	        "$match" : { 
-	            "int" : { "$gte" : 0 } 
-	        }
-	    }
-	],
+    [
+        {
+            "$match" : { 
+                "int" : { "$gte" : 0 } 
+            }
+        }
+    ],
     {
         "explain" : true,
         "allowDiskUse" : true,
@@ -14,6 +14,7 @@ db.mongodb_collection.aggregate(
 )
 
 # Stage Operators
+#     $collStats
 #     $project     :    SELECT
 #     $match       :    WHERE
 #     $redact ($$DESCEND / $$PRUNE / $$KEEP)
@@ -21,9 +22,44 @@ db.mongodb_collection.aggregate(
 #     $skip        :    SKIP
 #     $unwind      :    JOIN
 #     $group       :    GROUP BY
+#     $sample
 #     $sort        :    ORDER BY
 #     $geoNear
+#     $lookup
 #     $out         :    EXPORT
+#     $indexStats
+#     $facet
+#     $bucket
+#     $bucketAuto
+#     $sortByCount
+#     $addFields
+#     $replaceRoot
+#     $count
+#     $graphLookup
+#     
+
+db.mongodb_collection.aggregate([
+    {
+        "$collStats" : {
+            "latencyStats" : {
+                "histograms" : true
+            },
+            "storageStats" : {}
+        }
+    }
+]).pretty()
+{
+  $collStats:
+    {
+      "latencyStats" : {
+          histograms" : true
+      },
+      "latencyStats.histograms" : true,
+      "storageStats" : {}
+    }
+}
+
+
 db.mongodb_collection.aggregate([
     {
         "$project" : {
@@ -77,6 +113,11 @@ db.mongodb_collection.aggregate([
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
+        "$sample" : { "size" : 10 }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
         "$sort" : { 
             "int" : -1 
         }
@@ -96,9 +137,84 @@ db.mongodb_collection.aggregate([
 ]).pretty()
 db.mongodb_collection.aggregate([
     {
+        "$lookup" : { 
+            "localField" : "string",
+            "from" : "mongodb_collection_1",
+            "foreignField" : "string_1",
+            "as" : "lookup"
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
         "$out" : "mongodb_out"
-    },    
+    }
 ])
+db.mongodb_collection.aggregate([
+    {
+        "$indexStats" : {}
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+        "$facet" : {
+            "sortByCount": [
+                { $unwind: "$array" },
+                { $sortByCount: "$array" }
+            ],
+            "bucket": [
+            	{
+			        "$match" : { 
+			            "null" : null
+			        }
+            	},
+                {
+                	"$bucket" : {
+	                    "groupBy" : "$double",
+	                    "boundaries" : [ 0, 1, 2, 3 ],
+	                    "default" : "other",
+	                    "output" : {
+	                        "sum": { "$sum" : 1 },
+	                        "ints": { $push: "$int" }
+	                    }
+	                }
+                }
+            ],
+			"bucketAuto" : [
+				{
+					"$bucketAuto" : {
+						"groupBy" : "$int",
+						"buckets" : 2
+					}
+				}
+			]
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+    	"$bucket" : {
+            "groupBy" : "$double",
+            "boundaries" : [ 0, 1, 2, 3 ],
+            "default" : "other",
+            "output" : {
+                "sum": { "$sum" : 1 },
+                "ints": { $push: "$int" }
+            }
+        }
+    }
+]).pretty()
+db.mongodb_collection.aggregate([
+    {
+		"$bucketAuto" : {
+			"groupBy" : "$int",
+			"buckets" : 2
+		}
+    }
+]).pretty()
+
+aaa
+
 
 # Boolean Operators ( $and / $or / $not )
 db.mongodb_collection.aggregate([

@@ -14,3 +14,19 @@ db.runCommand({ dbstats : 1})
 db.stats()
 
 
+-----<<temp data>>-------------------------------------------------------------------
+# backup
+use admin
+db.runCommand({
+   fsync: 1,
+   lock: 1
+})
+db.currentOp()
+<<!!!new console>> mongodump -h 127.0.0.1 -d nutch -o /tmp/backup/
+db.fsyncUnlock()
+
+# restore
+<<!!!new console>> mongorestore -h 127.0.0.1 -d nutch --drop /tmp/backup/nutch
+
+# drop database
+db.dropDatabase()

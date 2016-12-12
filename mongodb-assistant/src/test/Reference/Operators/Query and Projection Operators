@@ -1,0 +1,224 @@
+# Query Selectors ( $eq / $gt / $gte / $lt / $lte / $ne / $in / $nin )
+db.mongodb_collection.find({
+	"string" : { "$eq" : "string_1" }
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$gt" : 1 }
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$gte" : 1 }
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$lt" : 1 }
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$lte" : 1 }
+}).pretty()
+db.mongodb_collection.find({
+	"double" : { "$ne" : 0 }
+}).pretty()
+db.mongodb_collection.find({
+	"string" : { "$in" : [ "string_1", "string_2" ] }
+}).pretty()
+db.mongodb_collection.find({
+	"string" : { "$nin" : [ "string_1", "string_2" ] }
+}).pretty()
+
+# Logical ( $or / $and / $not / $nor )
+db.mongodb_collection.find({
+	"$or" : [ { "int" : 0 }, { "string" : "string_1" } ]
+}).pretty()
+db.mongodb_collection.find({
+	"$and" : [ { "int" : 1 }, { "string" : "string_1" } ]
+}).pretty()
+db.mongodb_collection.find({
+	"string" : { "$not" : /.*_0$/ }
+}).pretty()
+db.mongodb_collection.find({
+	"$nor" : [ { "int" : 1 }, { "string" : "string_1" } ]
+}).pretty()
+
+# Element ( $exists / $type )
+db.mongodb_collection.find({
+    "null" : { "$exists" : true }
+}).pretty()
+db.mongodb_collection.find({
+    "double" : { "$type" : 1 }
+}).pretty()
+
+# Evaluation ( $mod / $regex / $text / $where )
+db.mongodb_collection.find({
+    "int" : { 
+        "$mod" : [2, 0]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "string" : {
+        "$regex" : "^STR",
+        "$options" : "i"
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "$text" : { 
+        "$search" : "string_1",
+        "$language" : "english"
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "$where" : "function() { return this.string == 'string_1' }"
+}).pretty()
+db.mongodb_collection.find({
+    "$where" : "this.string == 'string_1'"
+}).pretty()
+
+# Geospatial ( $geoWithin / $geoIntersects / $near / $nearSphere )
+db.mongodb_collection.find({
+    "pointLocation" : { 
+		$geoWithin: {
+			$geometry: {
+				"type" : "Polygon" ,
+				"coordinates" : [ [ [ 110, 10 ], [ 130, 10 ], [ 130, 30 ], [110, 30], [ 110, 10 ] ] ]
+			}
+		}
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "pointLocation" : { 
+		$geoIntersects: {
+			$geometry: {
+				"type" : "Polygon" ,
+				"coordinates" : [ [ [ 110, 10 ], [ 130, 10 ], [ 130, 30 ], [110, 30], [ 110, 10 ] ] ]
+			}
+		}
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "pointLocation" : { 
+		$near: {
+			$geometry: {
+				"type" : "Point" ,
+				"coordinates" : [ 120, 23.5 ]
+			},
+            $minDistance: 0,
+            $maxDistance: 5000
+		}
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "pointLocation" : { 
+		$nearSphere: {
+			$geometry: {
+				"type" : "Point" ,
+				"coordinates" : [ 120, 23.5 ]
+			},
+            $minDistance: 0,
+            $maxDistance: 5000
+		}
+    }
+}).pretty()
+
+# Array ( $all / $elemMatch / $size )
+db.mongodb_collection.find({
+    "array" : {
+        "$all" : [ [ "繁體中文字串測試_1", "其他不相關字串_1", "text_1" ] ]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "documents" : { 
+        "$elemMatch" : {
+                "key_0" : "value_0_1_0",
+                "key_2" : "value_0_1_2"
+        }
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "documents" : { 
+        "$size" : 2
+    }
+}).pretty()
+
+# Bitwise ( $$bitsAllSet / $bitsAnySet / $bitsAllClear / $bitsAnyClear )
+db.mongodb_collection.find({
+    "int" : { 
+        "$bitsAllSet" : [ 0, 5 ]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "int" : { 
+        "$bitsAnySet" : [ 0, 5 ]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "int" : { 
+        "$bitsAllClear" : [ 0, 5 ]
+    }
+}).pretty()
+db.mongodb_collection.find({
+    "int" : { 
+        "$bitsAnyClear" : [ 0, 5 ]
+    }
+}).pretty()
+
+# Comments ( $comment )
+db.mongodb_collection.find({
+    "string" : "string_1",
+    "$comment" : "comment test."
+}).pretty()
+
+# Projection Operators ( $ / $$elemMatch / $meta / $slice )
+db.mongodb_collection.find(
+    {
+        "documents" : { 
+            "$elemMatch" : {
+                "key_0" : "value_0_1_0",
+                "key_2" : "value_0_1_2"
+            }
+        }
+    }, 
+    {
+        "documents.$": 1
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    {
+        "documents" : { 
+            "$elemMatch" : {
+                    "key_0" : "value_0_1_0",
+                    "key_2" : "value_0_1_2"
+            }
+        }
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+	    "$text" : { 
+	        "$search" : "string_1",
+	        "$language" : "english"
+	    }
+    },
+    {
+        "score" : { "$meta" : "textScore" }
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    { 
+        "array" : { "$slice" : 2 } 
+    }
+).pretty()
+db.mongodb_collection.find(
+    {
+        "null" : null
+    }, 
+    { 
+        "array" : { "$slice" : [1, 2] } 
+    }
+).pretty()
+   
+
+

@@ -1,0 +1,172 @@
+# Fields ( $inc / $mul / $rename / $setOnInsert / $set / $unset / $min / $max / $currentDate )
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$inc" : { "double" : -2 }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$mul" : { "double" : -2 }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$rename" : { "string" : "renamedString" }
+})
+db.mongodb_collection.update({
+    "int" : 3
+},{
+    "$setOnInsert" : { "string" : "setOnInsertString" }
+},{
+    "upsert" : true
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$set" : { "string" : "setString" }
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    $unset : {
+        "string" : 1
+    }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    $min : {
+        "long" : -100
+    }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    $max : {
+        "long" : 100
+    }
+})
+#     $type: "timestamp" / $type: "date"
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$currentDate" : {
+        "date": { "$type" : "timestamp" }
+    }
+})
+
+# Array ( $ / $addToSet / $pop / $pullAll / $pull / $pushAll / $push )
+db.mongodb_collection.update({
+    "array" : "text_1"
+},{
+    "$set" : { "array.$" : "setArray$" }
+})
+db.mongodb_collection.update({
+    "null" : null
+},{
+    $addToSet : { "array" : "text_0" }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$pop" : { "array" : -1 }
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$pullAll" : {
+        "array" : [
+            "其他不相關字串_0",
+            "text_0"
+        ]
+    }
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$pull" : {
+        "array" : "其他不相關字串_0"
+    }
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$push" : {
+        "array" : "push_0"
+    }
+})
+
+# Modifiers ( $each / $slice / $sort / $position )
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$push" : {
+        "array" : {
+            "$each" : [ "push_0", "push_1", "push_2" ]
+        }
+    }
+})
+#         $slice : <num>
+#             Zero : To update the array <field> to an empty array.
+#             Negative : To update the array <field> to contain only the last <num> elements.
+#             Positive : To update the array <field> contain only the first <num> elements.
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$push" : {
+        "array" : {
+            "$each" : [ "push_0", "push_1", "push_2" ],
+            "$slice" : -2
+        }
+    }
+})
+db.mongodb_collection.update({
+    "int" : 0
+},{
+    "$push" : {
+        "documents" : {
+            "$each" : [ { "key_0" : "value_0_0_9" } ],
+            "$sort" : { "key_0" : -1 }
+        }
+    }
+})
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$push" : {
+        "array" : {
+            "$each" : [ "push_0", "push_1", "push_2" ],
+            "$position" : 1
+        }
+    }
+})
+
+# Bitwise ( $bit )
+#     and|or|xor
+db.mongodb_collection.update({
+    "int" : 1
+},{
+    "$bit" : {
+        "long" : { "or" : NumberLong(10) }
+    }
+})
+
+# Isolation ( $isolated )
+db.mongodb_collection.update({
+    "int" : 1,
+    "$isolated" : 1
+},{
+    "$inc" : { "double" : -2 }
+})
+
+# update all document
+db.mongodb_collection.update(
+    { "null" : null },
+    {
+        $addToSet : { "array" : "text_0" }
+    },
+    false,
+    true
+)
+

@@ -1,0 +1,188 @@
+# Collection
+db.mongodb_collection.aggregate(
+    [
+        {
+            "$match" : { 
+                "int" : { "$gte" : 0 } 
+            }
+        }
+    ]
+)
+db.mongodb_collection.bulkWrite([
+    {
+        "insertOne" : {
+            "document" : {
+                "_id" : "insertOne"
+            }
+        },
+        "updateOne" : {
+            "filter" : { "string" : "string_0" },
+            "update" : {
+                "$set" : { "int" : 999 }
+            }
+        },
+        "deleteOne" : {
+            "filter" : { "string" : "string_0" }
+        },
+        "replaceOne" : {
+            "filter" : { "string" : "string_0" },
+            "replacement" : { "int" : 999 }
+        }
+    }
+]);
+db.mongodb_collection.count()
+db.mongodb_collection.createIndex( { "pointLocation" : "2dsphere" } )
+db.mongodb_collection.dataSize()
+db.mongodb_collection.deleteOne({
+    "_id" : "3"
+});
+db.mongodb_collection.deleteMany({
+    "string" : "string_3"
+});
+db.mongodb_collection.distinct( "string" )
+db.mongodb_collection.drop()
+db.mongodb_collection.dropIndex( "string_text_array_text" )
+db.mongodb_collection.dropIndexes()
+db.mongodb_collection.explain().count({
+    "_id" : "3"
+})
+db.mongodb_collection.find()
+db.mongodb_collection.findAndModify({
+    "query" : { "string" : "string_1" },
+    "sort" : { "int" : 1 },
+    "update" : { "string" : "findAndModify" }
+})
+db.mongodb_collection.findOne()
+db.mongodb_collection.findOneAndDelete()
+db.mongodb_collection.findOneAndReplace(
+   { "string" : "string_1" },
+   { "string" : "findAndModify" },
+   { "sort" : { "int" : 1 } }
+)
+db.mongodb_collection.findOneAndUpdate(
+   { "string" : "string_1" },
+   { "$inc" : { "int" : 3 } },
+   { "sort" : { "int" : 1 } }
+)
+db.mongodb_collection.getIndexes()
+db.mongodb_collection.insert([
+    { "_id" : "insert" }
+])
+db.mongodb_collection.insertOne({ 
+    "_id" : "insertOne" 
+})
+db.mongodb_collection.insertMany([
+    { "_id" : "insertMany_0" },
+    { "_id" : "insertMany_1" },
+    { "_id" : "insertMany_2" }
+])
+db.mongodb_collection.isCapped()
+db.mongodb_collection.latencyStats({
+    histograms: true 
+}).pretty()
+map = function() {
+    var key = this._id;
+    var value = this.double;
+    emit(key, value);
+}
+reduce = function(key, values) {
+    var result = 0;
+    values.forEach(
+        function(value) {
+            result += value;
+        }
+    );
+    return(result);
+};
+filter = {
+    "string" : { "$eq" : "string_0" }
+};
+db.mongodb_collection.mapReduce(
+    map, 
+    reduce, 
+    {
+        "query" : filter,
+        "out" : "mongodb_mapReduce"
+    }
+);
+db.mongodb_collection.reIndex()
+db.mongodb_collection.replaceOne(
+    { "string" : "string_1" },
+    { "string" : "replaceOne" }
+)
+db.mongodb_collection.remove({})
+db.mongodb_collection.renameCollection("rename_collection")
+db.mongodb_collection.save({
+    "string" : "string_1"
+})
+db.mongodb_collection.stats()
+db.mongodb_collection.storageSize()
+db.mongodb_collection.totalSize()
+db.mongodb_collection.totalIndexSize()
+db.mongodb_collection.update(
+    { "string" : "string_1" },
+    {
+        "$set" : {
+            "int" : 999
+        }
+    }
+)
+db.mongodb_collection.updateOne(
+    { "string" : "string_1" },
+    {
+        "$set" : {
+            "int" : 999
+        }
+    }
+)
+db.mongodb_collection.updateMany(
+    { "string" : "string_1" },
+    {
+        "$set" : {
+            "int" : 999
+        }
+    }
+)
+db.mongodb_collection.validate()
+
+# Cursor
+db.mongodb_collection.find().batchSize(10)
+db.mongodb_collection.find().collation({
+    "locale" : "en_US",
+    "strength" : 1
+})
+db.mongodb_collection.find().comment("mongodb comment")
+db.mongodb_collection.find().count()
+db.mongodb_collection.find().explain()
+db.mongodb_collection.find().forEach(
+    function(document) {
+        print(document._id);
+    }
+)
+db.mongodb_collection.find().hasNext()
+db.mongodb_collection.find().hint({ "_fts" : "text", "_ftsx" : 1 })
+db.mongodb_collection.find().itcount()
+db.mongodb_collection.find().limit(10)
+db.mongodb_collection.find().map(
+    function(document) {
+        return document["string"];
+    }
+)
+db.mongodb_collection.find().maxScan(10)
+db.mongodb_collection.find().maxTimeMS(1000)
+db.mongodb_collection.find().objsLeftInBatch()
+db.mongodb_collection.find().pretty()
+db.mongodb_collection.find().readConcern("local")
+db.mongodb_collection.find( { "_id" : 1 } ).returnKey()
+db.mongodb_collection.find().showRecordId()
+db.mongodb_collection.find().size()
+db.mongodb_collection.find().skip(1)
+db.mongodb_collection.find().sort({
+    "int" : -1
+})
+db.mongodb_collection.find().toArray()
+
+
+
+
+

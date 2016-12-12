@@ -1,0 +1,138 @@
+# Aggregation Commands ( aggregate / count / distinct / group / mapReduce )
+db.runCommand({
+    "aggregate" : "mongodb_collection",
+    "pipeline" : [
+        {
+            "$match" : { 
+                "int" : { "$gt" : 0 } 
+            }
+        },
+        {
+            "$project" : {
+                "string" : 1,
+                "int" : 1
+            }
+        },
+        {
+            "$group" : { "_id" : "$null" }
+        }
+    ],
+    "cursor" : {}
+})
+db.runCommand({
+    "count" : "mongodb_collection"
+})
+db.runCommand({
+    "distinct" : "mongodb_collection",
+    "key" : "string"
+})
+db.runCommand({
+    "group" : {
+        "ns" : "mongodb_collection",
+        "key" : {
+            "string" : 1
+        },
+        "cond" : {
+            "int" : {
+                "$gte" : 0
+            }
+        },
+        "$reduce" : function(current, result) {},
+        "initial" : {}
+        
+    }
+})
+map = function() {
+    var key = this._id;
+    var value = this.double;
+    emit(key, value);
+}
+reduce = function(key, values) {
+    var result = 0;
+    values.forEach(
+        function(value) {
+            result += value;
+        }
+    );
+    return(result);
+};
+filter = {
+    "string" : { "$eq" : "string_0" }
+};
+db.mongodb_collection.mapReduce(
+    map, 
+    reduce, 
+    {
+        "query" : filter,
+        "out" : "mongodb_mapReduce"
+    }
+);
+
+# Geospatial Commands ( geoNear / geoSearch )
+db.runCommand({
+    "geoNear" : "mongodb_collection",
+    "near" : {
+        "type" : "Point",
+        "coordinates" : [ 120, 23.5 ]
+    },
+    "spherical" : true
+})
+
+# Query and Write Operation Commands ( find / insert / update / delete / findAndModify / getMore / getLastError / getPrevError / resetError / eval / parallelCollectionScan )
+db.runCommand({
+    "find" : "mongodb_collection",
+    "filter" : {
+        "null" : null 
+    }
+})
+db.runCommand({
+    "insert" : "mongodb_collection",
+    "documents" : [{
+        "insert" : "insert_0" 
+    }]
+})
+db.runCommand({
+    "update" : "mongodb_collection",
+    "updates" : [{
+        "q" : { "string" : "string_0" },
+        "u" : {
+            "$set" : { 
+                "string" : "update" 
+            } 
+        }
+    }]
+})
+db.runCommand({
+    "delete" : "mongodb_collection",
+    "deletes" : [{
+        "q" : { "string" : "string_0" },
+        "limit" : 1
+    }]
+})
+db.runCommand({
+    "findAndModify" : "mongodb_collection",
+    "query" : {
+        "string" : "string_0"
+    },
+    "sort" : { "int" : 1 },
+    "update" : { "string" : "findAndModify" }
+})
+db.runCommand({
+    "getLastError" : 1,
+    "w" : 1,
+    "wtimeout" :5000
+})
+db.runCommand({
+    "parallelCollectionScan" : "mongodb_collection",
+    "numCursors" : 5,
+    "readConcern" : {
+        "level" : "local" 
+    }
+})
+
+# Query Plan Cache Commands ( planCacheListFilters / planCacheSetFilter / planCacheClearFilters / planCacheListQueryShapes / planCacheListPlans / planCacheClear )
+// TODO
+
+
+
+

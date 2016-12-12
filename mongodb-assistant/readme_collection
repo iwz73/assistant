@@ -1,29 +1,3 @@
-# mapReduce
-map = function() {
-	var key = this._id;
-	var value = this.double;
-	emit(key, value);
-}
-reduce = function(key, values) {
-	var result = 0;
-	values.forEach(
-		function(value) {
-			result += value;
-		}
-	);
-	return(result);
-};
-filter = {
-	"string" : { "$eq" : "string_0" }
-};
-db.mongodb_collection.mapReduce(
-	map, 
-	reduce, 
-	{
-		"query" : filter,
-		"out" : "mongodb_mapReduce"
-	}
-);
 
 # rename
 db.mongodb_collection.renameCollection("rename_collection")

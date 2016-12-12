@@ -183,6 +183,3 @@ db.mongodb_collection.find().sort({
 db.mongodb_collection.find().toArray()
 
 
-
-
-

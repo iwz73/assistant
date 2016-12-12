@@ -302,32 +302,49 @@ db.mongodb_collection.aggregate([
     }
 ]).pretty()
 
-# Arithmetic Operators ( $add / $subtract / $multiply / $divide / $mod )
+# Arithmetic Operators ( $abs / $add / $ceil / $divide / $exp / $floor / $ln / $log / $log10 / $mod / $multiply / $pow / $sqrt / $subtract / $trunc )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "addDouble" : { "$add" : [ "$double", 3 ] },
-            "subtractDouble" : { "$subtract" : [ "$double", 3 ] },
-            "multiplyDouble" : { "$multiply" : [ "$double", 3 ] },           
-            "divideDouble" : { "$divide" : [ "$double", 3 ] },
-            "modDouble" : { "$mod" : [ "$double", 3 ] }
+            "abs" : { "$abs" : -1 },
+            "add" : { "$add" : [ "$double", 3 ] },
+            "ceil" : { "$ceil" : "$double" },
+            "divide" : { "$divide" : [ "$double", 3 ] },
+            "exp" : { "$exp" : 2 },
+            "floor" : { "$floor" : "$double" },
+            "ln" : { "$ln" : 100 },
+            "log" : { "$log" : [ 100, 10 ] },
+            "log10" : { "$log10" : 100 },
+            "mod" : { "$mod" : [ "$double", 3 ] },
+            "multiply" : { "$multiply" : [ "$double", 3 ] },  
+            "pow" : { "$pow" : [ "$double", 2 ] },  
+            "sqrt" : { "$sqrt" : 25 },
+            "subtract" : { "$subtract" : [ "$double", 3 ] },
+            "trunc" : { "$trunc" : "$double" }
         }
     }
 ]).pretty()
 
-# String Operators ( $concat / $substr / $toLower / $toUpper / $strcasecmp )
+# String Operators ( $concat / $indexOfBytes / $indexOfCP / $split / $strcasecmp / $strLenBytes / $strLenCP / $substr / $substrBytes / $substrCP / $toLower / $toUpper )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "concatString" : { "$concat" : [ "--", "$string" , "--" ] },
-            "substrString" : { "$substr" : [ "$string" , 2, 1 ] },
-            "toLowerString" : { "$toLower" : "$string" },
-            "toUpperString" : { "$toUpper" : "$string" },
-            "strcasecmpString" : { "$strcasecmp" : [ "$string" , "STRING_0" ] }
+            "concat" : { "$concat" : [ "--", "$string" , "--" ] },
+            "indexOfBytes" : { "$indexOfBytes" : [ "$string" , "ri", 0, 100 ] },
+            "indexOfCP" : { "$indexOfCP" : [ "$string" , "ri", 0, 100 ] },
+            "split" : { "$split" : [ "$string" , "ri" ] },
+            "strcasecmp" : { "$strcasecmp" : [ "$string" , "STRING_0" ] },
+            "strLenBytes" : { "$strLenBytes" : "$string" },
+            "strLenCP" : { "$strLenCP" : "$string" },
+            "substr" : { "$substr" : [ "$string" , 2, 1 ] },
+            "substrBytes" : { "$substrBytes" : [ "$string" , 2, 1 ] },
+            "substrCP" : { "$substrCP" : [ "$string" , 2, 1 ] },
+            "toLower" : { "$toLower" : "$string" },
+            "toUpper" : { "$toUpper" : "$string" }
         }
     }
 ]).pretty()
-
+   
 # Text Search Operators ( $meta )
 db.mongodb_collection.aggregate([
     {
@@ -342,11 +359,40 @@ db.mongodb_collection.aggregate([
     }
 ]).pretty()
 
-# Array Operators ( $size )
+# Array Operators ( $arrayElemAt / $concatArrays / $filter / $indexOfArray / $isArray / $range / $reverseArray / $reduce / $size / $slice / $zip / $in )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
-            "size" : { "$size" : "$array" }
+            "arrayElemAt" : { "$arrayElemAt" : [ "$array", 2 ] },
+            "concatArrays" : { "$concatArrays" : [ "$array", [ "concatArrays_0", "concatArrays_1" ] ] },
+            "filter" : { 
+                "$filter" : {
+                    "input" : "$array",
+                    "as" : "str",
+                    "cond" : { "$gt" : [ "$$str", "z" ] }
+                }
+            },
+            "indexOfArray" : { "$indexOfArray" : [ "$array", "text_0", 1, 100 ] },
+            "isArray" : { "$isArray" : "$array" },
+            "range" : { "$range" : [ 0, 10, 2] },
+            "reverseArray" : { "$reverseArray" : "$array" },
+            "reduce" : { 
+                "$reduce" : {
+                    "input" : "$array",
+                    "initialValue" : "",
+                    "in" : { $concat : ["$$value", "$$this"] }
+                }
+            },
+            "size" : { "$size" : "$array" },
+            "slice" : { "$slice" : [ "$array", 1, 2 ] },
+            "zip" : { 
+                "$zip" : {
+                    inputs: [ [ 1 ], [ 2, 3 ], [ 4 ] ],
+                    useLongestLength: true,
+                    defaults: [ "a", "b", "c" ]
+                }
+            },
+            "in" : { "$in" : [ "text_1", "$array" ] }
         }
     }
 ]).pretty()
@@ -392,7 +438,7 @@ db.mongodb_collection.aggregate([
     }
 ]).pretty()
 
-# Date Operators ( $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond / $dayToString )
+# Date Operators ( $dayOfYear / $dayOfMonth / $dayOfWeek / $year / $month / $week / $hour / $minute / $second / $millisecond / $dayToString / $isoDayOfWeek / $isoWeek / $isoWeekYear )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
@@ -406,12 +452,15 @@ db.mongodb_collection.aggregate([
             "minute" : { "$minute" : "$date" },
             "second" : { "$second" : "$date" },
             "millisecond" : { "$millisecond" : "$date" },
-            "dayToString" : { $dateToString: { format: "%Y-%m-%d %H:%M:%S.%L dayOfYear(%j), dayOfWeek(%w), weekOfYear(%U)", date: "$date" } }
+            "dayToString" : { $dateToString: { format: "%Y-%m-%d %H:%M:%S.%L dayOfYear(%j), dayOfWeek(%w), weekOfYear(%U)", date: "$date" } },
+            "isoDayOfWeek" : { "$isoDayOfWeek" : "$date" },
+            "isoWeek" : { "$isoWeek" : "$date" },
+            "isoWeekYear" : { "$isoWeekYear" : "$date" }
         }
     }
 ]).pretty()
 
-# Conditional Expressions ( $cond / $ifNull )
+# Conditional Expressions ( $cond / $ifNull / $switch )
 db.mongodb_collection.aggregate([
     {
         "$project" : {
@@ -422,24 +471,50 @@ db.mongodb_collection.aggregate([
                     else: "N"
                 }
             },
-            "ifNull" : { "$ifNull" : [ "$null", "if null" ] }
+            "ifNull" : { "$ifNull" : [ "$null", "if null" ] },
+            "switch" : {
+                $switch: {
+                    branches: [
+                        {
+                            case: { "$lt" : [ "$string", "a" ] },
+                            then: "less than 'a'" 
+                        },
+                        {
+                            case: { "$lt" : [ "$string", "z" ] },
+                            then: "less than 'z'" 
+                        }
+                    ],
+                    default: "Did not match"
+                }
+            }
         }
     }
 ]).pretty()
 
-# Accumulators ( $sum / $avg / $first / $last / $max / $min / $push / $addToSet )
+# Data Type ( $type )
+db.mongodb_collection.aggregate([
+    {
+        "$project" : {
+            "type" : { "$type" : "$double" },
+        }
+    }
+]).pretty()
+
+# Accumulators ( $sum / $avg / $first / $last / $max / $min / $push / $addToSet / $stdDevPop / $stdDevSamp )
 db.mongodb_collection.aggregate([
     {
         "$group" : {
             "_id" : "$null",
-            "sumDouble" : { "$sum" : "$double" },
-            "avgDouble" : { "$avg" : "$double" },
-            "firstString" : { "$first" : "$string" },
-            "lastString" : { "$last" : "$string" },
-            "maxDouble" : { "$max" : "$double" },
-            "minDouble" : { "$min" : "$double" },
-            "pushString" : { "$push" : "$string" },
-            "addToSetString" : { "$addToSet" : "$string" }
+            "sum" : { "$sum" : "$double" },
+            "avg" : { "$avg" : "$double" },
+            "first" : { "$first" : "$string" },
+            "last" : { "$last" : "$string" },
+            "max" : { "$max" : "$double" },
+            "min" : { "$min" : "$double" },
+            "push" : { "$push" : "$string" },
+            "addToSet" : { "$addToSet" : "$string" },
+            "stdDevPop" : { "$stdDevPop" : "$int" },
+            "stdDevSamp" : { "$stdDevSamp" : "$int" }
         }
     }
 ]).pretty()

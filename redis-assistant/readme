@@ -79,15 +79,47 @@ SUNION set_a set_b
 SDIFFSTORE difference_set set_a set_b
 SINTERSTORE intersection_set set_a set_b
 SUNIONSTORE union_set set_a set_b
+SREM set_a "set 0" "set 1" "set 2"
+#     sorted sets
+ZADD sortedSet_a +inf "A" 2E+3 "B" 12 "C" -inf "D"
+ZADD sortedSet_b  100 "A"   80 "B" 50 "C"   30 "D"
+ZSCORE sortedSet_a "A"
+ZRANGE sortedSet_a 0 2
+ZRANGE sortedSet_a 0 2 WITHSCORES
+ZRANGEBYSCORE sortedSet_a 12 2E+3
+ZRANGEBYSCORE sortedSet_a 12 (2E+3
+ZRANGEBYSCORE sortedSet_a -inf +inf LIMIT 2 3
+ZREVRANGE sortedSet_a 0 2
+ZREVRANGEBYSCORE sortedSet_a 12 2E+3
+ZREVRANGEBYSCORE sortedSet_a 2E+3 12
+ZINCRBY sortedSet_a -3 "C"
+ZCARD sortedSet_a
+ZCOUNT sortedSet_a 12 2E+3
+ZRANK sortedSet_a "C"
+ZREVRANK sortedSet_a "C"
+ZINTERSTORE intersection_sortedSet 2 sortedSet_a sortedSet_b AGGREGATE SUM
+ZINTERSTORE intersection_sortedSet 2 sortedSet_a sortedSet_b AGGREGATE MIN
+ZINTERSTORE intersection_sortedSet 2 sortedSet_a sortedSet_b WEIGHTS 1 0.1
+ZREM sortedSet_a "A" "B"
+ZREMRANGEBYRANK sortedSet_a 0 2
+ZREMRANGEBYSCORE sortedSet_a 12 2E+3
 
+# transaction
+WATCH set_a set_b
+MULTI
+SADD set_a "set 0" "set 1" "set 2"
+SREM set_b "set 0" "set 1" "set 2"
+EXEC
 
+# TTL (time to live)
+SET ttl "time to live"
+EXPIRE ttl 10
+EXPIREAT ttl 1351858600
+TTL expire
 
-SREM set "set 0" "set 1" "set 2"
-
-
-
-
-
+# sort
+LPUSH sortList "left push 0" "left push 2" "left push 1"
+SORT sortList ALPHA
 
 
 

@@ -1,0 +1,93 @@
+# install
+tar xvfz redis-3.2.6.tar.gz
+make
+make test
+
+# start redis server
+redis-server --port 6379
+
+# shutdown redis server
+redis-cli SHUTDOWN
+
+# start redis client
+redis-cli -h 127.0.0.1 -p 6379
+
+# change database (1 ~ 16)
+SELECT 1
+
+# data type command
+TYPE key
+#     string
+SET key "0"
+GET key
+KEYS *
+EXISTS key
+GETBIT key 0
+SETBIT key 0 1
+BITCOUNT key
+DEL key
+INCR increment
+INCRBY increment "3"
+INCRBYFLOAT increment "5.5"
+INCRBYFLOAT increment "2E+3"
+DECR decrement
+DECRBY decrement "3"
+SET string "string"
+APPEND string "append"
+STRLEN string
+MSET key_0 "value_0" key_1 "1"
+MGET key_0 key_1
+BITOP OR bit_operation key_0 key_1
+#     hash
+HSET hash field_0 "value_0"
+HGET hash field_0
+HMSET hash field_0 "value_0" field_1 "value_1"
+HMGET hash field_0 field_1
+HGETALL hash
+HEXISTS hash field_0
+HSETNX hash field_2 "set if not exists"
+HINCRBY hash field_3 3
+HKEYS hash
+HVALS hash
+HLEN hash
+HDEL hash field_0 field_1
+#     list
+LPUSH list "left push 0" "left push 1" "left push 2"
+RPUSH list "right push 0" "right push 1" "right push 2"
+LPOP list
+RPOP list
+RPOPLPUSH list list
+LLEN list
+LRANGE list 1 3
+LREM list 0 2
+LINDEX list 0
+LSET list 1 1
+LTRIM list 0 2
+LINSERT list BEFORE "right push 0" "before"
+LINSERT list AFTER "right push 0" "after"
+#     set
+SADD set_a "set 0" "set 1" "set 2"
+SADD set_b "set 1" "set 2" "set 3"
+SMEMBERS set_a
+SISMEMBER set_a "set 1"
+SCARD set_a
+SRANDMEMBER set_a 2
+SPOP set_a
+SDIFF set_a set_b
+SINTER set_a set_b
+SUNION set_a set_b
+SDIFFSTORE difference_set set_a set_b
+SINTERSTORE intersection_set set_a set_b
+SUNIONSTORE union_set set_a set_b
+
+
+
+SREM set "set 0" "set 1" "set 2"
+
+
+
+
+
+
+
+

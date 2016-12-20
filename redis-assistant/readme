@@ -1,6 +1,6 @@
 # install
 tar xvfz redis-3.2.6.tar.gz
-make
+make install
 make test
 
 # start redis server
@@ -65,6 +65,11 @@ LSET list 1 1
 LTRIM list 0 2
 LINSERT list BEFORE "right push 0" "before"
 LINSERT list AFTER "right push 0" "after"
+LPUSH priority_list_0 "priority_0_0" "priority_0_1" "priority_0_2"
+LPUSH priority_list_1 "priority_1_0" "priority_1_1" "priority_1_2"
+LPUSH priority_list_2 "priority_2_0" "priority_2_1" "priority_2_2"
+BLPOP priority_list_0 priority_list_1 priority_list_2 3
+BRPOP priority_list_0 priority_list_1 priority_list_2 3
 #     set
 SADD set_a "set 0" "set 1" "set 2"
 SADD set_b "set 1" "set 2" "set 3"
@@ -120,6 +125,21 @@ TTL expire
 # sort
 LPUSH sortList "left push 0" "left push 2" "left push 1"
 SORT sortList ALPHA
-
-
+SORT sortList ALPHA DESC
+SORT sortList ALPHA LIMIT 1 2
+SORT sortList ALPHA STORE sortResult
+SADD sortSet "set 0" "set 2" "set 1"
+SORT sortSet ALPHA
+SADD sortHashList sortHash_0 sortHash_1 sortHash_2
+HSET sortHash_0 field_0 "0" 
+HSET sortHash_0 field_2 "2"
+HSET sortHash_0 field_1 "1"
+HSET sortHash_1 field_0 "1" 
+HSET sortHash_1 field_2 "0"
+HSET sortHash_1 field_1 "2"
+HSET sortHash_2 field_0 "2" 
+HSET sortHash_2 field_2 "1"
+HSET sortHash_2 field_1 "0"
+SORT sortHashList BY *->field_2
+SORT sortHashList BY *->field_2 GET # GET *->field_1
 

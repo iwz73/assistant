@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.nekohtmlassistant.assistant;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.cyberneko.html.parsers.DOMParser;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,11 @@ public class NekohtmlAssistant {
 		parser.parse(inputSource);
 		return parser.getDocument();
 	}
-
+	
+	public Element getElementById(Document document, String elementId) {
+		return document.getElementById(elementId);
+	}
+	
 	public NodeList getElementsByTagName(Document document, String tagName) {
 		return document.getElementsByTagName(tagName);
 	}
@@ -68,7 +73,7 @@ public class NekohtmlAssistant {
 		return tempNode;
 	}
 
-	public String getVisibleText(Node node) {
+	public String getChildTextNodesText(Node node) {
 		StringBuilder sb = new StringBuilder();
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {

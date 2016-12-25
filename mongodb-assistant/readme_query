@@ -173,12 +173,8 @@ db.mongodb_collection.find({
 db.mongodb_collection.find({
     "null" : null
 }).limit(1).pretty()
-db.mongodb_collection.find({
-    "null" : null
-}).skip(1).pretty()
-db.mongodb_collection.find({
-    "null" : null
-}).sort({
+db.mongodb_collection.find({}).skip(1).pretty()
+db.mongodb_collection.find({}).sort({
     "_id" : -1
 }).pretty()
 db.mongodb_collection.find().forEach(function(doc) {

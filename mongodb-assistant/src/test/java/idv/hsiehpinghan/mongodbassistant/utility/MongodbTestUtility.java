@@ -92,6 +92,8 @@ public class MongodbTestUtility {
 	private static void initCollection(MongoDatabase db) {
 		MongoCollection<Document> collection = db.getCollection(COLLECTION_NAME);
 		collection.drop();
+		collection.createIndex(new Document("pointLocation", "2dsphere"));
+		collection.createIndex(new Document().append("string", "text").append("array", "text"));
 		List<Document> docs = new ArrayList<>(2);
 		Document doc0 = generateCollectionDocument0();
 		docs.add(doc0);

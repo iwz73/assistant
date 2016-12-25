@@ -3,8 +3,6 @@ package idv.hsiehpinghan.mongodbassistant.test;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bson.BsonDocument;
-import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +88,7 @@ public class QueryTest extends AbstractTestNGSpringContextTests {
 	 * @param collection
 	 */
 	private void eq(MongoCollection<Document> collection) {
-		Bson filter = new Document("string", new BsonDocument("$eq", new BsonString("string_1")));
+		Bson filter = new Document("string", new Document("$eq", "string_1"));
 		FindIterable<Document> iterable = collection.find(filter);
 		int i = 0;
 		try (MongoCursor<Document> cursor = iterable.iterator()) {

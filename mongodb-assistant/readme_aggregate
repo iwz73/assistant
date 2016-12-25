@@ -36,8 +36,6 @@ db.mongodb_collection.aggregate(
 #     $replaceRoot
 #     $count
 #     $graphLookup
-#     
-
 db.mongodb_collection.aggregate([
     {
         "$collStats" : {
@@ -48,18 +46,6 @@ db.mongodb_collection.aggregate([
         }
     }
 ]).pretty()
-{
-  $collStats:
-    {
-      "latencyStats" : {
-          histograms" : true
-      },
-      "latencyStats.histograms" : true,
-      "storageStats" : {}
-    }
-}
-
-
 db.mongodb_collection.aggregate([
     {
         "$project" : {
@@ -67,7 +53,7 @@ db.mongodb_collection.aggregate([
             "int" : 1
         }
     },    
-])
+]).pretty()
 db.mongodb_collection.aggregate([
     {
         "$match" : { 
@@ -127,7 +113,7 @@ db.mongodb_collection.aggregate([
     {
         "$geoNear" : { 
             spherical: true,
-            near: { type: "Point", coordinates: [ 120, 23.5 ] },
+            near: { type: "Point", coordinates: [ 121, 23.5 ] },
             distanceField: "dist.calculated",
             includeLocs: "dist.location",
             maxDistance: 1,

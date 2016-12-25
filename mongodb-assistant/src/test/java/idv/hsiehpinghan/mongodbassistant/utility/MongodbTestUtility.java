@@ -16,12 +16,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongodbTestUtility {
-	private static final String DATABASE_NAME = "mongodb_database";
-	private static final String COLLECTION_NAME = "mongodb_collection";
-	private static final String COLLECTION_JOIN_NAME = "mongodb_collection_join";
-	private static final String COLLECTION_TREE_NAME = "mongodb_collection_tree";
-	private static final String COLLECTION_GRAPH_NAME = "mongodb_collection_graph";
-	private static final String COLLECTION_TRAVELER_NAME = "mongodb_collection_traveler";
+	public static final String DATABASE_NAME = "mongodb_database";
+	public static final String COLLECTION_NAME = "mongodb_collection";
+	public static final String COLLECTION_JOIN_NAME = "mongodb_collection_join";
+	public static final String COLLECTION_TREE_NAME = "mongodb_collection_tree";
+	public static final String COLLECTION_GRAPH_NAME = "mongodb_collection_graph";
+	public static final String COLLECTION_TRAVELER_NAME = "mongodb_collection_traveler";
 
 	public static void init(ApplicationContext applicationContext) {
 		MongoClient mongoClient = applicationContext.getBean(MongoClient.class);

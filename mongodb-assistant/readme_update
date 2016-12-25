@@ -157,13 +157,16 @@ db.mongodb_collection.update({
     "$inc" : { "double" : -2 }
 })
 
-# update all document
+# update option
 db.mongodb_collection.update(
     { "null" : null },
     {
         $addToSet : { "array" : "text_0" }
     },
-    false,
-    true
+    {
+        upsert: true,
+        multi: true
+    }
 )
+
 

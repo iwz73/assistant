@@ -143,3 +143,8 @@ HSET sortHash_2 field_1 "0"
 SORT sortHashList BY *->field_2
 SORT sortHashList BY *->field_2 GET # GET *->field_1
 
+# publish / subscribe
+<< redis client subscribe>>SUBSCRIBE channel_0
+<< redis client psubscribe>>PSUBSCRIBE channel_?
+<< redis client publish>>PUBLISH channel_0 "publish_subscribe"
+

@@ -10,7 +10,7 @@ import idv.hsiehpinghan.springsocialfacebookassistant.utility.UrlUtility;
 public class InfoService {
 
 	public String getLoginInfo(String accessToken) throws IOException {
-		final String httpsUrl = String.format("https://graph.facebook.com/me?access_token=%s", accessToken);
+		final String httpsUrl = String.format("https://graph.facebook.com/10206332372027650?access_token=%s", accessToken);
 		return UrlUtility.getContent(httpsUrl);
 	}
 

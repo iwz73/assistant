@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.springsocialfacebookassistant.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,15 +14,19 @@ import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LoginInfoCriteria
 import idv.hsiehpinghan.springsocialfacebookassistant.criteria.LongLivedTokenCriteria;
 import idv.hsiehpinghan.springsocialfacebookassistant.criteria.TokenInfoCriteria;
 import idv.hsiehpinghan.springsocialfacebookassistant.service.InfoService;
+import idv.hsiehpinghan.springsocialfacebookassistant.service.PostService;
 import idv.hsiehpinghan.springsocialfacebookassistant.service.TokenService;
 
 @Controller
 @RequestMapping(value = "/facebook")
 public class FacebookController {
+	public final String UTF_8 = "utf-8";
 	@Autowired
 	private InfoService infoService;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private PostService postService;
 
 	@RequestMapping(value = "/facebookLogin", method = RequestMethod.GET)
 	public String facebookLogin() {
@@ -36,6 +41,16 @@ public class FacebookController {
 	@RequestMapping(value = "/token", method = RequestMethod.GET)
 	public String token() {
 		return "/facebook/token";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/postFeed", method = RequestMethod.GET)
+	public String postFeed() throws IOException {
+		String userId = "10206332372027650";
+		String appId = "1394401980571844";
+		String accessToken = tokenService.getAppAccessToken();
+		String message = URLEncoder.encode("繁中貼文測試。\n简中贴文测试。\nenglish post test.", UTF_8);
+		return postService.post(userId, appId, accessToken, message);
 	}
 
 	@ResponseBody

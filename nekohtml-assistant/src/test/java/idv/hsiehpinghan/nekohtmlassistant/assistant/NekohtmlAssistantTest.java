@@ -19,6 +19,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import idv.hsiehpinghan.nekohtmlassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.nekohtmlassistant.vo.ElementFeatureVo;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
@@ -88,9 +89,11 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void getNodeNameCountMap() {
-		Map<String, Integer> map = assistant.getNodeNameCountMap(this.doc);
-		System.err.println(map);
+	public void getElementFeatureVoMap() {
+		Map<String, ElementFeatureVo> map = assistant.getElementFeatureVoMap(this.doc);
+		for (Map.Entry<String, ElementFeatureVo> ent : map.entrySet()) {
+			System.err.println(ent.getKey() + " : " + ent.getValue());
+		}
 	}
 
 	private Node getLatestChild(Node node) {

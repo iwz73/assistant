@@ -3,6 +3,7 @@ package idv.hsiehpinghan.nekohtmlassistant.assistant;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import org.cyberneko.html.parsers.DOMParser;
 import org.springframework.stereotype.Component;
@@ -14,18 +15,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import idv.hsiehpinghan.nekohtmlassistant.vo.ElementFeatureVo;
+
 @Component
 public class NekohtmlAssistant {
 	private final String BODY = "BODY";
 	private final String SEPERATOR = "_";
 	private final String THANK_ID = "thankId";
-
-	public Map<String, Integer> getNodeNameCountMap(Document doc) {
-		Map<String, Integer> map = new HashMap<>();
-		Node bodyNode = getBodyNode(doc);
-		addNodeNameCount(map, bodyNode);
-		return map;
-	}
 
 	public String getAttribute(Node node, String attributeName) {
 		NamedNodeMap map = node.getAttributes();
@@ -97,6 +93,49 @@ public class NekohtmlAssistant {
 		Node bodyNode = getBodyNode(doc);
 		addSubElementsWithStructureId(bodyNode);
 		return doc;
+	}
+
+	public Map<String, ElementFeatureVo> getElementFeatureVoMap(Document doc) {
+		Map<String, ElementFeatureVo> map = new HashMap<>();
+		Stack<String> ancestorNodeNames = new Stack<>();
+		Node bodyNode = getBodyNode(doc);
+		addElementFeatureVoMap(map, ancestorNodeNames, bodyNode);
+		return map;
+	}
+
+	private void addElementFeatureVoMap(Map<String, ElementFeatureVo> map, Stack<String> ancestorNodeNames, Node node) {
+		String elementStructureId = getElementStructureId(node);
+
+		if (elementStructureId.equals("1_9_18")) {
+			System.err.println("");
+		}
+		ElementFeatureVo value = generateElementFeatureVo(ancestorNodeNames, node);
+		map.put(elementStructureId, value);
+		ancestorNodeNames.push(node.getNodeName());
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			Node subNode = nodeList.item(i);
+			if (isIgnore(subNode.getNodeName())) {
+				continue;
+			}
+			addElementFeatureVoMap(map, ancestorNodeNames, subNode);
+		}
+		ancestorNodeNames.pop();
+	}
+
+	@SuppressWarnings("unchecked")
+	private ElementFeatureVo generateElementFeatureVo(Stack<String> ancestorNodeNames, Node node) {
+		ElementFeatureVo vo = new ElementFeatureVo();
+		vo.setAncestorNodeNames((Stack<String>) ancestorNodeNames.clone());
+		Map<String, Integer> posterityNodeNameCountMap = getPosterityNodeNameCountMap(node);
+		vo.setPosterityNodeNameCountMap(posterityNodeNameCountMap);
+		return vo;
+	}
+
+	private Map<String, Integer> getPosterityNodeNameCountMap(Node node) {
+		Map<String, Integer> map = new HashMap<>();
+		addNodeNameCount(map, node);
+		return map;
 	}
 
 	private void addNodeNameCount(Map<String, Integer> map, Node node) {

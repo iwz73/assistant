@@ -1,7 +1,8 @@
 package idv.hsiehpinghan.nekohtmlassistant.assistant;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.cyberneko.html.parsers.DOMParser;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,13 @@ public class NekohtmlAssistant {
 	private final String SEPERATOR = "_";
 	private final String THANK_ID = "thankId";
 
+	public Map<String, Integer> getNodeNameCountMap(Document doc) {
+		Map<String, Integer> map = new HashMap<>();
+		Node bodyNode = getBodyNode(doc);
+		addNodeNameCount(map, bodyNode);
+		return map;
+	}
+
 	public String getAttribute(Node node, String attributeName) {
 		NamedNodeMap map = node.getAttributes();
 		for (int i = 0, size = map.getLength(); i < size; ++i) {
@@ -35,11 +43,11 @@ public class NekohtmlAssistant {
 		parser.parse(inputSource);
 		return parser.getDocument();
 	}
-	
+
 	public Element getElementById(Document document, String elementId) {
 		return document.getElementById(elementId);
 	}
-	
+
 	public NodeList getElementsByTagName(Document document, String tagName) {
 		return document.getElementsByTagName(tagName);
 	}
@@ -89,6 +97,24 @@ public class NekohtmlAssistant {
 		Node bodyNode = getBodyNode(doc);
 		addSubElementsWithStructureId(bodyNode);
 		return doc;
+	}
+
+	private void addNodeNameCount(Map<String, Integer> map, Node node) {
+		NodeList nodeList = node.getChildNodes();
+		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {
+			Node subNode = nodeList.item(i);
+			String nodeName = subNode.getNodeName();
+			if (isIgnore(nodeName)) {
+				continue;
+			}
+			Integer count = map.get(nodeName);
+			if (count == null) {
+				map.put(nodeName, 1);
+			} else {
+				map.replace(nodeName, count + 1);
+			}
+			addNodeNameCount(map, subNode);
+		}
 	}
 
 	private void addSubElementsWithStructureId(Node node) {

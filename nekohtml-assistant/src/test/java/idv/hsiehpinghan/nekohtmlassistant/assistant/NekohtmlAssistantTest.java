@@ -2,7 +2,7 @@ package idv.hsiehpinghan.nekohtmlassistant.assistant;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -35,22 +35,22 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		doc = assistant.getDocument(inputSource);
 	}
 
-//	@Test
+	// @Test
 	public void getBody() {
 		Assert.assertEquals(assistant.getElementsByTagName(doc, "body").getLength(), 1);
 	}
 
-//	@Test
+	// @Test
 	public void getHtmlString() {
 		System.err.println(assistant.getHtmlString(doc));
 	}
 
-//	@Test
+	// @Test
 	public void getHtmlStructureId() {
 		System.err.println(assistant.getHtmlStructureId(doc));
 	}
 
-//	@Test
+	// @Test
 	public void getElementStructureId() {
 		Node bodyNode = assistant.getBodyNode(doc);
 		lastChild = getLatestChild(bodyNode);
@@ -58,7 +58,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println("getElementStructureId : " + elementStructureId);
 	}
 
-//	@Test(dependsOnMethods = { "getElementStructureId" })
+	// @Test(dependsOnMethods = { "getElementStructureId" })
 	public void getNodeByElementStructureId() {
 		Node node = assistant.getNodeByElementStructureId(doc, elementStructureId);
 		System.err.println("getNodeByElementStructureId : " + node.getTextContent());
@@ -66,7 +66,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 
 	}
 
-	@Test
+	// @Test
 	public void getChildTextNodesText() {
 		String elementId = "main-content";
 		Element element = assistant.getElementById(doc, elementId);
@@ -74,17 +74,23 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(text.length(), 904);
 	}
 
-//	@Test
+	// @Test
 	public void getAttribute() {
 		Node node = assistant.getElementsByTagName(doc, "body").item(0);
 		String attr = assistant.getAttribute(node, "bgcolor");
 		Assert.assertEquals(attr, "#999999");
 	}
 
-//	@Test
+	// @Test
 	public void addAllElementWithStructureId() {
 		Document doc = assistant.addAllElementWithStructureId(this.doc);
 		System.err.println(assistant.getHtmlString(doc));
+	}
+
+	@Test
+	public void getNodeNameCountMap() {
+		Map<String, Integer> map = assistant.getNodeNameCountMap(this.doc);
+		System.err.println(map);
 	}
 
 	private Node getLatestChild(Node node) {

@@ -105,10 +105,6 @@ public class NekohtmlAssistant {
 
 	private void addElementFeatureVoMap(Map<String, ElementFeatureVo> map, Stack<String> ancestorNodeNames, Node node) {
 		String elementStructureId = getElementStructureId(node);
-
-		if (elementStructureId.equals("1_9_18")) {
-			System.err.println("");
-		}
 		ElementFeatureVo value = generateElementFeatureVo(ancestorNodeNames, node);
 		map.put(elementStructureId, value);
 		ancestorNodeNames.push(node.getNodeName());

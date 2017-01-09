@@ -21,6 +21,7 @@ import idv.hsiehpinghan.nekohtmlassistant.vo.ElementFeatureVo;
 public class NekohtmlAssistant {
 	private final String BODY = "BODY";
 	private final String SEPERATOR = "_";
+	private final String EMPTY_STRING = "";
 	private final String THANK_ID = "thankId";
 
 	public String getAttribute(Node node, String attributeName) {
@@ -105,8 +106,10 @@ public class NekohtmlAssistant {
 
 	private void addElementFeatureVoMap(Map<String, ElementFeatureVo> map, Stack<String> ancestorNodeNames, Node node) {
 		String elementStructureId = getElementStructureId(node);
-		ElementFeatureVo value = generateElementFeatureVo(ancestorNodeNames, node);
-		map.put(elementStructureId, value);
+		if (elementStructureId != null && (elementStructureId.trim().equals(EMPTY_STRING) == false)) {
+			ElementFeatureVo value = generateElementFeatureVo(ancestorNodeNames, node);
+			map.put(elementStructureId, value);
+		}
 		ancestorNodeNames.push(node.getNodeName());
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0, size = nodeList.getLength(); i < size; ++i) {

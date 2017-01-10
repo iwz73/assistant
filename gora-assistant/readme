@@ -1,0 +1,4 @@
+# create entity
+1. create avro file (ex. Gora.json)
+2. edit mapping file (ex. goro-mongodb-mapping.xml)
+3. edit gora.properties

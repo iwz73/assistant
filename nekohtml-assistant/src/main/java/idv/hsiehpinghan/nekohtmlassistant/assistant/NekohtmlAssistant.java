@@ -15,6 +15,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import idv.hsiehpinghan.nekohtmlassistant.vo.DocumentFeatureVo;
 import idv.hsiehpinghan.nekohtmlassistant.vo.ElementFeatureVo;
 
 @Component
@@ -102,6 +103,14 @@ public class NekohtmlAssistant {
 		Node bodyNode = getBodyNode(doc);
 		addElementFeatureVoMap(map, ancestorNodeNames, bodyNode);
 		return map;
+	}
+
+	public DocumentFeatureVo getDocumentFeatureVo(Document doc) {
+		Node bodyNode = getBodyNode(doc);
+		DocumentFeatureVo vo = new DocumentFeatureVo();
+		Map<String, Integer> posterityNodeNameCountMap = getPosterityNodeNameCountMap(bodyNode);
+		vo.setPosterityNodeNameCountMap(posterityNodeNameCountMap);
+		return vo;
 	}
 
 	private void addElementFeatureVoMap(Map<String, ElementFeatureVo> map, Stack<String> ancestorNodeNames, Node node) {

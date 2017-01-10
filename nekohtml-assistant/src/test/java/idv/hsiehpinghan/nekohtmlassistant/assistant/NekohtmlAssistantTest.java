@@ -19,6 +19,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import idv.hsiehpinghan.nekohtmlassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.nekohtmlassistant.vo.DocumentFeatureVo;
 import idv.hsiehpinghan.nekohtmlassistant.vo.ElementFeatureVo;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
@@ -88,12 +89,18 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println(assistant.getHtmlString(doc));
 	}
 
-	@Test
+	// @Test
 	public void getElementFeatureVoMap() {
 		Map<String, ElementFeatureVo> map = assistant.getElementFeatureVoMap(this.doc);
 		for (Map.Entry<String, ElementFeatureVo> ent : map.entrySet()) {
 			System.err.println(ent.getKey() + " : " + ent.getValue());
 		}
+	}
+
+	@Test
+	public void getDocumentFeatureVo() {
+		DocumentFeatureVo vo = assistant.getDocumentFeatureVo(this.doc);
+		System.err.println(vo);
 	}
 
 	private Node getLatestChild(Node node) {

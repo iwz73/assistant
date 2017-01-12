@@ -2,6 +2,7 @@ package idv.hsiehpinghan.goraassistant.repository;
 
 import java.io.IOException;
 
+import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Query;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
@@ -37,6 +38,12 @@ public class GoraRepository {
 		Query<String, Gora> query = dataStore.newQuery();
 		query.setKey(key);
 		query.setFields(fields);
+		return query.execute();
+	}
+
+	public Result<String, Gora> query(DataStore<String, Gora> dataStore, Filter<String, Gora> filter) {
+		Query<String, Gora> query = dataStore.newQuery();
+		query.setFilter(filter);
 		return query.execute();
 	}
 

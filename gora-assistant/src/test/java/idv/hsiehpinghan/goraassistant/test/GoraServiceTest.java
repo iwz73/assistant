@@ -3,12 +3,15 @@ package idv.hsiehpinghan.goraassistant.test;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.avro.util.Utf8;
+import org.apache.gora.filter.FilterOp;
+import org.apache.gora.filter.SingleFieldValueFilter;
 import org.apache.gora.util.GoraException;
 import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
@@ -25,6 +28,7 @@ import idv.hsiehpinghan.goraassistant.vo.ArrayItemVo;
 import idv.hsiehpinghan.goraassistant.vo.GoraVo;
 
 public class GoraServiceTest {
+	private final Utf8 TEST = new Utf8("test");
 	private final String KEY = String.valueOf(Calendar.getInstance().getTimeInMillis());
 	private ByteBuffer _bytes = ByteBuffer.wrap(new byte[] { 'a', 'b', 'c' });
 	private boolean _boolean = true;
@@ -86,12 +90,11 @@ public class GoraServiceTest {
 	 */
 	@Test(dependsOnMethods = { "query" })
 	public void queryWithFields() throws Exception {
-		CharSequence testStr = new Utf8("test");
 		Gora gora = generateGora();
-		gora.setString$1(testStr);
+		gora.setString$1(TEST);
 		service.put(KEY, gora);
-		testStringField(testStr);
-		testNoStringField(testStr);
+		testStringField(TEST);
+		testNoStringField(TEST);
 	}
 
 	/**
@@ -119,6 +122,16 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "queryWithLimit" })
+	public void queryWithFilter() throws Exception {
+		SingleFieldValueFilter<String, Gora> filter = new SingleFieldValueFilter<>();
+		filter.setFieldName(Gora.Field._STRING.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setOperands(Arrays.asList(TEST));
+		Map<String, GoraVo> result = service.query(filter);
+		Assert.assertTrue(result.size() > 0);
+	}
+
+	@Test(dependsOnMethods = { "queryWithFilter" })
 	public void putWithOnlyOneField() throws GoraException {
 		final String STRING = "new_string";
 		service.put(KEY, generateGora1(STRING));

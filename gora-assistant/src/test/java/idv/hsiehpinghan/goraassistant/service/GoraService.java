@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
 import org.apache.gora.store.DataStoreFactory;
@@ -101,6 +102,24 @@ public class GoraService {
 		try {
 			dataStore = getDataStore();
 			result = repository.query(dataStore, key, fields);
+			return convertResultToMap(result);
+		} finally {
+			if (result != null) {
+				result.close();
+			}
+			if (dataStore != null) {
+				dataStore.flush();
+				dataStore.close();
+			}
+		}
+	}
+
+	public Map<String, GoraVo> query(Filter<String, Gora> filter) throws Exception {
+		DataStore<String, Gora> dataStore = null;
+		Result<String, Gora> result = null;
+		try {
+			dataStore = getDataStore();
+			result = repository.query(dataStore, filter);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {

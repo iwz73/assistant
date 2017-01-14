@@ -1,4 +1,4 @@
-# create entity
+# create entity (for fixing java.lang.NullPointerException at org.bson.BasicBSONEncoder._putObjectField(BasicBSONEncoder.java:226))
 1. create avro file (ex. Gora.json)
 2. edit mapping file (ex. goro-mongodb-mapping.xml)
 3. edit gora.properties

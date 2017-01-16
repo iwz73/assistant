@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Result;
-import org.apache.gora.store.DataStore;
 import org.apache.gora.util.GoraException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +23,14 @@ import idv.hsiehpinghan.goraassistant.vo.NestedRecordVo;
 @Service
 public class GoraService {
 	@Autowired
-	private DataStore<String, Gora> goraDataStore;
-	@Autowired
 	private GoraRepository repository;
 
 	public void put(String key, Gora entity) throws GoraException {
-		repository.put(goraDataStore, key, entity);
+		repository.put(key, entity);
 	}
 
 	public GoraVo get(String key) throws GoraException {
-		Gora result = repository.get(goraDataStore, key);
+		Gora result = repository.get(key);
 		if (result == null) {
 			return null;
 		}
@@ -43,7 +40,7 @@ public class GoraService {
 	public Map<String, GoraVo> query(String key) throws Exception {
 		Result<String, Gora> result = null;
 		try {
-			result = repository.query(goraDataStore, key);
+			result = repository.query(key);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
@@ -55,7 +52,7 @@ public class GoraService {
 	public Map<String, GoraVo> query(String startKey, long limit) throws Exception {
 		Result<String, Gora> result = null;
 		try {
-			result = repository.query(goraDataStore, startKey, limit);
+			result = repository.query(startKey, limit);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
@@ -67,7 +64,7 @@ public class GoraService {
 	public Map<String, GoraVo> query(String key, String... fields) throws Exception {
 		Result<String, Gora> result = null;
 		try {
-			result = repository.query(goraDataStore, key, fields);
+			result = repository.query(key, fields);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
@@ -79,7 +76,7 @@ public class GoraService {
 	public Map<String, GoraVo> query(Filter<String, Gora> filter) throws Exception {
 		Result<String, Gora> result = null;
 		try {
-			result = repository.query(goraDataStore, filter);
+			result = repository.query(filter);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
@@ -89,11 +86,11 @@ public class GoraService {
 	}
 
 	public boolean delete(String key) throws GoraException {
-		return repository.delete(goraDataStore, key);
+		return repository.delete(key);
 	}
 
 	public boolean exist(String key) throws GoraException, IOException, Exception {
-		return repository.exist(goraDataStore, key);
+		return repository.exist(key);
 	}
 
 	private Map<String, GoraVo> convertResultToMap(Result<String, Gora> result) throws Exception {

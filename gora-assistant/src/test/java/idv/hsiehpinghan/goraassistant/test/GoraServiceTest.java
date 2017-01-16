@@ -14,7 +14,9 @@ import org.apache.gora.filter.FilterOp;
 import org.apache.gora.filter.SingleFieldValueFilter;
 import org.apache.gora.util.GoraException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -52,6 +54,11 @@ public class GoraServiceTest {
 		service = applicationContext.getBean(GoraService.class);
 	}
 
+	@AfterClass
+	public void afterClass() {
+		((AnnotationConfigApplicationContext)applicationContext).close();
+	}
+	
 	@Test
 	public void put() throws GoraException {
 		service.put(KEY, generateGora());

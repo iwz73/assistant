@@ -9,9 +9,7 @@ import java.util.Map;
 import org.apache.gora.filter.Filter;
 import org.apache.gora.query.Result;
 import org.apache.gora.store.DataStore;
-import org.apache.gora.store.DataStoreFactory;
 import org.apache.gora.util.GoraException;
-import org.apache.hadoop.conf.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,136 +24,76 @@ import idv.hsiehpinghan.goraassistant.vo.NestedRecordVo;
 @Service
 public class GoraService {
 	@Autowired
-	private Configuration configuration;
+	private DataStore<String, Gora> goraDataStore;
 	@Autowired
 	private GoraRepository repository;
 
 	public void put(String key, Gora entity) throws GoraException {
-		DataStore<String, Gora> dataStore = null;
-		try {
-			dataStore = getDataStore();
-			repository.put(dataStore, key, entity);
-		} finally {
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
-			}
-		}
+		repository.put(goraDataStore, key, entity);
 	}
 
 	public GoraVo get(String key) throws GoraException {
-		DataStore<String, Gora> dataStore = null;
-		try {
-			dataStore = getDataStore();
-			Gora result = repository.get(dataStore, key);
-			if (result == null) {
-				return null;
-			}
-			return convertGoraToGoraVo(result);
-		} finally {
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
-			}
+		Gora result = repository.get(goraDataStore, key);
+		if (result == null) {
+			return null;
 		}
+		return convertGoraToGoraVo(result);
 	}
 
 	public Map<String, GoraVo> query(String key) throws Exception {
-		DataStore<String, Gora> dataStore = null;
 		Result<String, Gora> result = null;
 		try {
-			dataStore = getDataStore();
-			result = repository.query(dataStore, key);
+			result = repository.query(goraDataStore, key);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
 				result.close();
-			}
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
 			}
 		}
 	}
 
 	public Map<String, GoraVo> query(String startKey, long limit) throws Exception {
-		DataStore<String, Gora> dataStore = null;
 		Result<String, Gora> result = null;
 		try {
-			dataStore = getDataStore();
-			result = repository.query(dataStore, startKey, limit);
+			result = repository.query(goraDataStore, startKey, limit);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
 				result.close();
-			}
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
 			}
 		}
 	}
 
 	public Map<String, GoraVo> query(String key, String... fields) throws Exception {
-		DataStore<String, Gora> dataStore = null;
 		Result<String, Gora> result = null;
 		try {
-			dataStore = getDataStore();
-			result = repository.query(dataStore, key, fields);
+			result = repository.query(goraDataStore, key, fields);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
 				result.close();
-			}
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
 			}
 		}
 	}
 
 	public Map<String, GoraVo> query(Filter<String, Gora> filter) throws Exception {
-		DataStore<String, Gora> dataStore = null;
 		Result<String, Gora> result = null;
 		try {
-			dataStore = getDataStore();
-			result = repository.query(dataStore, filter);
+			result = repository.query(goraDataStore, filter);
 			return convertResultToMap(result);
 		} finally {
 			if (result != null) {
 				result.close();
 			}
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
-			}
 		}
 	}
 
 	public boolean delete(String key) throws GoraException {
-		DataStore<String, Gora> dataStore = null;
-		try {
-			dataStore = getDataStore();
-			return repository.delete(dataStore, key);
-		} finally {
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
-			}
-		}
+		return repository.delete(goraDataStore, key);
 	}
 
 	public boolean exist(String key) throws GoraException, IOException, Exception {
-		DataStore<String, Gora> dataStore = null;
-		try {
-			dataStore = getDataStore();
-			return repository.exist(dataStore, key);
-		} finally {
-			if (dataStore != null) {
-				dataStore.flush();
-				dataStore.close();
-			}
-		}
+		return repository.exist(goraDataStore, key);
 	}
 
 	private Map<String, GoraVo> convertResultToMap(Result<String, Gora> result) throws Exception {
@@ -215,7 +153,4 @@ public class GoraService {
 		return vo;
 	}
 
-	private DataStore<String, Gora> getDataStore() throws GoraException {
-		return DataStoreFactory.getDataStore(String.class, Gora.class, configuration);
-	}
 }

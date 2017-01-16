@@ -135,6 +135,7 @@ public class NekohtmlAssistant {
 	private ElementFeatureVo generateElementFeatureVo(Stack<String> ancestorNodeNames, Node node) {
 		ElementFeatureVo vo = new ElementFeatureVo();
 		vo.setAncestorNodeNames((Stack<String>) ancestorNodeNames.clone());
+		vo.setCurrentNodeName(node.getNodeName());
 		Map<String, Integer> posterityNodeNameCountMap = getPosterityNodeNameCountMap(node);
 		vo.setPosterityNodeNameCountMap(posterityNodeNameCountMap);
 		return vo;

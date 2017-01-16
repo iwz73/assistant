@@ -89,7 +89,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		System.err.println(assistant.getHtmlString(doc));
 	}
 
-	// @Test
+	@Test
 	public void getElementFeatureVoMap() {
 		Map<String, ElementFeatureVo> map = assistant.getElementFeatureVoMap(this.doc);
 		for (Map.Entry<String, ElementFeatureVo> ent : map.entrySet()) {
@@ -97,7 +97,7 @@ public class NekohtmlAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 	}
 
-	@Test
+	// @Test
 	public void getDocumentFeatureVo() {
 		DocumentFeatureVo vo = assistant.getDocumentFeatureVo(this.doc);
 		System.err.println(vo);

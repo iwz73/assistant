@@ -6,6 +6,7 @@ import java.util.Stack;
 
 public class ElementFeatureVo {
 	private Stack<String> ancestorNodeNames = new Stack<>();
+	private String currentNodeName;
 	private Map<String, Integer> posterityNodeNameCountMap = new HashMap<>();
 
 	public Stack<String> getAncestorNodeNames() {
@@ -14,6 +15,14 @@ public class ElementFeatureVo {
 
 	public void setAncestorNodeNames(Stack<String> ancestorNodeNames) {
 		this.ancestorNodeNames = ancestorNodeNames;
+	}
+
+	public String getCurrentNodeName() {
+		return currentNodeName;
+	}
+
+	public void setCurrentNodeName(String currentNodeName) {
+		this.currentNodeName = currentNodeName;
 	}
 
 	public Map<String, Integer> getPosterityNodeNameCountMap() {
@@ -26,8 +35,8 @@ public class ElementFeatureVo {
 
 	@Override
 	public String toString() {
-		return "ElementFeatureVo [ancestorNodeNames=" + ancestorNodeNames + ", posterityNodeNameCountMap="
-				+ posterityNodeNameCountMap + "]";
+		return "ElementFeatureVo [ancestorNodeNames=" + ancestorNodeNames + ", currentNodeName=" + currentNodeName
+				+ ", posterityNodeNameCountMap=" + posterityNodeNameCountMap + "]";
 	}
 
 }

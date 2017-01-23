@@ -5,6 +5,7 @@
 		<family name="object" maxVersions="1" />
 		<family name="collection" maxVersions="1" />
 		<family name="map" maxVersions="1" />
+		<family name="bytesMap" maxVersions="1" />
 	</table>
 	<class name="idv.hsiehpinghan.goraassistant.entity.Gora"
 		keyClass="java.lang.String" table="Gora">
@@ -20,6 +21,7 @@
 		<field name="_strings" family="collection" qualifier="_strings" />
 		<field name="_array" family="collection" qualifier="_array" />
 		<field name="_map" family="map" />
+		<field name="_bytesMap" family="bytesMap" />
 	</class>
 
 	<!-- webpage -->

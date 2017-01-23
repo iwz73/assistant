@@ -165,6 +165,21 @@
 				}
 			],
 			"default":null
+		},
+		{
+			"doc":"bytes map doc",
+			"name": "_bytesMap",
+			"type": [
+				"null",
+				{
+					"type": "map",
+					"values": [
+						"null",
+						"bytes"
+					]
+				}
+			],
+			"default":null
 		}
 	]
 }

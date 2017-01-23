@@ -19,6 +19,7 @@ public class GoraVo {
 	private List<CharSequence> strings$1;
 	private List<ArrayItemVo> array$1;
 	private Map<CharSequence, CharSequence> map$1;
+	private Map<CharSequence, ByteBuffer> bytesMap$1;
 
 	public ByteBuffer getBytes$1() {
 		return bytes$1;
@@ -114,6 +115,14 @@ public class GoraVo {
 
 	public void setMap$1(Map<CharSequence, CharSequence> map$1) {
 		this.map$1 = map$1;
+	}
+
+	public Map<CharSequence, ByteBuffer> getBytesMap$1() {
+		return bytesMap$1;
+	}
+
+	public void setBytesMap$1(Map<CharSequence, ByteBuffer> bytesMap$1) {
+		this.bytesMap$1 = bytesMap$1;
 	}
 
 }

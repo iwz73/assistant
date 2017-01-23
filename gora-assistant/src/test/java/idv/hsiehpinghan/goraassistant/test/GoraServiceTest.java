@@ -27,6 +27,7 @@ import idv.hsiehpinghan.goraassistant.entity.NestedRecord;
 import idv.hsiehpinghan.goraassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.goraassistant.service.GoraService;
 import idv.hsiehpinghan.goraassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.goraassistant.utility.InputStreamUtility;
 import idv.hsiehpinghan.goraassistant.vo.ArrayItemVo;
 import idv.hsiehpinghan.goraassistant.vo.GoraVo;
 
@@ -46,6 +47,8 @@ public class GoraServiceTest {
 	private List<CharSequence> _strings = generate_Strings();
 	private List<ArrayItem> _array = generate_Array();
 	private Map<CharSequence, CharSequence> _map = generate_Map();
+	private Map<CharSequence, ByteBuffer> _bytesMap = generate_BytesMap();
+
 	private ApplicationContext applicationContext;
 	private GoraService service;
 
@@ -66,7 +69,7 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "put" })
-	public void get() throws GoraException {
+	public void get() throws Exception {
 		GoraVo returnGora = service.get(KEY);
 		assertReturnGora(returnGora);
 	}
@@ -136,7 +139,7 @@ public class GoraServiceTest {
 	}
 
 	@Test(dependsOnMethods = { "queryWithFilter" })
-	public void putWithOnlyOneField() throws GoraException {
+	public void putWithOnlyOneField() throws Exception {
 		final String STRING = "new_string";
 		service.put(KEY, generateGora1(STRING));
 		GoraVo returnGora = service.get(KEY);
@@ -169,7 +172,7 @@ public class GoraServiceTest {
 		Assert.assertTrue(result.size() > 0);
 	}
 
-	private void assertReturnGora(GoraVo returnGora) {
+	private void assertReturnGora(GoraVo returnGora) throws IOException {
 		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
@@ -183,6 +186,7 @@ public class GoraServiceTest {
 		assertStrings(returnGora.getStrings$1());
 		assertArrayItem(returnGora.getArray$1());
 		assertMap(returnGora.getMap$1());
+		assertBytesMap(returnGora.getBytesMap$1());
 	}
 
 	private void assertStrings(List<CharSequence> strings) {
@@ -213,6 +217,19 @@ public class GoraServiceTest {
 		Assert.assertTrue(tested);
 	}
 
+	private void assertBytesMap(Map<CharSequence, ByteBuffer> map) throws IOException {
+		Map<String, String> strMap = convertByteBufferMapToStringMap(map);
+		Map<String, String> m = convertByteBufferMapToStringMap(generate_BytesMap());
+		boolean tested = false;
+		for (Map.Entry<String, String> ent : strMap.entrySet()) {
+			String key = ent.getKey();
+			String value = ent.getValue();
+			Assert.assertEquals(value, m.get(key));
+			tested = true;
+		}
+		Assert.assertTrue(tested);
+	}
+
 	private Map<String, String> convertCharSequenceMapToStringMap(Map<CharSequence, CharSequence> map) {
 		Map<String, String> strMap = new HashMap<>();
 		for (Map.Entry<CharSequence, CharSequence> ent : map.entrySet()) {
@@ -223,7 +240,17 @@ public class GoraServiceTest {
 		return strMap;
 	}
 
-	private void assertReturnGora1(GoraVo returnGora, String string) {
+	private Map<String, String> convertByteBufferMapToStringMap(Map<CharSequence, ByteBuffer> map) throws IOException {
+		Map<String, String> strMap = new HashMap<>();
+		for (Map.Entry<CharSequence, ByteBuffer> ent : map.entrySet()) {
+			String key = String.valueOf(ent.getKey());
+			String value = InputStreamUtility.readAsString(ent.getValue());
+			strMap.put(key, value);
+		}
+		return strMap;
+	}
+
+	private void assertReturnGora1(GoraVo returnGora, String string) throws IOException {
 		Assert.assertEquals(_bytes, returnGora.getBytes$1());
 		Assert.assertEquals(Boolean.valueOf(_boolean), returnGora.getBoolean$1());
 		Assert.assertEquals(Integer.valueOf(_int), returnGora.getInt$1());
@@ -236,6 +263,7 @@ public class GoraServiceTest {
 		Assert.assertEquals(_enum, returnGora.getEnum$1());
 		assertArrayItem(returnGora.getArray$1());
 		assertMap(returnGora.getMap$1());
+		assertBytesMap(returnGora.getBytesMap$1());
 	}
 
 	private Gora generateGora() {
@@ -252,6 +280,7 @@ public class GoraServiceTest {
 		entity.setStrings$1(_strings);
 		entity.setArray$1(_array);
 		entity.setMap$1(_map);
+		entity.setBytesMap$1(_bytesMap);
 		return entity;
 	}
 
@@ -312,6 +341,14 @@ public class GoraServiceTest {
 		Map<CharSequence, CharSequence> map = new HashMap<CharSequence, CharSequence>();
 		for (int i = 0; i < 3; ++i) {
 			map.put("key_" + i, "value_" + i);
+		}
+		return map;
+	}
+
+	private Map<CharSequence, ByteBuffer> generate_BytesMap() {
+		Map<CharSequence, ByteBuffer> map = new HashMap<CharSequence, ByteBuffer>();
+		for (int i = 0; i < 3; ++i) {
+			map.put("key_" + i, ByteBuffer.wrap(("value_" + i).getBytes()));
 		}
 		return map;
 	}

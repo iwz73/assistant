@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.filter.FilterOp;
+import org.apache.gora.filter.MapFieldValueFilter;
 import org.apache.gora.filter.SingleFieldValueFilter;
 import org.apache.gora.util.GoraException;
 import org.springframework.context.ApplicationContext;
@@ -56,9 +57,9 @@ public class GoraServiceTest {
 
 	@AfterClass
 	public void afterClass() {
-		((AnnotationConfigApplicationContext)applicationContext).close();
+		((AnnotationConfigApplicationContext) applicationContext).close();
 	}
-	
+
 	@Test
 	public void put() throws GoraException {
 		service.put(KEY, generateGora());
@@ -130,12 +131,8 @@ public class GoraServiceTest {
 
 	@Test(dependsOnMethods = { "queryWithLimit" })
 	public void queryWithFilter() throws Exception {
-		SingleFieldValueFilter<String, Gora> filter = new SingleFieldValueFilter<>();
-		filter.setFieldName(Gora.Field._STRING.toString());
-		filter.setFilterOp(FilterOp.EQUALS);
-		filter.setOperands(Arrays.asList(TEST));
-		Map<String, GoraVo> result = service.query(filter);
-		Assert.assertTrue(result.size() > 0);
+		queryWithFilter_SingleFieldValueFilter();
+		queryWithFilter_MapFieldValueFilter();
 	}
 
 	@Test(dependsOnMethods = { "queryWithFilter" })
@@ -150,6 +147,26 @@ public class GoraServiceTest {
 	public void delete() throws GoraException {
 		Assert.assertTrue(service.delete(KEY));
 		Assert.assertNull(service.get(KEY));
+	}
+
+	private void queryWithFilter_SingleFieldValueFilter() throws Exception {
+		SingleFieldValueFilter<String, Gora> filter = new SingleFieldValueFilter<>();
+		filter.setFieldName(Gora.Field._STRING.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setOperands(Arrays.asList(TEST));
+		Map<String, GoraVo> result = service.query(filter);
+		Assert.assertTrue(result.size() > 0);
+	}
+
+	private void queryWithFilter_MapFieldValueFilter() throws Exception {
+		MapFieldValueFilter<String, Gora> filter = new MapFieldValueFilter<String, Gora>();
+		filter.setFieldName(Gora.Field._MAP.toString());
+		filter.setFilterOp(FilterOp.EQUALS);
+		filter.setFilterIfMissing(true);
+		filter.setMapKey(new Utf8("key_0"));
+		filter.getOperands().add("value_0");
+		Map<String, GoraVo> result = service.query(filter);
+		Assert.assertTrue(result.size() > 0);
 	}
 
 	private void assertReturnGora(GoraVo returnGora) {

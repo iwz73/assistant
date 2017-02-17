@@ -7,7 +7,7 @@ package idv.hsiehpinghan.goraassistant.entity;
 @SuppressWarnings("all")
 /** Gora doc. */
 public class Gora extends org.apache.gora.persistency.impl.PersistentBase implements org.apache.avro.specific.SpecificRecord, org.apache.gora.persistency.Persistent {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_bytes\",\"type\":[\"null\",\"bytes\"],\"doc\":\"bytes doc\",\"default\":null},{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]}],\"doc\":\"record doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}],\"doc\":\"enum doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_strings\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"default\":null},{\"name\":\"_array\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}}],\"doc\":\"array doc\",\"default\":null},{\"name\":\"_map\",\"type\":[\"null\",{\"type\":\"map\",\"values\":[\"null\",\"string\"]}],\"doc\":\"map doc\",\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Gora\",\"namespace\":\"idv.hsiehpinghan.goraassistant.entity\",\"doc\":\"Gora doc.\",\"fields\":[{\"name\":\"_bytes\",\"type\":[\"null\",\"bytes\"],\"doc\":\"bytes doc\",\"default\":null},{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"},{\"name\":\"_long\",\"type\":\"long\",\"doc\":\"long doc\",\"default\":2,\"order\":\"ignore\"},{\"name\":\"_float\",\"type\":\"float\",\"doc\":\"float doc\",\"default\":1.1,\"order\":\"ignore\"},{\"name\":\"_double\",\"type\":\"double\",\"doc\":\"double doc\",\"default\":2.2,\"order\":\"ignore\"},{\"name\":\"_string\",\"type\":\"string\",\"doc\":\"string doc\",\"default\":\"string\",\"order\":\"ignore\"},{\"name\":\"_record\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NestedRecord\",\"fields\":[{\"name\":\"_boolean\",\"type\":\"boolean\",\"doc\":\"boolean doc\",\"default\":true,\"order\":\"ignore\"},{\"name\":\"_int\",\"type\":\"int\",\"doc\":\"int doc\",\"default\":1,\"order\":\"ignore\"}]}],\"doc\":\"record doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_enum\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Enumeration\",\"namespace\":\"idv.hsiehpinghan.goraassistant.enumeration\",\"doc\":\"Enumeration doc\",\"symbols\":[\"ENUM_0\",\"ENUM_1\",\"ENUM_2\"]}],\"doc\":\"enum doc\",\"default\":null,\"order\":\"ignore\"},{\"name\":\"_strings\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"default\":null},{\"name\":\"_array\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"ArrayItem\",\"fields\":[{\"name\":\"id\",\"type\":\"long\",\"doc\":\"ArrayItem id doc\",\"default\":0,\"order\":\"ignore\"},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"doc\":\"ArrayItem name doc\",\"default\":null,\"order\":\"ignore\"}]}}],\"doc\":\"array doc\",\"default\":null},{\"name\":\"_map\",\"type\":[\"null\",{\"type\":\"map\",\"values\":[\"null\",\"string\"]}],\"doc\":\"map doc\",\"default\":null},{\"name\":\"_bytesMap\",\"type\":[\"null\",{\"type\":\"map\",\"values\":[\"null\",\"bytes\"]}],\"doc\":\"bytes map doc\",\"default\":null}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -23,6 +23,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     _STRINGS(9, "_strings"),
     _ARRAY(10, "_array"),
     _MAP(11, "_map"),
+    _BYTES_MAP(12, "_bytesMap"),
     ;
     /**
      * Field's index.
@@ -73,6 +74,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   "_strings",
   "_array",
   "_map",
+  "_bytesMap",
   };
 
   /**
@@ -106,6 +108,8 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
   private java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> _array;
   /** map doc */
   private java.util.Map<java.lang.CharSequence,java.lang.CharSequence> _map;
+  /** bytes map doc */
+  private java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> _bytesMap;
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
@@ -122,6 +126,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 9: return _strings;
     case 10: return _array;
     case 11: return _map;
+    case 12: return _bytesMap;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -142,6 +147,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     case 9: _strings = (java.util.List<java.lang.CharSequence>)(value); break;
     case 10: _array = (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>)(value); break;
     case 11: _map = (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>)(value); break;
+    case 12: _bytesMap = (java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer>)(value); break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -434,6 +440,30 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     return isDirty(11);
   }
 
+  /**
+   * Gets the value of the '_bytesMap' field.
+   * bytes map doc   */
+  public java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> getBytesMap$1() {
+    return _bytesMap;
+  }
+
+  /**
+   * Sets the value of the '_bytesMap' field.
+   * bytes map doc   * @param value the value to set.
+   */
+  public void setBytesMap$1(java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> value) {
+    this._bytesMap = value;
+    setDirty(12);
+  }
+  
+  /**
+   * Checks the dirty status of the '_bytesMap' field. A field is dirty if it represents a change that has not yet been written to the database.
+   * bytes map doc   * @param value the value to set.
+   */
+  public boolean isBytesMap$1Dirty() {
+    return isDirty(12);
+  }
+
   /** Creates a new Gora RecordBuilder */
   public static idv.hsiehpinghan.goraassistant.entity.Gora.Builder newBuilder() {
     return new idv.hsiehpinghan.goraassistant.entity.Gora.Builder();
@@ -490,6 +520,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
     private java.util.List<java.lang.CharSequence> _strings;
     private java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem> _array;
     private java.util.Map<java.lang.CharSequence,java.lang.CharSequence> _map;
+    private java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> _bytesMap;
 
     /** Creates a new Builder */
     private Builder() {
@@ -551,6 +582,10 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
       if (isValidValue(fields()[11], other._map)) {
         this._map = (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>) data().deepCopy(fields()[11].schema(), other._map);
         fieldSetFlags()[11] = true;
+      }
+      if (isValidValue(fields()[12], other._bytesMap)) {
+        this._bytesMap = (java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer>) data().deepCopy(fields()[12].schema(), other._bytesMap);
+        fieldSetFlags()[12] = true;
       }
     }
 
@@ -849,6 +884,31 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
       return this;
     }
     
+    /** Gets the value of the '_bytesMap' field */
+    public java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> getBytesMap$1() {
+      return _bytesMap;
+    }
+    
+    /** Sets the value of the '_bytesMap' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder setBytesMap$1(java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> value) {
+      validate(fields()[12], value);
+      this._bytesMap = value;
+      fieldSetFlags()[12] = true;
+      return this; 
+    }
+    
+    /** Checks whether the '_bytesMap' field has been set */
+    public boolean hasBytesMap$1() {
+      return fieldSetFlags()[12];
+    }
+    
+    /** Clears the value of the '_bytesMap' field */
+    public idv.hsiehpinghan.goraassistant.entity.Gora.Builder clearBytesMap$1() {
+      _bytesMap = null;
+      fieldSetFlags()[12] = false;
+      return this;
+    }
+    
     @Override
     public Gora build() {
       try {
@@ -865,6 +925,7 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
         record._strings = fieldSetFlags()[9] ? this._strings : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[9]);
         record._array = fieldSetFlags()[10] ? this._array : (java.util.List<idv.hsiehpinghan.goraassistant.entity.ArrayItem>) defaultValue(fields()[10]);
         record._map = fieldSetFlags()[11] ? this._map : (java.util.Map<java.lang.CharSequence,java.lang.CharSequence>) defaultValue(fields()[11]);
+        record._bytesMap = fieldSetFlags()[12] ? this._bytesMap : (java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer>) defaultValue(fields()[12]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
@@ -1159,6 +1220,29 @@ public class Gora extends org.apache.gora.persistency.impl.PersistentBase implem
 	   * map doc	   * @param value the value to set.
 	   */
 	  public boolean isMap$1Dirty() {
+	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
+	  }
+	
+				  /**
+	   * Gets the value of the '_bytesMap' field.
+	   * bytes map doc	   */
+	  public java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> getBytesMap$1() {
+	    throw new java.lang.UnsupportedOperationException("Get is not supported on tombstones");
+	  }
+	
+	  /**
+	   * Sets the value of the '_bytesMap' field.
+	   * bytes map doc	   * @param value the value to set.
+	   */
+	  public void setBytesMap$1(java.util.Map<java.lang.CharSequence,java.nio.ByteBuffer> value) {
+	    throw new java.lang.UnsupportedOperationException("Set is not supported on tombstones");
+	  }
+	  
+	  /**
+	   * Checks the dirty status of the '_bytesMap' field. A field is dirty if it represents a change that has not yet been written to the database.
+	   * bytes map doc	   * @param value the value to set.
+	   */
+	  public boolean isBytesMap$1Dirty() {
 	    throw new java.lang.UnsupportedOperationException("IsDirty is not supported on tombstones");
 	  }
 	

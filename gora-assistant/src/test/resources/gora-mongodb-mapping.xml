@@ -35,6 +35,7 @@
 		<field name="_strings" docfield="_strings" type="list" />
 		<field name="_array" docfield="_array" type="list" />
 		<field name="_map" docfield="_map" type="document" />
+		<field name="_bytesMap" docfield="_bytesMap" type="document"/>
 	</class>
 
 	<!-- webpage -->

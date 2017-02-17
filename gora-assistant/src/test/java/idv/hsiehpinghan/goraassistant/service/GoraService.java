@@ -125,6 +125,7 @@ public class GoraService {
 		}
 		vo.setArray$1(arrayItemVos);
 		vo.setMap$1(gora.getMap$1());
+		vo.setBytesMap$1(gora.getBytesMap$1());
 		return vo;
 	}
 

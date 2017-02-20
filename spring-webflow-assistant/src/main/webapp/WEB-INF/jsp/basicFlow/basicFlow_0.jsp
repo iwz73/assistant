@@ -7,12 +7,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>flow_0</title>
+<title>basicFlow_0</title>
 </head>
 <body>
-	<form:form modelAttribute="basicVo" action="${flowExecutionUrl}">
-		<input type="text" name="name">
-		<input type="text" name="age">
+	<form:form modelAttribute="basicFlowVo" action="${flowExecutionUrl}">
+		<form:input path="name" />
+		<form:input path="age" />
 		<input type="button" name="_eventId_next" value="next">
 		<input type="button" name="_eventId_cancel" value="cancel">
 	</form:form>

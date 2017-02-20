@@ -8,7 +8,7 @@
 		<evaluate expression="basicFlowController.generateBasicFlowVo()" result="flowScope.basicFlowVo"/>
 	</on-start>
 	
-	<view-state id="basicFlow_0" view="/WEB-INF/jsp/basicFlow/basicFlow_0.jsp" model="basicFlowVo">
+	<view-state id="basicFlow_0" view="/WEB-INF/jsp/basicFlow/basicFlow_0.jsp" model="flowScope.basicFlowVo">
 		<transition on="next" to="basicFlow_0"></transition>
 		<transition on="cancel" to="basicFlow_0"></transition>
 	</view-state>

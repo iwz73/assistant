@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webflow-project-description>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.8.2.201610040608-RELEASE]]></pluginVersion>
+	<configs>
+		<config>
+			<file>src/main/webapp/WEB-INF/webflow/test.xml</file>
+			<name><![CDATA[test]]></name>
+		</config>
+		<config>
+			<file>src/main/webapp/WEB-INF/webflow/basicFlow.xml</file>
+			<name><![CDATA[basicFlow]]></name>
+		</config>
+	</configs>
+</webflow-project-description>

@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 public class BasicFlowVo implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private Integer age;
+	private Integer categoryId;
+	private Integer itemId;
 
-	public String getName() {
-		return name;
+	public Integer getCategoryId() {
+		return categoryId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public Integer getAge() {
-		return age;
+	public Integer getItemId() {
+		return itemId;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
 	}
 
 }

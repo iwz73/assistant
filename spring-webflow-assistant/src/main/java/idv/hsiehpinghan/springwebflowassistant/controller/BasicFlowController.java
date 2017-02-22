@@ -20,7 +20,6 @@ public class BasicFlowController {
 
 	public BasicFlowVo generateBasicFlowVo() {
 		BasicFlowVo vo = new BasicFlowVo();
-		vo.setCategoryId(3);
 		return vo;
 	}
 
@@ -36,8 +35,23 @@ public class BasicFlowController {
 		Integer categoryId = vo.getCategoryId();
 		Map<Integer, String> itemMap = new HashMap<Integer, String>();
 		for (int i = 0; i < 10; ++i) {
-			itemMap.put(i, "categoryId_" + categoryId + "_itemId_" + i);
+			Integer key = 100 * categoryId + i;
+			String val = "categoryId_" + categoryId + "_itemId_" + i;
+			itemMap.put(key, val);
 		}
 		return itemMap;
+	}
+
+	public void addItem(BasicFlowVo vo) {
+		Integer itemId = vo.getItemId();
+		vo.getSelectedItemIds().add(itemId);
+	}
+
+	public void resetItem(BasicFlowVo vo) {
+		vo.resetItem();
+	}
+
+	public void finish(BasicFlowVo vo) {
+		// do nothing
 	}
 }

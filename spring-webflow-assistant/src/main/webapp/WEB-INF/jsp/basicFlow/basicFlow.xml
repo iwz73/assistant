@@ -19,20 +19,22 @@
 		<transition on="cancel" to="end"></transition>
 	</view-state>
 
-	<view-state id="selectItem" view="/WEB-INF/jsp/basicFlow/selectItem.jsp" model="flowScope.itemMap" >
+	<view-state id="selectItem" view="/WEB-INF/jsp/basicFlow/selectItem.jsp" model="flowScope.basicFlowVo" >
 		<transition on="previous" to="selectCategory" />
-			
-<!-- 		<transition on="add" > -->
-<!-- 			<evaluate expression="orderController.addBook(flowScope.orderForm)" /> -->
-<!-- 		</transition> -->
-		
-<!-- 		<transition on="next" to="selectDeliveryOptions" /> -->
-	
-<!-- 		<transition on="reset" to="selectBooks"> -->
-<!-- 			<evaluate expression="orderForm.resetSelectedBooks()" /> -->
-<!-- 		</transition> -->
-	
+		<transition on="add" >
+			<evaluate expression="basicFlowController.addItem(flowScope.basicFlowVo)" />
+		</transition>
+		<transition on="finish" to="finish">
+			<evaluate expression="basicFlowController.finish(flowScope.basicFlowVo)"/>
+		</transition>
+		<transition on="reset">
+			<evaluate expression="basicFlowController.resetItem(flowScope.basicFlowVo)" />
+		</transition>
 		<transition on="cancel" to="end" />
+	</view-state>
+	
+	<view-state id="finish" view="/WEB-INF/jsp/basicFlow/finish.jsp">
+		<transition on="ok" to="end"></transition>
 	</view-state>
 	
 	<end-state id="end" view="externalRedirect:contextRelative:/basicFlow/index" />

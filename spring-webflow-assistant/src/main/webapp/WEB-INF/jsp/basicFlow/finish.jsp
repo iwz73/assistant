@@ -7,13 +7,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>select category</title>
+<title>finish</title>
 </head>
 <body>
-	<form:form modelAttribute="basicFlowVo" action="${flowExecutionUrl}">
-		<form:select path="categoryId" items="${categoryMap}" />
-		<input type="submit" name="_eventId_next" value="next">
-		<input type="submit" name="_eventId_cancel" value="cancel">
+	<form:form action="${flowExecutionUrl}">
+		<input type="submit" name="_eventId_ok" value="ok">
 	</form:form>
 	<jsp:include page="include/info.jsp"></jsp:include>
 </body>

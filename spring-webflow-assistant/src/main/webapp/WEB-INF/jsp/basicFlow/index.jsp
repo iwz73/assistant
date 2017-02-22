@@ -12,5 +12,6 @@
 <body>
 	<spring:url value="/basicFlow" var="basicFlow" />
 	<a href="${basicFlow}">start flow</a>
+	<jsp:include page="include/info.jsp"></jsp:include>
 </body>
 </html>

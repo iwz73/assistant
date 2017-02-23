@@ -1,0 +1,3 @@
+# install head
+/opt/elasticsearch-2.4.4/bin/plugin install mobz/elasticsearch-head
+

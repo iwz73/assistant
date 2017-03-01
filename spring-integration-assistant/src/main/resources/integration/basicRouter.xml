@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+	<int:channel id="basicRouterChannel" />
+	<int:payload-type-router input-channel="basicRouterChannel">
+		<int:mapping type="java.lang.String" channel="basicRouterService_0" />
+		<int:mapping type="java.lang.Integer" channel="basicRouterService_1" />
+	</int:payload-type-router>
+	<int:channel id="basicRouterService_0" />
+	<int:channel id="basicRouterService_1" />
+	<int:service-activator input-channel="basicRouterService_0"
+		ref="basicRouterServiceImpl_0" output-channel="result" />
+	<int:service-activator input-channel="basicRouterService_1"
+		ref="basicRouterServiceImpl_1" output-channel="result" />
+	<int:channel id="result" />
+</beans>
+
+
+

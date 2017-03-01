@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+	<int:channel id="routerWithQueueChannel">
+		<int:queue capacity="3" />
+	</int:channel>
+	<int:payload-type-router input-channel="routerWithQueueChannel">
+		<int:poller id="defaultPoller" default="true" fixed-rate="1000" />
+		<int:mapping type="java.lang.String" channel="routerWithQueueService_0" />
+		<int:mapping type="java.lang.Integer" channel="routerWithQueueService_1" />
+	</int:payload-type-router>
+	<int:channel id="routerWithQueueService_0" />
+	<int:channel id="routerWithQueueService_1" />
+	<int:service-activator input-channel="routerWithQueueService_0"
+		ref="routerWithQueueServiceImpl_0" output-channel="routerWithQueueResult" />
+	<int:service-activator input-channel="routerWithQueueService_1"
+		ref="routerWithQueueServiceImpl_1" output-channel="routerWithQueueResult" />
+	<int:channel id="routerWithQueueResult" />
+</beans>
+
+
+

@@ -11,10 +11,10 @@
 	<int:channel id="basicRouterService_0" />
 	<int:channel id="basicRouterService_1" />
 	<int:service-activator input-channel="basicRouterService_0"
-		ref="basicRouterServiceImpl_0" output-channel="result" />
+		ref="basicRouterServiceImpl_0" output-channel="basicRouterResult" />
 	<int:service-activator input-channel="basicRouterService_1"
-		ref="basicRouterServiceImpl_1" output-channel="result" />
-	<int:channel id="result" />
+		ref="basicRouterServiceImpl_1" output-channel="basicRouterResult" />
+	<int:channel id="basicRouterResult" />
 </beans>
 
 

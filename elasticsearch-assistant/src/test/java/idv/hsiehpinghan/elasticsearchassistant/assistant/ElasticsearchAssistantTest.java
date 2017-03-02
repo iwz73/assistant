@@ -3,6 +3,7 @@ package idv.hsiehpinghan.elasticsearchassistant.assistant;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -87,7 +88,7 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(updateResponse.getId(), ID);
 		GetResponse getResponse = assistant.prepareGet(INDEX, TYPE, ID);
 		String result = getResponse.getSourceAsString();
-		JsonNode jsonNode= objectMapper.readTree(result);
+		JsonNode jsonNode = objectMapper.readTree(result);
 		Assert.assertEquals(jsonNode.get(STRING_NAME).textValue(), updatedString);
 	}
 
@@ -96,7 +97,14 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		DeleteResponse deleteResponse = assistant.prepareDelete(INDEX, TYPE, ID);
 		Assert.assertTrue(deleteResponse.isFound());
 	}
-	
+
+	@Test(dependsOnMethods = { "prepareDelete" })
+	public void prepareBulk() throws Exception {
+		String source = generateSource(STRING);
+		BulkResponse bulkResponse = assistant.prepareBulk(INDEX, TYPE, ID, source);
+		Assert.assertFalse(bulkResponse.hasFailures());
+	}
+
 	private String generateSource(String string) throws IOException {
 		ObjectNode objectNode = objectMapper.createObjectNode();
 		objectNode.put(BIGDECIMAL_NAME, BIGDECIMAL);

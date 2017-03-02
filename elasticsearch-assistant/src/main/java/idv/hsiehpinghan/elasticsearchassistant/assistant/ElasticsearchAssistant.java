@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.elasticsearchassistant.assistant;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequestBuilder;
@@ -19,7 +21,8 @@ public class ElasticsearchAssistant {
 
 	public IndexResponse prepareIndex(String index, String type, String id, String source) {
 		IndexRequestBuilder indexRequestBuilder = client.prepareIndex(index, type, id);
-		return indexRequestBuilder.setSource(source).execute().actionGet();
+		indexRequestBuilder.setSource(source);
+		return indexRequestBuilder.execute().actionGet();
 	}
 
 	public GetResponse prepareGet(String index, String type, String id) {
@@ -36,5 +39,15 @@ public class ElasticsearchAssistant {
 	public DeleteResponse prepareDelete(String index, String type, String id) {
 		DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete(index, type, id);
 		return deleteRequestBuilder.execute().actionGet();
+	}
+
+	public BulkResponse prepareBulk(String index, String type, String id, String source) {
+		BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
+		for (int i = 0; i < 3; ++i) {
+			IndexRequestBuilder indexRequestBuilder = client.prepareIndex(index, type, id + i);
+			indexRequestBuilder.setSource(source);
+			bulkRequestBuilder.add(indexRequestBuilder);
+		}
+		return bulkRequestBuilder.execute().actionGet();
 	}
 }

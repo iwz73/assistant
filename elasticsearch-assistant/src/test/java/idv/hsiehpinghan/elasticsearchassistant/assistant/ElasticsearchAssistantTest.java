@@ -3,10 +3,14 @@ package idv.hsiehpinghan.elasticsearchassistant.assistant;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -63,14 +67,37 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 
 	@Test
 	public void prepareIndex() throws Exception {
-		String source = generateSource();
+		String source = generateSource(STRING);
 		IndexResponse indexResponse = assistant.prepareIndex(INDEX, TYPE, ID, source);
-		
-		System.err.println(indexResponse.getId());
-		
+		Assert.assertEquals(indexResponse.getId(), ID);
 	}
 
-	private String generateSource() throws IOException {
+	@Test(dependsOnMethods = { "prepareIndex" })
+	public void prepareGet() throws Exception {
+		GetResponse getResponse = assistant.prepareGet(INDEX, TYPE, ID);
+		String result = getResponse.getSourceAsString();
+		validateObjectNode((ObjectNode) objectMapper.readTree(result));
+	}
+
+	@Test(dependsOnMethods = { "prepareGet" })
+	public void prepareUpdate() throws Exception {
+		String updatedString = "updated string";
+		String source = generateSource(updatedString);
+		UpdateResponse updateResponse = assistant.prepareUpdate(INDEX, TYPE, ID, source);
+		Assert.assertEquals(updateResponse.getId(), ID);
+		GetResponse getResponse = assistant.prepareGet(INDEX, TYPE, ID);
+		String result = getResponse.getSourceAsString();
+		JsonNode jsonNode= objectMapper.readTree(result);
+		Assert.assertEquals(jsonNode.get(STRING_NAME).textValue(), updatedString);
+	}
+
+	@Test(dependsOnMethods = { "prepareUpdate" })
+	public void prepareDelete() throws Exception {
+		DeleteResponse deleteResponse = assistant.prepareDelete(INDEX, TYPE, ID);
+		Assert.assertTrue(deleteResponse.isFound());
+	}
+	
+	private String generateSource(String string) throws IOException {
 		ObjectNode objectNode = objectMapper.createObjectNode();
 		objectNode.put(BIGDECIMAL_NAME, BIGDECIMAL);
 		objectNode.put(BOOLEAN_NAME, BOOLEAN);
@@ -86,13 +113,33 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		objectNode.put(LONG_NAME, LONG);
 		objectNode.put(SHORT_NAME, SHORT);
 		objectNode.put(PRIMARY_SHORT_NAME, PRIMARY_SHORT);
-		objectNode.put(STRING_NAME, STRING);
+		objectNode.put(STRING_NAME, string);
 		objectNode.set(JSON_NODE_NAME, JSON_NODE);
 		arrayNode = objectNode.putArray(ARRAY_NAME);
 		appendArrayNode(arrayNode);
 		return objectNode.toString();
 	}
-	
+
+	private void validateObjectNode(ObjectNode objectNode) throws IOException {
+		Assert.assertEquals(objectNode.get(BIGDECIMAL_NAME).decimalValue(), BIGDECIMAL);
+		Assert.assertEquals(objectNode.get(BOOLEAN_NAME).booleanValue(), BOOLEAN.booleanValue());
+		Assert.assertEquals(objectNode.get(PRIMARY_BOOLEAN_NAME).booleanValue(), PRIMARY_BOOLEAN);
+		Assert.assertEquals(objectNode.get(BYTE_ARRAY_NAME).binaryValue(), BYTE_ARRAY);
+		Assert.assertEquals(objectNode.get(PRIMARY_DOUBLE_NAME).doubleValue(), PRIMARY_DOUBLE);
+		Assert.assertEquals(objectNode.get(DOUBLE_NAME).doubleValue(), DOUBLE);
+		Assert.assertEquals(objectNode.get(FLOAT_NAME).floatValue(), FLOAT);
+		Assert.assertEquals(objectNode.get(PRIMARY_FLOAT_NAME).floatValue(), PRIMARY_FLOAT);
+		Assert.assertEquals(objectNode.get(PRIMARY_INT_NAME).intValue(), PRIMARY_INT);
+		Assert.assertEquals(objectNode.get(INTEGER_NAME).intValue(), INTEGER.intValue());
+		Assert.assertEquals(objectNode.get(PRIMARY_LONG_NAME).longValue(), PRIMARY_LONG);
+		Assert.assertEquals(objectNode.get(LONG_NAME).longValue(), LONG.longValue());
+		Assert.assertEquals(objectNode.get(SHORT_NAME).shortValue(), SHORT.shortValue());
+		Assert.assertEquals(objectNode.get(PRIMARY_SHORT_NAME).shortValue(), PRIMARY_SHORT);
+		Assert.assertEquals(objectNode.get(STRING_NAME).textValue(), STRING);
+		Assert.assertEquals(objectNode.get(JSON_NODE_NAME), JSON_NODE);
+		Assert.assertEquals(objectNode.get(ARRAY_NAME).toString(), arrayNode.toString());
+	}
+
 	private void appendArrayNode(ArrayNode arrayNode) {
 		for (int i = 0; i < 3; ++i) {
 			arrayNode.add(i);

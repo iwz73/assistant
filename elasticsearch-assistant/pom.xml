@@ -19,6 +19,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<elasticsearch.version>2.4.4</elasticsearch.version>
+		<jackson.version>2.7.0</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -64,6 +65,12 @@
 			<version>${elasticsearch.version}</version>
 		</dependency>
 
+		<!-- jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 	</dependencies>
 	<build>

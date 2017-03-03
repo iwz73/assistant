@@ -1,5 +1,15 @@
 package idv.hsiehpinghan.elasticsearchassistant.assistant;
 
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.flush.FlushRequest;
+import org.elasticsearch.action.admin.indices.flush.FlushResponse;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequestBuilder;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
@@ -24,6 +34,28 @@ import org.springframework.stereotype.Component;
 public class ElasticsearchAssistant {
 	@Autowired
 	private Client client;
+
+	public CreateIndexResponse prepareCreate(String index) {
+		CreateIndexRequestBuilder createIndexRequestBuilder = client.admin().indices().prepareCreate(index);
+		return createIndexRequestBuilder.execute().actionGet();
+	}
+
+	public DeleteIndexResponse prepareDelete(String index) {
+		DeleteIndexRequestBuilder DeleteIndexRequestBuilder = client.admin().indices().prepareDelete(index);
+		return DeleteIndexRequestBuilder.execute().actionGet();
+	}
+
+	public PutMappingResponse preparePutMapping(String index, String type, String source) {
+		PutMappingRequestBuilder putMappingRequestBuilder = client.admin().indices().preparePutMapping(index);
+		putMappingRequestBuilder.setType(type);
+		putMappingRequestBuilder.setSource(source);
+		return putMappingRequestBuilder.execute().actionGet();
+	}
+
+	public GetMappingsResponse prepareGetMappings(String index, String type) {
+		GetMappingsRequestBuilder getMappingsRequestBuilder = client.admin().indices().prepareGetMappings(index);
+		return getMappingsRequestBuilder.execute().actionGet();
+	}
 
 	public IndexResponse prepareIndex(String index, String type, String id, String source) {
 		IndexRequestBuilder indexRequestBuilder = client.prepareIndex(index, type, id);
@@ -70,6 +102,11 @@ public class ElasticsearchAssistant {
 		multiSearchRequestBuilder.add(generateSearchRequestBuilder_0(index, type, name_0, value_0));
 		multiSearchRequestBuilder.add(generateSearchRequestBuilder_1(index, type, name_1, value_1));
 		return multiSearchRequestBuilder.execute().actionGet();
+	}
+
+	public FlushResponse flush(String index, boolean isForce) {
+		FlushRequest flushRequest = new FlushRequest(index).force(isForce);
+		return client.admin().indices().flush(flushRequest).actionGet();
 	}
 
 	private SearchRequestBuilder generateSearchRequestBuilder_0(String index, String type, String name, String value) {

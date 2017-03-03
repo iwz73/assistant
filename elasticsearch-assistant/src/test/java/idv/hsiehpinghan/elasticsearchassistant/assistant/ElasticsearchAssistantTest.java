@@ -147,18 +147,26 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 	}
 
 	@Test(dependsOnMethods = { "prepareBulk" })
-	public void prepareSearch() throws Exception {
+	public void prepareSearchByQuery() throws Exception {
 		testMatchAllQuery();
 		testMultiMatchQuery();
 		testBoolQuery();
 		testTermQuery();
 		testWildcardQuery();
-		testQueryString();
-		testMoreLikeThis();
-
+		testQueryStringQuery();
+		testMoreLikeThisQuery();
 	}
 
-	@Test(dependsOnMethods = { "prepareSearch" })
+	@Test(dependsOnMethods = { "prepareSearchByQuery" })
+	public void prepareSearchByPostFilter() throws Exception {
+		testTermFilter();
+		testExistsFilter();
+		testMatchAllFilter();
+		testQueryStringFilter();
+		testRangeFilter();
+	}
+
+	@Test(dependsOnMethods = { "prepareSearchByPostFilter" })
 	public void prepareMultiSearch() throws Exception {
 		MultiSearchResponse multiSearchResponse = assistant.prepareMultiSearch(INDEX, TYPE, STRING_NAME, STRING,
 				PRIMARY_INT_NAME, PRIMARY_INT);
@@ -175,13 +183,13 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 
 	private void testMatchAllQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
 	private void testMultiMatchQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(PRIMARY_INT, PRIMARY_INT_NAME, INTEGER_NAME);
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
@@ -189,32 +197,63 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		QueryBuilder stringQueryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
 		QueryBuilder integerQueryBuilder = QueryBuilders.termQuery(INTEGER_NAME, 0);
 		QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(stringQueryBuilder).mustNot(integerQueryBuilder);
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
 	private void testTermQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
 	private void testWildcardQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.wildcardQuery(STRING_NAME, "str?ng");
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
-	private void testQueryString() {
+	private void testQueryStringQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.queryStringQuery("+自由 +中文");
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 
-	private void testMoreLikeThis() {
+	private void testMoreLikeThisQuery() {
 		QueryBuilder queryBuilder = QueryBuilders.moreLikeThisQuery(SIMPLIFIED_STRING_NAME).like("自由中文").minTermFreq(1)
 				.minDocFreq(1);
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByQuery(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testTermFilter() {
+		QueryBuilder queryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testExistsFilter() {
+		QueryBuilder queryBuilder = QueryBuilders.existsQuery(STRING_NAME);
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testMatchAllFilter() {
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testQueryStringFilter() {
+		QueryBuilder queryBuilder = QueryBuilders.queryStringQuery("+自由 +中文");
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testRangeFilter() {
+		QueryBuilder queryBuilder = QueryBuilders.rangeQuery(INTEGER_NAME).from(0).to(10).includeLower(true)
+				.includeUpper(false);
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}
 

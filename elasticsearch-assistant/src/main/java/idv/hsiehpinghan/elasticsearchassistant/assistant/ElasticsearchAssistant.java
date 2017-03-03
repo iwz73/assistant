@@ -89,13 +89,20 @@ public class ElasticsearchAssistant {
 		return bulkRequestBuilder.execute().actionGet();
 	}
 
-	public SearchResponse prepareSearch(String index, String type, QueryBuilder queryBuilder) {
+	public SearchResponse prepareSearchByQuery(String index, String type, QueryBuilder queryBuilder) {
 		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
 		searchRequestBuilder.setTypes(type);
 		searchRequestBuilder.setQuery(queryBuilder);
 		return searchRequestBuilder.execute().actionGet();
 	}
 
+	public SearchResponse prepareSearchByPostFilter(String index, String type, QueryBuilder queryBuilder) {
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
+		searchRequestBuilder.setTypes(type);
+		searchRequestBuilder.setPostFilter(queryBuilder);
+		return searchRequestBuilder.execute().actionGet();
+	}
+	
 	public MultiSearchResponse prepareMultiSearch(String index, String type, String name_0, String value_0,
 			String name_1, int value_1) {
 		MultiSearchRequestBuilder multiSearchRequestBuilder = client.prepareMultiSearch();

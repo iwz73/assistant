@@ -154,6 +154,7 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		testTermQuery();
 		testWildcardQuery();
 		testQueryString();
+		testMoreLikeThis();
 
 	}
 
@@ -206,6 +207,13 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 
 	private void testQueryString() {
 		QueryBuilder queryBuilder = QueryBuilders.queryStringQuery("+自由 +中文");
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testMoreLikeThis() {
+		QueryBuilder queryBuilder = QueryBuilders.moreLikeThisQuery(SIMPLIFIED_STRING_NAME).like("自由中文").minTermFreq(1)
+				.minDocFreq(1);
 		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
 	}

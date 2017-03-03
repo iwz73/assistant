@@ -7,6 +7,8 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -103,6 +105,21 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		String source = generateSource(STRING);
 		BulkResponse bulkResponse = assistant.prepareBulk(INDEX, TYPE, ID, source);
 		Assert.assertFalse(bulkResponse.hasFailures());
+	}
+
+	@Test(dependsOnMethods = { "prepareBulk" })
+	public void prepareSearch() throws Exception {
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, STRING_NAME, STRING);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	@Test(dependsOnMethods = { "prepareSearch" })
+	public void prepareMultiSearch() throws Exception {
+		MultiSearchResponse multiSearchResponse = assistant.prepareMultiSearch(INDEX, TYPE, STRING_NAME, STRING,
+				PRIMARY_INT_NAME, PRIMARY_INT);
+		for (MultiSearchResponse.Item item : multiSearchResponse.getResponses()) {
+			Assert.assertTrue(item.getResponse().getHits().getTotalHits() > 0);
+		}
 	}
 
 	private String generateSource(String string) throws IOException {

@@ -57,10 +57,9 @@ public class ElasticsearchAssistant {
 		return bulkRequestBuilder.execute().actionGet();
 	}
 
-	public SearchResponse prepareSearch(String index, String type, String name, String value) {
+	public SearchResponse prepareSearch(String index, String type, QueryBuilder queryBuilder) {
 		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
 		searchRequestBuilder.setTypes(type);
-		QueryBuilder queryBuilder = QueryBuilders.termQuery(name, value);
 		searchRequestBuilder.setQuery(queryBuilder);
 		return searchRequestBuilder.execute().actionGet();
 	}

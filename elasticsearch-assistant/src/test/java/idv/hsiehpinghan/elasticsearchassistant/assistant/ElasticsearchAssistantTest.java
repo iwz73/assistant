@@ -10,6 +10,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -109,8 +111,13 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 
 	@Test(dependsOnMethods = { "prepareBulk" })
 	public void prepareSearch() throws Exception {
-		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, STRING_NAME, STRING);
-		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+		testMatchAllQuery();
+		testMultiMatchQuery();
+		testBoolQuery();
+		testTermQuery();
+		testWildcardQuery();
+		
+		
 	}
 
 	@Test(dependsOnMethods = { "prepareSearch" })
@@ -122,6 +129,45 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		}
 	}
 
+	private void testMatchAllQuery() {
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+	
+	private void testMultiMatchQuery() {
+		QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(PRIMARY_INT, PRIMARY_INT_NAME, INTEGER_NAME);
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+	
+	private void testBoolQuery() {
+		QueryBuilder stringQueryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
+		QueryBuilder integerQueryBuilder = QueryBuilders.termQuery(INTEGER_NAME, 0);
+		QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(stringQueryBuilder).mustNot(integerQueryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+	
+	private void testTermQuery() {
+		QueryBuilder queryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testWildcardQuery() {
+		QueryBuilder queryBuilder = QueryBuilders.wildcardQuery(STRING_NAME, "str?ng");
+		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testQueryString() {
+//		QueryStringQueryBuilder
+//		QueryBuilder queryBuilder = QueryBuilders.queryst.wildcardQuery(STRING_NAME, "str?ng");
+//		SearchResponse searchResponse = assistant.prepareSearch(INDEX, TYPE, queryBuilder);
+//		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+	
 	private String generateSource(String string) throws IOException {
 		ObjectNode objectNode = objectMapper.createObjectNode();
 		objectNode.put(BIGDECIMAL_NAME, BIGDECIMAL);

@@ -97,6 +97,17 @@ public class ElasticsearchAssistant {
 		return searchRequestBuilder.execute().actionGet();
 	}
 
+	public SearchResponse prepareSearchByQueryWithHighlight(String index, String type, QueryBuilder queryBuilder,
+			String highlightedField, String highlighterPreTags, String highlighterPostTags) {
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
+		searchRequestBuilder.setTypes(type);
+		searchRequestBuilder.setQuery(queryBuilder);
+		searchRequestBuilder.addHighlightedField(highlightedField);
+		searchRequestBuilder.setHighlighterPreTags(highlighterPreTags);
+		searchRequestBuilder.setHighlighterPostTags(highlighterPostTags);
+		return searchRequestBuilder.execute().actionGet();
+	}
+
 	public SearchResponse prepareSearchByPostFilter(String index, String type, QueryBuilder queryBuilder) {
 		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
 		searchRequestBuilder.setTypes(type);

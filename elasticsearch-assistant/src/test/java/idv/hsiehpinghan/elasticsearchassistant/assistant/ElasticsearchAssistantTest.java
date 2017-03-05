@@ -2,6 +2,7 @@ package idv.hsiehpinghan.elasticsearchassistant.assistant;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Map;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -18,9 +19,11 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -167,6 +170,21 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 	}
 
 	@Test(dependsOnMethods = { "prepareSearchByQuery" })
+	public void prepareSearchByQueryWithHighlight() throws Exception {
+		QueryBuilder queryBuilder = QueryBuilders.termQuery(SIMPLIFIED_STRING_NAME, "自由");
+		String highlighterPreTags = "<span>";
+		String highlighterPostTags = "</span>";
+		SearchResponse searchResponse = assistant.prepareSearchByQueryWithHighlight(INDEX, TYPE, queryBuilder,
+				SIMPLIFIED_STRING_NAME, highlighterPreTags, highlighterPostTags);
+		for (SearchHit searchHit : searchResponse.getHits()) {
+			Map<String, HighlightField> map = searchHit.getHighlightFields();
+			HighlightField highlightField = map.get(SIMPLIFIED_STRING_NAME);
+			Assert.assertEquals(highlightField.toString(),
+					"[SIMPLIFIED_STRING_NAME], fragments[[欢迎使用ansj_seg,(ansj中文分词)在这里如果你遇到什么问题都可以联系我.我一定尽我所能.帮助大家.ansj_seg更快,更准,更<span>自由</span>!]]");
+		}
+	}
+
+	@Test(dependsOnMethods = { "prepareSearchByQueryWithHighlight" })
 	public void prepareSearchByPostFilter() throws Exception {
 		testTermFilter();
 		testExistsFilter();

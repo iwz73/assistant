@@ -18,10 +18,14 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
@@ -79,14 +83,19 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	// @Test
+	@BeforeClass
+	public void beforeClass() {
+		DeleteIndexResponse deleteIndexResponse = assistant.prepareDelete(INDEX);
+		Assert.assertTrue(deleteIndexResponse.isAcknowledged());
+	}
+
+	@Test
 	public void prepareCreate() throws Exception {
 		CreateIndexResponse createIndexResponse = assistant.prepareCreate(INDEX);
 		Assert.assertTrue(createIndexResponse.isAcknowledged());
 	}
 
-	// @Test(dependsOnMethods = { "prepareCreate" })
-	@Test
+	@Test(dependsOnMethods = { "prepareCreate" })
 	public void preparePutMapping() throws Exception {
 		String source = generateMappingSource();
 		PutMappingResponse putMappingResponse = assistant.preparePutMapping(INDEX, TYPE, source);
@@ -164,21 +173,21 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 		testMatchAllFilter();
 		testQueryStringFilter();
 		testRangeFilter();
+		testBoolFilter();
 	}
 
 	@Test(dependsOnMethods = { "prepareSearchByPostFilter" })
+	public void prepareSearchByAggregation() throws Exception {
+		testAvgAggregation();
+	}
+
+	@Test(dependsOnMethods = { "prepareSearchByAggregation" })
 	public void prepareMultiSearch() throws Exception {
 		MultiSearchResponse multiSearchResponse = assistant.prepareMultiSearch(INDEX, TYPE, STRING_NAME, STRING,
 				PRIMARY_INT_NAME, PRIMARY_INT);
 		for (MultiSearchResponse.Item item : multiSearchResponse.getResponses()) {
 			Assert.assertTrue(item.getResponse().getHits().getTotalHits() > 0);
 		}
-	}
-
-	// @AfterClass
-	public void afterClass() {
-		DeleteIndexResponse deleteIndexResponse = assistant.prepareDelete(INDEX);
-		Assert.assertTrue(deleteIndexResponse.isAcknowledged());
 	}
 
 	private void testMatchAllQuery() {
@@ -255,6 +264,24 @@ public class ElasticsearchAssistantTest extends AbstractTestNGSpringContextTests
 				.includeUpper(false);
 		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
 		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testBoolFilter() {
+		QueryBuilder stringQueryBuilder = QueryBuilders.termQuery(STRING_NAME, STRING);
+		QueryBuilder integerQueryBuilder = QueryBuilders.termQuery(INTEGER_NAME, 0);
+		QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(stringQueryBuilder).mustNot(integerQueryBuilder);
+		SearchResponse searchResponse = assistant.prepareSearchByPostFilter(INDEX, TYPE, queryBuilder);
+		Assert.assertTrue(searchResponse.getHits().getTotalHits() > 0);
+	}
+
+	private void testAvgAggregation() {
+		final String AGGREGATION_NAME = "aggregation name";
+		AbstractAggregationBuilder abstractAggregationBuilder = AggregationBuilders.avg(AGGREGATION_NAME)
+				.field(INTEGER_NAME);
+		SearchResponse searchResponse = assistant.prepareSearchByAggregation(INDEX, TYPE, abstractAggregationBuilder);
+		Aggregation aggregation = searchResponse.getAggregations().get(AGGREGATION_NAME);
+		Double actual = (Double) aggregation.getProperty("value");
+		Assert.assertEquals(actual, Double.valueOf("6.0"));
 	}
 
 	private String generateMappingSource() {

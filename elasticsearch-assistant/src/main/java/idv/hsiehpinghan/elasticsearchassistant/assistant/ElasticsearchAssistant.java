@@ -27,6 +27,7 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -102,7 +103,15 @@ public class ElasticsearchAssistant {
 		searchRequestBuilder.setPostFilter(queryBuilder);
 		return searchRequestBuilder.execute().actionGet();
 	}
-	
+
+	public SearchResponse prepareSearchByAggregation(String index, String type,
+			AbstractAggregationBuilder abstractAggregationBuilder) {
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index);
+		searchRequestBuilder.setTypes(type);
+		searchRequestBuilder.addAggregation(abstractAggregationBuilder);
+		return searchRequestBuilder.execute().actionGet();
+	}
+
 	public MultiSearchResponse prepareMultiSearch(String index, String type, String name_0, String value_0,
 			String name_1, int value_1) {
 		MultiSearchRequestBuilder multiSearchRequestBuilder = client.prepareMultiSearch();

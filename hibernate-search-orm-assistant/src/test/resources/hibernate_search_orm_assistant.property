@@ -1,0 +1,16 @@
+mysql.driverClass=com.mysql.jdbc.Driver
+mysql.jdbcUrl=jdbc:mysql://localhost:3306/my_database
+mysql.user=thank
+mysql.password=%j6w1oW
+hibernate.packagesToScan=idv.hsiehpinghan.hibernatesearchormassistant.**.entity
+hibernate.dialect=org.hibernate.dialect.MySQLDialect
+hibernate.format_sql=true
+# validate, update, create, create-drop
+hibernate.hbm2ddl.auto=update
+hibernate.show_sql=true
+hibernate.generate_statistics=true
+hibernate.use_sql_comments=true
+# 1:READ UNCOMMITTED;2:READ COMMITTED;4:REPEATABLE READ;8:SERIALIZABLE
+hibernate.connection.isolation=2
+hibernate.jdbc.fetch_size=5
+hibernate.jdbc.batch_size=5

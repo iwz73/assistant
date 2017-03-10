@@ -1,0 +1,9 @@
+# create database
+mysql -u root -p
+SHOW DATABASES;
+CREATE DATABASE my_database;
+
+# create user
+CREATE USER 'thank'@'localhost' IDENTIFIED BY '%j6w1oW';
+GRANT ALL PRIVILEGES ON my_database.* TO 'thank'@'localhost';
+FLUSH PRIVILEGES;

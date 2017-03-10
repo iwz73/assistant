@@ -63,6 +63,10 @@ public class SpringConfiguration {
 		prop.put("hibernate.connection.isolation", environment.getRequiredProperty("hibernate.connection.isolation"));
 		prop.put("hibernate.jdbc.fetch_size", environment.getRequiredProperty("hibernate.jdbc.fetch_size"));
 		prop.put("hibernate.jdbc.batch_size", environment.getRequiredProperty("hibernate.jdbc.batch_size"));
+		prop.put("hibernate.search.default.directory_provider",
+				environment.getRequiredProperty("hibernate.search.default.directory_provider"));
+		prop.put("hibernate.search.default.indexBase",
+				environment.getRequiredProperty("hibernate.search.default.indexBase"));
 		return prop;
 	}
 

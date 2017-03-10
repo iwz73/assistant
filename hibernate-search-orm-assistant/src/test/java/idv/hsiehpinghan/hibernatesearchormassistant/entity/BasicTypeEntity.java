@@ -22,13 +22,21 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 
 @Entity
+@Indexed
 public class BasicTypeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private Integer id;
 	// primative
 	private boolean primativeBoolean;
@@ -48,6 +56,7 @@ public class BasicTypeEntity implements Serializable {
 	private short primativeShort;
 	private Short wrappedShort;
 	// object
+	@Field
 	private String string;
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
@@ -76,7 +85,7 @@ public class BasicTypeEntity implements Serializable {
 	private java.sql.Time sqlTime;
 	private java.sql.Timestamp sqlTimestamp;
 	private java.sql.Clob clob;
-	@Column(name = "[blob]") 
+	@Column(name = "[blob]")
 	private java.sql.Blob blob;
 	// array
 	private byte[] byteArray;

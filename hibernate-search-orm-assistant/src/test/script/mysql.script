@@ -14,3 +14,7 @@ CREATE DATABASE my_database;
 CREATE USER 'thank'@'localhost' IDENTIFIED BY '%j6w1oW';
 GRANT ALL PRIVILEGES ON my_database.* TO 'thank'@'localhost';
 FLUSH PRIVILEGES;
+
+# install luke
+https://github.com/DmitryKey/luke/releases
+

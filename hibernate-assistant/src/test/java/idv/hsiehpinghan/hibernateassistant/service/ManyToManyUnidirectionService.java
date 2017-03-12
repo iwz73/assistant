@@ -18,7 +18,7 @@ public class ManyToManyUnidirectionService {
 		repository.saveOrUpdate(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyUnidirectionFromEntity findOne(int id) {
 		ManyToManyUnidirectionFromEntity entity = repository.findOne(id);
 		entity.getTos().size();

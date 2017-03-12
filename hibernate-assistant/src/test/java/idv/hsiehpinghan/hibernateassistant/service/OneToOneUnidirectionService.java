@@ -18,7 +18,7 @@ public class OneToOneUnidirectionService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToOneUnidirectionFromEntity findOne(int id) {
 		OneToOneUnidirectionFromEntity entity = repository.findOne(id);
 		return entity;

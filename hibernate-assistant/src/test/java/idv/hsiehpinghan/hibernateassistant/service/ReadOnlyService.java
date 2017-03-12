@@ -20,13 +20,13 @@ public class ReadOnlyService {
 		return repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ReadOnlyEntity findOne(long id) {
 		ReadOnlyEntity entity = repository.findOne(id);
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ReadOnlyEntity setReadOnlyAndGet(long id) {
 		clearStatistics();
 		ReadOnlyEntity entity = repository.findOne(id);

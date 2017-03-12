@@ -18,7 +18,7 @@ public class OneToOneMapsIdMainService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToOneMapsIdMainEntity findOne(int id) {
 		OneToOneMapsIdMainEntity entity = repository.findOne(id);
 		return entity;

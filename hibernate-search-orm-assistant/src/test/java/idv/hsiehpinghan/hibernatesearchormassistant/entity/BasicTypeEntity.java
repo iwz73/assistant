@@ -22,11 +22,9 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 
@@ -35,6 +33,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 public class BasicTypeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
+	@DocumentId
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Integer id;

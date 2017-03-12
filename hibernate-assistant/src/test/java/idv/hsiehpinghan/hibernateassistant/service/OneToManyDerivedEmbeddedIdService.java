@@ -23,7 +23,7 @@ public class OneToManyDerivedEmbeddedIdService {
 		repository.delete(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToManyDerivedEmbeddedIdOneEntity findOne(
 			OneToManyDerivedEmbeddedIdOneIdEntity id) {
 		OneToManyDerivedEmbeddedIdOneEntity entity = repository.findOne(id);

@@ -29,7 +29,7 @@ public class BatchService {
 		return repository.deleteAll();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<BatchEntity> findAll() {
 		return repository.findAll();
 	}

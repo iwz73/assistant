@@ -18,7 +18,7 @@ public class AttributeConverterService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public AttributeConverterEntity findOne(int id) {
 		AttributeConverterEntity entity = repository.findOne(id);
 		return entity;

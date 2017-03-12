@@ -20,6 +20,7 @@
 		<hibernate-search-orm.version>5.7.0.Final</hibernate-search-orm.version>
 		<mysql-connector-java.version>5.1.41</mysql-connector-java.version>
 		<c3p0.version>0.9.5.2</c3p0.version>
+		<lucene.version>5.5.4</lucene.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 	</properties>
 
@@ -83,6 +84,13 @@
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0.version}</version>
+		</dependency>
+
+		<!-- lucene -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>${lucene.version}</version>
 		</dependency>
 
 		<!-- commons-lang3 -->

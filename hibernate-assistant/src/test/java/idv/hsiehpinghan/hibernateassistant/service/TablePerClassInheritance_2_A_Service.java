@@ -18,7 +18,7 @@ public class TablePerClassInheritance_2_A_Service {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public TablePerClassInheritance_2_A_Entity findOne(int id) {
 		TablePerClassInheritance_2_A_Entity entity = repository.findOne(id);
 		return entity;

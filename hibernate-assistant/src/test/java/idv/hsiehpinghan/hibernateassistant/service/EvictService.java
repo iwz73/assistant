@@ -20,13 +20,13 @@ public class EvictService {
 		return repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EvictEntity findOne(long id) {
 		EvictEntity entity = repository.findOne(id);
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EvictEntity evictAndGet(long id) {
 		clearStatistics();
 		EvictEntity entity = repository.findOne(id);

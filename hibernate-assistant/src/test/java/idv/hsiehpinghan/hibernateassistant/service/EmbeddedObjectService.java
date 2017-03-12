@@ -18,7 +18,7 @@ public class EmbeddedObjectService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EmbeddedObjectContainerEntity findOne(int id) {
 		EmbeddedObjectContainerEntity entity = repository.findOne(id);
 		return entity;

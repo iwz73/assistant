@@ -18,7 +18,7 @@ public class OneToManyMapEmbeddableService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToManyMapEmbeddableOneEntity findOne(int id) {
 		OneToManyMapEmbeddableOneEntity entity = repository.findOne(id);
 		entity.getMany().size();

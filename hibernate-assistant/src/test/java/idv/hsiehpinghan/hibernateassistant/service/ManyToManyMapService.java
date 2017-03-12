@@ -21,7 +21,7 @@ public class ManyToManyMapService {
 		repository.saveOrUpdate(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyMapFromEntity findOne(int id) {
 		ManyToManyMapFromEntity entity = repository.findOne(id);
 		entity.getTos().size();

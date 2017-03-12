@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -51,7 +52,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private Long wrappedLong = 1L;
 	private short primativeShort = 1;
 	private Short wrappedShort = 1;
-	private String string = "string";
+	private String string = "this is a lucene string";
 	private String lobString = "lobString";
 	private BigInteger bigInteger = BigInteger.ONE;
 	private BigDecimal bigDecimal = BigDecimal.ONE;
@@ -88,11 +89,31 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void basicType() throws Exception {
+	public void save() throws Exception {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
 		int id = entity.getId();
 		BasicTypeEntity returnEntity = service.findOne(id);
+		assertBasicTypeEntity(returnEntity);
+	}
+
+	@Test(dependsOnMethods = { "save" })
+	public void reindexAll() {
+		int result = service.reindexAll();
+		Assert.assertTrue(result > 0);
+	}
+
+	@Test(dependsOnMethods = { "reindexAll" })
+	public void luceneQuery() throws Exception {
+		List<BasicTypeEntity> entities = service.luceneQuery("lucene");
+		Assert.assertTrue(entities.size() > 0);
+//		for (BasicTypeEntity entity : entities) {
+//			assertBasicTypeEntity(entity);
+//		}
+	}
+
+	private void assertBasicTypeEntity(BasicTypeEntity returnEntity) throws SQLException, IOException, Exception {
+		int id = returnEntity.getId();
 		Assert.assertEquals(returnEntity.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnEntity.getWrappedBoolean(), wrappedBoolean);
 		Assert.assertEquals(String.valueOf(returnEntity.getPrimativeByte()), String.valueOf(primativeByte));

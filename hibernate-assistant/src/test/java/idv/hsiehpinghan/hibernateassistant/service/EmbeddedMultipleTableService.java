@@ -18,7 +18,7 @@ public class EmbeddedMultipleTableService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EmbeddedMultipleTableContainerEntity findOne(int id) {
 		EmbeddedMultipleTableContainerEntity entity = repository.findOne(id);
 		return entity;

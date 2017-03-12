@@ -18,7 +18,7 @@ public class MultipleTableService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public MultipleTableEntity findOne(int id) {
 		MultipleTableEntity entity = repository.findOne(id);
 		return entity;

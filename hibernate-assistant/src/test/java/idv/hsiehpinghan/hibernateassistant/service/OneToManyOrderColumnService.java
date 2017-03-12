@@ -18,7 +18,7 @@ public class OneToManyOrderColumnService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToManyOrderColumnOneEntity findOne(int id) {
 		OneToManyOrderColumnOneEntity entity = repository.findOne(id);
 		entity.getMany().size();

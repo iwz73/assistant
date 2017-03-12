@@ -22,7 +22,7 @@ public class SequenceGeneratorService {
 		repository.dropTable();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public SequenceGeneratorEntity findOne(int id) {
 		SequenceGeneratorEntity entity = repository.findOne(id);
 		return entity;

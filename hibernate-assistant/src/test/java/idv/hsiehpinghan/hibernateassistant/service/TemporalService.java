@@ -18,7 +18,7 @@ public class TemporalService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public TemporalEntity findOne(int id) {
 		TemporalEntity entity = repository.findOne(id);
 		return entity;

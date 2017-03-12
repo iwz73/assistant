@@ -20,13 +20,13 @@ public class ClearService {
 		return repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ClearEntity findOne(long id) {
 		ClearEntity entity = repository.findOne(id);
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ClearEntity clearAndGet(long id) {
 		clearStatistics();
 		ClearEntity entity = repository.findOne(id);

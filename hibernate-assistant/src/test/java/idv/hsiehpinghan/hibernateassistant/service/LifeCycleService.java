@@ -57,18 +57,18 @@ public class LifeCycleService {
 		return repository.merge(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public LifeCycleEntity get(long id) {
 		return repository.get(id);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public LifeCycleEntity load(long id) {
 		LifeCycleEntity entity = repository.load(id);
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public LifeCycleEntity getTwice(long id) {
 		clearStatistics();
 		LifeCycleEntity entity_0 = repository.get(id);

@@ -22,7 +22,7 @@ public class TableGeneratorService {
 		repository.dropTable();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public TableGeneratorEntity findOne(int id) {
 		TableGeneratorEntity entity = repository.findOne(id);
 		return entity;

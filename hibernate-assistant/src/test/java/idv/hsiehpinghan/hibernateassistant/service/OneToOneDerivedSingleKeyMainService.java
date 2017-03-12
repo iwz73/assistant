@@ -18,7 +18,7 @@ public class OneToOneDerivedSingleKeyMainService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToOneDerivedSingleKeyMainEntity findOne(int id) {
 		OneToOneDerivedSingleKeyMainEntity entity = repository.findOne(id);
 		return entity;

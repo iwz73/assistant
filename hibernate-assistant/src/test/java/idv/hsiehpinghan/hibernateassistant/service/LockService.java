@@ -22,20 +22,20 @@ public class LockService {
 		return repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public LockOneEntity findOne(long id) {
 		LockOneEntity entity = repository.findOne(id);
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public void lockModeNone(LockOneEntity entity) {
 		clearStatistics();
 		repository.lock(entity, LockOptions.NONE);
 		Assert.assertEquals(entity.getMany().size(), 3);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public void lockModeRead(LockOneEntity entity) {
 		clearStatistics();
 		repository.lock(entity, LockOptions.READ);

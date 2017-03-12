@@ -18,7 +18,7 @@ public class OneToOnePkMappingService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToOnePkMappingFromEntity findOne(int id) {
 		OneToOnePkMappingFromEntity entity = repository.findOne(id);
 		return entity;

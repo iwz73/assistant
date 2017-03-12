@@ -20,7 +20,7 @@ public class ManyToManyCompoundIdService {
 		repository.saveOrUpdate(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyCompoundIdFromEntity findOne(
 			ManyToManyCompoundIdFromIdEntity id) {
 		ManyToManyCompoundIdFromEntity entity = repository.findOne(id);

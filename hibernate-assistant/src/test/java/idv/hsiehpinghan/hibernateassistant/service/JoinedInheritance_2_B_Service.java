@@ -18,7 +18,7 @@ public class JoinedInheritance_2_B_Service {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public JoinedInheritance_2_B_Entity findOne(int id) {
 		JoinedInheritance_2_B_Entity entity = repository.findOne(id);
 		return entity;

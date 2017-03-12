@@ -19,7 +19,7 @@ public class ManyToManyJoinTableService {
 		repository.saveOrUpdate(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyJoinTableFromEntity findOne(int id) {
 		ManyToManyJoinTableFromEntity entity = repository.findOne(id);
 		entity.getTos().size();

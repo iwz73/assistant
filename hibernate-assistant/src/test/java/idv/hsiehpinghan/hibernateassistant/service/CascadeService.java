@@ -22,7 +22,7 @@ public class CascadeService {
 		repository.merge(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public CascadeEntity get(long id) {
 		CascadeEntity entity = repository.get(id);
 		entity.getCascadePersistEntities().size();

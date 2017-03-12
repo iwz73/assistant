@@ -19,7 +19,7 @@ public class ManyToManyBidirectionService {
 		repository.saveOrUpdate(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyBidirectionFromEntity findOne(int id) {
 		ManyToManyBidirectionFromEntity entity = repository.findOne(id);
 		entity.getTos().size();

@@ -18,7 +18,7 @@ public class OneToOneBidirectionService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToOneBidirectionFromEntity findOne(int id) {
 		OneToOneBidirectionFromEntity entity = repository.findOne(id);
 		return entity;

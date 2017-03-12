@@ -21,7 +21,7 @@ public class LoadService {
 		return repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Collection<LoadManyEntity> findLoadManyEntities(long id) {
 		LoadOneEntity entity = repository.load(id);
 		entity.getMany().size();

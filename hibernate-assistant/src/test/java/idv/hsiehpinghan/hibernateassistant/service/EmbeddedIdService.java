@@ -19,7 +19,7 @@ public class EmbeddedIdService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EmbeddedIdContainerEntity findOne(EmbeddedIdEmbeddableEntity id) {
 		EmbeddedIdContainerEntity entity = repository.findOne(id);
 		return entity;

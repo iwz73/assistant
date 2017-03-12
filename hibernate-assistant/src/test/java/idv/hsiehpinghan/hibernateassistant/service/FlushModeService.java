@@ -43,7 +43,7 @@ public class FlushModeService {
 		return entity;
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public FlushModeEntity findOne(long id) {
 		FlushModeEntity entity = repository.findOne(id);
 		return entity;

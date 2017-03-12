@@ -18,7 +18,7 @@ public class OneToManyMapService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToManyMapOneEntity findOne(int id) {
 		OneToManyMapOneEntity entity = repository.findOne(id);
 		entity.getMany().size();

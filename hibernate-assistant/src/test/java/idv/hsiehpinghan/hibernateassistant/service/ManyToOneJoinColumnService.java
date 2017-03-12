@@ -18,7 +18,7 @@ public class ManyToOneJoinColumnService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToOneJoinColumnManyEntity findOne(int id) {
 		ManyToOneJoinColumnManyEntity entity = repository.findOne(id);
 		return entity;

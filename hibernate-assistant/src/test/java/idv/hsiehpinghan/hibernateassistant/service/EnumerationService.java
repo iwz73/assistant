@@ -18,7 +18,7 @@ public class EnumerationService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EnumerationEntity findOne(int id) {
 		EnumerationEntity entity = repository.findOne(id);
 		return entity;

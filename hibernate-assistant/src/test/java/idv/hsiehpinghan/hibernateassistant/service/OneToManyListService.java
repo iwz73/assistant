@@ -18,7 +18,7 @@ public class OneToManyListService {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public OneToManyListOneEntity findOne(int id) {
 		OneToManyListOneEntity entity = repository.findOne(id);
 		entity.getMany().size();

@@ -18,7 +18,7 @@ public class MixedInheritance_2_B_Service {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public MixedInheritance_2_B_Entity findOne(int id) {
 		MixedInheritance_2_B_Entity entity = repository.findOne(id);
 		return entity;

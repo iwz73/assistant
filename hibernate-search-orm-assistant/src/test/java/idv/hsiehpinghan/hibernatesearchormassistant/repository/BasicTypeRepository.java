@@ -6,10 +6,17 @@ import java.io.Reader;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
+import java.util.List;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,44 +39,43 @@ public class BasicTypeRepository {
 		return (BasicTypeEntity) session.get(BasicTypeEntity.class, id);
 	}
 
-//	public String findClobAsString(int id) throws SQLException, IOException {
-//		Session session = sessionFactory.getCurrentSession();
-//		Query<Clob> query = session.createQuery("select clob from BasicTypeEntity bte where bte.id = :id ", Clob.class);
-//		query.setParameter("id", id);
-//		Clob clob = query.uniqueResult();
-//		return convertToString(clob);
-//	}
-//
-//	public String findBlobAsString(int id) throws SQLException, IOException {
-//		Session session = sessionFactory.getCurrentSession();
-//		Query<Blob> query = session.createQuery("select blob from BasicTypeEntity bte where bte.id = :id ", Blob.class);
-//		query.setParameter("id", id);
-//		Blob blob = query.uniqueResult();
-//		return convertToString(blob);
-//	}
-
 	public String findClobAsString(int id) throws SQLException, IOException {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("select clob from BasicTypeEntity bte where bte.id = :id ");
+		Query<Clob> query = session.createQuery("select clob from BasicTypeEntity bte where bte.id = :id ", Clob.class);
 		query.setParameter("id", id);
-		
-		System.err.println(query.uniqueResult().getClass() + " !!!");
-		
-		Clob clob = (Clob)query.uniqueResult();
+		Clob clob = query.uniqueResult();
 		return convertToString(clob);
 	}
 
 	public String findBlobAsString(int id) throws SQLException, IOException {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("select blob from BasicTypeEntity bte where bte.id = :id ");
+		Query<Blob> query = session.createQuery("select blob from BasicTypeEntity bte where bte.id = :id ", Blob.class);
 		query.setParameter("id", id);
-		
-		System.err.println(query.uniqueResult().getClass() + " !!!");
-		
-		Blob blob = (Blob)query.uniqueResult();
+		Blob blob = (Blob) query.uniqueResult();
 		return convertToString(blob);
 	}
-	
+
+	public int reindexAll() {
+		Session session = sessionFactory.getCurrentSession();
+		Query<BasicTypeEntity> query = session.createQuery("from BasicTypeEntity ", BasicTypeEntity.class);
+		List<BasicTypeEntity> entities = query.getResultList();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		for (BasicTypeEntity entity : entities) {
+			fullTextSession.index(entity);
+		}
+		return entities.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<BasicTypeEntity> luceneQuery(String queryString) throws ParseException {
+		QueryParser queryParser = new QueryParser("string", new StandardAnalyzer());
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);
+		return fullTextQuery.list();
+	}
+
 	private String convertToString(java.sql.Clob clob) throws SQLException, IOException {
 		Reader reader = clob.getCharacterStream();
 		return ReaderUtility.readAsString(reader);

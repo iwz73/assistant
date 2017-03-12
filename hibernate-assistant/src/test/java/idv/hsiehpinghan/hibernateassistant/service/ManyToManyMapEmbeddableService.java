@@ -26,7 +26,7 @@ public class ManyToManyMapEmbeddableService {
 		return repository.deleteAll();
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ManyToManyMapEmbeddableFromEntity findOne(int id) {
 		ManyToManyMapEmbeddableFromEntity entity = repository.findOne(id);
 		entity.getTos().size();

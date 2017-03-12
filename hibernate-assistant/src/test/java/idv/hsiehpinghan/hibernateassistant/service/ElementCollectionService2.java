@@ -18,7 +18,7 @@ public class ElementCollectionService2 {
 		repository.save(entity);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public ElementCollectionTableContainerEntity2 findOne(int id) {
 		ElementCollectionTableContainerEntity2 entity = repository.findOne(id);
 		entity.getElements().size();

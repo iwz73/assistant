@@ -1,3 +1,10 @@
+# install mysql
+apt-get update
+apt-get install mysql-server
+
+# install mysql-workbench
+apt-get install mysql-workbench
+
 # create database
 mysql -u root -p
 SHOW DATABASES;

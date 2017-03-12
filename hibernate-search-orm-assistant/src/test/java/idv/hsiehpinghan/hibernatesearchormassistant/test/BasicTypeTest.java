@@ -19,6 +19,8 @@ import javax.sql.rowset.serial.SerialClob;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -105,11 +107,10 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "reindexAll" })
 	public void luceneQuery() throws Exception {
-		List<BasicTypeEntity> entities = service.luceneQuery("lucene");
+		String queryString = "lucene";
+		Analyzer analyzer = new StandardAnalyzer();
+		List<BasicTypeEntity> entities = service.luceneQuery(queryString, analyzer);
 		Assert.assertTrue(entities.size() > 0);
-//		for (BasicTypeEntity entity : entities) {
-//			assertBasicTypeEntity(entity);
-//		}
 	}
 
 	private void assertBasicTypeEntity(BasicTypeEntity returnEntity) throws SQLException, IOException, Exception {
@@ -139,23 +140,24 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getCurrency(), currency);
 		Assert.assertEquals(returnEntity.getClazz(), clazz);
 		Assert.assertEquals(returnEntity.getSerializable().getClass(), serializable.getClass());
-		Assert.assertEquals(returnEntity.getDate().getTime(), DateUtils.round(date, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getDate().getTime(), DateUtils.truncate(date, Calendar.SECOND).getTime());
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(dateDate, "yyyy/MM/dd"));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getTimeDate(), "hh:mm:ss"),
 				DateFormatUtils.format(timeDate, "hh:mm:ss"));
 		Assert.assertEquals(returnEntity.getTimestampDate().getTime(),
-				DateUtils.round(timestampDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getCalendar(), DateUtils.round(calendar, Calendar.SECOND));
+				DateUtils.truncate(timestampDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getCalendar(), DateUtils.truncate(calendar, Calendar.SECOND));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateCalendar(), "yyyy/MM/dd"),
 				DateFormatUtils.format(dateCalendar, "yyyy/MM/dd"));
-		Assert.assertEquals(returnEntity.getTimestampCalendar(), DateUtils.round(timestampCalendar, Calendar.SECOND));
+		Assert.assertEquals(returnEntity.getTimestampCalendar(),
+				DateUtils.truncate(timestampCalendar, Calendar.SECOND));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
 				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
 		Assert.assertEquals(returnEntity.getSqlTimestamp().getTime(),
-				DateUtils.round(sqlTimestamp, Calendar.SECOND).getTime());
+				DateUtils.truncate(sqlTimestamp, Calendar.SECOND).getTime());
 		Assert.assertEquals(service.findClobAsString(id), convertToString(clob));
 		Assert.assertEquals(service.findBlobAsString(id), convertToString(blob));
 		Assert.assertEquals(returnEntity.getByteArray(), byteArray);

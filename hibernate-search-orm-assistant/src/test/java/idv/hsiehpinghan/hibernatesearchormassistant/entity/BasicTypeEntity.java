@@ -31,6 +31,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 @Entity
 @Indexed
 public class BasicTypeEntity implements Serializable {
+	public static final String DEFAULT_FIELD = "string";
 	private static final long serialVersionUID = 1L;
 	@Id
 	@DocumentId

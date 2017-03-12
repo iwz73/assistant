@@ -10,8 +10,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -21,6 +23,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -81,6 +86,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private char[] lobCharArray = getCharArray();
 	private Enumeration stringEnumeration = Enumeration.ENUM_2;
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
+	private String englishString_0 = "this is a lucene string_0";
+	private String englishString_1 = "this is a lucene string_1";
 	@Autowired
 	private BasicTypeService service;
 
@@ -107,10 +114,36 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "reindexAll" })
 	public void luceneQuery() throws Exception {
-		String queryString = "lucene";
+		testQueryParser();
+		testMultiFieldQueryParser();
+	}
+
+	private void testQueryParser() throws ParseException {
+		String queryString = "string:lucene";
 		Analyzer analyzer = new StandardAnalyzer();
-		List<BasicTypeEntity> entities = service.luceneQuery(queryString, analyzer);
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
 		Assert.assertTrue(entities.size() > 0);
+	}
+
+	private void testMultiFieldQueryParser() throws ParseException {
+		String[] fields = { "englishString_0", "englishString_1" };
+		Analyzer analyzer = new StandardAnalyzer();
+		Map<String, Float> boosts = generateBoostMap(fields);
+		QueryParser queryParser = new MultiFieldQueryParser(fields, analyzer, boosts);
+		String queryString = "lucene";
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+
+	private Map<String, Float> generateBoostMap(String[] fields) {
+		Map<String, Float> map = new HashMap<>();
+		for (int i = 0, size = fields.length; i < size; ++i) {
+			map.put(fields[i], (float) (i + 1));
+		}
+		return map;
 	}
 
 	private void assertBasicTypeEntity(BasicTypeEntity returnEntity) throws SQLException, IOException, Exception {
@@ -166,6 +199,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getLobCharArray(), lobCharArray);
 		Assert.assertEquals(returnEntity.getStringEnumeration(), stringEnumeration);
 		Assert.assertEquals(returnEntity.getOrdinalEnumeration(), ordinalEnumeration);
+		Assert.assertEquals(returnEntity.getEnglishString_0(), englishString_0);
+		Assert.assertEquals(returnEntity.getEnglishString_1(), englishString_1);
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -213,6 +248,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setLobCharArray(lobCharArray);
 		entity.setStringEnumeration(stringEnumeration);
 		entity.setOrdinalEnumeration(ordinalEnumeration);
+		entity.setEnglishString_0(englishString_0);
+		entity.setEnglishString_1(englishString_1);
 		return entity;
 	}
 

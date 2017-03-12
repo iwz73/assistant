@@ -100,6 +100,10 @@ public class BasicTypeEntity implements Serializable {
 	private Enumeration stringEnumeration;
 	@Enumerated(EnumType.ORDINAL)
 	private Enumeration ordinalEnumeration;
+	@Field
+	private String englishString_0;
+	@Field
+	private String englishString_1;
 
 	public Integer getId() {
 		return id;
@@ -451,6 +455,22 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setOrdinalEnumeration(Enumeration ordinalEnumeration) {
 		this.ordinalEnumeration = ordinalEnumeration;
+	}
+
+	public String getEnglishString_0() {
+		return englishString_0;
+	}
+
+	public void setEnglishString_0(String englishString_0) {
+		this.englishString_0 = englishString_0;
+	}
+
+	public String getEnglishString_1() {
+		return englishString_1;
+	}
+
+	public void setEnglishString_1(String englishString_1) {
+		this.englishString_1 = englishString_1;
 	}
 
 }

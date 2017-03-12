@@ -8,9 +8,7 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -67,9 +65,7 @@ public class BasicTypeRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BasicTypeEntity> luceneQuery(String queryString, Analyzer analyzer) throws ParseException {
-		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
-		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) throws ParseException {
 		Session session = sessionFactory.getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);

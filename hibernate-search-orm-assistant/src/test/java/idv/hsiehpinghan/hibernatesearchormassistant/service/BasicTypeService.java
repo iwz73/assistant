@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,7 @@ public class BasicTypeService {
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<BasicTypeEntity> luceneQuery(String queryString, Analyzer analyzer) throws ParseException {
-		return repository.luceneQuery(queryString, analyzer);
+	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) throws ParseException {
+		return repository.luceneQuery(query);
 	}
 }

@@ -2,8 +2,15 @@
 apt-get update
 apt-get install mysql-server
 
-# install mysql-workbench
+# install mysql-workbench (ubuntu)
 apt-get install mysql-workbench
+
+# install mysql workbench (centos)
+rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum update
+yum install libzip-0.9-3.1.el6
+yum install tinyxml
+yum install mysql-workbench-community
 
 # create database
 mysql -u root -p

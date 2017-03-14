@@ -88,6 +88,14 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
 	private String englishString_0 = "this is a lucene string_0";
 	private String englishString_1 = "this is a lucene string_1";
+	private Date yearResolutionDate = Calendar.getInstance().getTime();
+	private Date monthResolutionDate = Calendar.getInstance().getTime();
+	private Date dayResolutionDate = Calendar.getInstance().getTime();
+	private Date hourResolutionDate = Calendar.getInstance().getTime();
+	private Date minuteResolutionDate = Calendar.getInstance().getTime();
+	private Date secondResolutionDate = Calendar.getInstance().getTime();
+	private Date millisecondResolutionDate = Calendar.getInstance().getTime();
+	private int id;
 	@Autowired
 	private BasicTypeService service;
 
@@ -101,7 +109,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	public void save() throws Exception {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.save(entity);
-		int id = entity.getId();
+		id = entity.getId();
 		BasicTypeEntity returnEntity = service.findOne(id);
 		assertBasicTypeEntity(returnEntity);
 	}
@@ -116,6 +124,19 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	public void luceneQuery() throws Exception {
 		testQueryParser();
 		testMultiFieldQueryParser();
+	}
+
+	@Test(dependsOnMethods = { "luceneQuery" })
+	public void remove() throws Exception {
+		BasicTypeEntity entity = generateBasicTypeEntity();
+		entity.setId(id);
+		service.remove(entity);
+		String queryString = "string:lucene";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertEquals(entities.size(), 0);
 	}
 
 	private void testQueryParser() throws ParseException {
@@ -201,6 +222,20 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getOrdinalEnumeration(), ordinalEnumeration);
 		Assert.assertEquals(returnEntity.getEnglishString_0(), englishString_0);
 		Assert.assertEquals(returnEntity.getEnglishString_1(), englishString_1);
+		Assert.assertEquals(returnEntity.getYearResolutionDate().getTime(),
+				DateUtils.truncate(yearResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getMonthResolutionDate().getTime(),
+				DateUtils.truncate(monthResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getDayResolutionDate().getTime(),
+				DateUtils.truncate(dayResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getHourResolutionDate().getTime(),
+				DateUtils.truncate(hourResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getMinuteResolutionDate().getTime(),
+				DateUtils.truncate(minuteResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
+				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
+				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -250,6 +285,13 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setOrdinalEnumeration(ordinalEnumeration);
 		entity.setEnglishString_0(englishString_0);
 		entity.setEnglishString_1(englishString_1);
+		entity.setYearResolutionDate(yearResolutionDate);
+		entity.setMonthResolutionDate(monthResolutionDate);
+		entity.setDayResolutionDate(dayResolutionDate);
+		entity.setHourResolutionDate(hourResolutionDate);
+		entity.setMinuteResolutionDate(minuteResolutionDate);
+		entity.setSecondResolutionDate(millisecondResolutionDate);
+		entity.setMillisecondResolutionDate(millisecondResolutionDate);
 		return entity;
 	}
 

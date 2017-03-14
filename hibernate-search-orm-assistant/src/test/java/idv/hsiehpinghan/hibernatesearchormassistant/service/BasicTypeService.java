@@ -23,6 +23,10 @@ public class BasicTypeService {
 		repository.save(entity);
 	}
 
+	public void remove(BasicTypeEntity entity) {
+		repository.remove(entity);
+	}
+
 	public int reindexAll() {
 		return repository.reindexAll();
 	}

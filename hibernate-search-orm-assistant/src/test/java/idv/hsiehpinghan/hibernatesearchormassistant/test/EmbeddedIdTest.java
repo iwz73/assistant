@@ -29,12 +29,6 @@ public class EmbeddedIdTest extends AbstractTestNGSpringContextTests {
 		Assert.assertNotNull(returnEntity);
 	}
 
-	@Test(dependsOnMethods = { "save" })
-	public void reindexAll() {
-		int result = service.reindexAll();
-		Assert.assertTrue(result > 0);
-	}
-
 	private EmbeddedIdContainerEntity generateEmbeddedIdContainerEntity() {
 		EmbeddedIdContainerEntity entity = new EmbeddedIdContainerEntity();
 		entity.setId(generateEmbeddedIdEmbeddableEntity());

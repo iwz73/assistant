@@ -22,9 +22,11 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Resolution;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 
@@ -39,21 +41,33 @@ public class BasicTypeEntity implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Integer id;
 	// primative
+	@Field
 	private boolean primativeBoolean;
+	@Field
 	private Boolean wrappedBoolean;
 	private byte primativeByte;
 	private Byte wrappedByte;
 	private char primativeChar;
 	private Character wrappedChar;
+	@Field
 	private double primativeDouble;
+	@Field
 	private Double wrappedDouble;
+	@Field
 	private float primativeFloat;
+	@Field
 	private Float wrappedFloat;
+	@Field
 	private int primativeInt;
+	@Field
 	private Integer wrappedInt;
+	@Field
 	private long primativeLong;
+	@Field
 	private Long wrappedLong;
+	@Field
 	private short primativeShort;
+	@Field
 	private Short wrappedShort;
 	// object
 	@Field
@@ -61,18 +75,25 @@ public class BasicTypeEntity implements Serializable {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private String lobString;
+	@Field
 	private BigInteger bigInteger;
+	@Field
 	private BigDecimal bigDecimal;
 	private Locale locale;
 	private TimeZone timeZone;
 	private Currency currency;
+	@Field
 	private Class<BasicTypeEntity> clazz;
 	private Serializable serializable;
+	@Field
 	private Date date;
+	@Field
 	@Temporal(TemporalType.DATE)
 	private Date dateDate;
+	@Field
 	@Temporal(TemporalType.TIME)
 	private Date timeDate;
+	@Field
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestampDate;
 	// sql
@@ -96,14 +117,37 @@ public class BasicTypeEntity implements Serializable {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private char[] lobCharArray;
+	@Field
 	@Enumerated(EnumType.STRING)
 	private Enumeration stringEnumeration;
+	@Field
 	@Enumerated(EnumType.ORDINAL)
 	private Enumeration ordinalEnumeration;
 	@Field
 	private String englishString_0;
 	@Field
 	private String englishString_1;
+	@Field
+	@DateBridge(resolution = Resolution.YEAR)
+	private Date yearResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.MONTH)
+	private Date monthResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.DAY)
+	private Date dayResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.HOUR)
+	private Date hourResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.MINUTE)
+	private Date minuteResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.SECOND)
+	private Date secondResolutionDate;
+	@Field
+	@DateBridge(resolution = Resolution.MILLISECOND)
+	private Date millisecondResolutionDate;
 
 	public Integer getId() {
 		return id;
@@ -471,6 +515,87 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setEnglishString_1(String englishString_1) {
 		this.englishString_1 = englishString_1;
+	}
+
+	public Date getYearResolutionDate() {
+		return yearResolutionDate;
+	}
+
+	public void setYearResolutionDate(Date yearResolutionDate) {
+		this.yearResolutionDate = yearResolutionDate;
+	}
+
+	public Date getMonthResolutionDate() {
+		return monthResolutionDate;
+	}
+
+	public void setMonthResolutionDate(Date monthResolutionDate) {
+		this.monthResolutionDate = monthResolutionDate;
+	}
+
+	public Date getDayResolutionDate() {
+		return dayResolutionDate;
+	}
+
+	public void setDayResolutionDate(Date dayResolutionDate) {
+		this.dayResolutionDate = dayResolutionDate;
+	}
+
+	public Date getHourResolutionDate() {
+		return hourResolutionDate;
+	}
+
+	public void setHourResolutionDate(Date hourResolutionDate) {
+		this.hourResolutionDate = hourResolutionDate;
+	}
+
+	public Date getMinuteResolutionDate() {
+		return minuteResolutionDate;
+	}
+
+	public void setMinuteResolutionDate(Date minuteResolutionDate) {
+		this.minuteResolutionDate = minuteResolutionDate;
+	}
+
+	public Date getSecondResolutionDate() {
+		return secondResolutionDate;
+	}
+
+	public void setSecondResolutionDate(Date secondResolutionDate) {
+		this.secondResolutionDate = secondResolutionDate;
+	}
+
+	public Date getMillisecondResolutionDate() {
+		return millisecondResolutionDate;
+	}
+
+	public void setMillisecondResolutionDate(Date millisecondResolutionDate) {
+		this.millisecondResolutionDate = millisecondResolutionDate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BasicTypeEntity other = (BasicTypeEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

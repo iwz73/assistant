@@ -19,17 +19,10 @@ public class EmbeddedIdService {
 		repository.save(entity);
 	}
 
-	public int reindexAll() {
-		return repository.reindexAll();
-	}
-
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EmbeddedIdContainerEntity findOne(EmbeddedIdEmbeddableEntity id) {
 		EmbeddedIdContainerEntity entity = repository.findOne(id);
 		return entity;
 	}
 
-	public int deleteAll() {
-		return repository.deleteAll();
-	}
 }

@@ -32,6 +32,11 @@ public class BasicTypeRepository {
 		session.save(entity);
 	}
 
+	public void remove(BasicTypeEntity entity) {
+		Session session = sessionFactory.getCurrentSession();
+		session.remove(entity);
+	}
+
 	public BasicTypeEntity findOne(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		return (BasicTypeEntity) session.get(BasicTypeEntity.class, id);

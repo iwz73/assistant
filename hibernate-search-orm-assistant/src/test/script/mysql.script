@@ -25,3 +25,6 @@ FLUSH PRIVILEGES;
 # install luke
 https://github.com/DmitryKey/luke/releases
 
+# run luke
+export LUKE_PATH=/home/hsiehpinghan/Downloads/luke-5.5.0-luke-release
+/home/hsiehpinghan/Downloads/luke-5.5.0-luke-release/luke.sh

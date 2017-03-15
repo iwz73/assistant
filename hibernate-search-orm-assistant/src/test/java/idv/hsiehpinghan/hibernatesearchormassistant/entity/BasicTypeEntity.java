@@ -22,6 +22,7 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -148,6 +149,8 @@ public class BasicTypeEntity implements Serializable {
 	@Field
 	@DateBridge(resolution = Resolution.MILLISECOND)
 	private Date millisecondResolutionDate;
+	@Field(analyze = Analyze.NO)
+	private String noAnalyzeString;
 
 	public Integer getId() {
 		return id;
@@ -571,6 +574,14 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setMillisecondResolutionDate(Date millisecondResolutionDate) {
 		this.millisecondResolutionDate = millisecondResolutionDate;
+	}
+
+	public String getNoAnalyzeString() {
+		return noAnalyzeString;
+	}
+
+	public void setNoAnalyzeString(String noAnalyzeString) {
+		this.noAnalyzeString = noAnalyzeString;
 	}
 
 	@Override

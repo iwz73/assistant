@@ -23,6 +23,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queries.TermsQuery;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -95,6 +97,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private Date minuteResolutionDate = Calendar.getInstance().getTime();
 	private Date secondResolutionDate = Calendar.getInstance().getTime();
 	private Date millisecondResolutionDate = Calendar.getInstance().getTime();
+	private String noAnalyzeString = "no analyze string";
 	private int id;
 	@Autowired
 	private BasicTypeService service;
@@ -124,6 +127,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	public void luceneQuery() throws Exception {
 		testQueryParser();
 		testMultiFieldQueryParser();
+		testNoAnalyzeString();
 	}
 
 	@Test(dependsOnMethods = { "luceneQuery" })
@@ -131,7 +135,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		entity.setId(id);
 		service.remove(entity);
-		String queryString = "string:lucene";
+		String queryString = "+string:lucene +id:" + id;
 		Analyzer analyzer = new StandardAnalyzer();
 		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
 		org.apache.lucene.search.Query query = queryParser.parse(queryString);
@@ -155,6 +159,12 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		QueryParser queryParser = new MultiFieldQueryParser(fields, analyzer, boosts);
 		String queryString = "lucene";
 		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+
+	private void testNoAnalyzeString() throws ParseException {
+		org.apache.lucene.search.Query query = new TermsQuery(new Term("noAnalyzeString", noAnalyzeString));
 		List<BasicTypeEntity> entities = service.luceneQuery(query);
 		Assert.assertTrue(entities.size() > 0);
 	}
@@ -232,10 +242,11 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 				DateUtils.truncate(hourResolutionDate, Calendar.SECOND).getTime());
 		Assert.assertEquals(returnEntity.getMinuteResolutionDate().getTime(),
 				DateUtils.truncate(minuteResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getSecondResolutionDate().getTime(),
+				DateUtils.truncate(secondResolutionDate, Calendar.SECOND).getTime());
 		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
 				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
-				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertEquals(returnEntity.getNoAnalyzeString(), noAnalyzeString);
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -290,8 +301,9 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setDayResolutionDate(dayResolutionDate);
 		entity.setHourResolutionDate(hourResolutionDate);
 		entity.setMinuteResolutionDate(minuteResolutionDate);
-		entity.setSecondResolutionDate(millisecondResolutionDate);
+		entity.setSecondResolutionDate(secondResolutionDate);
 		entity.setMillisecondResolutionDate(millisecondResolutionDate);
+		entity.setNoAnalyzeString(noAnalyzeString);
 		return entity;
 	}
 

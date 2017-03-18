@@ -26,6 +26,7 @@ import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 
@@ -151,6 +152,9 @@ public class BasicTypeEntity implements Serializable {
 	private Date millisecondResolutionDate;
 	@Field(analyze = Analyze.NO)
 	private String noAnalyzeString;
+	@Fields({ @Field(name = "multiAnalyzeStringYes", analyze = Analyze.YES),
+			@Field(name = "multiAnalyzeStringNo", analyze = Analyze.NO) })
+	private String multiAnalyzeString;
 
 	public Integer getId() {
 		return id;
@@ -582,6 +586,14 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setNoAnalyzeString(String noAnalyzeString) {
 		this.noAnalyzeString = noAnalyzeString;
+	}
+
+	public String getMultiAnalyzeString() {
+		return multiAnalyzeString;
+	}
+
+	public void setMultiAnalyzeString(String multiAnalyzeString) {
+		this.multiAnalyzeString = multiAnalyzeString;
 	}
 
 	@Override

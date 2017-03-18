@@ -98,6 +98,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private Date secondResolutionDate = Calendar.getInstance().getTime();
 	private Date millisecondResolutionDate = Calendar.getInstance().getTime();
 	private String noAnalyzeString = "no analyze string";
+	private String multiAnalyzeString = "multi analyze string";
+
 	private int id;
 	@Autowired
 	private BasicTypeService service;
@@ -128,6 +130,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		testQueryParser();
 		testMultiFieldQueryParser();
 		testNoAnalyzeString();
+		testMultiAnalyzeString();
 	}
 
 	@Test(dependsOnMethods = { "luceneQuery" })
@@ -166,6 +169,20 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private void testNoAnalyzeString() throws ParseException {
 		org.apache.lucene.search.Query query = new TermsQuery(new Term("noAnalyzeString", noAnalyzeString));
 		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+
+	private void testMultiAnalyzeString() throws ParseException {
+		org.apache.lucene.search.Query query = null;
+		List<BasicTypeEntity> entities = null;
+		String queryString = "multiAnalyzeStringYes:multi";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		query = queryParser.parse(queryString);
+		entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+		query = new TermsQuery(new Term("multiAnalyzeStringNo", multiAnalyzeString));
+		entities = service.luceneQuery(query);
 		Assert.assertTrue(entities.size() > 0);
 	}
 
@@ -247,6 +264,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
 				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
 		Assert.assertEquals(returnEntity.getNoAnalyzeString(), noAnalyzeString);
+		Assert.assertEquals(returnEntity.getMultiAnalyzeString(), multiAnalyzeString);
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -304,6 +322,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setSecondResolutionDate(secondResolutionDate);
 		entity.setMillisecondResolutionDate(millisecondResolutionDate);
 		entity.setNoAnalyzeString(noAnalyzeString);
+		entity.setMultiAnalyzeString(multiAnalyzeString);
 		return entity;
 	}
 

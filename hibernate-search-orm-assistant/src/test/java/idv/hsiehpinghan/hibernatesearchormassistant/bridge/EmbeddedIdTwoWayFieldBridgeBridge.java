@@ -8,43 +8,43 @@ import org.apache.lucene.index.IndexableField;
 import org.hibernate.search.bridge.LuceneOptions;
 import org.hibernate.search.bridge.TwoWayFieldBridge;
 
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.EmbeddedIdEmbeddableEntity;
+import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
 
-public class EmbeddedIdTwoWayFieldBridge implements TwoWayFieldBridge {
+public class EmbeddedIdTwoWayFieldBridgeBridge implements TwoWayFieldBridge {
 
 	@Override
 	public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
-		EmbeddedIdEmbeddableEntity embeddedIdEmbeddableEntity = (EmbeddedIdEmbeddableEntity) value;
+		BridgeEntity.BridgeEntityId bridgeEntityId = (BridgeEntity.BridgeEntityId) value;
 		Store store = luceneOptions.getStore();
 		Float boost = luceneOptions.getBoost();
 		Field field = null;
-		field = new StringField(name + ".firstName", embeddedIdEmbeddableEntity.getFirstName(), store);
+		field = new StringField(name + ".firstName", bridgeEntityId.getFirstName(), store);
 		field.setBoost(boost);
 		document.add(field);
-		field = new StringField(name + ".lastName", embeddedIdEmbeddableEntity.getLastName(), store);
+		field = new StringField(name + ".lastName", bridgeEntityId.getLastName(), store);
 		field.setBoost(boost);
 		document.add(field);
 	}
 
 	@Override
 	public Object get(String name, Document document) {
-		EmbeddedIdEmbeddableEntity embeddedIdEmbeddableEntity = new EmbeddedIdEmbeddableEntity();
+		BridgeEntity.BridgeEntityId bridgeEntityId = new BridgeEntity.BridgeEntityId();
 		IndexableField field = null;
 		field = document.getField(name + ".firstName");
-		embeddedIdEmbeddableEntity.setFirstName(field.stringValue());
+		bridgeEntityId.setFirstName(field.stringValue());
 		field = document.getField(name + ".lastName");
-		embeddedIdEmbeddableEntity.setLastName(field.stringValue());
-		return embeddedIdEmbeddableEntity;
+		bridgeEntityId.setLastName(field.stringValue());
+		return bridgeEntityId;
 	}
 
 	@Override
 	public String objectToString(Object object) {
-		EmbeddedIdEmbeddableEntity embeddedIdEmbeddableEntity = (EmbeddedIdEmbeddableEntity) object;
+		BridgeEntity.BridgeEntityId bridgeEntityId = (BridgeEntity.BridgeEntityId) object;
 		StringBuilder sb = new StringBuilder();
-		sb.append(embeddedIdEmbeddableEntity);
-		sb.append(embeddedIdEmbeddableEntity.getFirstName());
+		sb.append(bridgeEntityId);
+		sb.append(bridgeEntityId.getFirstName());
 		sb.append("_");
-		sb.append(embeddedIdEmbeddableEntity.getLastName());
+		sb.append(bridgeEntityId.getLastName());
 		return sb.toString();
 	}
 

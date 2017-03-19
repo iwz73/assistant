@@ -8,35 +8,34 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.hibernatesearchormassistant.configuration.SpringConfigurationTest;
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.EmbeddedIdContainerEntity;
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.EmbeddedIdEmbeddableEntity;
-import idv.hsiehpinghan.hibernatesearchormassistant.service.EmbeddedIdService;
+import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
+import idv.hsiehpinghan.hibernatesearchormassistant.service.BridgeEntityService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class, SpringConfigurationTest.class })
-public class EmbeddedIdTest extends AbstractTestNGSpringContextTests {
+public class BridgeEntityTest extends AbstractTestNGSpringContextTests {
 	private final String FIRST_NAME = "firstName" + System.currentTimeMillis();
 	private final String LAST_NAME = "lastName" + System.currentTimeMillis();
 
 	@Autowired
-	private EmbeddedIdService service;
+	private BridgeEntityService service;
 
 	@Test
 	public void save() throws Exception {
-		EmbeddedIdContainerEntity entity = generateEmbeddedIdContainerEntity();
+		BridgeEntity entity = generateBridgeEntity();
 		service.save(entity);
-		EmbeddedIdEmbeddableEntity id = generateEmbeddedIdEmbeddableEntity();
-		EmbeddedIdContainerEntity returnEntity = service.findOne(id);
+		BridgeEntity.BridgeEntityId id = generateBridgeEntityId();
+		BridgeEntity returnEntity = service.findOne(id);
 		Assert.assertNotNull(returnEntity);
 	}
 
-	private EmbeddedIdContainerEntity generateEmbeddedIdContainerEntity() {
-		EmbeddedIdContainerEntity entity = new EmbeddedIdContainerEntity();
-		entity.setId(generateEmbeddedIdEmbeddableEntity());
+	private BridgeEntity generateBridgeEntity() {
+		BridgeEntity entity = new BridgeEntity();
+		entity.setId(generateBridgeEntityId());
 		return entity;
 	}
 
-	private EmbeddedIdEmbeddableEntity generateEmbeddedIdEmbeddableEntity() {
-		EmbeddedIdEmbeddableEntity entity = new EmbeddedIdEmbeddableEntity();
+	private BridgeEntity.BridgeEntityId generateBridgeEntityId() {
+		BridgeEntity.BridgeEntityId entity = new BridgeEntity.BridgeEntityId();
 		entity.setFirstName(FIRST_NAME);
 		entity.setLastName(LAST_NAME);
 		return entity;

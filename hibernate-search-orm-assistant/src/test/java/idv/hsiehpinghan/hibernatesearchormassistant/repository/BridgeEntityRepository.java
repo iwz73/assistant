@@ -5,22 +5,21 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.EmbeddedIdContainerEntity;
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.EmbeddedIdEmbeddableEntity;
+import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
 
 @Repository
-public class EmbeddedIdRepository {
+public class BridgeEntityRepository {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void save(EmbeddedIdContainerEntity entity) {
+	public void save(BridgeEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
 		session.save(entity);
 	}
 
-	public EmbeddedIdContainerEntity findOne(EmbeddedIdEmbeddableEntity id) {
+	public BridgeEntity findOne(BridgeEntity.BridgeEntityId id) {
 		Session session = sessionFactory.getCurrentSession();
-		return (EmbeddedIdContainerEntity) session.get(EmbeddedIdContainerEntity.class, id);
+		return (BridgeEntity) session.get(BridgeEntity.class, id);
 	}
 
 }

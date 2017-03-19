@@ -14,9 +14,9 @@ import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Parameter;
 
-import idv.hsiehpinghan.hibernatesearchormassistant.bridge.EmbeddedIdTwoWayFieldBridgeBridge;
 import idv.hsiehpinghan.hibernatesearchormassistant.bridge.FieldBridgeBridge;
 import idv.hsiehpinghan.hibernatesearchormassistant.bridge.StringBridgeBridge;
+import idv.hsiehpinghan.hibernatesearchormassistant.bridge.TwoWayFieldBridgeBridge;
 import idv.hsiehpinghan.hibernatesearchormassistant.bridge.TwoWayStringBridgeBridge;
 
 @Entity
@@ -26,7 +26,7 @@ public class BridgeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@EmbeddedId
 	@DocumentId
-	@FieldBridge(impl = EmbeddedIdTwoWayFieldBridgeBridge.class)
+	@FieldBridge(impl = TwoWayFieldBridgeBridge.class)
 	private BridgeEntityId id;
 	@ElementCollection
 	@Field

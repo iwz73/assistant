@@ -10,7 +10,7 @@ import org.hibernate.search.bridge.TwoWayFieldBridge;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
 
-public class EmbeddedIdTwoWayFieldBridgeBridge implements TwoWayFieldBridge {
+public class TwoWayFieldBridgeBridge implements TwoWayFieldBridge {
 
 	@Override
 	public void set(String name, Object object, Document document, LuceneOptions luceneOptions) {

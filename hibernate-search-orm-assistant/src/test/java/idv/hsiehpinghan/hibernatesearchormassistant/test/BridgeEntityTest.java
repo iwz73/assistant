@@ -1,5 +1,8 @@
 package idv.hsiehpinghan.hibernatesearchormassistant.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -15,6 +18,9 @@ import idv.hsiehpinghan.hibernatesearchormassistant.service.BridgeEntityService;
 public class BridgeEntityTest extends AbstractTestNGSpringContextTests {
 	private final String FIRST_NAME = "firstName" + System.currentTimeMillis();
 	private final String LAST_NAME = "lastName" + System.currentTimeMillis();
+	private Map<String, Integer> fieldBridgeBridgeMap = generateFieldBridgeBridgeMap();
+	private double stringBridgeDouble = 12.34;
+	private double twoWayStringBridgeBridgeDouble = 23.45;
 
 	@Autowired
 	private BridgeEntityService service;
@@ -31,6 +37,9 @@ public class BridgeEntityTest extends AbstractTestNGSpringContextTests {
 	private BridgeEntity generateBridgeEntity() {
 		BridgeEntity entity = new BridgeEntity();
 		entity.setId(generateBridgeEntityId());
+		entity.setFieldBridgeBridgeMap(fieldBridgeBridgeMap);
+		entity.setStringBridgeDouble(stringBridgeDouble);
+		entity.setTwoWayStringBridgeBridgeDouble(twoWayStringBridgeBridgeDouble);
 		return entity;
 	}
 
@@ -39,5 +48,13 @@ public class BridgeEntityTest extends AbstractTestNGSpringContextTests {
 		entity.setFirstName(FIRST_NAME);
 		entity.setLastName(LAST_NAME);
 		return entity;
+	}
+
+	private Map<String, Integer> generateFieldBridgeBridgeMap() {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("A", 0);
+		map.put("B", 1);
+		map.put("C", 2);
+		return map;
 	}
 }

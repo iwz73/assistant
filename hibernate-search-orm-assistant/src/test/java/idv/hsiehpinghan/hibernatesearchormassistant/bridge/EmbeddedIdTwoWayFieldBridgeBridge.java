@@ -13,8 +13,11 @@ import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
 public class EmbeddedIdTwoWayFieldBridgeBridge implements TwoWayFieldBridge {
 
 	@Override
-	public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
-		BridgeEntity.BridgeEntityId bridgeEntityId = (BridgeEntity.BridgeEntityId) value;
+	public void set(String name, Object object, Document document, LuceneOptions luceneOptions) {
+		if ((object instanceof BridgeEntity.BridgeEntityId) == false) {
+			throw new RuntimeException("object class(" + object.getClass() + ") is not instance of Double !!!");
+		}
+		BridgeEntity.BridgeEntityId bridgeEntityId = (BridgeEntity.BridgeEntityId) object;
 		Store store = luceneOptions.getStore();
 		Float boost = luceneOptions.getBoost();
 		Field field = null;

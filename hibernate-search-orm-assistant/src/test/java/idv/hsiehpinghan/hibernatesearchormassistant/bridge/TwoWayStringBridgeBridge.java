@@ -3,9 +3,9 @@ package idv.hsiehpinghan.hibernatesearchormassistant.bridge;
 import java.util.Map;
 
 import org.hibernate.search.bridge.ParameterizedBridge;
-import org.hibernate.search.bridge.StringBridge;
+import org.hibernate.search.bridge.TwoWayStringBridge;
 
-public class StringBridgeBridge implements StringBridge, ParameterizedBridge {
+public class TwoWayStringBridgeBridge implements TwoWayStringBridge, ParameterizedBridge {
 	public double round;
 	public int length;
 	public String pad;
@@ -34,6 +34,11 @@ public class StringBridgeBridge implements StringBridge, ParameterizedBridge {
 		double roundedValue = round(value);
 		String result = pad(roundedValue);
 		return result;
+	}
+
+	@Override
+	public Object stringToObject(String stringValue) {
+		return Double.parseDouble(stringValue);
 	}
 
 	private double round(double value) {

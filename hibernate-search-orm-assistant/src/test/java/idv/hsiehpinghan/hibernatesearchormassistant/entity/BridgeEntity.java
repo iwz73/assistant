@@ -1,7 +1,9 @@
 package idv.hsiehpinghan.hibernatesearchormassistant.entity;
 
 import java.io.Serializable;
+import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -10,9 +12,12 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Parameter;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.bridge.EmbeddedIdTwoWayFieldBridgeBridge;
+import idv.hsiehpinghan.hibernatesearchormassistant.bridge.FieldBridgeBridge;
 import idv.hsiehpinghan.hibernatesearchormassistant.bridge.StringBridgeBridge;
+import idv.hsiehpinghan.hibernatesearchormassistant.bridge.TwoWayStringBridgeBridge;
 
 @Entity
 @Indexed
@@ -23,9 +28,18 @@ public class BridgeEntity implements Serializable {
 	@DocumentId
 	@FieldBridge(impl = EmbeddedIdTwoWayFieldBridgeBridge.class)
 	private BridgeEntityId id;
+	@ElementCollection
 	@Field
-	@FieldBridge(impl = StringBridgeBridge.class)
+	@FieldBridge(impl = FieldBridgeBridge.class)
+	private Map<String, Integer> fieldBridgeBridgeMap;
+	@Field
+	@FieldBridge(impl = StringBridgeBridge.class, params = { @Parameter(name = "round", value = "10.0"),
+			@Parameter(name = "length", value = "7"), @Parameter(name = "pad", value = "0") })
 	private double stringBridgeDouble;
+	@Field
+	@FieldBridge(impl = TwoWayStringBridgeBridge.class, params = { @Parameter(name = "round", value = "10.0"),
+			@Parameter(name = "length", value = "7"), @Parameter(name = "pad", value = "0") })
+	private double twoWayStringBridgeBridgeDouble;
 
 	public BridgeEntityId getId() {
 		return id;
@@ -35,12 +49,28 @@ public class BridgeEntity implements Serializable {
 		this.id = id;
 	}
 
+	public Map<String, Integer> getFieldBridgeBridgeMap() {
+		return fieldBridgeBridgeMap;
+	}
+
+	public void setFieldBridgeBridgeMap(Map<String, Integer> fieldBridgeBridgeMap) {
+		this.fieldBridgeBridgeMap = fieldBridgeBridgeMap;
+	}
+
 	public double getStringBridgeDouble() {
 		return stringBridgeDouble;
 	}
 
 	public void setStringBridgeDouble(double stringBridgeDouble) {
 		this.stringBridgeDouble = stringBridgeDouble;
+	}
+
+	public double getTwoWayStringBridgeBridgeDouble() {
+		return twoWayStringBridgeBridgeDouble;
+	}
+
+	public void setTwoWayStringBridgeBridgeDouble(double twoWayStringBridgeBridgeDouble) {
+		this.twoWayStringBridgeBridgeDouble = twoWayStringBridgeBridgeDouble;
 	}
 
 	@Override

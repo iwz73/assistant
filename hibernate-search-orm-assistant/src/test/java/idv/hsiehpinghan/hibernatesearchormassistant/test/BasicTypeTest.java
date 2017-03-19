@@ -6,6 +6,10 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Currency;
@@ -88,6 +92,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private char[] lobCharArray = getCharArray();
 	private Enumeration stringEnumeration = Enumeration.ENUM_2;
 	private Enumeration ordinalEnumeration = Enumeration.ENUM_3;
+	private URL url = getUrl();
+	private URI uri = getUri();
 	private String englishString_0 = "this is a lucene string_0";
 	private String englishString_1 = "this is a lucene string_1";
 	private Date yearResolutionDate = Calendar.getInstance().getTime();
@@ -247,6 +253,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getLobCharArray(), lobCharArray);
 		Assert.assertEquals(returnEntity.getStringEnumeration(), stringEnumeration);
 		Assert.assertEquals(returnEntity.getOrdinalEnumeration(), ordinalEnumeration);
+		Assert.assertEquals(returnEntity.getUrl(), url);
+		Assert.assertEquals(returnEntity.getUri(), uri);
 		Assert.assertEquals(returnEntity.getEnglishString_0(), englishString_0);
 		Assert.assertEquals(returnEntity.getEnglishString_1(), englishString_1);
 		Assert.assertEquals(returnEntity.getYearResolutionDate().getTime(),
@@ -312,6 +320,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setLobCharArray(lobCharArray);
 		entity.setStringEnumeration(stringEnumeration);
 		entity.setOrdinalEnumeration(ordinalEnumeration);
+		entity.setUrl(url);
+		entity.setUri(uri);
 		entity.setEnglishString_0(englishString_0);
 		entity.setEnglishString_1(englishString_1);
 		entity.setYearResolutionDate(yearResolutionDate);
@@ -342,6 +352,22 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private String convertToString(java.sql.Blob blob) throws SQLException, IOException {
 		InputStream inputStream = blob.getBinaryStream();
 		return InputStreamUtility.readAsString(inputStream);
+	}
+
+	private URL getUrl() {
+		try {
+			return new URL("http://www.google.com/");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private URI getUri() {
+		try {
+			return new URI("http://www.google.com/");
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

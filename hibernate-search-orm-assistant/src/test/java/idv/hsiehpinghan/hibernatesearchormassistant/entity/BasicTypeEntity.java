@@ -3,6 +3,8 @@ package idv.hsiehpinghan.hibernatesearchormassistant.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -22,7 +24,10 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -126,8 +131,12 @@ public class BasicTypeEntity implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private Enumeration ordinalEnumeration;
 	@Field
-	private String englishString_0;
+	private URL url;
 	@Field
+	private URI uri;
+	@Field
+	private String englishString_0;
+	@Field(analyzer = @Analyzer(impl = StandardAnalyzer.class), boost = @Boost(0.5f))
 	private String englishString_1;
 	@Field
 	@DateBridge(resolution = Resolution.YEAR)
@@ -506,6 +515,22 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setOrdinalEnumeration(Enumeration ordinalEnumeration) {
 		this.ordinalEnumeration = ordinalEnumeration;
+	}
+
+	public URL getUrl() {
+		return url;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	public URI getUri() {
+		return uri;
+	}
+
+	public void setUri(URI uri) {
+		this.uri = uri;
 	}
 
 	public String getEnglishString_0() {

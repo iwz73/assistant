@@ -8,7 +8,6 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -35,6 +34,11 @@ public class BasicTypeRepository {
 	public void remove(BasicTypeEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
 		session.remove(entity);
+	}
+
+	public void saveOrUpdate(BasicTypeEntity entity) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(entity);
 	}
 
 	public BasicTypeEntity findOne(int id) {
@@ -70,7 +74,7 @@ public class BasicTypeRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) throws ParseException {
+	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) {
 		Session session = sessionFactory.getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);

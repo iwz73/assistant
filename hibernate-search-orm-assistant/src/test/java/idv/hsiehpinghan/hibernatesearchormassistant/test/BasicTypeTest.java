@@ -24,7 +24,6 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialClob;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
@@ -126,6 +125,19 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "save" })
+	public void saveOrUpdate() throws Exception {
+		BasicTypeEntity entity = generateBasicTypeEntity();
+		service.saveOrUpdate(entity);
+		id = entity.getId();
+		String queryString = "+string:lucene +id:" + id;
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+
+	@Test(dependsOnMethods = { "saveOrUpdate" })
 	public void reindexAll() {
 		int result = service.reindexAll();
 		Assert.assertTrue(result > 0);
@@ -227,24 +239,22 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getCurrency(), currency);
 		Assert.assertEquals(returnEntity.getClazz(), clazz);
 		Assert.assertEquals(returnEntity.getSerializable().getClass(), serializable.getClass());
-		Assert.assertEquals(returnEntity.getDate().getTime(), DateUtils.truncate(date, Calendar.SECOND).getTime());
+		Assert.assertTrue(returnEntity.getDate().getTime() - date.getTime() < 1000);
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(dateDate, "yyyy/MM/dd"));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getTimeDate(), "hh:mm:ss"),
 				DateFormatUtils.format(timeDate, "hh:mm:ss"));
-		Assert.assertEquals(returnEntity.getTimestampDate().getTime(),
-				DateUtils.truncate(timestampDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getCalendar(), DateUtils.truncate(calendar, Calendar.SECOND));
+		Assert.assertTrue(returnEntity.getTimestampDate().getTime() - timestampDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getCalendar().getTimeInMillis() - calendar.getTimeInMillis() < 1000);
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getDateCalendar(), "yyyy/MM/dd"),
 				DateFormatUtils.format(dateCalendar, "yyyy/MM/dd"));
-		Assert.assertEquals(returnEntity.getTimestampCalendar(),
-				DateUtils.truncate(timestampCalendar, Calendar.SECOND));
+		Assert.assertTrue(
+				returnEntity.getTimestampCalendar().getTimeInMillis() - timestampCalendar.getTimeInMillis() < 1000);
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlDate(), "yyyy/MM/dd"),
 				DateFormatUtils.format(sqlDate.getTime(), "yyyy/MM/dd"));
 		Assert.assertEquals(DateFormatUtils.format(returnEntity.getSqlTime(), "hh:mm:ss"),
 				DateFormatUtils.format(sqlTime, "hh:mm:ss"));
-		Assert.assertEquals(returnEntity.getSqlTimestamp().getTime(),
-				DateUtils.truncate(sqlTimestamp, Calendar.SECOND).getTime());
+		Assert.assertTrue(returnEntity.getSqlTimestamp().getTime() - sqlTimestamp.getTime() < 1000);
 		Assert.assertEquals(service.findClobAsString(id), convertToString(clob));
 		Assert.assertEquals(service.findBlobAsString(id), convertToString(blob));
 		Assert.assertEquals(returnEntity.getByteArray(), byteArray);
@@ -257,20 +267,14 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getUri(), uri);
 		Assert.assertEquals(returnEntity.getEnglishString_0(), englishString_0);
 		Assert.assertEquals(returnEntity.getEnglishString_1(), englishString_1);
-		Assert.assertEquals(returnEntity.getYearResolutionDate().getTime(),
-				DateUtils.truncate(yearResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getMonthResolutionDate().getTime(),
-				DateUtils.truncate(monthResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getDayResolutionDate().getTime(),
-				DateUtils.truncate(dayResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getHourResolutionDate().getTime(),
-				DateUtils.truncate(hourResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getMinuteResolutionDate().getTime(),
-				DateUtils.truncate(minuteResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getSecondResolutionDate().getTime(),
-				DateUtils.truncate(secondResolutionDate, Calendar.SECOND).getTime());
-		Assert.assertEquals(returnEntity.getMillisecondResolutionDate().getTime(),
-				DateUtils.truncate(millisecondResolutionDate, Calendar.SECOND).getTime());
+		Assert.assertTrue(returnEntity.getYearResolutionDate().getTime() - yearResolutionDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getMonthResolutionDate().getTime() - monthResolutionDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getDayResolutionDate().getTime() - dayResolutionDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getHourResolutionDate().getTime() - hourResolutionDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getMinuteResolutionDate().getTime() - minuteResolutionDate.getTime() < 1000);
+		Assert.assertTrue(returnEntity.getSecondResolutionDate().getTime() - secondResolutionDate.getTime() < 1000);
+		Assert.assertTrue(
+				returnEntity.getMillisecondResolutionDate().getTime() - millisecondResolutionDate.getTime() < 1000);
 		Assert.assertEquals(returnEntity.getNoAnalyzeString(), noAnalyzeString);
 		Assert.assertEquals(returnEntity.getMultiAnalyzeString(), multiAnalyzeString);
 	}

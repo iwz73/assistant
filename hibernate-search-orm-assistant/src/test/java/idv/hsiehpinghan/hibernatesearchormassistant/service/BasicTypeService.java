@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +20,10 @@ public class BasicTypeService {
 
 	public void save(BasicTypeEntity entity) {
 		repository.save(entity);
+	}
+
+	public void saveOrUpdate(BasicTypeEntity entity) {
+		repository.saveOrUpdate(entity);
 	}
 
 	public void remove(BasicTypeEntity entity) {
@@ -48,7 +51,7 @@ public class BasicTypeService {
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) throws ParseException {
+	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) {
 		return repository.luceneQuery(query);
 	}
 }

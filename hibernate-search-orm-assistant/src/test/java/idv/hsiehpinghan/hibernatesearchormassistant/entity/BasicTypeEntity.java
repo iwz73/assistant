@@ -33,6 +33,7 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.NumericField;
 import org.hibernate.search.annotations.Resolution;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
@@ -57,24 +58,34 @@ public class BasicTypeEntity implements Serializable {
 	private char primativeChar;
 	private Character wrappedChar;
 	@Field
+	@NumericField
 	private double primativeDouble;
 	@Field
+	@NumericField
 	private Double wrappedDouble;
 	@Field
+	@NumericField
 	private float primativeFloat;
 	@Field
+	@NumericField
 	private Float wrappedFloat;
 	@Field
+	@NumericField
 	private int primativeInt;
 	@Field
+	@NumericField
 	private Integer wrappedInt;
 	@Field
+	@NumericField
 	private long primativeLong;
 	@Field
+	@NumericField
 	private Long wrappedLong;
 	@Field
+	@NumericField
 	private short primativeShort;
 	@Field
+	@NumericField
 	private Short wrappedShort;
 	// object
 	@Field
@@ -83,8 +94,10 @@ public class BasicTypeEntity implements Serializable {
 	@Basic(fetch = FetchType.LAZY)
 	private String lobString;
 	@Field
+	@NumericField
 	private BigInteger bigInteger;
 	@Field
+	@NumericField
 	private BigDecimal bigDecimal;
 	private Locale locale;
 	private TimeZone timeZone;

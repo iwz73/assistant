@@ -46,7 +46,7 @@ public class IndexedEmbeddedManyToManyBidirectionTest extends AbstractTestNGSpri
 	@Test(dependsOnMethods = { "saveOrUpdate" })
 	public void luceneQuery() throws Exception {
 		for (int i = 0; i < SIZE; ++i) {
-			String queryString = String.format("+tos.stringValue:%s", STRING_VALUE + 1);
+			String queryString = String.format("+tos.stringValue:%s", STRING_VALUE + i);
 			Analyzer analyzer = new StandardAnalyzer();
 			QueryParser queryParser = new QueryParser(null, analyzer);
 			org.apache.lucene.search.Query query = queryParser.parse(queryString);

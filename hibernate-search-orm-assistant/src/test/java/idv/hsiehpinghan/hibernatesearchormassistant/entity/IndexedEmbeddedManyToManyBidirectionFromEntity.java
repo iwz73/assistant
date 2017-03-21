@@ -20,8 +20,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Indexed
 public class IndexedEmbeddedManyToManyBidirectionFromEntity {
 	@Id
-	@DocumentId
 	@Column(name = "id", updatable = false, nullable = false)
+	@DocumentId
 	private Integer id;
 	@Field
 	private String stringValue;

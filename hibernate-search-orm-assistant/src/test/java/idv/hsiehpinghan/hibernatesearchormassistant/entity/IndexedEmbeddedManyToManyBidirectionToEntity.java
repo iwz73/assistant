@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 @Entity
@@ -19,9 +20,8 @@ public class IndexedEmbeddedManyToManyBidirectionToEntity {
 	@DocumentId
 	@Column(name = "id", updatable = false, nullable = false)
 	private Integer id;
-
+	@Field
 	private String stringValue;
-
 	@ContainedIn
 	@ManyToMany(mappedBy = "tos")
 	private Collection<IndexedEmbeddedManyToManyBidirectionFromEntity> froms;

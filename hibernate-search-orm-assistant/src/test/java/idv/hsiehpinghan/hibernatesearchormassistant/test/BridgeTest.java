@@ -15,7 +15,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.entity.BridgeEntity;
 import idv.hsiehpinghan.hibernatesearchormassistant.service.BridgeEntityService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class, SpringConfigurationTest.class })
-public class BridgeEntityTest extends AbstractTestNGSpringContextTests {
+public class BridgeTest extends AbstractTestNGSpringContextTests {
 	private final String FIRST_NAME = "firstName" + System.currentTimeMillis();
 	private final String LAST_NAME = "lastName" + System.currentTimeMillis();
 	private Map<String, Integer> fieldBridgeBridgeMap = generateFieldBridgeBridgeMap();

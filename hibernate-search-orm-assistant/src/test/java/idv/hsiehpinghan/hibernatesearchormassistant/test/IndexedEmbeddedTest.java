@@ -24,7 +24,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.entity.IndexedEmbeddedEntity
 import idv.hsiehpinghan.hibernatesearchormassistant.service.IndexedEmbeddedService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class, SpringConfigurationTest.class })
-public class IndexedEmbeddedEntityTest extends AbstractTestNGSpringContextTests {
+public class IndexedEmbeddedTest extends AbstractTestNGSpringContextTests {
 	private final int SIZE = 3;
 	private final String KEY = "key";
 	private final String NAME = "name" + System.currentTimeMillis();

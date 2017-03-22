@@ -38,6 +38,14 @@ public class BasicTypeService {
 		repository.reindexAll();
 	}
 
+	public void unindex(Integer id) {
+		repository.unindex(id);
+	}
+
+	public void unindexAll() throws InterruptedException {
+		repository.unindexAll();
+	}
+
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public BasicTypeEntity findOne(int id) {
 		return repository.findOne(id);

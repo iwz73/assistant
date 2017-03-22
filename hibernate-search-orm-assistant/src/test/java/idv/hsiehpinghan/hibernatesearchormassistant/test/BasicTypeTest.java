@@ -129,40 +129,46 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		service.saveOrUpdate(entity);
 		id = entity.getId();
-		String queryString = "+string:lucene +id:" + id;
-		Analyzer analyzer = new StandardAnalyzer();
-		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
-		org.apache.lucene.search.Query query = queryParser.parse(queryString);
-		List<BasicTypeEntity> entities = service.luceneQuery(query);
-		Assert.assertTrue(entities.size() > 0);
+		assertIndexedAmount(id, 1);
 	}
 
 	@Test(dependsOnMethods = { "saveOrUpdate" })
-	public void reindexAll() throws Exception {
-		service.reindexAll();
-	}
-
-	@Test(dependsOnMethods = { "reindexAll" })
 	public void luceneQuery() throws Exception {
 		testQueryParser();
 		testMultiFieldQueryParser();
 		testNoAnalyzeString();
 		testMultiAnalyzeString();
 	}
-
+	
 	@Test(dependsOnMethods = { "luceneQuery" })
+	public void unindex() throws Exception {
+		service.unindex(id);
+		assertIndexedAmount(id, 0);
+	}
+	
+	@Test(dependsOnMethods = { "unindex" })
+	public void reindexAll() throws Exception {
+		service.reindexAll();
+		assertIndexedAmount(id, 1);
+	}
+
+	@Test(dependsOnMethods = { "reindexAll" })
 	public void remove() throws Exception {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		entity.setId(id);
 		service.remove(entity);
+		assertIndexedAmount(id, 0);
+	}
+	
+	private void assertIndexedAmount(int id, int amount) throws ParseException {
 		String queryString = "+string:lucene +id:" + id;
 		Analyzer analyzer = new StandardAnalyzer();
 		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
 		org.apache.lucene.search.Query query = queryParser.parse(queryString);
 		List<BasicTypeEntity> entities = service.luceneQuery(query);
-		Assert.assertEquals(entities.size(), 0);
+		Assert.assertEquals(entities.size(), amount);
 	}
-
+	
 	private void testQueryParser() throws ParseException {
 		String queryString = "string:lucene";
 		Analyzer analyzer = new StandardAnalyzer();

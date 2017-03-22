@@ -74,6 +74,18 @@ public class BasicTypeRepository {
 		fullTextSession.createIndexer(BasicTypeEntity.class).startAndWait();
 	}
 
+	public void unindex(Integer id) {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		fullTextSession.purge(BasicTypeEntity.class, id);
+	}
+
+	public void unindexAll() throws InterruptedException {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		fullTextSession.purgeAll(BasicTypeEntity.class);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) {
 		Session session = sessionFactory.getCurrentSession();

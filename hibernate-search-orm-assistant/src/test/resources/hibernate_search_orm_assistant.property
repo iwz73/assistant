@@ -16,5 +16,7 @@ hibernate.jdbc.fetch_size=5
 hibernate.jdbc.batch_size=5
 # hibernate-search-orm
 hibernate.search.default.directory_provider=filesystem
+hibernate.search.idv.hsiehpinghan.hibernatesearchormassistant.entity.RamDirectoryProviderEntity.directory_provider=ram
 hibernate.search.default.indexBase=/tmp/hibernate_search_orm/index
+
 

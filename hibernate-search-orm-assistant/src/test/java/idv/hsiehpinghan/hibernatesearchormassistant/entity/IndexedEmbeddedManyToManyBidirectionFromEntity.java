@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -19,10 +20,10 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Indexed
 public class IndexedEmbeddedManyToManyBidirectionFromEntity {
 	@Id
-	@DocumentId
 	@Column(name = "id", updatable = false, nullable = false)
+	@DocumentId
 	private Integer id;
-
+	@Field
 	private String stringValue;
 
 	@IndexedEmbedded

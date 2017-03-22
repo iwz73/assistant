@@ -10,31 +10,30 @@ import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import idv.hsiehpinghan.hibernatesearchormassistant.entity.IndexedEmbeddedManyToManyBidirectionFromEntity;
+import idv.hsiehpinghan.hibernatesearchormassistant.entity.IndexedEmbeddedOneToManyBidirectionOneEntity;
 
 @Repository
-public class IndexedEmbeddedManyToManyBidirectionRepository {
+public class IndexedEmbeddedOneToManyBidirectionRepository {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void saveOrUpdate(IndexedEmbeddedManyToManyBidirectionFromEntity entity) {
+	public void save(IndexedEmbeddedOneToManyBidirectionOneEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(entity);
+		session.save(entity);
 	}
 
-	public IndexedEmbeddedManyToManyBidirectionFromEntity findOne(int id) {
+	public IndexedEmbeddedOneToManyBidirectionOneEntity findOne(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		return (IndexedEmbeddedManyToManyBidirectionFromEntity) session
-				.get(IndexedEmbeddedManyToManyBidirectionFromEntity.class, id);
+		return (IndexedEmbeddedOneToManyBidirectionOneEntity) session
+				.get(IndexedEmbeddedOneToManyBidirectionOneEntity.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<IndexedEmbeddedManyToManyBidirectionFromEntity> luceneQuery(org.apache.lucene.search.Query query) {
+	public List<IndexedEmbeddedOneToManyBidirectionOneEntity> luceneQuery(org.apache.lucene.search.Query query) {
 		Session session = sessionFactory.getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query,
-				IndexedEmbeddedManyToManyBidirectionFromEntity.class);
+				IndexedEmbeddedOneToManyBidirectionOneEntity.class);
 		return fullTextQuery.list();
 	}
-
 }

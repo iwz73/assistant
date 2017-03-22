@@ -30,8 +30,12 @@ public class BasicTypeService {
 		repository.remove(entity);
 	}
 
-	public int reindexAll() {
-		return repository.reindexAll();
+	public void reindex(BasicTypeEntity entity) {
+		repository.reindex(entity);
+	}
+
+	public void reindexAll() throws InterruptedException {
+		repository.reindexAll();
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

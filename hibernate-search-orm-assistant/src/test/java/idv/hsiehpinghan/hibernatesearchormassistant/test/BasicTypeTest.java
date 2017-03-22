@@ -138,9 +138,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "saveOrUpdate" })
-	public void reindexAll() {
-		int result = service.reindexAll();
-		Assert.assertTrue(result > 0);
+	public void reindexAll() throws Exception {
+		service.reindexAll();
 	}
 
 	@Test(dependsOnMethods = { "reindexAll" })

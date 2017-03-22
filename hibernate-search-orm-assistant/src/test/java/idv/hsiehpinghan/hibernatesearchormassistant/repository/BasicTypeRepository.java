@@ -62,15 +62,16 @@ public class BasicTypeRepository {
 		return convertToString(blob);
 	}
 
-	public int reindexAll() {
+	public void reindex(BasicTypeEntity entity) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<BasicTypeEntity> query = session.createQuery("from BasicTypeEntity ", BasicTypeEntity.class);
-		List<BasicTypeEntity> entities = query.getResultList();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
-		for (BasicTypeEntity entity : entities) {
-			fullTextSession.index(entity);
-		}
-		return entities.size();
+		fullTextSession.index(entity);
+	}
+
+	public void reindexAll() throws InterruptedException {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		fullTextSession.createIndexer(BasicTypeEntity.class).startAndWait();
 	}
 
 	@SuppressWarnings("unchecked")

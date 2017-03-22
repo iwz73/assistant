@@ -139,27 +139,27 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		testNoAnalyzeString();
 		testMultiAnalyzeString();
 	}
-	
+
 	@Test(dependsOnMethods = { "luceneQuery" })
 	public void unindex() throws Exception {
 		service.unindex(id);
 		assertIndexedAmount(id, 0);
 	}
-	
+
 	@Test(dependsOnMethods = { "unindex" })
-	public void reindexAll() throws Exception {
-		service.reindexAll();
+	public void manualReindexAll() throws Exception {
+		service.manualReindexAll();
 		assertIndexedAmount(id, 1);
 	}
 
-	@Test(dependsOnMethods = { "reindexAll" })
+	@Test(dependsOnMethods = { "manualReindexAll" })
 	public void remove() throws Exception {
 		BasicTypeEntity entity = generateBasicTypeEntity();
 		entity.setId(id);
 		service.remove(entity);
 		assertIndexedAmount(id, 0);
 	}
-	
+
 	private void assertIndexedAmount(int id, int amount) throws ParseException {
 		String queryString = "+string:lucene +id:" + id;
 		Analyzer analyzer = new StandardAnalyzer();
@@ -168,7 +168,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		List<BasicTypeEntity> entities = service.luceneQuery(query);
 		Assert.assertEquals(entities.size(), amount);
 	}
-	
+
 	private void testQueryParser() throws ParseException {
 		String queryString = "string:lucene";
 		Analyzer analyzer = new StandardAnalyzer();

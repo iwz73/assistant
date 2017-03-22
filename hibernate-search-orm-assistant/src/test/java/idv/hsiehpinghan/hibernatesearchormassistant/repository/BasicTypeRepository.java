@@ -8,6 +8,10 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.CacheMode;
+import org.hibernate.FlushMode;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -23,6 +27,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.utility.ReaderUtility;
 
 @Repository
 public class BasicTypeRepository {
+	private final int BATCH_SIZE = 10;
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -72,6 +77,24 @@ public class BasicTypeRepository {
 		Session session = sessionFactory.getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		fullTextSession.createIndexer(BasicTypeEntity.class).startAndWait();
+	}
+
+	public void manualReindexAll() throws InterruptedException {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		fullTextSession.setHibernateFlushMode(FlushMode.MANUAL);
+		fullTextSession.setCacheMode(CacheMode.IGNORE);
+		Query<BasicTypeEntity> query = session.createQuery("from BasicTypeEntity ", BasicTypeEntity.class);
+		ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
+		int i = 0;
+		while (scrollableResults.next()) {
+			++i;
+			fullTextSession.index(scrollableResults.get(0));
+			if (i % BATCH_SIZE == 0) {
+				fullTextSession.flushToIndexes();
+				fullTextSession.clear();
+			}
+		}
 	}
 
 	public void unindex(Integer id) {

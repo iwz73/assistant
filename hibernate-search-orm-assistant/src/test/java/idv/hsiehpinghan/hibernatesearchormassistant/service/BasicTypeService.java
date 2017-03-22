@@ -38,6 +38,10 @@ public class BasicTypeService {
 		repository.reindexAll();
 	}
 
+	public void manualReindexAll() throws InterruptedException {
+		repository.manualReindexAll();
+	}
+
 	public void unindex(Integer id) {
 		repository.unindex(id);
 	}

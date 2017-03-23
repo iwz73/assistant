@@ -265,8 +265,9 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private Sort generateSort() {
-		SortField sortField = new SortField("sortString", SortField.Type.STRING_VAL);
-		Sort sort = new Sort(sortField);
+		SortField sortField_0 = SortField.FIELD_DOC;
+		SortField sortField_1 = new SortField("sortString", SortField.Type.STRING_VAL);
+		Sort sort = new Sort(sortField_0, sortField_1);
 		return sort;
 	}
 

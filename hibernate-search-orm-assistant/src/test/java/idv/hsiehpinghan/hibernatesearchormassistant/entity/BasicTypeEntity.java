@@ -35,6 +35,7 @@ import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.NumericField;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.Store;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 
@@ -177,6 +178,8 @@ public class BasicTypeEntity implements Serializable {
 	@Fields({ @Field(name = "multiAnalyzeStringYes", analyze = Analyze.YES),
 			@Field(name = "multiAnalyzeStringNo", analyze = Analyze.NO) })
 	private String multiAnalyzeString;
+	@Field(store = Store.YES)
+	private String projectionString;
 
 	public Integer getId() {
 		return id;
@@ -632,6 +635,14 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setMultiAnalyzeString(String multiAnalyzeString) {
 		this.multiAnalyzeString = multiAnalyzeString;
+	}
+
+	public String getProjectionString() {
+		return projectionString;
+	}
+
+	public void setProjectionString(String projectionString) {
+		this.projectionString = projectionString;
 	}
 
 	@Override

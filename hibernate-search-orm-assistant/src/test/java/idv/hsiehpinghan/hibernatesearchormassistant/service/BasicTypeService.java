@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.hibernatesearchormassistant.repository.BasicTypeRepository;
+import idv.hsiehpinghan.hibernatesearchormassistant.vo.ProjectionVo;
 
 @Service
 @Transactional
@@ -69,5 +70,10 @@ public class BasicTypeService {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<BasicTypeEntity> luceneQuery(org.apache.lucene.search.Query query) {
 		return repository.luceneQuery(query);
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public List<ProjectionVo> projection(org.apache.lucene.search.Query query, String... projections) {
+		return repository.projection(query, projections);
 	}
 }

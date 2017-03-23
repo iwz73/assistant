@@ -31,6 +31,7 @@ import org.apache.lucene.queries.TermsQuery;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.hibernate.search.FullTextQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -45,6 +46,7 @@ import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.hibernatesearchormassistant.service.BasicTypeService;
 import idv.hsiehpinghan.hibernatesearchormassistant.utility.InputStreamUtility;
 import idv.hsiehpinghan.hibernatesearchormassistant.utility.ReaderUtility;
+import idv.hsiehpinghan.hibernatesearchormassistant.vo.ProjectionVo;
 
 @ContextConfiguration(classes = { SpringConfiguration.class, SpringConfigurationTest.class })
 public class BasicTypeTest extends AbstractTestNGSpringContextTests {
@@ -104,7 +106,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private Date millisecondResolutionDate = Calendar.getInstance().getTime();
 	private String noAnalyzeString = "no analyze string";
 	private String multiAnalyzeString = "multi analyze string";
-
+	private String projectionString = "projection string";
+	
 	private int id;
 	@Autowired
 	private BasicTypeService service;
@@ -141,6 +144,21 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "luceneQuery" })
+	public void projection() throws Exception {
+		String queryString = "+projectionString:projection +id:" + id;
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		String[] projections = new String[]{"projectionString"};
+		List<ProjectionVo> entities = service.projection(query, projections);
+		for(ProjectionVo entity : entities) {
+			System.err.println(entity.getProjectionString());
+		}
+//		Assert.assertEquals(entities.size(), amount);
+		
+	}
+	
+	@Test(dependsOnMethods = { "projection" })
 	public void unindex() throws Exception {
 		service.unindex(id);
 		assertIndexedAmount(id, 0);
@@ -159,7 +177,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		service.remove(entity);
 		assertIndexedAmount(id, 0);
 	}
-
+	
 	private void assertIndexedAmount(int id, int amount) throws ParseException {
 		String queryString = "+string:lucene +id:" + id;
 		Analyzer analyzer = new StandardAnalyzer();
@@ -282,6 +300,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 				returnEntity.getMillisecondResolutionDate().getTime() - millisecondResolutionDate.getTime() < 1000);
 		Assert.assertEquals(returnEntity.getNoAnalyzeString(), noAnalyzeString);
 		Assert.assertEquals(returnEntity.getMultiAnalyzeString(), multiAnalyzeString);
+		Assert.assertEquals(returnEntity.getProjectionString(), projectionString);
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -342,6 +361,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setMillisecondResolutionDate(millisecondResolutionDate);
 		entity.setNoAnalyzeString(noAnalyzeString);
 		entity.setMultiAnalyzeString(multiAnalyzeString);
+		entity.setProjectionString(projectionString);
 		return entity;
 	}
 

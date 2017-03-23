@@ -18,12 +18,15 @@ import org.hibernate.query.Query;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.hibernate.transform.ResultTransformer;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.entity.BasicTypeEntity;
 import idv.hsiehpinghan.hibernatesearchormassistant.utility.InputStreamUtility;
 import idv.hsiehpinghan.hibernatesearchormassistant.utility.ReaderUtility;
+import idv.hsiehpinghan.hibernatesearchormassistant.vo.ProjectionVo;
 
 @Repository
 public class BasicTypeRepository {
@@ -85,14 +88,15 @@ public class BasicTypeRepository {
 		fullTextSession.setHibernateFlushMode(FlushMode.MANUAL);
 		fullTextSession.setCacheMode(CacheMode.IGNORE);
 		Query<BasicTypeEntity> query = session.createQuery("from BasicTypeEntity ", BasicTypeEntity.class);
-		ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
-		int i = 0;
-		while (scrollableResults.next()) {
-			++i;
-			fullTextSession.index(scrollableResults.get(0));
-			if (i % BATCH_SIZE == 0) {
-				fullTextSession.flushToIndexes();
-				fullTextSession.clear();
+		try (ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY)) {
+			int i = 0;
+			while (scrollableResults.next()) {
+				++i;
+				fullTextSession.index(scrollableResults.get(0));
+				if (i % BATCH_SIZE == 0) {
+					fullTextSession.flushToIndexes();
+					fullTextSession.clear();
+				}
 			}
 		}
 	}
@@ -115,6 +119,15 @@ public class BasicTypeRepository {
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);
 		return fullTextQuery.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProjectionVo> projection(org.apache.lucene.search.Query query, String... projections) {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);
+		ResultTransformer resultTransformer = Transformers.aliasToBean(ProjectionVo.class);
+		return fullTextQuery.setProjection(projections).setResultTransformer(resultTransformer).list();
 	}
 
 	private String convertToString(java.sql.Clob clob) throws SQLException, IOException {

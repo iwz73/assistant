@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.lucene.search.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,6 +50,10 @@ public class BasicTypeService {
 
 	public void unindexAll() throws InterruptedException {
 		repository.unindexAll();
+	}
+
+	public List<BasicTypeEntity> sort(org.apache.lucene.search.Query query, Sort sort) {
+		return repository.sort(query, sort);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

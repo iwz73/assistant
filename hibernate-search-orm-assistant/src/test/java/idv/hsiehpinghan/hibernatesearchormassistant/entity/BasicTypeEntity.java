@@ -180,6 +180,8 @@ public class BasicTypeEntity implements Serializable {
 	private String multiAnalyzeString;
 	@Field(store = Store.YES)
 	private String projectionString;
+	@Field(analyze = Analyze.NO)
+	private String sortString;
 
 	public Integer getId() {
 		return id;
@@ -643,6 +645,14 @@ public class BasicTypeEntity implements Serializable {
 
 	public void setProjectionString(String projectionString) {
 		this.projectionString = projectionString;
+	}
+
+	public String getSortString() {
+		return sortString;
+	}
+
+	public void setSortString(String sortString) {
+		this.sortString = sortString;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.lucene.search.Sort;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 import org.hibernate.ScrollMode;
@@ -128,6 +129,15 @@ public class BasicTypeRepository {
 		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);
 		ResultTransformer resultTransformer = Transformers.aliasToBean(ProjectionVo.class);
 		return fullTextQuery.setProjection(projections).setResultTransformer(resultTransformer).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<BasicTypeEntity> sort(org.apache.lucene.search.Query query, Sort sort) {
+		Session session = sessionFactory.getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, BasicTypeEntity.class);
+		fullTextQuery.setSort(sort);
+		return fullTextQuery.list();
 	}
 
 	private String convertToString(java.sql.Clob clob) throws SQLException, IOException {

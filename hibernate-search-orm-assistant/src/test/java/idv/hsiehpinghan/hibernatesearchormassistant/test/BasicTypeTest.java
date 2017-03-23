@@ -31,6 +31,8 @@ import org.apache.lucene.queries.TermsQuery;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.hibernate.search.FullTextQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -107,6 +109,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private String noAnalyzeString = "no analyze string";
 	private String multiAnalyzeString = "multi analyze string";
 	private String projectionString = "projection string";
+	private String sortString = "sort string " + System.currentTimeMillis();
 
 	private int id;
 	@Autowired
@@ -175,6 +178,22 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "unindex" })
+	public void sort() throws Exception {
+		String queryString = "string:lucene";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		Sort sort = generateSort();
+		List<BasicTypeEntity> entities = service.sort(query, sort);
+		String previousSortString = "";
+		for (BasicTypeEntity entity : entities) {
+			String sortString = entity.getSortString();
+			Assert.assertTrue(previousSortString.compareTo(sortString) < 0);
+			previousSortString = sortString;
+		}
+	}
+
+	@Test(dependsOnMethods = { "sort" })
 	public void manualReindexAll() throws Exception {
 		service.manualReindexAll();
 		assertIndexedAmount(id, 1);
@@ -245,6 +264,12 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		return map;
 	}
 
+	private Sort generateSort() {
+		SortField sortField = new SortField("sortString", SortField.Type.STRING_VAL);
+		Sort sort = new Sort(sortField);
+		return sort;
+	}
+
 	private void assertBasicTypeEntity(BasicTypeEntity returnEntity) throws SQLException, IOException, Exception {
 		int id = returnEntity.getId();
 		Assert.assertEquals(returnEntity.isPrimativeBoolean(), primativeBoolean);
@@ -311,6 +336,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnEntity.getNoAnalyzeString(), noAnalyzeString);
 		Assert.assertEquals(returnEntity.getMultiAnalyzeString(), multiAnalyzeString);
 		Assert.assertEquals(returnEntity.getProjectionString(), projectionString);
+		Assert.assertEquals(returnEntity.getSortString(), sortString);
 	}
 
 	private BasicTypeEntity generateBasicTypeEntity() {
@@ -372,6 +398,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		entity.setNoAnalyzeString(noAnalyzeString);
 		entity.setMultiAnalyzeString(multiAnalyzeString);
 		entity.setProjectionString(projectionString);
+		entity.setSortString(sortString);
 		return entity;
 	}
 

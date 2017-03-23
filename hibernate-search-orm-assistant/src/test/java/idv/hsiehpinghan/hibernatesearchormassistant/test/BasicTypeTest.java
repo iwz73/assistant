@@ -107,7 +107,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	private String noAnalyzeString = "no analyze string";
 	private String multiAnalyzeString = "multi analyze string";
 	private String projectionString = "projection string";
-	
+
 	private int id;
 	@Autowired
 	private BasicTypeService service;
@@ -149,15 +149,25 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Analyzer analyzer = new StandardAnalyzer();
 		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
 		org.apache.lucene.search.Query query = queryParser.parse(queryString);
-		String[] projections = new String[]{"projectionString"};
+		String[] projections = new String[] { "projectionString", FullTextQuery.THIS, FullTextQuery.DOCUMENT,
+				FullTextQuery.SCORE, FullTextQuery.ID, FullTextQuery.DOCUMENT_ID, FullTextQuery.EXPLANATION,
+				FullTextQuery.OBJECT_CLASS };
 		List<ProjectionVo> entities = service.projection(query, projections);
-		for(ProjectionVo entity : entities) {
-			System.err.println(entity.getProjectionString());
-		}
-//		Assert.assertEquals(entities.size(), amount);
-		
+		Assert.assertEquals(entities.size(), 1);
+		assertProjectionVo(entities.get(0));
 	}
-	
+
+	private void assertProjectionVo(ProjectionVo vo) throws SQLException, IOException, Exception {
+		Assert.assertEquals(vo.getProjectionString(), projectionString);
+		assertBasicTypeEntity(vo.get__HSearch_This());
+		Assert.assertEquals(vo.get__HSearch_Document().getField("projectionString").stringValue(), projectionString);
+		Assert.assertNotNull(vo.get__HSearch_Score());
+		Assert.assertEquals(vo.get__HSearch_id().intValue(), id);
+		Assert.assertNotNull(vo.get__HSearch_DocumentId());
+		Assert.assertNotNull(vo.get__HSearch_Explanation());
+		Assert.assertEquals(vo.get_hibernate_class(), BasicTypeEntity.class);
+	}
+
 	@Test(dependsOnMethods = { "projection" })
 	public void unindex() throws Exception {
 		service.unindex(id);
@@ -177,7 +187,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		service.remove(entity);
 		assertIndexedAmount(id, 0);
 	}
-	
+
 	private void assertIndexedAmount(int id, int amount) throws ParseException {
 		String queryString = "+string:lucene +id:" + id;
 		Analyzer analyzer = new StandardAnalyzer();

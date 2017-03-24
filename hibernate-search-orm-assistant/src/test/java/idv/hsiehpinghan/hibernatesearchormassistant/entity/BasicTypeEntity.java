@@ -31,11 +31,22 @@ import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.NumericField;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.bridge.builtin.BigDecimalBridge;
+import org.hibernate.search.bridge.builtin.BigIntegerBridge;
+import org.hibernate.search.bridge.builtin.BooleanBridge;
+import org.hibernate.search.bridge.builtin.DoubleBridge;
+import org.hibernate.search.bridge.builtin.EnumBridge;
+import org.hibernate.search.bridge.builtin.FloatBridge;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
+import org.hibernate.search.bridge.builtin.LongBridge;
+import org.hibernate.search.bridge.builtin.ShortBridge;
+import org.hibernate.search.bridge.builtin.UriBridge;
+import org.hibernate.search.bridge.builtin.UrlBridge;
 
 import idv.hsiehpinghan.hibernatesearchormassistant.enumeration.Enumeration;
 
@@ -51,42 +62,44 @@ public class BasicTypeEntity implements Serializable {
 	private Integer id;
 	// primative
 	@Field
+	@FieldBridge(impl = BooleanBridge.class)
 	private boolean primativeBoolean;
 	@Field
+	@FieldBridge(impl = BooleanBridge.class)
 	private Boolean wrappedBoolean;
 	private byte primativeByte;
 	private Byte wrappedByte;
 	private char primativeChar;
 	private Character wrappedChar;
 	@Field
-	@NumericField
+	@FieldBridge(impl = DoubleBridge.class)
 	private double primativeDouble;
 	@Field
-	@NumericField
+	@FieldBridge(impl = DoubleBridge.class)
 	private Double wrappedDouble;
 	@Field
-	@NumericField
+	@FieldBridge(impl = FloatBridge.class)
 	private float primativeFloat;
 	@Field
-	@NumericField
+	@FieldBridge(impl = FloatBridge.class)
 	private Float wrappedFloat;
 	@Field
-	@NumericField
+	@FieldBridge(impl = IntegerBridge.class)
 	private int primativeInt;
 	@Field
-	@NumericField
+	@FieldBridge(impl = IntegerBridge.class)
 	private Integer wrappedInt;
 	@Field
-	@NumericField
+	@FieldBridge(impl = LongBridge.class)
 	private long primativeLong;
 	@Field
-	@NumericField
+	@FieldBridge(impl = LongBridge.class)
 	private Long wrappedLong;
 	@Field
-	@NumericField
+	@FieldBridge(impl = ShortBridge.class)
 	private short primativeShort;
 	@Field
-	@NumericField
+	@FieldBridge(impl = ShortBridge.class)
 	private Short wrappedShort;
 	// object
 	@Field
@@ -95,15 +108,14 @@ public class BasicTypeEntity implements Serializable {
 	@Basic(fetch = FetchType.LAZY)
 	private String lobString;
 	@Field
-	@NumericField
+	@FieldBridge(impl = BigIntegerBridge.class)
 	private BigInteger bigInteger;
 	@Field
-	@NumericField
+	@FieldBridge(impl = BigDecimalBridge.class)
 	private BigDecimal bigDecimal;
 	private Locale locale;
 	private TimeZone timeZone;
 	private Currency currency;
-	@Field
 	private Class<BasicTypeEntity> clazz;
 	private Serializable serializable;
 	@Field
@@ -140,13 +152,17 @@ public class BasicTypeEntity implements Serializable {
 	private char[] lobCharArray;
 	@Field
 	@Enumerated(EnumType.STRING)
+	@FieldBridge(impl = EnumBridge.class)
 	private Enumeration stringEnumeration;
 	@Field
 	@Enumerated(EnumType.ORDINAL)
+	@FieldBridge(impl = EnumBridge.class)
 	private Enumeration ordinalEnumeration;
 	@Field
+	@FieldBridge(impl = UrlBridge.class)
 	private URL url;
 	@Field
+	@FieldBridge(impl = UriBridge.class)
 	private URI uri;
 	@Field
 	private String englishString_0;

@@ -144,6 +144,10 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		testMultiFieldQueryParser();
 		testNoAnalyzeString();
 		testMultiAnalyzeString();
+		testWildcardQuery();
+		testPhraseQuery();
+		testFuzzyQuery();
+		testRangeQuery();
 	}
 
 	@Test(dependsOnMethods = { "luceneQuery" })
@@ -216,6 +220,42 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(entities.size(), amount);
 	}
 
+	private void testWildcardQuery() throws ParseException {
+		String queryString = "string:l?ce*";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+	
+	private void testPhraseQuery() throws ParseException {
+		String queryString = "string:'is string'~1";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+	
+	private void testFuzzyQuery() throws ParseException {
+		String queryString = "strXnX~0.6";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+	
+	private void testRangeQuery() throws ParseException {
+		String queryString = "primativeDouble:[1.0 TO 2.0]";
+		Analyzer analyzer = new StandardAnalyzer();
+		QueryParser queryParser = new QueryParser(BasicTypeEntity.DEFAULT_FIELD, analyzer);
+		org.apache.lucene.search.Query query = queryParser.parse(queryString);
+		List<BasicTypeEntity> entities = service.luceneQuery(query);
+		Assert.assertTrue(entities.size() > 0);
+	}
+	
 	private void testQueryParser() throws ParseException {
 		String queryString = "string:lucene";
 		Analyzer analyzer = new StandardAnalyzer();

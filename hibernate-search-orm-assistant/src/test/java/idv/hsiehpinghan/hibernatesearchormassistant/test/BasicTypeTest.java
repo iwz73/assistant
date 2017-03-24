@@ -188,7 +188,7 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 		String previousSortString = "";
 		for (BasicTypeEntity entity : entities) {
 			String sortString = entity.getSortString();
-			Assert.assertTrue(previousSortString.compareTo(sortString) < 0);
+			Assert.assertTrue(previousSortString.compareTo(sortString) <= 0);
 			previousSortString = sortString;
 		}
 	}
@@ -265,8 +265,8 @@ public class BasicTypeTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private Sort generateSort() {
-		SortField sortField_0 = SortField.FIELD_DOC;
-		SortField sortField_1 = new SortField("sortString", SortField.Type.STRING_VAL);
+		SortField sortField_0 = new SortField("sortString", SortField.Type.STRING_VAL);
+		SortField sortField_1 = SortField.FIELD_DOC;
 		Sort sort = new Sort(sortField_0, sortField_1);
 		return sort;
 	}

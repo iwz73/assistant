@@ -13,3 +13,6 @@ class execImportClass:
     def function_0(self):
         return self.x;
 
+
+def function_1(x_0):
+    return x_0;

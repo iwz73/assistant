@@ -4,6 +4,7 @@ import org.python.core.PyArray;
 import org.python.core.PyBoolean;
 import org.python.core.PyByteArray;
 import org.python.core.PyFloat;
+import org.python.core.PyFunction;
 import org.python.core.PyInstance;
 import org.python.core.PyInteger;
 import org.python.core.PyLong;
@@ -66,11 +67,24 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void execImport(PythonInterpreter interpreter) {
+		pyInstance(interpreter);
+		pyFunction(interpreter);
+	}
+
+	private void pyInstance(PythonInterpreter interpreter) {
 		int param = 3;
-		interpreter.exec("from execImportPackage.execImport import execImportClass");
+		interpreter.exec("from execImportModule.execImport import execImportClass");
 		interpreter.exec("obj = execImportClass(" + param + ")");
 		PyInstance pyInstance = interpreter.get("obj", PyInstance.class);
 		PyInteger pyInteger = (PyInteger) pyInstance.invoke("function_0");
+		Assert.assertEquals(pyInteger.asInt(), param);
+	}
+
+	private void pyFunction(PythonInterpreter interpreter) {
+		int param = 5;
+		interpreter.exec("from execImportModule.execImport import function_1");
+		PyFunction pyFunction = (PyFunction) interpreter.get("function_1");
+		PyInteger pyInteger = (PyInteger) pyFunction.__call__(new PyInteger(param));
 		Assert.assertEquals(pyInteger.asInt(), param);
 	}
 

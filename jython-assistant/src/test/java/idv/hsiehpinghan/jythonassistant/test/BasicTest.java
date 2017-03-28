@@ -3,6 +3,8 @@ package idv.hsiehpinghan.jythonassistant.test;
 import org.python.core.PyArray;
 import org.python.core.PyBoolean;
 import org.python.core.PyByteArray;
+import org.python.core.PyFloat;
+import org.python.core.PyInstance;
 import org.python.core.PyInteger;
 import org.python.core.PyLong;
 import org.python.core.PyString;
@@ -28,13 +30,13 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	private final String STRING_VALUE = "STRING_VALUE";
 	private final String BYTE_ARRAY_VALUE_NAME = "byteArrayValue";
 	private final byte[] BYTE_ARRAY_VALUE = new byte[] { 'a', 'b', 'c' };
-
 	private final String OBJECT_ARRAY_VALUE_NAME = "objectArrayValue";
 	private final String[] OBJECT_ARRAY_VALUE = new String[] { new String("string_0"), new String("string_1"),
 			new String("string_2") };
+	private final String FILE_NAME = "src/test/resources/execfile.py";
 
 	@Test
-	public void integer() throws Exception {
+	public void type() {
 		try (PythonInterpreter interpreter = new PythonInterpreter()) {
 			testPrimativeBoolean(interpreter);
 			testPrimativeChar(interpreter);
@@ -44,6 +46,39 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 			testByteArray(interpreter);
 			testObjectArray(interpreter);
 		}
+	}
+
+	@Test
+	public void exec() {
+		try (PythonInterpreter interpreter = new PythonInterpreter()) {
+			execBasic(interpreter);
+			execImport(interpreter);
+		}
+	}
+
+	@Test
+	public void execfile() {
+		try (PythonInterpreter interpreter = new PythonInterpreter()) {
+			interpreter.execfile(FILE_NAME);
+			PyFloat now = interpreter.get("now", PyFloat.class);
+			System.err.println("execfile now : " + now);
+		}
+	}
+
+	private void execImport(PythonInterpreter interpreter) {
+		int param = 3;
+		interpreter.exec("from execImportPackage.execImport import execImportClass");
+		interpreter.exec("obj = execImportClass(" + param + ")");
+		PyInstance pyInstance = interpreter.get("obj", PyInstance.class);
+		PyInteger pyInteger = (PyInteger) pyInstance.invoke("function_0");
+		Assert.assertEquals(pyInteger.asInt(), param);
+	}
+
+	private void execBasic(PythonInterpreter interpreter) {
+		interpreter.exec("import time");
+		interpreter.exec("now = time.time()");
+		PyFloat now = interpreter.get("now", PyFloat.class);
+		System.err.println("execBasic now : " + now);
 	}
 
 	private void testObjectArray(PythonInterpreter interpreter) {

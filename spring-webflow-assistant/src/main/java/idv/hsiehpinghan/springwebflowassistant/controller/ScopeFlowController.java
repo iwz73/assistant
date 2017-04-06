@@ -38,12 +38,12 @@ public class ScopeFlowController {
 		String viewScopeValue = vo.getViewScopeValue();
 		ViewScopeVo viewScopeVo = generateViewScopeVo(viewScopeValue);
 		requestContext.getViewScope().put("viewScopeVo", viewScopeVo);
-		String conversationScopeValue = vo.getConversationScopeValue();
-		ConversationScopeVo conversationScopeVo = generateConversationScopeVo(conversationScopeValue);
-		requestContext.getConversationScope().put("conversationScopeVo", conversationScopeVo);
 		String flowScopeValue = vo.getFlowScopeValue();
 		FlowScopeVo flowScopeVo = generateFlowScopeVo(flowScopeValue);
 		requestContext.getFlowScope().put("flowScopeVo", flowScopeVo);
+		String conversationScopeValue = vo.getConversationScopeValue();
+		ConversationScopeVo conversationScopeVo = generateConversationScopeVo(conversationScopeValue);
+		requestContext.getConversationScope().put("conversationScopeVo", conversationScopeVo);
 	}
 
 	private RequestScopeVo generateRequestScopeVo(String requestScopeValue) {
@@ -64,15 +64,16 @@ public class ScopeFlowController {
 		return vo;
 	}
 
+	private FlowScopeVo generateFlowScopeVo(String flowScopeValue) {
+		FlowScopeVo vo = new FlowScopeVo();
+		vo.setValue(flowScopeValue);
+		return vo;
+	}
+
 	private ConversationScopeVo generateConversationScopeVo(String conversationScopeValue) {
 		ConversationScopeVo vo = new ConversationScopeVo();
 		vo.setValue(conversationScopeValue);
 		return vo;
 	}
 
-	private FlowScopeVo generateFlowScopeVo(String flowScopeValue) {
-		FlowScopeVo vo = new FlowScopeVo();
-		vo.setValue(flowScopeValue);
-		return vo;
-	}
 }

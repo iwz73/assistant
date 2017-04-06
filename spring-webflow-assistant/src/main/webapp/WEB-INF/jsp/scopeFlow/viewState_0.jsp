@@ -14,8 +14,8 @@
 		<form:label path="requestScopeValue">requestScopeValue:</form:label><form:input path="requestScopeValue"/><br>
 		<form:label path="flashScopeValue">flashScopeValue:</form:label><form:input path="flashScopeValue"/><br>
 		<form:label path="viewScopeValue">viewScopeValue:</form:label><form:input path="viewScopeValue"/><br>
-		<form:label path="conversationScopeValue">conversationScopeValue:</form:label><form:input path="conversationScopeValue"/><br>
 		<form:label path="flowScopeValue">flowScopeValue:</form:label><form:input path="flowScopeValue"/><br>
+		<form:label path="conversationScopeValue">conversationScopeValue:</form:label><form:input path="conversationScopeValue"/><br>
 		<input type="submit" name="_eventId_init" value="init">
 		<input type="submit" name="_eventId_self" value="self">
 		<input type="submit" name="_eventId_next" value="next">

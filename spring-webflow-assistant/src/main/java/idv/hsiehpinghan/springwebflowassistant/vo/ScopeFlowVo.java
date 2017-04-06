@@ -7,8 +7,8 @@ public class ScopeFlowVo implements Serializable {
 	private String requestScopeValue = "requestScopeValue";
 	private String flashScopeValue = "flashScopeValue";
 	private String viewScopeValue = "viewScopeValue";
-	private String conversationScopeValue = "conversationScopeValue";
 	private String flowScopeValue = "flowScopeValue";
+	private String conversationScopeValue = "conversationScopeValue";
 
 	public String getRequestScopeValue() {
 		return requestScopeValue;
@@ -34,20 +34,20 @@ public class ScopeFlowVo implements Serializable {
 		this.viewScopeValue = viewScopeValue;
 	}
 
-	public String getConversationScopeValue() {
-		return conversationScopeValue;
-	}
-
-	public void setConversationScopeValue(String conversationScopeValue) {
-		this.conversationScopeValue = conversationScopeValue;
-	}
-
 	public String getFlowScopeValue() {
 		return flowScopeValue;
 	}
 
 	public void setFlowScopeValue(String flowScopeValue) {
 		this.flowScopeValue = flowScopeValue;
+	}
+
+	public String getConversationScopeValue() {
+		return conversationScopeValue;
+	}
+
+	public void setConversationScopeValue(String conversationScopeValue) {
+		this.conversationScopeValue = conversationScopeValue;
 	}
 
 }

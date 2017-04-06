@@ -4,22 +4,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-<!-- 	<on-start> -->
-<!-- 		<evaluate expression="scopeFlowController.generateRequestScopeVo()" -->
-<!-- 			result="requestScope.vo" /> -->
-<!-- 		<evaluate expression="scopeFlowController.generateFlashScopeVo()" -->
-<!-- 			result="flashScope.vo" /> -->
-<!-- 		<evaluate expression="scopeFlowController.generateViewScopeVo()" -->
-<!-- 			result="viewScope.vo" /> -->
-<!-- 		<evaluate expression="scopeFlowController.generateConversationScopeVo()" -->
-<!-- 			result="conversationScope.vo" /> -->
-<!-- 		<evaluate expression="scopeFlowController.generateFlowScopeVo()" -->
-<!-- 			result="flowScope.vo" /> -->
-<!-- 	</on-start> -->
+	<on-start>
+		<evaluate expression="scopeFlowController.generateScopeFlowVo()"
+			result="flowScope.scopeFlowVo" />
+	</on-start>
 
-	<view-state id="viewState_0" view="/WEB-INF/jsp/scopeFlow/viewState_0.jsp">
-		<transition on="initScope" to="viewState_1" >
-			<evaluate expression="scopeFlowController.initScope()" />
+	<view-state id="viewState_0" view="/WEB-INF/jsp/scopeFlow/viewState_0.jsp" model="flowScope.scopeFlowVo">
+		<transition on="self" to="viewState_0" >
+			<evaluate expression="scopeFlowController.initScope(flowScope.scopeFlowVo)" />
+		</transition>
+		<transition on="next" to="viewState_1" >
+<!-- 			<evaluate expression="scopeFlowController.initScope(flowScope.scopeFlowVo)" /> -->
 		</transition>
 		<transition on="cancel" to="end"></transition>
 	</view-state>
@@ -30,24 +25,6 @@
 <!-- 		</transition> -->
 		<transition on="cancel" to="end"></transition>
 	</view-state>
-	
-<!-- 	<view-state id="viewState_2" view="/WEB-INF/jsp/scopeFlow/viewState_2.jsp" model="flowScope.basicFlowVo" > -->
-<!-- 		<transition on="previous" to="selectCategory" /> -->
-<!-- 		<transition on="add" > -->
-<!-- 			<evaluate expression="basicFlowController.addItem(flowScope.basicFlowVo)" /> -->
-<!-- 		</transition> -->
-<!-- 		<transition on="finish" to="finish"> -->
-<!-- 			<evaluate expression="basicFlowController.finish(flowScope.basicFlowVo)"/> -->
-<!-- 		</transition> -->
-<!-- 		<transition on="reset"> -->
-<!-- 			<evaluate expression="basicFlowController.resetItem(flowScope.basicFlowVo)" /> -->
-<!-- 		</transition> -->
-<!-- 		<transition on="cancel" to="end" /> -->
-<!-- 	</view-state> -->
-	
-<!-- 	<view-state id="finish" view="/WEB-INF/jsp/basicFlow/finish.jsp"> -->
-<!-- 		<transition on="ok" to="end"></transition> -->
-<!-- 	</view-state> -->
-	
+
 	<end-state id="end" view="externalRedirect:contextRelative:/scopeFlow/index" />
 </flow>

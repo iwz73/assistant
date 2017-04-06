@@ -1,6 +1,9 @@
-package idv.hsiehpinghan.springwebflowassistant.criteria;
+package idv.hsiehpinghan.springwebflowassistant.vo;
 
-public class ScopeFlowIndexCriteria {
+import java.io.Serializable;
+
+public class ScopeFlowVo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String requestScopeValue;
 	private String flashScopeValue;
 	private String viewScopeValue;

@@ -10,6 +10,7 @@ import idv.hsiehpinghan.springwebflowassistant.vo.ConversationScopeVo;
 import idv.hsiehpinghan.springwebflowassistant.vo.FlashScopeVo;
 import idv.hsiehpinghan.springwebflowassistant.vo.FlowScopeVo;
 import idv.hsiehpinghan.springwebflowassistant.vo.RequestScopeVo;
+import idv.hsiehpinghan.springwebflowassistant.vo.ScopeFlowVo;
 import idv.hsiehpinghan.springwebflowassistant.vo.ViewScopeVo;
 
 @Controller
@@ -21,42 +22,57 @@ public class ScopeFlowController {
 		return "/scopeFlow/index";
 	}
 
-	public void initScope() {
+	public ScopeFlowVo generateScopeFlowVo() {
+		ScopeFlowVo vo = new ScopeFlowVo();
+		return vo;
+	}
+
+	public void initScope(ScopeFlowVo vo) {
 		RequestContext requestContext = RequestContextHolder.getRequestContext();
-		requestContext.getRequestScope().put("vo", generateRequestScopeVo());
-		requestContext.getFlashScope().put("vo", generateFlashScopeVo());
-		requestContext.getViewScope().put("vo", generateViewScopeVo());
-		requestContext.getConversationScope().put("vo", generateConversationScopeVo());
-		requestContext.getFlowScope().put("vo", generateFlowScopeVo());
+		String requestScopeValue = vo.getRequestScopeValue();
+		RequestScopeVo requestScopeVo = generateRequestScopeVo(requestScopeValue);
+		requestContext.getRequestScope().put("requestScopeVo", requestScopeVo);
+		String flashScopeValue = vo.getFlashScopeValue();
+		FlashScopeVo flashScopeVo = generateFlashScopeVo(flashScopeValue);
+		requestContext.getFlashScope().put("flashScopeVo", flashScopeVo);
+		String viewScopeValue = vo.getViewScopeValue();
+		ViewScopeVo viewScopeVo = generateViewScopeVo(viewScopeValue);
+		requestContext.getViewScope().put("viewScopeVo", viewScopeVo);
+		String conversationScopeValue = vo.getConversationScopeValue();
+		ConversationScopeVo conversationScopeVo = generateConversationScopeVo(conversationScopeValue);
+		requestContext.getConversationScope().put("conversationScopeVo", conversationScopeVo);
+		String flowScopeValue = vo.getFlowScopeValue();
+		FlowScopeVo flowScopeVo = generateFlowScopeVo(flowScopeValue);
+		requestContext.getFlowScope().put("flowScopeVo", flowScopeVo);
 	}
 
-	public RequestScopeVo generateRequestScopeVo() {
+	public RequestScopeVo generateRequestScopeVo(String requestScopeValue) {
 		RequestScopeVo vo = new RequestScopeVo();
-		vo.setValue("Request Scope Vo");
+		vo.setValue(requestScopeValue);
 		return vo;
 	}
 
-	public FlashScopeVo generateFlashScopeVo() {
+	public FlashScopeVo generateFlashScopeVo(String flashScopeValue) {
 		FlashScopeVo vo = new FlashScopeVo();
-		vo.setValue("Flash Scope Vo");
+		vo.setValue(flashScopeValue);
 		return vo;
 	}
 
-	public ViewScopeVo generateViewScopeVo() {
+	public ViewScopeVo generateViewScopeVo(String viewScopeValue) {
 		ViewScopeVo vo = new ViewScopeVo();
-		vo.setValue("View Scope Vo");
+		vo.setValue(viewScopeValue);
 		return vo;
 	}
 
-	public ConversationScopeVo generateConversationScopeVo() {
+	public ConversationScopeVo generateConversationScopeVo(String conversationScopeValue) {
 		ConversationScopeVo vo = new ConversationScopeVo();
-		vo.setValue("Conversation Scope Vo");
+		vo.setValue(conversationScopeValue);
 		return vo;
 	}
 
-	public FlowScopeVo generateFlowScopeVo() {
+	public FlowScopeVo generateFlowScopeVo(String flowScopeValue) {
 		FlowScopeVo vo = new FlowScopeVo();
-		vo.setValue("Flow Scope Vo");
+		vo.setValue(flowScopeValue);
 		return vo;
 	}
 }

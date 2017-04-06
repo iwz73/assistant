@@ -46,31 +46,31 @@ public class ScopeFlowController {
 		requestContext.getFlowScope().put("flowScopeVo", flowScopeVo);
 	}
 
-	public RequestScopeVo generateRequestScopeVo(String requestScopeValue) {
+	private RequestScopeVo generateRequestScopeVo(String requestScopeValue) {
 		RequestScopeVo vo = new RequestScopeVo();
 		vo.setValue(requestScopeValue);
 		return vo;
 	}
 
-	public FlashScopeVo generateFlashScopeVo(String flashScopeValue) {
+	private FlashScopeVo generateFlashScopeVo(String flashScopeValue) {
 		FlashScopeVo vo = new FlashScopeVo();
 		vo.setValue(flashScopeValue);
 		return vo;
 	}
 
-	public ViewScopeVo generateViewScopeVo(String viewScopeValue) {
+	private ViewScopeVo generateViewScopeVo(String viewScopeValue) {
 		ViewScopeVo vo = new ViewScopeVo();
 		vo.setValue(viewScopeValue);
 		return vo;
 	}
 
-	public ConversationScopeVo generateConversationScopeVo(String conversationScopeValue) {
+	private ConversationScopeVo generateConversationScopeVo(String conversationScopeValue) {
 		ConversationScopeVo vo = new ConversationScopeVo();
 		vo.setValue(conversationScopeValue);
 		return vo;
 	}
 
-	public FlowScopeVo generateFlowScopeVo(String flowScopeValue) {
+	private FlowScopeVo generateFlowScopeVo(String flowScopeValue) {
 		FlowScopeVo vo = new FlowScopeVo();
 		vo.setValue(flowScopeValue);
 		return vo;

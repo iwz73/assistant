@@ -10,19 +10,20 @@
 	</on-start>
 
 	<view-state id="viewState_0" view="/WEB-INF/jsp/scopeFlow/viewState_0.jsp" model="flowScope.scopeFlowVo">
-		<transition on="self" to="viewState_0" >
+		<transition on="init" to="viewState_0" >
 			<evaluate expression="scopeFlowController.initScope(flowScope.scopeFlowVo)" />
 		</transition>
-		<transition on="next" to="viewState_1" >
-<!-- 			<evaluate expression="scopeFlowController.initScope(flowScope.scopeFlowVo)" /> -->
-		</transition>
+		<transition on="self" to="viewState_0" ></transition>
+		<transition on="next" to="subflowState_0" ></transition>
 		<transition on="cancel" to="end"></transition>
 	</view-state>
-
+	
+	<subflow-state id="subflowState_0" subflow="scopeFlowSubflow">
+		<transition on="next" to="viewState_1" />
+		<transition on="cancel" to="end" />
+	</subflow-state>
+	
 	<view-state id="viewState_1" view="/WEB-INF/jsp/scopeFlow/viewState_1.jsp">
-<!-- 		<transition on="next" to="selectItem" > -->
-<!-- 			<evaluate expression="basicFlowController.generateItemMap(flowScope.basicFlowVo)" result="flowScope.itemMap" /> -->
-<!-- 		</transition> -->
 		<transition on="cancel" to="end"></transition>
 	</view-state>
 

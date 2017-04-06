@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class ScopeFlowVo implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String requestScopeValue;
-	private String flashScopeValue;
-	private String viewScopeValue;
-	private String conversationScopeValue;
-	private String flowScopeValue;
+	private String requestScopeValue = "requestScopeValue";
+	private String flashScopeValue = "flashScopeValue";
+	private String viewScopeValue = "viewScopeValue";
+	private String conversationScopeValue = "conversationScopeValue";
+	private String flowScopeValue = "flowScopeValue";
 
 	public String getRequestScopeValue() {
 		return requestScopeValue;

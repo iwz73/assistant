@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<on-start>
+		<evaluate expression="scopeFlowController.generateScopeFlowVo()"
+			result="flowScope.scopeFlowVo" />
+	</on-start>
+
+	<view-state id="viewState_0" view="/WEB-INF/jsp/scopeFlow/viewState_0.jsp" model="flowScope.scopeFlowVo">
+		<transition on="init" to="viewState_0" >
+			<evaluate expression="scopeFlowController.initScope(flowScope.scopeFlowVo)" />
+		</transition>
+		<transition on="self" to="viewState_0" ></transition>
+		<transition on="next" to="subflowState_0" ></transition>
+		<transition on="cancel" to="end"></transition>
+	</view-state>
+	
+	<subflow-state id="subflowState_0" subflow="scopeFlowSubflow">
+		<transition on="next" to="viewState_1" />
+		<transition on="cancel" to="end" />
+	</subflow-state>
+	
+	<view-state id="viewState_1" view="/WEB-INF/jsp/scopeFlow/viewState_1.jsp">
+		<transition on="cancel" to="end"></transition>
+	</view-state>
+
+	<end-state id="end" view="externalRedirect:contextRelative:/scopeFlow/index" />
+</flow>

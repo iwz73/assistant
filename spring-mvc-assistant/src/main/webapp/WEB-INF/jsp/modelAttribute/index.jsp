@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %> 
 <!DOCTYPE html>
 <html>
@@ -43,6 +44,16 @@
 	<br>
 	<form:label path="hidden">hidden</form:label>
 	<form:hidden path="hidden" value="hidden" />
+	<br>
+	<c:forEach items="${criteria.objects}" var="object" varStatus="status">
+		<input name="objects[${status.index}].id" value="${object.id}" />
+		<input name="objects[${status.index}].name" value="${object.name}" />
+		<input name="objects[${status.index}].age" value="${object.age}" />
+		<br>
+	</c:forEach>
+	<input name="objects[${fn:length(criteria.objects)}].id" value="id_${fn:length(criteria.objects)}" />
+	<input name="objects[${fn:length(criteria.objects)}].name" value="name_${fn:length(criteria.objects)}" />
+	<input name="objects[${fn:length(criteria.objects)}].age" value="${fn:length(criteria.objects)}" />
 	<br>
 	<input type="submit" value="submit">
 </form:form>

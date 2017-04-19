@@ -31,9 +31,16 @@
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --list --zookeeper localhost:2181
 
 # producer send message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9093, localhost:9094 --topic <<topic name>>
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092, localhost:9093 --topic <<topic name>>
 
 # consumer get message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093 --topic <<topic name>> --from-beginning
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <<topic name>> --from-beginning
+
+--------------------------- Use Kafka Connect to import/export data -------------------------- 
+echo -e "foo\nbar" > /tmp/test.txt
+cd /tmp
+/opt/kafka_2.11-0.10.1.1/bin/connect-standalone.sh /opt/kafka_2.11-0.10.1.1/config/connect-standalone.properties /opt/kafka_2.11-0.10.1.1/config/connect-file-source.properties /opt/kafka_2.11-0.10.1.1/config/connect-file-sink.properties
+cat /tmp/test.sink.txt
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
 
 

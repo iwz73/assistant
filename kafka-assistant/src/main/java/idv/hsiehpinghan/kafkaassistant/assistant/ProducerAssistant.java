@@ -9,17 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 public class ProducerAssistant implements InitializingBean {
-	private Properties properties;
+	private ProducerConfig producerConfig;
 	@Autowired
 	private Environment environment;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		properties = new Properties();
+		Properties properties = new Properties();
 		String metadataBrokerList = environment.getRequiredProperty("metadata_broker_list");
 		properties.put("metadata.broker.list", metadataBrokerList);
 		properties.put("serializer.class", "kafka.serializer.StringEncoder");
 		properties.put("request.required.acks", "1");
+//		ProducerConfig producerConfig = new ProducerConfig(properties);
+//		Producer producer = new Producer<String, String>(producerConfig);
 	}
 
 	

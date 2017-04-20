@@ -19,10 +19,13 @@ public class ConsumerAssistantTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void poll() {
 		ConsumerRecords<String, String> consumerRecords = assistant.poll();
+		int i = 0;
 		for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
 			String actual = consumerRecord.value();
 			Assert.assertEquals(actual, ProducerAssistantTest.VALUE);
+			++i;
 		}
+		Assert.assertTrue(i > 0);
 	}
 
 }

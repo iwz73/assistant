@@ -2,3 +2,16 @@ metadata_broker_list=localhost:9092,localhost:9093
 bootstrap_servers=localhost:9092
 test_topic_0=test_topic
 group_id_0=test_group_id
+enable_auto_commit=true
+auto_commit_interval_ms=1000
+key_deserializer=org.apache.kafka.common.serialization.StringDeserializer
+value_deserializer=org.apache.kafka.common.serialization.StringDeserializer
+auto_offset_reset=earliest
+acks=all
+retries=0
+batch_size=100
+linger_ms=1
+buffer_memory=1024
+key_serializer=org.apache.kafka.common.serialization.StringSerializer
+value_serializer=org.apache.kafka.common.serialization.StringSerializer
+

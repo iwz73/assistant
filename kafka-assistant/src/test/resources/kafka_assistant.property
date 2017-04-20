@@ -1,3 +1,4 @@
 metadata_broker_list=localhost:9092,localhost:9093
 bootstrap_servers=localhost:9092
 test_topic_0=test_topic
+group_id_0=test_group_id

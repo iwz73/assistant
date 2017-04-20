@@ -10,9 +10,10 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.kafkaassistant.configuration.SpringConfiguration;
 
+@Test(groups = "ProducerAssistantTest")
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class ProducerAssistantTest extends AbstractTestNGSpringContextTests {
-	private final String VALUE = "ProducerAssistant send";
+	public static final String VALUE = "ProducerAssistant send";
 	@Autowired
 	private Environment environment;
 	@Autowired

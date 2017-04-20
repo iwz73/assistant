@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.kafkaassistant.assistant;
+package idv.hsiehpinghan.kafkaassistant.producer;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -7,13 +7,15 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BasicProducerAssistant {
+public class BasicProducer {
 	private final long SLEEP_MILLISECONDS = 100;
 	@Autowired
+	@Qualifier("basicProducer_0")
 	private Producer<String, String> basicProducer;
 	@Autowired
 	private Environment environment;

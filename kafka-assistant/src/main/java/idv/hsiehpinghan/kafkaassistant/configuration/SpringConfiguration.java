@@ -25,13 +25,13 @@ public class SpringConfiguration {
 	private Environment environment;
 
 	@Bean
-	public Producer<String, String> basicProducer() {
+	public Producer<String, String> basicProducer_0() {
 		Properties properties = generateBasicProducerProperties();
 		return new KafkaProducer<>(properties);
 	}
 
 	@Bean
-	public Consumer<String, String> basicConsumer() {
+	public Consumer<String, String> basicConsumer_0() {
 		Properties properties = generateBasicConsumerProperties();
 		Consumer<String, String> consumer = new KafkaConsumer<>(properties);
 		String topic = environment.getRequiredProperty("test_topic_0");

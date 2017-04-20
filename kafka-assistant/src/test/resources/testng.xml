@@ -3,10 +3,7 @@
 <suite name="suite" verbose="1">
 	<test name="test">
 		<classes>
-			<class
-				name="idv.hsiehpinghan.kafkaassistant.assistant.BasicProducerAssistantTest" />
-			<class
-				name="idv.hsiehpinghan.kafkaassistant.assistant.BasicConsumerAssistantTest" />
+			<class name="idv.hsiehpinghan.kafkaassistant.test.BasicTest" />
 		</classes>
 	</test>
 </suite>

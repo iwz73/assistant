@@ -10,11 +10,11 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.kafkaassistant.configuration.SpringConfiguration;
 
-@Test(dependsOnGroups = { "ProducerAssistantTest" })
+@Test(dependsOnGroups = { "BasicProducerAssistantTest" })
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class ConsumerAssistantTest extends AbstractTestNGSpringContextTests {
+public class BasicConsumerAssistantTest extends AbstractTestNGSpringContextTests {
 	@Autowired
-	private ConsumerAssistant assistant;
+	private BasicConsumerAssistant assistant;
 
 	@Test
 	public void poll() {
@@ -22,7 +22,7 @@ public class ConsumerAssistantTest extends AbstractTestNGSpringContextTests {
 		int i = 0;
 		for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
 			String actual = consumerRecord.value();
-			Assert.assertEquals(actual, ProducerAssistantTest.VALUE);
+			Assert.assertEquals(actual, BasicProducerAssistantTest.VALUE);
 			++i;
 		}
 		Assert.assertTrue(i > 0);

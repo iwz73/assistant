@@ -25,21 +25,21 @@ public class SpringConfiguration {
 	private Environment environment;
 
 	@Bean
-	public Producer<String, String> producer() {
-		Properties properties = generateProducerProperties();
+	public Producer<String, String> basicProducer() {
+		Properties properties = generateBasicProducerProperties();
 		return new KafkaProducer<>(properties);
 	}
 
 	@Bean
-	public Consumer<String, String> consumer() {
-		Properties properties = generateConsumerProperties();
+	public Consumer<String, String> basicConsumer() {
+		Properties properties = generateBasicConsumerProperties();
 		Consumer<String, String> consumer = new KafkaConsumer<>(properties);
 		String topic = environment.getRequiredProperty("test_topic_0");
 		consumer.subscribe(Arrays.asList(topic));
 		return consumer;
 	}
 
-	private Properties generateProducerProperties() {
+	private Properties generateBasicProducerProperties() {
 		Properties properties = new Properties();
 		properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
 		properties.put(ProducerConfig.ACKS_CONFIG, environment.getRequiredProperty("acks"));
@@ -53,7 +53,7 @@ public class SpringConfiguration {
 		return properties;
 	}
 
-	private Properties generateConsumerProperties() {
+	private Properties generateBasicConsumerProperties() {
 		Properties properties = new Properties();
 		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
 		properties.put(ConsumerConfig.GROUP_ID_CONFIG, environment.getRequiredProperty("group_id_0"));

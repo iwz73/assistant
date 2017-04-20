@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsumerAssistant {
+public class BasicConsumerAssistant {
 	private final long TIMEOUT = 1000;
 	@Autowired
-	private Consumer<String, String> consumer;
+	private Consumer<String, String> basicConsumer;
 
 	public ConsumerRecords<String, String> poll() {
 		while (true) {
-			return consumer.poll(TIMEOUT);
+			return basicConsumer.poll(TIMEOUT);
 		}
 	}
 

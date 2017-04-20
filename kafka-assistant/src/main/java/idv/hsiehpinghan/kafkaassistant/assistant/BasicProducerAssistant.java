@@ -11,17 +11,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProducerAssistant {
+public class BasicProducerAssistant {
 	private final long SLEEP_MILLISECONDS = 100;
 	@Autowired
-	private Producer<String, String> producer;
+	private Producer<String, String> basicProducer;
 	@Autowired
 	private Environment environment;
 
 	public RecordMetadata send(String value) throws InterruptedException, ExecutionException {
 		String topic = environment.getRequiredProperty("test_topic_0");
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, value);
-		Future<RecordMetadata> future = producer.send(record);
+		Future<RecordMetadata> future = basicProducer.send(record);
 		while (future.isDone() == false) {
 			Thread.sleep(SLEEP_MILLISECONDS);
 			return future.get();

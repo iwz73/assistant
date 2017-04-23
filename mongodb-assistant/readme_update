@@ -169,4 +169,15 @@ db.mongodb_collection.update(
     }
 )
 
+# update sub-field
+db.mongodb_collection.update({
+    "_id" : 1,
+    "documents._id" : ObjectId("58463b0aa33dac208c802f12")
+},{
+    "$set" : { "documents.$.key_3" : "value_1_1_3" }
+},{
+    "upsert" : true
+});
+
+
 

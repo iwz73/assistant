@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,14 +17,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import idv.hsiehpinghan.jacksonassistant.suit.TestngSuitSetting;
+import idv.hsiehpinghan.jacksonassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.jacksonassistant.vo.AnnotationJsonVo;
 import idv.hsiehpinghan.jacksonassistant.vo.ConstructorJsonVo;
 import idv.hsiehpinghan.jacksonassistant.vo.FactoryJsonVo;
 import idv.hsiehpinghan.jacksonassistant.vo.JsonVo;
-import idv.hsiehpinghan.testutility.utility.SystemResourceUtility;
 
-public class ObjectMapperTest {
+@ContextConfiguration(classes = { SpringConfiguration.class })
+public class ObjectMapperTest extends AbstractTestNGSpringContextTests {
 	private final String BIGDECIMAL_NAME = "BIGDECIMAL_NAME";
 	private final BigDecimal BIGDECIMAL = BigDecimal.ONE;
 	private final String BOOLEAN_NAME = "BOOLEAN_NAME";
@@ -56,15 +59,17 @@ public class ObjectMapperTest {
 	private final String STRING = "string";
 	private final String ARRAY_NAME = "ARRAY_NAME";
 	private ArrayNode arrayNode = null;
-	private ObjectMapper objectMapper;
 	private File json;
 	private JsonVo jsonVo;
 
+	@Autowired
+	private ResourceLoader resourceLoader;
+	@Autowired
+	private ObjectMapper objectMapper;
+
 	@BeforeClass
 	public void beforeClass() throws IOException {
-		ApplicationContext applicationContext = TestngSuitSetting.getApplicationContext();
-		objectMapper = applicationContext.getBean(ObjectMapper.class);
-		json = SystemResourceUtility.getFileResource("file/json");
+		json = resourceLoader.getResource("classpath:/file/json").getFile();
 	}
 
 	@Test
@@ -89,21 +94,21 @@ public class ObjectMapperTest {
 
 	@Test
 	public void annotation() throws Exception {
-		File annotationJson = SystemResourceUtility.getFileResource("file/annotation_json");
+		File annotationJson = resourceLoader.getResource("classpath:/file/annotation_json").getFile();
 		AnnotationJsonVo jsonVo = objectMapper.readValue(annotationJson, AnnotationJsonVo.class);
 		assertAnnotationJsonVo(jsonVo);
 	}
 
 	@Test
 	public void constructor() throws Exception {
-		File constructorJson = SystemResourceUtility.getFileResource("file/constructor_json");
+		File constructorJson = resourceLoader.getResource("classpath:/file/constructor_json").getFile();
 		ConstructorJsonVo jsonVo = objectMapper.readValue(constructorJson, ConstructorJsonVo.class);
 		assertConstructorJsonVo(jsonVo);
 	}
 
 	@Test
 	public void factory() throws Exception {
-		File factoryJson = SystemResourceUtility.getFileResource("file/factory_json");
+		File factoryJson = resourceLoader.getResource("classpath:/file/factory_json").getFile();
 		FactoryJsonVo jsonVo = objectMapper.readValue(factoryJson, FactoryJsonVo.class);
 		assertFactoryJsonVo(jsonVo);
 	}

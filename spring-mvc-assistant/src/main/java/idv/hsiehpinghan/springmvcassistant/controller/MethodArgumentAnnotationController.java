@@ -42,7 +42,8 @@ public class MethodArgumentAnnotationController {
 	}
 
 	@RequestMapping(value = "/cookieValue")
-	public ModelAndView cookieValue(@CookieValue(value = "cookieValue") String cookieValue) {
+	public ModelAndView cookieValue(
+			@CookieValue(value = "cookieValue", defaultValue = "default cookie value") String cookieValue) {
 		ModelAndView modelAndView = new ModelAndView("/methodArgumentAnnotation/index");
 		modelAndView.addObject("parameter", "cookieValue:" + cookieValue);
 		return modelAndView;

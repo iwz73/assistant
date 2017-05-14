@@ -3,11 +3,13 @@ package idv.hsiehpinghan.dom4jassistant.test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,21 @@ public class SAXReaderDocumentTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
+	public void namespace() {
+		Element root = document.getRootElement();
+		@SuppressWarnings("unchecked")
+		List<Namespace> namespaces = root.declaredNamespaces();
+		int i = 0;
+		for (Namespace namespace : namespaces) {
+			String prefix = namespace.getPrefix();
+			String stringValue = namespace.getStringValue();
+			System.err.println(prefix + ":" + stringValue);
+			++i;
+		}
+		Assert.assertTrue(i > 0);
+	}
+
+	@Test(dependsOnMethods = { "namespace" })
 	public void elementIterator() {
 		Element root = document.getRootElement();
 		@SuppressWarnings("unchecked")

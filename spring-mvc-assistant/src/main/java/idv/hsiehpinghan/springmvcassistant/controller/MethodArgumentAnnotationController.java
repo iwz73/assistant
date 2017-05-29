@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.springmvcassistant.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -37,6 +38,14 @@ public class MethodArgumentAnnotationController {
 	public ModelAndView requestHeader(@RequestHeader(value = "Accept-Language") String acceptLanguage) {
 		ModelAndView modelAndView = new ModelAndView("/methodArgumentAnnotation/index");
 		modelAndView.addObject("parameter", "acceptLanguage:" + acceptLanguage);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/cookieValue")
+	public ModelAndView cookieValue(
+			@CookieValue(value = "cookieValue", defaultValue = "default cookie value") String cookieValue) {
+		ModelAndView modelAndView = new ModelAndView("/methodArgumentAnnotation/index");
+		modelAndView.addObject("parameter", "cookieValue:" + cookieValue);
 		return modelAndView;
 	}
 }

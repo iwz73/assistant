@@ -29,6 +29,10 @@
 				$("#requestBodyResult").html(JSON.stringify(data));
 			});
 		});
+		$("#cookieValue").on("click", function() {
+			document.cookie = 'cookieValue=\"cookie value\";'; 
+			window.location.assign('<c:url value="/methodArgumentAnnotation/cookieValue"></c:url>')
+		});
 	});
 </script>
 </head>
@@ -42,6 +46,8 @@
 	<a href="javascript:void(0);" id="requestBody">request body</a> 
 	<br>
 	<a href='<c:url value="/methodArgumentAnnotation/requestHeader"></c:url>'>requestHeader</a>
+	<br>
+	<a href="javascript:void(0);" id="cookieValue">cookie value</a> 
 	<br>
 </body>
 </html>

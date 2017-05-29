@@ -1,19 +1,19 @@
 package idv.hsiehpinghan.springmvcassistant.controller;
 
-import idv.hsiehpinghan.springmvcassistant.criteria.Criteria;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,12 +26,15 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import idv.hsiehpinghan.springmvcassistant.criteria.Criteria;
+
 @Controller
 @RequestMapping(value = "/methodArgumentType")
 public class MethodArgumentTypeController {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index() {
+	public String index(Model model) {
+		System.err.println(model.asMap());
 		return "/methodArgumentType/index";
 	}
 	

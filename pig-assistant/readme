@@ -1,0 +1,141 @@
+# Pig Latin / SQL 對照表
+1. Select
+	1.1 Select All
+		SELECT * FROM mytable;
+
+		A = LOAD 'data' USING PigStorage(); 
+		DUMP A;
+	1.2 Select by columns
+		SELECT col1, col2 FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float); 
+		B = FOREACH A GENERATE col1, col2;
+		DUMP B;
+	1.3 Set column alias
+		SELECT col1 AS new_col1, col2 AS new_col2 FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float); 
+		B = FOREACH A GENERATE col1 AS new_col1, col2 AS new_col2;
+		DUMP B;
+	1.4 Type Casting
+		SELECT col1::INTEGER, col2::VARCHAR FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float);
+		B = FOREACH A GENERATE (int)col1, (chararray)col2;
+		DUMP B;
+	1.5 Limit
+		SELECT * FROM mytable LIMIT 10;
+
+		A = LOAD 'data' USING PigStorage();
+		B = LIMIT A 10;
+		DUMP B;
+	1.6 Order By
+		SELECT * FROM mytable ORDER BY col1 ASC;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray);
+		B = ORDER A BY col1 ASC;
+		DUMP B;
+	1.7 Distinct
+		SELECT DISTINCT col1, col2 FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float);
+		B = FOREACH A GENERATE col1, col2;
+		C = DISTINCT B;
+		DUMP C;
+2. Where
+	2.1 One Condition
+		SELECT * FROM mytable WHERE col1 > 20;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray);
+		B = FILTER A BY col1 > 20;
+		DUMP B;
+	2.2 AND/OR
+		SELECT * FROM mytable WHERE col1 > 20 AND col2 == 'red';
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray);
+		B = FILTER A BY (col1 > 20 AND col2 == 'red');
+		DUMP B;
+	2.3 Like
+		SELECT * FROM mytable WHERE col1 like 'pig%';
+
+		A = LOAD 'data' USING PigStorage() AS (col1:chararray);
+		B = FILTER A BY col1 matches 'pig.*';
+		DUMP B;
+3. Join
+	3.1 Inner Join
+		SELECT * FROM mytable INNER JOIN othertable ON mytable.col1 = othertable.col1;
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int, col2:chararray);
+		C = JOIN A BY col1, B BY col1;
+		DUMP C;
+	3.2 Left Outer Join
+		SELECT * FROM mytable LEFT OUTER JOIN othertable ON mytable.col1 = othertable.col1;
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int, col2:chararray);
+		C = JOIN A by col1 LEFT OUTER, B BY col1;
+		DUMP C;
+	3.3 Right Outer Join
+		SELECT * FROM mytable RIGHT OUTER JOIN othertable ON mytable.col1 = othertable.col1;
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int, col2:chararray);
+		C = JOIN A by col1 RIGHT OUTER, B BY col1;
+		DUMP C;
+	3.4 Full Outer Join
+		SELECT * FROM mytable FULL OUTER JOIN othertable ON mytable.col1 = othertable.col1;
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int, col2:chararray);
+		C = JOIN A by col1 FULL OUTER, B BY col1;
+		DUMP C;
+	3.5 Cross
+		SELECT * FROM mytable, othertable;
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int, col2:chararray);
+		C = CROSS A, B;
+		DUMP C;
+4. Group By
+	4.1 Count all records
+		SELECT COUNT(*) FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float); 
+		B = GROUP A ALL;
+		C = FOREACH B GENERATE COUNT(A);
+		DUMP C;
+	4.2 Distinct Count
+		SELECT COUNT(DISTINCT col1) AS COUNT FROM mytable;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float);
+		B = FOREACH A GENERATE col1;
+		C = DISTINCT B;
+		D = GROUP C BY col1;
+		E = FOREACH D GENERATE COUNT(C) AS count;
+		DUMP E;
+	4.3 Distinct Count by Column
+		SELECT col1, COUNT(DISTINCT col2) AS COUNT FROM mytable GROUP BY col1;
+
+		A = LOAD 'data' USING PigStorage() AS (col1:int, col2:chararray, col3:float); 
+		B = GROUP A by col1;
+		C = FOREACH B {
+			D = DISTINCT A.col2;
+			GENERATE group as col1, COUNT(D) as count;
+		}
+		DUMP C;
+5. Union
+	5.1 Union
+		SELECT mycolumn FROM mytable1 UNION SELECT mycolumn FROM mytable2
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int);
+		B = LOAD 'data2' USING PigStorage() AS (col1:int);
+		C = UNION A, B;
+		DUMP C;
+	5.2 Union all
+		SELECT * FROM mytable1 UNION SELECT * FROM mytable2
+
+		A = LOAD 'data1' USING PigStorage() AS (col1:int, col2:chararray, col3:float);
+		B = LOAD 'data2' USING PigStorage() AS (col4:int, col5:chararray);
+		C = UNION A, B;
+		DUMP C;

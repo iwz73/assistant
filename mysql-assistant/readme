@@ -21,5 +21,6 @@ CREATE DATABASE <<database>> DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unico
 GRANT ALL ON <<database>>.* TO '<<user>>'@'%' IDENTIFIED BY '<<password>>';
 
 # install mysql-workbench
+yum install epel-release
 yum install mysql-workbench
 

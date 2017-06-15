@@ -1,0 +1,26 @@
+# install mysql with yum
+cat /etc/centos-release
+wget http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+yum install mysql57-community-release-el7-11.noarch.rpm
+yum install mysql-community-server
+
+# start mysql
+chkconfig mysqld on
+service mysqld start
+
+# change root password
+grep "password" /var/log/mysqld.log
+mysql -u root -p
+<<mysql>>SET GLOBAL validate_password_length=7;
+<<mysql>>ALTER USER 'root'@'localhost' IDENTIFIED BY '<<new password>>';
+
+# create database
+CREATE DATABASE <<database>> DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+# grant
+GRANT ALL ON <<database>>.* TO '<<user>>'@'%' IDENTIFIED BY '<<password>>';
+
+# install mysql-workbench
+yum install epel-release
+yum install mysql-workbench
+

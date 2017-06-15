@@ -42,3 +42,7 @@ db.mongodb_collection.help()
 
 # system info
 db.system.indexes.find()
+
+# export
+mongoexport --host <<host>> --db <<database>> --collection <<collection>> --out <<file>>
+

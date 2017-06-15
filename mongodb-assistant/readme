@@ -261,7 +261,8 @@ db.mongodb_collection.distinct("string")
 # count
 db.mongodb_collection.count()
 
-
+# connet to remote mongodb
+mongo <<ip>>:27017/<<database>>
 
 db.mongodb_collection.aggregate(
     [

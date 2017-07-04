@@ -1,0 +1,12 @@
+# execute mongo script in bash shell
+vi /tmp/test0.js
+db.getMongo().getDBNames().forEach(function(dbName) {
+  db.adminCommand("use " + dbName);
+  db.getCollectionNames().forEach(function(collectionName) {
+    print(dbName + " / " + collectionName);
+  });
+  print("------------------");
+});
+
+
+mongo < /tmp/test0.js

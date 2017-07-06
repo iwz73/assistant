@@ -1,0 +1,4 @@
+# run luke
+url : https://github.com/DmitryKey/luke/releases
+export LUKE_PATH=/home/thank/Downloads/luke-5.5.0-luke-release
+/home/thank/Downloads/luke-5.5.0-luke-release/luke.sh

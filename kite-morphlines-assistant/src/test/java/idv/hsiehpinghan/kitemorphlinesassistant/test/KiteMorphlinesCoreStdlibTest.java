@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.kitesdk.morphline.api.AbstractMorphlineTest;
 import org.kitesdk.morphline.api.Record;
 import org.kitesdk.morphline.base.Fields;
+import org.kitesdk.morphline.base.Notifications;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 
@@ -74,30 +77,9 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
-	@Test
-	public void convertTimestamp() throws Exception {
-		morphline = createMorphline("conf/convertTimestamp");
-		File file = new File(RESOURCES_DIR + "/data/convertTimestamp.csv");
-		try (InputStream inputStream = new FileInputStream(file);) {
-			Record record = new Record();
-			record.put(Fields.ATTACHMENT_BODY, inputStream);
-			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
-			assertTrue(morphline.process(record));
-			Record rec_0 = collector.getRecords().get(0);
-			Assert.assertEquals("2017-07-08T00:18:07.000Z", rec_0.getFirstValue("date"));
-			Assert.assertEquals("2017-07-08T00:18:07.551Z", rec_0.getFirstValue("milliseconds"));
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
 //	@Test
-	public void _if() throws Exception {
-		morphline = createMorphline("conf/if");
+	public void contains() throws Exception {
+		morphline = createMorphline("conf/ifContains");
 		File file = new File(RESOURCES_DIR + "/data/csv.csv");
 		try (InputStream inputStream = new FileInputStream(file);) {
 			Record record = new Record();
@@ -112,5 +94,53 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 			Assert.assertEquals("false", rec_1.getFirstValue("isContainAge0Or9"));
 		}
 	}
+	
+//	@Test
+	public void convertTimestamp() throws Exception {
+		morphline = createMorphline("conf/convertTimestamp");
+		File file = new File(RESOURCES_DIR + "/data/convertTimestamp.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("2017-07-08T00:18:07.000Z", rec_0.getFirstValue("date"));
+			Assert.assertEquals("2017-07-08T00:18:07.551Z", rec_0.getFirstValue("milliseconds"));
+		}
+	}
+	
+//	@Test
+	public void dropRecord() throws Exception {
+		morphline = createMorphline("conf/dropRecord");
+		File file = new File(RESOURCES_DIR + "/data/csv.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Assert.assertEquals(0, collector.getRecords().size());
+		}
+	}
+
+	@Test
+	public void equals() throws Exception {
+		morphline = createMorphline("conf/ifEquals");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("true", (String)rec_0.getFirstValue("isIdEquals0"));
+			Assert.assertEquals("false", (String)rec_0.getFirstValue("isTextArrayEquals1"));
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("false", (String)rec_1.getFirstValue("isIdEquals0"));
+			Assert.assertEquals("true", (String)rec_1.getFirstValue("isTextArrayEquals1"));
+		}
+	}
+	
 
 }

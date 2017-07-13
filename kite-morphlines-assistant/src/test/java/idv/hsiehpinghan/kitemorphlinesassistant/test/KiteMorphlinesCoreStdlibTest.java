@@ -123,7 +123,7 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void equals() throws Exception {
 		morphline = createMorphline("conf/ifEquals");
 		File file = new File(RESOURCES_DIR + "/data/json.json");
@@ -142,5 +142,81 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
+//	@Test
+	public void extractURIComponents() throws Exception {
+		morphline = createMorphline("conf/extractURIComponents");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("[kitesdk.org, www.google.com.tw, tw.yahoo.com:80]", rec_1.get("extracted_authority").toString());
+			Assert.assertEquals("[extractURIComponents]", rec_1.get("extracted_fragment").toString());
+			Assert.assertEquals("[kitesdk.org, www.google.com.tw, tw.yahoo.com]", rec_1.get("extracted_host").toString());
+			Assert.assertEquals("[/docs/1.1.0/morphlines/morphlines-reference-guide.html, /, /]", rec_1.get("extracted_path").toString());
+			Assert.assertEquals("[-1, -1, 80]", rec_1.get("extracted_port").toString());
+			Assert.assertEquals("[gws_rd=ssl]", rec_1.get("extracted_query").toString());
+			Assert.assertEquals("[http, https, https]", rec_1.get("extracted_scheme").toString());
+			Assert.assertEquals("[//kitesdk.org/docs/1.1.0/morphlines/morphlines-reference-guide.html, //www.google.com.tw/?gws_rd=ssl, //tw.yahoo.com:80/]", rec_1.get("extracted_schemeSpecificPart").toString());
+		}
+	}
+	
+//	@Test
+	public void extractURIComponent() throws Exception {
+		morphline = createMorphline("conf/extractURIComponent");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("[kitesdk.org, www.google.com.tw, tw.yahoo.com]", rec_1.get("extracted_host").toString());
+		}
+	}
 
+//	@Test
+	public void extractURIQueryParameters() throws Exception {
+		morphline = createMorphline("conf/extractURIQueryParameters");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("[ssl]", rec_1.get("extractedParameters").toString());
+		}
+	}
+	
+	
+	
+	
+	
+	
+	@Test
+	public void grok() throws Exception {
+		morphline = createMorphline("conf/grok");
+		File file = new File(RESOURCES_DIR + "/data/grok.txt");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(1, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("[164]", rec_0.get("priority").toString());
+			Assert.assertEquals("[Feb  4 10:46:14]", rec_0.get("timestamp").toString());
+			Assert.assertEquals("[syslog]", rec_0.get("hostname").toString());
+			Assert.assertEquals("[sshd]", rec_0.get("program").toString());
+			Assert.assertEquals("[607]", rec_0.get("pid").toString());
+			Assert.assertEquals("[listening on 0.0.0.0 port 22.]", rec_0.get("msg").toString());
+		}
+	}
+	
 }

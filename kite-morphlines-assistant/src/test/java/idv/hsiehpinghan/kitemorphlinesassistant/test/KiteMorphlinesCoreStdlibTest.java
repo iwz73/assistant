@@ -3,6 +3,7 @@ package idv.hsiehpinghan.kitemorphlinesassistant.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -194,12 +195,37 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
+//	@Test
+	public void findReplace() throws Exception {
+		morphline = createMorphline("conf/findReplace");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals(Arrays.asList("findReplaceTest_A_0", "findReplaceTest_B_0", "findReplaceTest_C_0"), rec_0.get("text_txt"));
+		}
+	}
 	
-	
-	
-	
-	
-	@Test
+//	@Test
+	public void generateUUID() throws Exception {
+		morphline = createMorphline("conf/generateUUID");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertNotNull(rec_0.get("uuid"));
+		}
+	}
+
+//	@Test
 	public void grok() throws Exception {
 		morphline = createMorphline("conf/grok");
 		File file = new File(RESOURCES_DIR + "/data/grok.txt");
@@ -219,4 +245,34 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
+//	@Test
+	public void head() throws Exception {
+		morphline = createMorphline("conf/head");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(2, collector.getRecords().size());
+		}
+	}
+	
+	@Test
+	public void _if() throws Exception {
+		morphline = createMorphline("conf/ifContains");
+		File file = new File(RESOURCES_DIR + "/data/csv.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("false", rec_0.getFirstValue("isContainName_1"));
+			Assert.assertEquals("true", rec_0.getFirstValue("isContainAge0Or9"));
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("true", rec_1.getFirstValue("isContainName_1"));
+			Assert.assertEquals("false", rec_1.getFirstValue("isContainAge0Or9"));
+		}
+	}
 }

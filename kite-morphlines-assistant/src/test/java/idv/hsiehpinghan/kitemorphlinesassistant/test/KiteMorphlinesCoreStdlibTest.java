@@ -303,7 +303,7 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void not() throws Exception {
 		morphline = createMorphline("conf/ifNotContains");
 		File file = new File(RESOURCES_DIR + "/data/csv.csv");
@@ -321,5 +321,35 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
+//	@Test
+	public void removeFields() throws Exception {
+		morphline = createMorphline("conf/removeFields");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("{_attachment_body=[{\"docId\":0,\"bool\":true,\"short\":32767,\"int\":2147483647,\"long\":9223372036854775807,\"double\":1.7976931348623157E308,\"date\":\"1001-01-01T01:01:01.001Z\",\"date_array\":[\"1101-01-01T01:01:01.001Z\",\"1201-01-01T01:01:01.001Z\",\"1301-01-01T01:01:01.001Z\"],\"text\":\"中文測試\",\"text_array\":[\"中文測試A0\",\"中文測試B0\",\"中文測試C0\"],\"object_array\":[{\"url\":\"http://A\"},{\"url\":\"http://B\"},{\"url\":\"http://C\"}]}], _attachment_mimetype=[json/java+memory], bool_b=[true], date_dt=[1001-01-01T01:01:01.001Z], date_dts=[1101-01-01T01:01:01.001Z, 1201-01-01T01:01:01.001Z, 1301-01-01T01:01:01.001Z], double_d=[1.7976931348623157E308], id=[0], int_i=[2147483647], text_t=[中文測試], text_txt=[中文測試A0, 中文測試B0, 中文測試C0], urls_ss=[http://A, http://B, http://C]}", rec_0.toString());
+		}
+	}
 	
+	@Test
+	public void removeValues() throws Exception {
+		morphline = createMorphline("conf/removeValues");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertNull(rec_0.getFirstValue("int_i"));
+			Assert.assertNull(rec_0.getFirstValue("text_t"));
+			Assert.assertEquals("[中文測試A0, 中文測試C0]", rec_0.get("text_txt").toString());
+		}
+	}
 }

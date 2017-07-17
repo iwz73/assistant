@@ -258,7 +258,7 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void _if() throws Exception {
 		morphline = createMorphline("conf/ifContains");
 		File file = new File(RESOURCES_DIR + "/data/csv.csv");
@@ -275,4 +275,51 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 			Assert.assertEquals("false", rec_1.getFirstValue("isContainAge0Or9"));
 		}
 	}
+	
+//	@Test
+	public void java() throws Exception {
+		morphline = createMorphline("conf/java");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals(Integer.valueOf(100), (Integer)rec_0.getFirstValue("id"));
+		}
+	}
+	
+//	@Test
+	public void log() throws Exception {
+		morphline = createMorphline("conf/log");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+		}
+	}
+	
+	@Test
+	public void not() throws Exception {
+		morphline = createMorphline("conf/ifNotContains");
+		File file = new File(RESOURCES_DIR + "/data/csv.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("false", rec_0.getFirstValue("isContainName_1"));
+			Assert.assertEquals("true", rec_0.getFirstValue("isContainAge0Or9"));
+			Record rec_1 = collector.getRecords().get(1);
+			Assert.assertEquals("true", rec_1.getFirstValue("isContainName_1"));
+			Assert.assertEquals("false", rec_1.getFirstValue("isContainAge0Or9"));
+		}
+	}
+	
+	
 }

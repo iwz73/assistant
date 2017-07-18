@@ -336,7 +336,7 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void removeValues() throws Exception {
 		morphline = createMorphline("conf/removeValues");
 		File file = new File(RESOURCES_DIR + "/data/json.json");
@@ -352,4 +352,52 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 			Assert.assertEquals("[中文測試A0, 中文測試C0]", rec_0.get("text_txt").toString());
 		}
 	}
+	
+//	@Test
+	public void replaceValues() throws Exception {
+		morphline = createMorphline("conf/replaceValues");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("replaced_value", rec_0.getFirstValue("int_i"));
+			Assert.assertEquals("replaced_value", rec_0.getFirstValue("text_t"));
+			Assert.assertEquals("replaced_value", rec_0.get("text_txt").get(1));
+		}
+	}
+	
+//	@Test
+	public void sample() throws Exception {
+		morphline = createMorphline("conf/sample");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(1, collector.getRecords().size());
+		}
+	}
+	
+//	@Test
+	public void setValues() throws Exception {
+		morphline = createMorphline("conf/setValues");
+		File file = new File(RESOURCES_DIR + "/data/csv.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("added string", rec_0.getFirstValue("added_string"));
+			Assert.assertEquals("[item 0, item 1, item 2]", rec_0.get("added_array").toString());
+			Assert.assertEquals("na\nme_0", rec_0.getFirstValue("copied_name"));
+			Assert.assertEquals("0", rec_0.getFirstValue("copied_age"));
+		}
+	}
+
 }

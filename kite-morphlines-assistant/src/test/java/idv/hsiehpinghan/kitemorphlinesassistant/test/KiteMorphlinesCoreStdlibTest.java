@@ -400,4 +400,35 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 
+//	@Test
+	public void split() throws Exception {
+		morphline = createMorphline("conf/split");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("1001-01-01T01", rec_0.getFirstValue("first_token").toString());
+			Assert.assertEquals("01", rec_0.getFirstValue("second_token").toString());
+			Assert.assertEquals("01.001Z", rec_0.getFirstValue("third_token").toString());
+		}
+	}
+	
+//	@Test
+	public void splitKeyValue() throws Exception {
+		morphline = createMorphline("conf/splitKeyValue");
+		File file = new File(RESOURCES_DIR + "/data/splitKeyValue.csv");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			Record rec_0 = collector.getRecords().get(0);
+			Assert.assertEquals("v", rec_0.getFirstValue("prefix_k"));
+		}
+	}
+	
 }

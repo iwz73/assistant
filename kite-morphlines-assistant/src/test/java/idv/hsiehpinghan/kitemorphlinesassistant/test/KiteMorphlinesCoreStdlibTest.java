@@ -431,4 +431,16 @@ public class KiteMorphlinesCoreStdlibTest extends AbstractMorphlineTest {
 		}
 	}
 	
+	@Test
+	public void startReportingMetricsToCSV() throws Exception {
+		morphline = createMorphline("conf/startReportingMetricsToCSV");
+		File file = new File(RESOURCES_DIR + "/data/json.json");
+		try (InputStream inputStream = new FileInputStream(file);) {
+			Record record = new Record();
+			record.put(Fields.ATTACHMENT_BODY, inputStream);
+			record.put(Fields.ATTACHMENT_MIME_TYPE, "text/plain");
+			assertTrue(morphline.process(record));
+			assertEquals(3, collector.getRecords().size());
+		}
+	}
 }

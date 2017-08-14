@@ -58,5 +58,8 @@ CHANGING THE ORDER OF FILTER EXECUTION
   fq={!geofilt pt=37.773,-122.419 sfield=location d=50 cost=3}&
   fq={!frange l=90 u=100 cache=false cost=100}scale(query({!v="content:(solr OR lucene)"}),0,100)
   
-  
-  
+GET TERM FREQUENCY (https://cwiki.apache.org/confluence/display/solr/The+Terms+Component)
+http://localhost:8983/solr/collection1/terms?wt=json&terms=true&terms.fl=name
+
+GET TERM VECTOR
+http://localhost:8983/solr/collection1/tvrh?q=id%3A(%22MA147LL%2FA%22+OR++%223007WFP%22+OR+%229885A004%22)&tv=true&tv.fl=includes&tv.all=true&wt=json

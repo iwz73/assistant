@@ -1,0 +1,3 @@
+# start web app
+run idv.hsiehpinghan.springbootstarterwebassistant.SpringBootStarterWebAssistantApplication
+http://localhost:8080/index/index.html

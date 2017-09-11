@@ -17,17 +17,28 @@ public class BasicModel {
 	private String stringXmlElement;
 	@XmlElement
 	private int intXmlElement;
+	@XmlElement
+	private Clazz clazz;
 
-	public BasicModel() {
+	public static BasicModel build(String stringXmlAttribute, int intXmlAttribute, String stringXmlElement,
+			int intXmlElement, String subStringXmlAttribute, int subIntXmlAttribute, String subStringXmlElement,
+			int subIntXmlElement) {
+		Clazz clazz = new Clazz(subStringXmlAttribute, subIntXmlAttribute, subStringXmlElement, subIntXmlElement);
+		return new BasicModel(stringXmlAttribute, intXmlAttribute, stringXmlElement, intXmlElement, clazz);
+	}
+
+	private BasicModel() {
 		super();
 	}
 
-	public BasicModel(String stringXmlAttribute, int intXmlAttribute, String stringXmlElement, int intXmlElement) {
+	private BasicModel(String stringXmlAttribute, int intXmlAttribute, String stringXmlElement, int intXmlElement,
+			Clazz clazz) {
 		super();
 		this.stringXmlAttribute = stringXmlAttribute;
 		this.intXmlAttribute = intXmlAttribute;
 		this.stringXmlElement = stringXmlElement;
 		this.intXmlElement = intXmlElement;
+		this.clazz = clazz;
 	}
 
 	public String getStringXmlAttribute() {
@@ -62,4 +73,68 @@ public class BasicModel {
 		this.intXmlElement = intXmlElement;
 	}
 
+	public Clazz getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Clazz clazz) {
+		this.clazz = clazz;
+	}
+
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Clazz {
+		@XmlAttribute
+		private String stringXmlAttribute;
+		@XmlAttribute
+		private int intXmlAttribute;
+		@XmlElement
+		private String stringXmlElement;
+		@XmlElement
+		private int intXmlElement;
+
+		private Clazz() {
+			super();
+		}
+
+		private Clazz(String stringXmlAttribute, int intXmlAttribute, String stringXmlElement, int intXmlElement) {
+			super();
+			this.stringXmlAttribute = stringXmlAttribute;
+			this.intXmlAttribute = intXmlAttribute;
+			this.stringXmlElement = stringXmlElement;
+			this.intXmlElement = intXmlElement;
+		}
+
+		public String getStringXmlAttribute() {
+			return stringXmlAttribute;
+		}
+
+		public void setStringXmlAttribute(String stringXmlAttribute) {
+			this.stringXmlAttribute = stringXmlAttribute;
+		}
+
+		public int getIntXmlAttribute() {
+			return intXmlAttribute;
+		}
+
+		public void setIntXmlAttribute(int intXmlAttribute) {
+			this.intXmlAttribute = intXmlAttribute;
+		}
+
+		public String getStringXmlElement() {
+			return stringXmlElement;
+		}
+
+		public void setStringXmlElement(String stringXmlElement) {
+			this.stringXmlElement = stringXmlElement;
+		}
+
+		public int getIntXmlElement() {
+			return intXmlElement;
+		}
+
+		public void setIntXmlElement(int intXmlElement) {
+			this.intXmlElement = intXmlElement;
+		}
+
+	}
 }

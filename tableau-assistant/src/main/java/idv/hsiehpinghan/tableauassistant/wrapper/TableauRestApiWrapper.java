@@ -9,6 +9,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -20,8 +22,14 @@ import idv.hsiehpinghan.tableauassistant.utility.JAXBUtility;
 @Component
 public class TableauRestApiWrapper implements InitializingBean {
 	private final Logger LOGGER = LoggerFactory.getLogger(TableauRestApiWrapper.class);
+	// Authentication
 	private String signInUrl;
 	private String signOutUrl;
+//	private String switchSiteUrl;
+	// Sites
+	private String createSiteUrl;	
+	
+	
 	@Autowired
 	@Qualifier("signInRequestBodyJAXBContext")
 	private JAXBContext signInRequestJAXBContext;
@@ -37,9 +45,13 @@ public class TableauRestApiWrapper implements InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		String tableauServerUrl = environment.getRequiredProperty("tableau_server_url");
 		String tableauVersion = environment.getRequiredProperty("tableau_version");
-		// Authentication
+
 		signInUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signin");
 		signOutUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signout");
+//		switchSiteUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "switchSite");
+		createSiteUrl = String.format("%s/api/%s/%s", tableauServerUrl, tableauVersion, "sites");
+
+		
 	}
 
 	public SignInResponseBody signIn(SignInRequestBody signInRequestBody) throws JAXBException {
@@ -57,21 +69,15 @@ public class TableauRestApiWrapper implements InitializingBean {
 		return signInResponseBody;
 	}
 
-	// public void signOut() {
-	// LOGGER.debug("signOut");
-	// restTemplate.postForEntity(signOutUrl, "", responseType)
-	// ResponseEntity<String> responseEntity =
-	// restTemplate.postForEntity(signInUrl, signInRequest, String.class);
-	// int statusCode = responseEntity.getStatusCodeValue();
-	// if(statusCode != 200) {
-	// throw new RuntimeException(String.format("statusCode({%d}) != 200 !!!",
-	// statusCode));
-	// }
-	// String responseBody = responseEntity.getBody();
-	// LOGGER.debug("responseBody : {}", responseBody);
-	// SignInResponse signInResponse =
-	// JAXBUtility.unmarshallWithString(signInResponseJAXBContext, responseBody,
-	// SignInResponse.class);
-	// return signInResponse;
-	// }
+	public void signOut(String token) {
+		LOGGER.debug("signOut");
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("X-Tableau-Auth", token);
+		HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(signOutUrl, httpEntity, String.class);
+		int statusCode = responseEntity.getStatusCodeValue();
+		if (statusCode != 204) {
+			throw new RuntimeException(String.format("statusCode({%d}) != 204 !!!", statusCode));
+		}
+	}
 }

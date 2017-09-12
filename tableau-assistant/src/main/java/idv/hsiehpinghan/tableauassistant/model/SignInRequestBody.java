@@ -15,27 +15,6 @@ public class SignInRequestBody {
 	/**
 	 * Signs you in as a user on the specified site on Tableau Server. This call
 	 * returns an authentication token that you use in subsequent calls to the
-	 * server. You can sign in and impersonate a specific user. You might do
-	 * this if you want manage sign in using a centralized delegation strategy.
-	 * 
-	 * @param name
-	 *            The name of the user. The name and password in the
-	 *            <credentials> element can represent any user in the specified
-	 *            site. If the user is not an administrator, the user might have
-	 *            limited permissions to perform subsequent operations.
-	 * @param password
-	 *            The password.
-	 * @param contentUrl
-	 *            The URL of the site to sign in to.
-	 * @return
-	 */
-	public static SignInRequestBody build(String name, String password, String contentUrl) {
-		return build(name, password, contentUrl, null);
-	}
-
-	/**
-	 * Signs you in as a user on the specified site on Tableau Server. This call
-	 * returns an authentication token that you use in subsequent calls to the
 	 * server.
 	 * 
 	 * @param name
@@ -48,7 +27,8 @@ public class SignInRequestBody {
 	 * @param contentUrl
 	 *            The URL of the site to sign in to.
 	 * @param id
-	 *            For impersonation, the ID (not name) of a user to sign in as.
+	 *            (Optional) For impersonation, the ID (not name) of a user to
+	 *            sign in as.
 	 * @return
 	 */
 	public static SignInRequestBody build(String name, String password, String contentUrl, String id) {

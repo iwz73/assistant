@@ -9,21 +9,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 
-import idv.hsiehpinghan.tableauassistant.model.SignInRequest;
-import idv.hsiehpinghan.tableauassistant.model.SignInResponse;
+import idv.hsiehpinghan.tableauassistant.model.SignInRequestBody;
+import idv.hsiehpinghan.tableauassistant.model.SignInResponseBody;
 
 @Configuration("tableauAssistantSpringConfiguration")
 @PropertySource("classpath:/tableau_assistant.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.tableauassistant" })
 public class SpringConfiguration {
 	@Bean
-	public JAXBContext signInRequestJAXBContext() throws JAXBException {
-		return JAXBContext.newInstance(SignInRequest.class);
+	public JAXBContext signInRequestBodyJAXBContext() throws JAXBException {
+		return JAXBContext.newInstance(SignInRequestBody.class);
 	}
 
 	@Bean
-	public JAXBContext signInResponseJAXBContext() throws JAXBException {
-		return JAXBContext.newInstance(SignInResponse.class);
+	public JAXBContext signInResponseBodyJAXBContext() throws JAXBException {
+		return JAXBContext.newInstance(SignInResponseBody.class);
 	}
 
 	@Bean

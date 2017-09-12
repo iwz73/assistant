@@ -8,15 +8,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "tsResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SignInResponse {
+public class SignInResponseBody {
 	@XmlElement
 	private Credentials credentials;
 
-	private SignInResponse() {
+	private SignInResponseBody() {
 		super();
 	}
 
-	private SignInResponse(Credentials credentials) {
+	private SignInResponseBody(Credentials credentials) {
 		super();
 		this.credentials = credentials;
 	}

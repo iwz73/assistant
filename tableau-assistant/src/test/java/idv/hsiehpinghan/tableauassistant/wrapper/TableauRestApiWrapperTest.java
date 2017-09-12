@@ -12,8 +12,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.tableauassistant.configuration.SpringConfiguration;
-import idv.hsiehpinghan.tableauassistant.model.SignInRequest;
-import idv.hsiehpinghan.tableauassistant.model.SignInResponse;
+import idv.hsiehpinghan.tableauassistant.model.SignInRequestBody;
+import idv.hsiehpinghan.tableauassistant.model.SignInResponseBody;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests {
@@ -26,7 +26,7 @@ public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests 
 	@Autowired
 	private TableauRestApiWrapper wrapper;
 	@Autowired
-	@Qualifier("signInRequestJAXBContext")
+	@Qualifier("signInRequestBodyJAXBContext")
 	private JAXBContext signInRequestJAXBContext;
 
 	@BeforeClass
@@ -38,11 +38,13 @@ public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests 
 
 	@Test
 	public void signIn() throws Exception {
-		SignInRequest signInRequest = SignInRequest.build(tableauEmailAddress, tableauPassword, contentUrl);
-		SignInResponse signInResponse = wrapper.signIn(signInRequest);
-		Assert.assertEquals(signInResponse.getCredentials().getSite().getId(), "a9a405cc-12b0-49ed-a6b1-e73562570af8");
-		Assert.assertEquals(signInResponse.getCredentials().getSite().getContentUrl(), contentUrl);
-		Assert.assertEquals(signInResponse.getCredentials().getUser().getId(), "ba3ed6b4-af85-4d2c-8f7e-be4db1fb6fe8");
+		SignInRequestBody signInRequestBody = SignInRequestBody.build(tableauEmailAddress, tableauPassword, contentUrl);
+		SignInResponseBody signInResponseBody = wrapper.signIn(signInRequestBody);
+		Assert.assertEquals(signInResponseBody.getCredentials().getSite().getId(),
+				"a9a405cc-12b0-49ed-a6b1-e73562570af8");
+		Assert.assertEquals(signInResponseBody.getCredentials().getSite().getContentUrl(), contentUrl);
+		Assert.assertEquals(signInResponseBody.getCredentials().getUser().getId(),
+				"ba3ed6b4-af85-4d2c-8f7e-be4db1fb6fe8");
 	}
 
 }

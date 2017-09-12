@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "tsRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SignInRequest {
+public class SignInRequestBody {
 	@XmlElement
 	private Credentials credentials;
 
@@ -29,7 +29,7 @@ public class SignInRequest {
 	 *            The URL of the site to sign in to.
 	 * @return
 	 */
-	public static SignInRequest build(String name, String password, String contentUrl) {
+	public static SignInRequestBody build(String name, String password, String contentUrl) {
 		return build(name, password, contentUrl, null);
 	}
 
@@ -51,7 +51,7 @@ public class SignInRequest {
 	 *            For impersonation, the ID (not name) of a user to sign in as.
 	 * @return
 	 */
-	public static SignInRequest build(String name, String password, String contentUrl, String id) {
+	public static SignInRequestBody build(String name, String password, String contentUrl, String id) {
 		Credentials.Site site = new Credentials.Site(contentUrl);
 		Credentials credentials = null;
 		if (id == null) {
@@ -60,14 +60,14 @@ public class SignInRequest {
 			Credentials.User user = new Credentials.User(id);
 			credentials = new Credentials(name, password, site, user);
 		}
-		return new SignInRequest(credentials);
+		return new SignInRequestBody(credentials);
 	}
 
-	private SignInRequest() {
+	private SignInRequestBody() {
 		super();
 	}
 
-	private SignInRequest(Credentials credentials) {
+	private SignInRequestBody(Credentials credentials) {
 		super();
 		this.credentials = credentials;
 	}

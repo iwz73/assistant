@@ -13,19 +13,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import idv.hsiehpinghan.tableauassistant.model.SignInRequest;
-import idv.hsiehpinghan.tableauassistant.model.SignInResponse;
+import idv.hsiehpinghan.tableauassistant.model.SignInRequestBody;
+import idv.hsiehpinghan.tableauassistant.model.SignInResponseBody;
 import idv.hsiehpinghan.tableauassistant.utility.JAXBUtility;
 
 @Component
 public class TableauRestApiWrapper implements InitializingBean {
 	private final Logger LOGGER = LoggerFactory.getLogger(TableauRestApiWrapper.class);
 	private String signInUrl;
+	private String signOutUrl;
 	@Autowired
-	@Qualifier("signInRequestJAXBContext")
+	@Qualifier("signInRequestBodyJAXBContext")
 	private JAXBContext signInRequestJAXBContext;
 	@Autowired
-	@Qualifier("signInResponseJAXBContext")
+	@Qualifier("signInResponseBodyJAXBContext")
 	private JAXBContext signInResponseJAXBContext;
 	@Autowired
 	private Environment environment;
@@ -38,18 +39,39 @@ public class TableauRestApiWrapper implements InitializingBean {
 		String tableauVersion = environment.getRequiredProperty("tableau_version");
 		// Authentication
 		signInUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signin");
-
+		signOutUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signout");
 	}
 
-	public SignInResponse signIn(SignInRequest signInRequest) throws JAXBException {
-		String requestBody = JAXBUtility.marshallAsString(signInRequestJAXBContext, signInRequest);
-		LOGGER.debug("requestBody : {}", requestBody);
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(signInUrl, signInRequest, String.class);
+	public SignInResponseBody signIn(SignInRequestBody signInRequestBody) throws JAXBException {
+		String requestBody = JAXBUtility.marshallAsString(signInRequestJAXBContext, signInRequestBody);
+		LOGGER.debug("signIn requestBody : {}", requestBody);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(signInUrl, signInRequestBody, String.class);
+		int statusCode = responseEntity.getStatusCodeValue();
+		if (statusCode != 200) {
+			throw new RuntimeException(String.format("statusCode({%d}) != 200 !!!", statusCode));
+		}
 		String responseBody = responseEntity.getBody();
-		LOGGER.debug("responseBody : {}", responseBody);
-		SignInResponse signInResponse = JAXBUtility.unmarshallWithString(signInResponseJAXBContext, responseBody,
-				SignInResponse.class);
-		return signInResponse;
+		LOGGER.debug("signIn responseBody : {}", responseBody);
+		SignInResponseBody signInResponseBody = JAXBUtility.unmarshallWithString(signInResponseJAXBContext,
+				responseBody, SignInResponseBody.class);
+		return signInResponseBody;
 	}
 
+	// public void signOut() {
+	// LOGGER.debug("signOut");
+	// restTemplate.postForEntity(signOutUrl, "", responseType)
+	// ResponseEntity<String> responseEntity =
+	// restTemplate.postForEntity(signInUrl, signInRequest, String.class);
+	// int statusCode = responseEntity.getStatusCodeValue();
+	// if(statusCode != 200) {
+	// throw new RuntimeException(String.format("statusCode({%d}) != 200 !!!",
+	// statusCode));
+	// }
+	// String responseBody = responseEntity.getBody();
+	// LOGGER.debug("responseBody : {}", responseBody);
+	// SignInResponse signInResponse =
+	// JAXBUtility.unmarshallWithString(signInResponseJAXBContext, responseBody,
+	// SignInResponse.class);
+	// return signInResponse;
+	// }
 }

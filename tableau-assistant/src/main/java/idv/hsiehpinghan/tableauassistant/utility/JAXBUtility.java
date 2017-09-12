@@ -12,7 +12,7 @@ public class JAXBUtility {
 	public static String marshallAsString(JAXBContext jAXBContext, Object model) throws JAXBException {
 		Marshaller marshaller = jAXBContext.createMarshaller();
 //        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://tableau.com/api http://tableau.com/api/ts-api-2.6.xsd");
+        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://tableau.com/api http://tableau.com/api/ts-api-2.5.xsd");
 		StringWriter stringWriter = new StringWriter();
 		marshaller.marshal(model, stringWriter);
 		return stringWriter.toString();

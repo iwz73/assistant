@@ -43,13 +43,13 @@ public class TableauRestApiWrapper implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String tableauServerUrl = environment.getRequiredProperty("tableau_server_url");
+		String tableauServerIp = environment.getRequiredProperty("tableau_server_ip");
 		String tableauVersion = environment.getRequiredProperty("tableau_version");
 
-		signInUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signin");
-		signOutUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "signout");
-//		switchSiteUrl = String.format("%s/api/%s/%s/%s", tableauServerUrl, tableauVersion, "auth", "switchSite");
-		createSiteUrl = String.format("%s/api/%s/%s", tableauServerUrl, tableauVersion, "sites");
+		signInUrl = String.format("https://%s/api/%s/%s/%s", tableauServerIp, tableauVersion, "auth", "signin");
+		signOutUrl = String.format("https://%s/api/%s/%s/%s", tableauServerIp, tableauVersion, "auth", "signout");
+//		switchSiteUrl = String.format("https://%s/api/%s/%s/%s", tableauServerIp, tableauVersion, "auth", "switchSite");
+		createSiteUrl = String.format("https://%s/api/%s/%s", tableauServerIp, tableauVersion, "sites");
 
 		
 	}

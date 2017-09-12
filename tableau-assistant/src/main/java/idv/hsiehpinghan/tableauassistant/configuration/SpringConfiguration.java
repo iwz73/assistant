@@ -13,7 +13,7 @@ import idv.hsiehpinghan.tableauassistant.model.SignInRequestBody;
 import idv.hsiehpinghan.tableauassistant.model.SignInResponseBody;
 
 @Configuration("tableauAssistantSpringConfiguration")
-@PropertySource("classpath:/tableau_assistant.property")
+@PropertySource("classpath:/tableau_assistant_server.property")
 @ComponentScan(basePackages = { "idv.hsiehpinghan.tableauassistant" })
 public class SpringConfiguration {
 	@Bean
@@ -30,4 +30,5 @@ public class SpringConfiguration {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
 }

@@ -1,5 +1,15 @@
 package idv.hsiehpinghan.tableauassistant.wrapper;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.bind.JAXBContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +25,12 @@ import org.testng.annotations.Test;
 import idv.hsiehpinghan.tableauassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.tableauassistant.model.SignInRequestBody;
 import idv.hsiehpinghan.tableauassistant.model.SignInResponseBody;
+import idv.hsiehpinghan.tableauassistant.utility.SSLUtility;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests {
-	private String tableauEmailAddress;
-	private String tableauPassword;
+	private String adminName;
+	private String adminPassword;
 	private String contentUrl;
 	private String token;
 
@@ -33,9 +44,11 @@ public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests 
 
 	@BeforeClass
 	public void beforeClass() {
-		tableauEmailAddress = environment.getRequiredProperty("tableauEmailAddress");
-		tableauPassword = environment.getRequiredProperty("tableauPassword");
-		contentUrl = environment.getRequiredProperty("tableau_site_name");
+		String tableauServerIp = environment.getRequiredProperty("tableau_server_ip");
+		SSLUtility.skipSslCheck(tableauServerIp);
+		adminName = environment.getRequiredProperty("admin_name");
+		adminPassword = environment.getRequiredProperty("admin_password");
+		contentUrl = environment.getRequiredProperty("site_name");
 	}
 
 	@AfterClass
@@ -45,14 +58,13 @@ public class TableauRestApiWrapperTest extends AbstractTestNGSpringContextTests 
 
 	@Test
 	public void signIn() throws Exception {
-		SignInRequestBody signInRequestBody = SignInRequestBody.build(tableauEmailAddress, tableauPassword, contentUrl,
-				null);
+		SignInRequestBody signInRequestBody = SignInRequestBody.build(adminName, adminPassword, contentUrl, null);
 		SignInResponseBody signInResponseBody = wrapper.signIn(signInRequestBody);
 		Assert.assertEquals(signInResponseBody.getCredentials().getSite().getId(),
-				"a9a405cc-12b0-49ed-a6b1-e73562570af8");
+				"6186702e-6b73-4d01-888a-cc28a6a31d31");
 		Assert.assertEquals(signInResponseBody.getCredentials().getSite().getContentUrl(), contentUrl);
 		Assert.assertEquals(signInResponseBody.getCredentials().getUser().getId(),
-				"ba3ed6b4-af85-4d2c-8f7e-be4db1fb6fe8");
+				"3956d8ff-9ff5-4943-835f-8794208cb81c");
 		token = signInResponseBody.getCredentials().getToken();
 	}
 

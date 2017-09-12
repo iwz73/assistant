@@ -29,7 +29,7 @@ public class BasicAssistantTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void marshaller() throws Exception {
 		actual = assistant.marshaller(model);
-		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><basicModel stringXmlAttribute=\"stringXmlAttribute\" intXmlAttribute=\"0\"><stringXmlElement>stringXmlElement</stringXmlElement><intXmlElement>1</intXmlElement><clazz stringXmlAttribute=\"subStringXmlAttribute\" intXmlAttribute=\"2\"><stringXmlElement>subStringXmlElement</stringXmlElement><intXmlElement>3</intXmlElement></clazz></basicModel>";
+		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><basicModel stringXmlAttribute=\"stringXmlAttribute\" intXmlAttribute=\"0\" xsi:schemaLocation=\"http://hsiehpinghan.idv/schema/beans http://hsiehpinghan.idv/beans/hsiehpinghan-beans-1.0.xsd\" xmlns=\"http://hsiehpinghan.idv/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><stringXmlElement>stringXmlElement</stringXmlElement><intXmlElement>1</intXmlElement><clazz stringXmlAttribute=\"subStringXmlAttribute\" intXmlAttribute=\"2\"><stringXmlElement>subStringXmlElement</stringXmlElement><intXmlElement>3</intXmlElement></clazz></basicModel>";
 		Assert.assertEquals(actual, expected);
 	}
 

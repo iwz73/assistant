@@ -53,6 +53,12 @@ public class SpringConfiguration {
 		return new KafkaConsumer<>(properties);
 	}
 
+	@Bean
+	public Consumer<Integer, String> partitionerConsumer_1() {
+		Properties properties = generatePartitionerConsumerProperties();
+		return new KafkaConsumer<>(properties);
+	}
+	
 	private Properties generateBasicProducerProperties() {
 		Properties properties = new Properties();
 		properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));

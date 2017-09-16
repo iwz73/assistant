@@ -53,4 +53,14 @@ public class PartitionerTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(receiveAmount, SENT_AMOUT);
 	}
 
+	@Test(dependsOnMethods = { "poll" })
+	public void fetchAll() {
+		ConsumerRecords<Integer, String> consumerRecords = partitionerConsumer.fetchAll();
+		int receiveAmount = 0;
+		for (ConsumerRecord<Integer, String> consumerRecord : consumerRecords) {
+			Assert.assertEquals(consumerRecord.value(), VALUE);
+			++receiveAmount;
+		}
+		Assert.assertTrue(receiveAmount > SENT_AMOUT);
+	}
 }

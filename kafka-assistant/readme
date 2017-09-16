@@ -33,6 +33,9 @@
 # list topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --list --zookeeper localhost:2181
 
+# alter topic
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --alter --zookeeper localhost:2181 --partitions 2 --topic test_topic
+
 # producer send message
 /opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092, localhost:9093 --topic test_topic
 

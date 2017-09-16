@@ -28,7 +28,7 @@
 /opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_1.properties
 
 # create topic
-/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 1 --topic test_topic
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 2 --topic test_topic
 
 # list topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --list --zookeeper localhost:2181

@@ -16,7 +16,7 @@ import idv.hsiehpinghan.kafkaassistant.producer.BasicProducer;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class BasicTest extends AbstractTestNGSpringContextTests {
-	public static final String VALUE = "ProducerAssistant send";
+	public static final String VALUE = "basicProducer send";
 	@Autowired
 	private Environment environment;
 	@Autowired
@@ -27,7 +27,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void send() throws Exception {
 		RecordMetadata recordMetadata = basicProducer.send(VALUE);
-		Assert.assertEquals(recordMetadata.topic(), environment.getRequiredProperty("test_topic_0"));
+		Assert.assertEquals(recordMetadata.topic(), environment.getRequiredProperty("basic_topic"));
 	}
 
 	@Test(dependsOnMethods = { "send" })

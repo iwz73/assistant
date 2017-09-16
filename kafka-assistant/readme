@@ -12,11 +12,14 @@
 # describe topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic
 
+# delete topic
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic
+
 # producer send message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic <<topic name>>
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic
 
 # consumer get message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic <<topic name>> --from-beginning
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning
 
 --------------------------- A single node – multiple broker clusters -------------------------- 
 # start kafka
@@ -25,16 +28,16 @@
 /opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_1.properties
 
 # create topic
-/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 1 --topic <<topic name>>
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 1 --topic test_topic
 
 # list topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --list --zookeeper localhost:2181
 
 # producer send message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092, localhost:9093 --topic <<topic name>>
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092, localhost:9093 --topic test_topic
 
 # consumer get message
-/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <<topic name>> --from-beginning
+/opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test_topic --from-beginning
 
 --------------------------- Use Kafka Connect to import/export data -------------------------- 
 echo -e "foo\nbar" > /tmp/test.txt

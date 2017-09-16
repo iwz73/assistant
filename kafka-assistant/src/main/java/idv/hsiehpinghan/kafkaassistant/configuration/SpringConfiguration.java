@@ -1,6 +1,5 @@
 package idv.hsiehpinghan.kafkaassistant.configuration;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.Consumer;
@@ -33,10 +32,7 @@ public class SpringConfiguration {
 	@Bean
 	public Consumer<String, String> basicConsumer_0() {
 		Properties properties = generateBasicConsumerProperties();
-		Consumer<String, String> consumer = new KafkaConsumer<>(properties);
-		String topic = environment.getRequiredProperty("test_topic_0");
-		consumer.subscribe(Arrays.asList(topic));
-		return consumer;
+		return new KafkaConsumer<>(properties);
 	}
 
 	private Properties generateBasicProducerProperties() {

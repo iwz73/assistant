@@ -1,6 +1,6 @@
 metadata_broker_list=localhost:9092,localhost:9093
 bootstrap_servers=localhost:9092
-test_topic_0=test_topic
+basic_topic=basic_topic
 group_id_0=test_group_id
 enable_auto_commit=true
 auto_commit_interval_ms=1000

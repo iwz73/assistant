@@ -11,4 +11,19 @@ public class CommonController {
 	public String index() {
 		return "/common/index";
 	}
+
+	@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+	public String loginPage() {
+		return "/common/loginPage";
+	}
+
+	@RequestMapping(value = "/loginFailPage", method = RequestMethod.GET)
+	public String loginFailPage() {
+		return "/common/loginFailPage";
+	}
+
+	@RequestMapping(value = "/logoutPage", method = RequestMethod.GET)
+	public String logoutPage() {
+		return "/common/logoutPage";
+	}
 }

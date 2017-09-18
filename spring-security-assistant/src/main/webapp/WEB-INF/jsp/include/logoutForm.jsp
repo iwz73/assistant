@@ -5,7 +5,10 @@
 <!DOCTYPE html>
 <html>
 <body>
-	this is a common page. (${pageContext.request.userPrincipal.name})<br>
-	<jsp:include page="../include/logoutForm.jsp"></jsp:include>
+	<c:url value="/logoutUrl" var="logoutUrl" />
+	<form action="${logoutUrl}" method="post">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="submit" value="logout">
+	</form>
 </body>
 </html>

@@ -12,8 +12,13 @@
 # describe topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic
 
-# delete topic
+# delete topic (set delete.topic.enable=true in /opt/kafka_2.11-0.10.1.1/config/server.properties and restart kafka server)
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic
+
+# undelete topic
+/opt/kafka_2.11-0.10.1.1/bin/zookeeper-shell.sh localhost:2181
+<<zookeeper prompt>>ls /admin/delete_topics
+<<zookeeper prompt>>rmr /admin/delete_topics/test_topic
 
 # producer send message
 /opt/kafka_2.11-0.10.1.1/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic
@@ -24,8 +29,8 @@
 --------------------------- A single node – multiple broker clusters -------------------------- 
 # start kafka
 /opt/kafka_2.11-0.10.1.1/bin/zookeeper-server-start.sh /opt/kafka_2.11-0.10.1.1/config/zookeeper.properties
-/opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_0.properties
-/opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_1.properties
+/opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/thank/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_0.properties
+/opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /home/thank/git/assistant/kafka-assistant/src/file/single_node_multiple_broker/server_1.properties
 
 # create topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 2 --topic test_topic

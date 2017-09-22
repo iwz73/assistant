@@ -18,6 +18,9 @@
 		<spring-security.version>4.0.3.RELEASE</spring-security.version>
 		<jstl.version>1.2</jstl.version>
 		<tomcat-servlet-api.version>7.0.61</tomcat-servlet-api.version>
+		<hibernate.version>4.3.10.Final</hibernate.version>
+		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +52,17 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- spring-security -->
 		<dependency>
@@ -61,7 +75,7 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring-security.version}</version>
 		</dependency>
-	
+
 		<!-- jstl -->
 		<dependency>
 			<groupId>jstl</groupId>
@@ -77,6 +91,26 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<!-- postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+		</dependency>
+
+		<!-- c3p0 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

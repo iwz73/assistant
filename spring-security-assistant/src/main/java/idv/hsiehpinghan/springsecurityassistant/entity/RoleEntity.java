@@ -12,19 +12,29 @@ public class RoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	private String roleId;
 	private String rolename;
 
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany(mappedBy = "roles")
 	private Collection<UserEntity> Users;
 
 	public RoleEntity() {
 		super();
 	}
 
-	public RoleEntity(String rolename, Collection<UserEntity> users) {
+	public RoleEntity(String roleId, String rolename, Collection<UserEntity> users) {
 		super();
+		this.roleId = roleId;
 		this.rolename = rolename;
 		Users = users;
+	}
+
+	public String getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 
 	public String getRolename() {
@@ -47,7 +57,7 @@ public class RoleEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((rolename == null) ? 0 : rolename.hashCode());
+		result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
 		return result;
 	}
 
@@ -60,10 +70,10 @@ public class RoleEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		RoleEntity other = (RoleEntity) obj;
-		if (rolename == null) {
-			if (other.rolename != null)
+		if (roleId == null) {
+			if (other.roleId != null)
 				return false;
-		} else if (!rolename.equals(other.rolename))
+		} else if (!roleId.equals(other.roleId))
 			return false;
 		return true;
 	}

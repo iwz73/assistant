@@ -29,7 +29,6 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.findOne(username);
-
 		String password = userEntity.getPassword();
 		Boolean enabled = userEntity.getEnabled();
 		Boolean accountNonExpired = userEntity.getAccountNonExpired();

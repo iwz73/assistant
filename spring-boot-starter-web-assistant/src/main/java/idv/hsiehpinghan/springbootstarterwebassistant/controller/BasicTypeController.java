@@ -25,9 +25,8 @@ public class BasicTypeController {
 
 	@RequestMapping(value = "/save")
 	public String save(BasicTypeCriteria criteria) {
-		BasicTypeEntity entity = new BasicTypeEntity();
 		String string = criteria.getString();
-		entity.setString(string);
+		BasicTypeEntity entity = new BasicTypeEntity(string);
 		service.save(entity);
 		return "redirect:findByString/" + string;
 	}
@@ -38,7 +37,5 @@ public class BasicTypeController {
 		model.addAttribute("entities", entities);
 		return "basicType/result";
 	}
-
-
 
 }

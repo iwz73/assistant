@@ -11,18 +11,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
 
 import idv.hsiehpinghan.springbootstarterwebassistant.condition.TestCondition;
-import idv.hsiehpinghan.springbootstarterwebassistant.controller.IndexController;
+import idv.hsiehpinghan.springbootstarterwebassistant.controller.BasicTypeController;
 
 @Conditional(TestCondition.class)
-@Configuration("springBootStarterWebSpringConfiguration")
-public class SpringConfiguration {
+public class SpringConditionalConfiguration {
 	// private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Bean
-	@ConditionalOnBean({ IndexController.class })
+	@ConditionalOnBean({ BasicTypeController.class })
 	public String conditionalOnBean() {
 		System.err.println("conditionalOnBean");
 		return "conditionalOnBean";

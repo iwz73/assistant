@@ -16,7 +16,7 @@ public class RoleEntity implements Serializable {
 	private String rolename;
 
 	@ManyToMany(mappedBy = "roles")
-	private Collection<UserEntity> Users;
+	private Collection<UserEntity> users;
 
 	public RoleEntity() {
 		super();
@@ -26,31 +26,31 @@ public class RoleEntity implements Serializable {
 		super();
 		this.roleId = roleId;
 		this.rolename = rolename;
-		Users = users;
+		this.users = users;
 	}
 
 	public String getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
-
 	public String getRolename() {
 		return rolename;
+	}
+
+	public Collection<UserEntity> getUsers() {
+		return users;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 
 	public void setRolename(String rolename) {
 		this.rolename = rolename;
 	}
 
-	public Collection<UserEntity> getUsers() {
-		return Users;
-	}
-
 	public void setUsers(Collection<UserEntity> users) {
-		Users = users;
+		this.users = users;
 	}
 
 	@Override

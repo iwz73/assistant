@@ -40,9 +40,4 @@ public class BasicTypeEntity implements Serializable {
 		this.string = string;
 	}
 
-	@Override
-	public String toString() {
-		return "BasicTypeEntity [id=" + id + ", string=" + string + "]";
-	}
-
 }

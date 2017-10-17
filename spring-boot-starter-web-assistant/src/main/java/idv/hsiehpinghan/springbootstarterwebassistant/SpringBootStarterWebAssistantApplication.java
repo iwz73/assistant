@@ -9,4 +9,5 @@ public class SpringBootStarterWebAssistantApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootStarterWebAssistantApplication.class, args);
 	}
+
 }

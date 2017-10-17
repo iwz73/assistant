@@ -98,12 +98,6 @@ public class UserEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((accountNonExpired == null) ? 0 : accountNonExpired.hashCode());
-		result = prime * result + ((accountNonLocked == null) ? 0 : accountNonLocked.hashCode());
-		result = prime * result + ((credentialsNonExpired == null) ? 0 : credentialsNonExpired.hashCode());
-		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -117,36 +111,6 @@ public class UserEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserEntity other = (UserEntity) obj;
-		if (accountNonExpired == null) {
-			if (other.accountNonExpired != null)
-				return false;
-		} else if (!accountNonExpired.equals(other.accountNonExpired))
-			return false;
-		if (accountNonLocked == null) {
-			if (other.accountNonLocked != null)
-				return false;
-		} else if (!accountNonLocked.equals(other.accountNonLocked))
-			return false;
-		if (credentialsNonExpired == null) {
-			if (other.credentialsNonExpired != null)
-				return false;
-		} else if (!credentialsNonExpired.equals(other.credentialsNonExpired))
-			return false;
-		if (enabled == null) {
-			if (other.enabled != null)
-				return false;
-		} else if (!enabled.equals(other.enabled))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (roles == null) {
-			if (other.roles != null)
-				return false;
-		} else if (!roles.equals(other.roles))
-			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;

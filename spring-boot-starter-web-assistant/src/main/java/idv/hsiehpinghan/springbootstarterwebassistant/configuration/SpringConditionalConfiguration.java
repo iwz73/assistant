@@ -13,14 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 
 import idv.hsiehpinghan.springbootstarterwebassistant.condition.TestCondition;
-import idv.hsiehpinghan.springbootstarterwebassistant.controller.BasicTypeController;
+import idv.hsiehpinghan.springbootstarterwebassistant.controller.BasicController;
 
 @Conditional(TestCondition.class)
 public class SpringConditionalConfiguration {
 	// private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Bean
-	@ConditionalOnBean({ BasicTypeController.class })
+	@ConditionalOnBean({ BasicController.class })
 	public String conditionalOnBean() {
 		System.err.println("conditionalOnBean");
 		return "conditionalOnBean";

@@ -5,6 +5,7 @@
 <title>result</title>
 </head>
 <body>
+	property : <span th:text="${property}">property value</span>
 	<div th:unless="${#lists.isEmpty(entities)}">
 		<table>
 			<tr>
@@ -12,8 +13,8 @@
 				<th>string</th>
 			</tr>
 			<tr th:each="entity : ${entities}">
-				<td th:text="${entity.id}">idValue</td>
-				<td th:text="${entity.string}">stringValue</td>
+				<td th:text="${entity.id}">id value</td>
+				<td th:text="${entity.string}">string value</td>
 			</tr>
 		</table>
 	</div>

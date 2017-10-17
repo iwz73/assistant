@@ -8,18 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class BasicTypeEntity implements Serializable {
+public class BasicEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String string;
 
-	public BasicTypeEntity() {
+	public BasicEntity() {
 		super();
 	}
 
-	public BasicTypeEntity(String string) {
+	public BasicEntity(String string) {
 		super();
 		this.string = string;
 	}

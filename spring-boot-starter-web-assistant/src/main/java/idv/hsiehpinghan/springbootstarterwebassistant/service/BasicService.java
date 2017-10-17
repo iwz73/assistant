@@ -7,21 +7,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import idv.hsiehpinghan.springbootstarterwebassistant.entity.BasicTypeEntity;
-import idv.hsiehpinghan.springbootstarterwebassistant.repository.BasicTypeRepository;
+import idv.hsiehpinghan.springbootstarterwebassistant.entity.BasicEntity;
+import idv.hsiehpinghan.springbootstarterwebassistant.repository.BasicRepository;
 
 @Service
 @Transactional
-public class BasicTypeService {
+public class BasicService {
 	@Autowired
-	private BasicTypeRepository repository;
+	private BasicRepository repository;
 
-	public void save(BasicTypeEntity entity) {
+	public void save(BasicEntity entity) {
 		repository.save(entity);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<BasicTypeEntity> findByString(String string) {
+	public List<BasicEntity> findByString(String string) {
 		return repository.findByString(string);
 	}
 }

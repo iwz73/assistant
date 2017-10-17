@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import idv.hsiehpinghan.springbootstarterwebassistant.entity.BasicTypeEntity;
 
 public interface BasicTypeRepository extends JpaRepository<BasicTypeEntity, Integer> {
-	public List<BasicTypeEntity> findByString(String string);
+	List<BasicTypeEntity> findByString(String string);
 }

@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idv.hsiehpinghan.springbootstarterwebassistant.entity.RoleEntity;
 import idv.hsiehpinghan.springbootstarterwebassistant.entity.UserEntity;
-import idv.hsiehpinghan.springbootstarterwebassistant.repository.impl.UserRepositoryImpl;
+import idv.hsiehpinghan.springbootstarterwebassistant.repository.UserRepository;
 
 @Service
 @Transactional
 public class MyUserDetailsService implements UserDetailsService {
 	@Autowired
-	private UserRepositoryImpl userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

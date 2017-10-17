@@ -6,16 +6,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import idv.hsiehpinghan.springbootstarterwebassistant.entity.UserEntity;
-import idv.hsiehpinghan.springbootstarterwebassistant.repository.impl.UserRepositoryImpl;
+import idv.hsiehpinghan.springbootstarterwebassistant.repository.UserRepository;
 
 @Service
 @Transactional
 public class UserService {
 	@Autowired
-	private UserRepositoryImpl repository;
+	private UserRepository repository;
 
-	public void saveOrUpdate(UserEntity entity) {
-		repository.saveOrUpdate(entity);
+	public void save(UserEntity entity) {
+		repository.save(entity);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

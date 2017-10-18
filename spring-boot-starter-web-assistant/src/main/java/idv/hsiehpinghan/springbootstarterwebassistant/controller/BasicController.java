@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import idv.hsiehpinghan.springbootstarterwebassistant.criteria.BasicTypeCriteria;
 import idv.hsiehpinghan.springbootstarterwebassistant.entity.BasicEntity;
@@ -21,7 +21,7 @@ import idv.hsiehpinghan.springbootstarterwebassistant.service.BasicService;
 @ConfigurationProperties("prefix")
 public class BasicController {
 	private final Logger LOGGER = LoggerFactory.getLogger(CommonController.class);
-	
+
 	@Autowired
 	private ConfigurationProperty configurationProperty;
 
@@ -39,16 +39,17 @@ public class BasicController {
 		String string = criteria.getString();
 		BasicEntity entity = new BasicEntity(string);
 		service.save(entity);
-		return "redirect:findByString/" + string;
+		return String.format("redirect:findByString/%s", string);
 	}
 
 	@RequestMapping(value = "/findByString/{string}")
-	public String findByString(@PathVariable("string") String string, Model model) {
+	public ModelAndView findByString(@PathVariable("string") String string) {
 		String property = configurationProperty.getProperty();
-		model.addAttribute("property", property);
+		ModelAndView mv = new ModelAndView("basic/result");
+		mv.addObject("property", property);
 		List<BasicEntity> entities = service.findByString(string);
-		model.addAttribute("entities", entities);
-		return "basic/result";
+		mv.addObject("entities", entities);
+		return mv;
 	}
 
 }

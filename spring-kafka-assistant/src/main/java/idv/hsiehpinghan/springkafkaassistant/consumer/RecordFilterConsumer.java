@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import idv.hsiehpinghan.springkafkaassistant.constant.KafkaConstant;
 
 @Component
-public class BasicConsumer {
-	@KafkaListener(topics = KafkaConstant.BASIC_TOPIC)
+public class RecordFilterConsumer {
+	@KafkaListener(topics = KafkaConstant.RECORD_FILTER_TOPIC, containerFactory = "kafkaListenerContainerFactoryWithRecordFilterStrategy")
 	public void listener(String message) {
-		System.err.println(String.format("BasicConsumer receive : %s", message));
+		System.err.println(String.format("RecordFilterConsumer receive : %s", message));
 	}
 }

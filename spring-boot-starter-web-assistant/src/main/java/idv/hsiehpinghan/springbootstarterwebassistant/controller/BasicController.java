@@ -20,7 +20,7 @@ import idv.hsiehpinghan.springbootstarterwebassistant.service.BasicService;
 @RequestMapping("/basic")
 @ConfigurationProperties("prefix")
 public class BasicController {
-	private final Logger LOGGER = LoggerFactory.getLogger(CommonController.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(BasicController.class);
 
 	@Autowired
 	private ConfigurationProperty configurationProperty;

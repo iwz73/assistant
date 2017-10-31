@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>index</title>
+</head>
+<body>
+	<input id="create" type="button" value="create">
+	<br>
+	<input id="read" type="button" value="read">
+	<br>
+	<input id="readAll" type="button" value="read all">
+	<br>
+	<input id="update" type="button" value="update">
+	<br>
+	<input id="delete" type="button" value="delete">
+	<br>
+	<div id="result"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(function() {
+		var setting = {
+			traditional : false,
+			contentType : 'application/json; charset=UTF-8',
+			cache : false,
+			ifModified : false,
+			timeout : 10000,
+			complete : function(data) {
+				$('#result').html(JSON.stringify(data));
+			}
+		};
+		$("#create").on("click", function() {
+			setting.url = "basic/create";
+			setting.method = "POST";
+			setting.dataType = 'json';
+			setting.data = JSON.stringify({
+				"id" : 0,
+				"string" : "string_0"
+			});
+			$.ajax(setting);
+		})
+		$("#read").on("click", function() {
+			setting.url = "basic/read/0";
+			setting.method = "GET";
+			$.ajax(setting);
+		})
+		$("#readAll").on("click", function() {
+			setting.url = "basic/read";
+			setting.method = "GET";
+			$.ajax(setting);
+		})
+		$("#update").on("click", function() {
+			setting.url = "basic/update";
+			setting.method = "PUT";
+			setting.dataType = 'json';
+			setting.data = JSON.stringify({
+				"id" : 0,
+				"string" : "updated_string_0"
+			});
+			$.ajax(setting);
+		})
+		$("#delete").on("click", function() {
+			setting.url = "basic/delete/0";
+			setting.method = "DELETE";
+			$.ajax(setting);
+		})
+	})
+</script>
+</html>

@@ -4,7 +4,7 @@
 /opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh /opt/kafka_2.11-0.10.1.1/config/server.properties
 
 # create topic
-/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic <<topic name>>
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic
 
 # list topic
 /opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --list --zookeeper localhost:2181

@@ -1,15 +1,17 @@
 package idv.hsiehpinghan.springkafkaassistant.test;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.Test;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import idv.hsiehpinghan.springkafkaassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.springkafkaassistant.producer.HeaderProducer;
 
-@ContextConfiguration(classes = { SpringConfiguration.class })
-public class HeaderTest extends AbstractTestNGSpringContextTests {
+@RunWith(SpringRunner.class)
+@Import(SpringConfiguration.class)
+public class HeaderTest {
 	private final long ONE_SECOND = 1000;
 	@Autowired
 	private HeaderProducer headerProducer;

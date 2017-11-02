@@ -17,8 +17,8 @@ public class HeadersConsumer {
 		for (Map.Entry<Object, Object> ent : headerMap.entrySet()) {
 			Object key = ent.getKey();
 			Object value = ent.getValue();
-			System.err.println(String.format("HeaderConsumer header(%s=%s)", key, value));
+			System.err.println(String.format("HeadersConsumer header(%s=%s)", key, value));
 		}
-		System.err.println(String.format("HeaderConsumer receive : %s", message));
+		System.err.println(String.format("HeadersConsumer receive : %s", message));
 	}
 }

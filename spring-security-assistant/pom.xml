@@ -17,7 +17,7 @@
 		<spring.version>4.2.2.RELEASE</spring.version>
 		<spring-security.version>4.0.3.RELEASE</spring-security.version>
 		<jstl.version>1.2</jstl.version>
-		<tomcat-servlet-api.version>8.5.20</tomcat-servlet-api.version>
+		<tomcat.version>8.5.20</tomcat.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
@@ -83,11 +83,17 @@
 			<version>${jstl.version}</version>
 		</dependency>
 
-		<!-- tomcat-servlet-api -->
+		<!-- tomcat -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
-			<version>${tomcat-servlet-api.version}</version>
+			<version>${tomcat.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jsp-api</artifactId>
+			<version>${tomcat.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

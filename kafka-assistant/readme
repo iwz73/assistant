@@ -54,4 +54,18 @@ cd /tmp
 cat /tmp/test.sink.txt
 /opt/kafka_2.11-0.10.1.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
 
+--------------------------- Change Kafka Partition -------------------------- 
+/opt/kafka_2.11-0.10.1.1/bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic test_topic --partitions 3
+
+--------------------------- Change Kafka Replication -------------------------- 
+vi /tmp/increase-replication-factor.json
+{"version":1,
+  "partitions":[
+     {"topic":"end_trip","partition":0,"replicas":[0,1,2]},
+     {"topic":"end_trip","partition":1,"replicas":[0,1,2]},
+     {"topic":"end_trip","partition":2,"replicas":[0,1,2]}
+]}
+
+/opt/kafka_2.11-0.10.1.1/bin/kafka-reassign-partitions --zookeeper localhost:2181 --reassignment-json-file /tmp/increase-replication-factor.json --execute
+
 

@@ -1,3 +1,8 @@
+# chrome setting
 webdriver_chrome_driver=/home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/chrome_driver/2.33/chromedriver
 binary=/opt/google/chrome/chrome
 headless=true
+# pool setting
+max_total=3
+max_idle=3
+min_idle=3

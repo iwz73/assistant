@@ -12,8 +12,8 @@ redis-cli SHUTDOWN
 # start redis client
 redis-cli -h 127.0.0.1 -p 6379
 
-# change database (1 ~ 16)
-SELECT 1
+# change database (0 ~ 16)
+SELECT 0
 
 # data type command
 TYPE key

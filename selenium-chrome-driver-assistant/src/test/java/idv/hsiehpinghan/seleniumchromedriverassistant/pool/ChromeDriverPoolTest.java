@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.seleniumchromedriverassistant.pool;
 
+import java.util.List;
+
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -18,6 +20,7 @@ public class ChromeDriverPoolTest extends AbstractTestNGSpringContextTests {
 	private ChromeDriver borrowedobject1;
 	private ChromeDriver borrowedobject2;
 	private ChromeDriver borrowedobject3;
+	private ChromeDriver borrowedobject4;
 	@Autowired
 	private GenericObjectPool<ChromeDriver> chromeDriverPool;
 
@@ -43,17 +46,43 @@ public class ChromeDriverPoolTest extends AbstractTestNGSpringContextTests {
 	public void styleTest() throws Exception {
 		borrowedobject3 = chromeDriverPool.borrowObject();
 		borrowedobject3
-				.get("file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/TestPage.html");
+				.get("file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/StylePage.html");
 		basicPropertyTest();
 		colorPropertyTest();
 		backgroundPropertyTest();
 	}
 
+	@Test(dependsOnMethods = { "styleTest" })
+	public void cssSelectorTest() throws Exception {
+		borrowedobject4 = chromeDriverPool.borrowObject();
+		borrowedobject4.get(
+				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/CssSelectorPage.html");
+		WebElement webElement = borrowedobject4.findElement(By.id("div_0"));
+		List<WebElement> webElements = webElement.findElements(By.xpath("*"));
+		for (int i = 0, size = webElements.size(); i < size; ++i) {
+			WebElement ele = webElements.get(i);
+			
+			
+			setAttribute(borrowedobject4, ele, "thank_id", "333");
+			
+			Assert.assertEquals(ele.getAttribute("id"), String.format("div_0_%d", i));
+			
+		}
+		
+		System.err.println(borrowedobject4.getPageSource());
+	}
+
+    private void setAttribute(ChromeDriver driver, WebElement element, String attName, String attValue) {
+        driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", 
+                element, attName, attValue);
+    }
+    
 	@AfterClass
 	public void afterClass() {
 		borrowedobject1.quit();
 		borrowedobject2.quit();
 		borrowedobject3.quit();
+		borrowedobject4.quit();
 	}
 
 	private void basicPropertyTest() {
@@ -97,7 +126,7 @@ public class ChromeDriverPoolTest extends AbstractTestNGSpringContextTests {
 		webElement = borrowedobject3.findElement(By.id("background-size"));
 		Assert.assertEquals(webElement.getCssValue("background-size"), "80px 60px");
 
-		https://www.w3schools.com/cssref/default.asp
+		// https: // www.w3schools.com/cssref/default.asp
 
 		System.err.println(webElement.getCssValue("background-size"));
 

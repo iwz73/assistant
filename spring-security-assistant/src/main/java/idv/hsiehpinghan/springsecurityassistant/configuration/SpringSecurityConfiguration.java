@@ -57,8 +57,8 @@ public class SpringSecurityConfiguration {
 		    return authProvider;
 		}
 		
-		@Autowired
-		public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		@Override
+		public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 			authenticationManagerBuilder.userDetailsService(userDetailsService);
 			authenticationManagerBuilder.authenticationProvider(authenticationProvider);
 		}
@@ -89,8 +89,8 @@ public class SpringSecurityConfiguration {
 				.permitAll();
 		}
 	
-		@Autowired
-		public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		@Override
+		public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 			String userPassword = passwordEncoder.encode("user");
 			authenticationManagerBuilder.inMemoryAuthentication().withUser("user").password(userPassword).roles("USER");
 			String adminPassword = passwordEncoder.encode("admin");

@@ -34,9 +34,10 @@ public class SpringSecurityConfiguration {
 		private UserService userService;
 		@Autowired
 		private DaoAuthenticationProvider authenticationProvider;
-		
+
 		@PostConstruct
 		public void postConstruct() {
+			// @formatter:off
 			if(userService.findOne("user") == null) {
 				String password = passwordEncoder.encode("user");
 				UserEntity user = new UserEntity("user", password, true, true, true, true, Arrays.asList(new RoleEntity("ROLE_USER", "user role name", null)));
@@ -47,39 +48,49 @@ public class SpringSecurityConfiguration {
 				UserEntity admin = new UserEntity("admin", password, true, true, true, true, Arrays.asList(new RoleEntity("ROLE_ADMIN", "admin role name", null)));
 				userService.saveOrUpdate(admin);
 			}
+			if(userService.findOne("banned_user") == null) {
+				String password = passwordEncoder.encode("banned_user");
+				UserEntity user = new UserEntity("banned_user", password, true, true, true, true, Arrays.asList(new RoleEntity("ROLE_USER", "user role name", null), new RoleEntity("ROLE_BANNED", "banned role name", null)));
+				userService.saveOrUpdate(user);
+			}
+			// @formatter:on
 		}
-		
+
 		@Bean
 		public DaoAuthenticationProvider authenticationProvider() {
-		    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		    authProvider.setUserDetailsService(userDetailsService);
-		    authProvider.setPasswordEncoder(passwordEncoder);
-		    return authProvider;
+			DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+			authProvider.setUserDetailsService(userDetailsService);
+			authProvider.setPasswordEncoder(passwordEncoder);
+			return authProvider;
 		}
-		
+
 		@Override
 		public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 			authenticationManagerBuilder.userDetailsService(userDetailsService);
 			authenticationManagerBuilder.authenticationProvider(authenticationProvider);
 		}
-		
+
 		@Override
 		protected void configure(HttpSecurity httpSecurity) throws Exception {
+			// @formatter:off
 			httpSecurity.authorizeRequests()
-				.antMatchers("/common").permitAll()
-				.antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				.and().formLogin().loginProcessingUrl("/loginProcessingUrl").loginPage("/common/loginPage").failureUrl("/common/loginFailPage").usernameParameter("username").passwordParameter("password").permitAll()
-				.and().logout().logoutUrl("/logoutUrl").logoutSuccessUrl("/common/logoutPage").permitAll();
+			.antMatchers("/common/**").permitAll()
+			.antMatchers("/not_banned/**").not().hasRole("BANNED")
+			.antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+			.antMatchers("/admin/**").hasRole("ADMIN")
+			.and().formLogin().loginProcessingUrl("/loginProcessingUrl").loginPage("/common/loginPage").failureUrl("/common/loginFailPage").usernameParameter("username").passwordParameter("password").permitAll()
+			.and().logout().logoutUrl("/logoutUrl").logoutSuccessUrl("/common/logoutPage").permitAll();
+			// @formatter:on
 		}
 	}
-	
+
 	@Configuration
 	public static class MemorySpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
+
 		@Override
 		protected void configure(HttpSecurity httpSecurity) throws Exception {
+			// @formatter:off
 			httpSecurity.authorizeRequests()
 				.antMatchers("/common").permitAll()
 				.antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
@@ -87,14 +98,17 @@ public class SpringSecurityConfiguration {
 				.and().formLogin().loginProcessingUrl("/loginProcessingUrl").loginPage("/common/loginPage").failureUrl("/common/loginFailPage").usernameParameter("username").passwordParameter("password")
 				.and().logout().logoutUrl("/logoutUrl").logoutSuccessUrl("/common/logoutPage")
 				.permitAll();
+			// @formatter:on
 		}
-	
+
 		@Override
 		public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+			// @formatter:off
 			String userPassword = passwordEncoder.encode("user");
 			authenticationManagerBuilder.inMemoryAuthentication().withUser("user").password(userPassword).roles("USER");
 			String adminPassword = passwordEncoder.encode("admin");
 			authenticationManagerBuilder.inMemoryAuthentication().withUser("admin").password(adminPassword).roles("ADMIN");
+			// @formatter:on
 		}
 	}
 }

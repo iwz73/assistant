@@ -1,16 +1,30 @@
 package idv.hsiehpinghan.seleniumchromedriverassistant.utility;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import idv.hsiehpinghan.seleniumchromedriverassistant.enumeration.CssPropertyEnumeration;
 
 public class ChromeDriverUtility {
 	public static void setAllElementAttributeValue(ChromeDriver chromeDriver, String attributeName) {
 		WebElement webElement = chromeDriver.findElement(By.tagName("body"));
 		String attributePrefix = "";
 		setChildElementAttributeValue(chromeDriver, webElement, attributeName, attributePrefix);
+	}
+
+	public static Map<String, String> getElementAllAttribute(WebElement webElement) {
+		Map<String, String> map = new LinkedHashMap<>();
+		for (CssPropertyEnumeration cssPropertyEnumeration : CssPropertyEnumeration.values()) {
+			String attributeName = cssPropertyEnumeration.getName();
+			String attributeValue = webElement.getCssValue(attributeName);
+			map.put(attributeName, attributeValue);
+		}
+		return map;
 	}
 
 	private static void setChildElementAttributeValue(ChromeDriver chromeDriver, WebElement webElement,

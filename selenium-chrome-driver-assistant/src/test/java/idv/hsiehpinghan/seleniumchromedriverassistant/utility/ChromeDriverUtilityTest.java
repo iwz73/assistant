@@ -14,6 +14,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.seleniumchromedriverassistant.configuration.SpringConfiguration;
+import idv.hsiehpinghan.seleniumchromedriverassistant.enumeration.BoundingClientRectEnumeration;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class ChromeDriverUtilityTest extends AbstractTestNGSpringContextTests {
@@ -33,6 +34,22 @@ public class ChromeDriverUtilityTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "setAllElementAttributeValue" })
+	public void getBoundingClientRect() throws Exception {
+		chromeDriver.get(
+				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/getElementAllAttribute.html");
+		WebElement webElement = chromeDriver.findElement(By.id("empty"));
+		Map<String, Long> boundingClientRect = ChromeDriverUtility.getBoundingClientRect(chromeDriver, webElement);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.TOP.getName()).longValue(), 8);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.LEFT.getName()).longValue(), 8);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.BOTTOM.getName()).longValue(), 8);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.WIDTH.getName()).longValue(), 784);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.X.getName()).longValue(), 8);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.Y.getName()).longValue(), 8);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.RIGHT.getName()).longValue(), 792);
+		Assert.assertEquals(boundingClientRect.get(BoundingClientRectEnumeration.HEIGHT.getName()).longValue(), 0);
+	}
+
+	@Test(dependsOnMethods = { "getBoundingClientRect" })
 	public void getElementAllAttribute() throws Exception {
 		chromeDriver.get(
 				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/getElementAllAttribute.html");

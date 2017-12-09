@@ -27,6 +27,13 @@ public class ChromeDriverUtility {
 		return map;
 	}
 
+	public static Map<String, Long> getBoundingClientRect(ChromeDriver chromeDriver, WebElement webElement) {
+		@SuppressWarnings("unchecked")
+		Map<String, Long> boundingClientRect = (Map<String, Long>) chromeDriver
+				.executeScript("return arguments[0].getBoundingClientRect();", webElement);
+		return boundingClientRect;
+	}
+
 	private static void setChildElementAttributeValue(ChromeDriver chromeDriver, WebElement webElement,
 			String attributeName, String attributePrefix) {
 		List<WebElement> webElements = webElement.findElements(By.xpath("*"));

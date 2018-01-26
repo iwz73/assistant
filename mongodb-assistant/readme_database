@@ -1,7 +1,7 @@
 # create collection
-db.createCollection("mongodb_database", { capped : true, size : 16384 })
+db.createCollection("my_collection", { capped : true, size : 16384 })
 
-# switch 
+# switch or create database
 use mongodb_database
 
 # show function

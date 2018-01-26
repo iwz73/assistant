@@ -50,7 +50,7 @@ public class MongodbAssistantTest extends AbstractTestNGSpringContextTests {
 	private final String STRING_0 = "string_0";
 	private final String STRING_1 = "string_1";
 	private final String STRING_2 = "string_2";
-	BasicDocument basicDocument;
+	private BasicDocument basicDocument;
 
 	@Autowired
 	private MongoTemplateAssistant assistant;

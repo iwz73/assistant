@@ -1,0 +1,69 @@
+# set no password login
+ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+
+# install hadoop
+cd /tmp
+https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+tar xvfz hadoop-2.6.0.tar.gz -C /opt
+vi /etc/profile
+	export JAVA_HOME=/opt/jdk1.8.0_151
+	export PATH=$JAVA_HOME/bin:$PATH
+	export HADOOP_HOME=/opt/hadoop-2.6.0
+	export PATH=$HADOOP_HOME/bin:$PATH
+vi /opt/hadoop-2.6.0/etc/hadoop/hadoop-env.sh
+	export JAVA_HOME=/opt/jdk1.8.0_151
+vi /opt/hadoop-2.6.0/etc/hadoop/core-site.xml
+	<configuration>
+	  <property>
+	    <name>fs.default.name</name>
+	    <value>hdfs://localhost:8020</value>
+	  </property>
+	</configuration>
+vi /opt/hadoop-2.6.0/etc/hadoop/yarn-site.xml
+	<configuration>
+	  <property>
+	    <name>yarn.nodemanager.aux-services</name>
+	    <value>mapreduce_shuffle</value>
+	  </property>
+	  <property>
+	    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+	    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+	  </property>
+	</configuration>
+cp /opt/hadoop-2.6.0/etc/hadoop/mapred-site.xml.template /opt/hadoop-2.6.0/etc/hadoop/mapred-site.xml
+vi /opt/hadoop-2.6.0/etc/hadoop/mapred-site.xml
+	<configuration>
+	  <property>
+	    <name>mapreduce.framework.name</name>
+	    <value>yarn</value>
+	  </property>
+	</configuration>
+vi /opt/hadoop-2.6.0/etc/hadoop/hdfs-site.xml
+	<configuration>
+	  <property>
+	    <name>dfs.replication</name>
+	    <value>3</value>
+	  </property>
+	  <property>
+	    <name>dfs.namenode.name.dir</name>
+	    <value>file:/tmp/hdfs/namenode</value>
+	  </property>
+	  <property>
+	    <name>dfs.datanode.data.dir</name>
+	    <value>file:/tmp/hdfs/datanode</value>
+	  </property>
+	</configuration>
+mkdir -p /tmp/hdfs/namenode
+mkdir -p /tmp/hdfs/datanode
+/opt/hadoop-2.6.0/bin/hadoop namenode -format
+/opt/hadoop-2.6.0/sbin/start-dfs.sh
+/opt/hadoop-2.6.0/sbin/start-yarn.sh
+jps
+
+# resource manager
+http://localhost:8088/
+
+# namenode
+http://localhost:50070/
+

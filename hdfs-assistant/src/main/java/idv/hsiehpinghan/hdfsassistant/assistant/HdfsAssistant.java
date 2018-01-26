@@ -1,7 +1,5 @@
 package idv.hsiehpinghan.hdfsassistant.assistant;
 
-import idv.hsiehpinghan.hdfsassistant.property.HdfsAssistantProperty;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -14,9 +12,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import idv.hsiehpinghan.hdfsassistant.property.HdfsAssistantProperty;
+
 @Component
 public class HdfsAssistant implements InitializingBean {
-	private Configuration conf = new Configuration();
+	private Configuration conf;
 	private String hdfsPath;
 
 	@Autowired
@@ -24,6 +24,8 @@ public class HdfsAssistant implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		System.setProperty("HADOOP_USER_NAME", "root");
+		conf = new Configuration();
 		hdfsPath = hdfsAssistantProperty.getHdfsPath();
 		conf.set(CommonConfigurationKeys.FS_DEFAULT_NAME_KEY, hdfsPath);
 	}
@@ -36,8 +38,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @return
 	 * @throws IOException
 	 */
-	public String copyFromLocal(File localFile, String hdfsFilePath)
-			throws IOException {
+	public String copyFromLocal(File localFile, String hdfsFilePath) throws IOException {
 		return copyFromLocal(localFile.getAbsolutePath(), hdfsFilePath);
 	}
 
@@ -49,8 +50,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @return
 	 * @throws IOException
 	 */
-	public String copyFromLocal(String localFilePath, String hdfsFilePath)
-			throws IOException {
+	public String copyFromLocal(String localFilePath, String hdfsFilePath) throws IOException {
 		FileSystem fs = FileSystem.get(conf);
 		Path src = new Path(localFilePath);
 		String path = hdfsPath + hdfsFilePath;
@@ -66,8 +66,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @param localFile
 	 * @throws IOException
 	 */
-	public void copyToLocal(String hdfsFilePath, File localFile)
-			throws IOException {
+	public void copyToLocal(String hdfsFilePath, File localFile) throws IOException {
 		copyToLocal(hdfsFilePath, localFile.getAbsolutePath());
 	}
 
@@ -78,8 +77,7 @@ public class HdfsAssistant implements InitializingBean {
 	 * @param localFilePath
 	 * @throws IOException
 	 */
-	public void copyToLocal(String hdfsFilePath, String localFilePath)
-			throws IOException {
+	public void copyToLocal(String hdfsFilePath, String localFilePath) throws IOException {
 		FileSystem fs = FileSystem.get(conf);
 		Path src = new Path(hdfsPath + hdfsFilePath);
 		Path dst = new Path(localFilePath);
@@ -142,14 +140,11 @@ public class HdfsAssistant implements InitializingBean {
 	 * @return
 	 * @throws IOException
 	 */
-	public SequenceFile.Writer getWriter(String hdfsFilePath,
-			Class<?> keyClass, Class<?> valueClass) throws IOException {
-		SequenceFile.Writer.Option filePath = SequenceFile.Writer
-				.file(new Path(hdfsFilePath));
-		SequenceFile.Writer.Option keyClz = SequenceFile.Writer
-				.keyClass(keyClass);
-		SequenceFile.Writer.Option valueClz = SequenceFile.Writer
-				.valueClass(valueClass);
+	public SequenceFile.Writer getWriter(String hdfsFilePath, Class<?> keyClass, Class<?> valueClass)
+			throws IOException {
+		SequenceFile.Writer.Option filePath = SequenceFile.Writer.file(new Path(hdfsFilePath));
+		SequenceFile.Writer.Option keyClz = SequenceFile.Writer.keyClass(keyClass);
+		SequenceFile.Writer.Option valueClz = SequenceFile.Writer.valueClass(valueClass);
 		return SequenceFile.createWriter(conf, filePath, keyClz, valueClz);
 	}
 
@@ -160,10 +155,8 @@ public class HdfsAssistant implements InitializingBean {
 	 * @return
 	 * @throws IOException
 	 */
-	public SequenceFile.Reader getReader(String hdfsFilePath)
-			throws IOException {
-		SequenceFile.Reader.Option filePath = SequenceFile.Reader
-				.file(new Path(hdfsFilePath));
+	public SequenceFile.Reader getReader(String hdfsFilePath) throws IOException {
+		SequenceFile.Reader.Option filePath = SequenceFile.Reader.file(new Path(hdfsFilePath));
 		return new SequenceFile.Reader(conf, filePath);
 	}
 

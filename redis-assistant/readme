@@ -1,7 +1,64 @@
-# install
-tar xvfz redis-3.2.6.tar.gz
+o# install
+tar xvfz redis-3.2.6.tar.gz -C /opt/
 make install
 make test
+
+# set cluster
+mkdir -p /tmp/redis/cluster/7000
+mkdir -p /tmp/redis/cluster/7001
+mkdir -p /tmp/redis/cluster/7002
+mkdir -p /tmp/redis/cluster/7003
+mkdir -p /tmp/redis/cluster/7004
+mkdir -p /tmp/redis/cluster/7005
+
+cp /opt/redis-3.2.11/redis.conf /tmp/redis/cluster/7000
+vi /tmp/redis/cluster/7000/redis.conf
+	port 7000
+	daemonize yes
+	cluster-enabled yes
+	cluster-config-file nodes-7000.conf
+	cluster-node-timeout 15000
+	appendonly yes
+cp /tmp/redis/cluster/7000/redis.conf /tmp/redis/cluster/7001
+vi /tmp/redis/cluster/7001/redis.conf
+	port 7001
+	cluster-config-file nodes-7001.conf
+cp /tmp/redis/cluster/7000/redis.conf /tmp/redis/cluster/7002
+vi /tmp/redis/cluster/7002/redis.conf
+	port 7002
+	cluster-config-file nodes-7002.conf
+cp /tmp/redis/cluster/7000/redis.conf /tmp/redis/cluster/7003
+vi /tmp/redis/cluster/7003/redis.conf
+	port 7003
+	cluster-config-file nodes-7003.conf
+cp /tmp/redis/cluster/7000/redis.conf /tmp/redis/cluster/7004
+vi /tmp/redis/cluster/7004/redis.conf
+	port 7004
+	cluster-config-file nodes-7004.conf
+cp /tmp/redis/cluster/7000/redis.conf /tmp/redis/cluster/7005
+vi /tmp/redis/cluster/7005/redis.conf
+	port 7005
+	cluster-config-file nodes-7005.conf
+
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7000/redis.conf
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7001/redis.conf
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7002/redis.conf
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7003/redis.conf
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7004/redis.conf
+/opt/redis-3.2.11/src/redis-server /tmp/redis/cluster/7005/redis.conf
+
+gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+curl -L get.rvm.io | bash -s stable
+source /usr/local/rvm/scripts/rvm
+rvm list known
+rvm install 2.4.1
+rvm use 2.4.1
+
+yum install -y ruby
+yum install -y rubygems
+gem install redis
+
+
 
 # start redis server
 redis-server --port 6379

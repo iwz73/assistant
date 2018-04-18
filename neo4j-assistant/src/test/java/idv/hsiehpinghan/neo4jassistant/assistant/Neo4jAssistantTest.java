@@ -14,22 +14,28 @@ import idv.hsiehpinghan.neo4jassistant.configuration.SpringConfiguration;
 public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private Neo4jAssistant assistant;
-
+	
 //	http://www.baeldung.com/java-neo4j
 	
+	
+//
+//
+//	@Test
+//	public void create() {
+//		String statement = String.format("");
+//		
+//		CREATE (self:Company {name:"Baeldung"}) RETURN self
+//	}
+//	
 	@Test
 	public void creatingNodeRelationshipNode() {
-		String node_0 = "n_0_0";
-		String node_1 = "n_0_1";
-		String relationship = "r";
 		String statement = String.format(
-				"CREATE (%s:n_0_0_lable {n_0_0_key_0:'n_0_0_value_0', n_0_0_key_1:'n_0_0_value_1', n_0_0_key_2:'n_0_0_value_2'})-[%s:r_label {r_key_0:'r_value_0', r_key_1:'r_value_1', r_key_2:'r_value_2'}]->(%s:n_0_1_lable {n_0_1_key_0:'n_0_1_value_0', n_0_1_key_1:'n_0_1_value_1', n_0_1_key_2:'n_0_1_value_2'}) RETURN %s,%s",
-				node_0, relationship, node_1, node_0, node_1);
+				"CREATE (node_0:lable_0 {property_key_0:'property_value_0', property_key_1:'property_value_1', property_key_2:'property_value_2'})-[relationship_0:label_1 {property_key_3:'property_value_3', property_key_4:'property_value_4', property_key_5:'property_value_5'}]->(node_1:lable_2 {property_key_6:'property_value_6', property_key_7:'property_value_7', property_key_8:'property_value_8'}) RETURN node_0,relationship_0,node_1");
 		StatementResult result = assistant.run(statement);
 		int i = 0;
 		while (result.hasNext()) {
 			Record record = result.next();
-			Assert.assertEquals(record.size(), 2);
+			Assert.assertEquals(record.size(), 3);
 			++i;
 		}
 		Assert.assertEquals(i, 1);
@@ -47,11 +53,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void creatingMultipleNodes() {
-		String node_0 = "n_2_0";
-		String node_1 = "n_2_1";
-		String node_2 = "n_2_2";
-		String statement = String.format("CREATE (%s),(%s),(%s) RETURN %s,%s,%s", node_0, node_1, node_2, node_0,
-				node_1, node_2);
+		String statement = "CREATE (node_0),(node_1),(node_2) RETURN node_0,node_1,node_2";
 		StatementResult result = assistant.run(statement);
 		int i = 0;
 		while (result.hasNext()) {
@@ -64,11 +66,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void creatingPath() {
-		String node_0 = "n_3_0";
-		String node_1 = "n_3_1";
-		String node_2 = "n_3_2";
-		String statement = String.format("CREATE (%s)-[:r_0]->(%s)-[:r_1]->(%s) RETURN %s,%s,%s", node_0, node_1,
-				node_2, node_0, node_1, node_2);
+		String statement = "CREATE (node_0)-[:relationship_0_label]->(node_1)-[:relationship_1_label]->(node_2) RETURN node_0,node_1,node_2";
 		StatementResult result = assistant.run(statement);
 		int i = 0;
 		while (result.hasNext()) {
@@ -85,59 +83,50 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		mergeNode(node);
 	}
 
-	private void createRelationship(String node_0, String relationship, String node_1) {
-		String label = generateLable(relationship);
-		String property_key_0 = String.format("%s_key_0", relationship);
-		String property_value_0 = String.format("%s_value_0", relationship);
-		String property_key_1 = String.format("%s_key_1", relationship);
-		String property_value_1 = String.format("%s_value_1", relationship);
-		String property_key_2 = String.format("%s_key_2", relationship);
-		String property_value_2 = String.format("%s_value_2", relationship);
-		String statement = String.format("CREATE (%s)-[%s:%s {%s:'%s', %s:'%s', %s:'%s'}]->(%s) RETURN %s,%s", node_0,
-				relationship, label, property_key_0, property_value_0, property_key_1, property_value_1, property_key_2,
-				property_value_2, node_1, node_0, node_1);
+	private void createRelationship(String node_0_label, String relationship_label, String node_1_label) {
+		String property_key_0 = "property_key_0";
+		String property_value_0 = "property_value_0";
+		String property_key_1 = "property_key_1";
+		String property_value_1 = "property_value_1";
+		String property_key_2 = "property_key_2";
+		String property_value_2 = "property_value_2";
+		String statement = String.format("CREATE (node_0:%s)-[relationship_0:%s {%s:'%s', %s:'%s', %s:'%s'}]->(node_1:%s) RETURN node_0,relationship_0,node_1", node_0_label,
+				relationship_label, property_key_0, property_value_0, property_key_1, property_value_1, property_key_2,
+				property_value_2, node_1_label);
 		StatementResult result = assistant.run(statement);
 		int i = 0;
 		while (result.hasNext()) {
 			Record record = result.next();
-			Assert.assertEquals(record.size(), 2);
+			Assert.assertEquals(record.size(), 3);
 			++i;
 		}
 		Assert.assertEquals(i, 1);
 	}
 
-	private void createNode(String node) {
-		String label = generateLable(node);
-		String property_key_0 = String.format("%s_key_0", node);
-		String property_value_0 = String.format("%s_value_0", node);
-		String property_key_1 = String.format("%s_key_1", node);
-		String property_value_1 = String.format("%s_value_1", node);
-		String property_key_2 = String.format("%s_key_2", node);
-		String property_value_2 = String.format("%s_value_2", node);
-		String statement = String.format("CREATE (%s:%s {%s:'%s', %s:'%s', %s:'%s'}) RETURN %s", node, label,
-				property_key_0, property_value_0, property_key_1, property_value_1, property_key_2, property_value_2,
-				node);
+	private void createNode(String label) {
+		String property_key_0 = "property_key_0";
+		String property_value_0 = "property_value_0";
+		String property_key_1 = "property_key_1";
+		String property_value_1 = "property_value_1";
+		String property_key_2 = "property_key_2";
+		String property_value_2 = "property_value_2";
+		String statement = String.format("CREATE (node_0:%s {%s:'%s', %s:'%s', %s:'%s'}) RETURN node_0", label,
+				property_key_0, property_value_0, property_key_1, property_value_1, property_key_2, property_value_2);
 		StatementResult result = assistant.run(statement);
 		Assert.assertTrue(result.hasNext());
 	}
 
-	private void mergeNode(String node) {
-		String label = generateLable(node);
-		String property_key_0 = String.format("%s_key_0", node);
-		String property_value_0 = String.format("%s_value_0", node);
-		String property_key_1 = String.format("%s_key_1", node);
-		String property_value_1 = String.format("%s_value_1", node);
-		String property_key_2 = String.format("%s_key_2", node);
-		String property_value_2 = String.format("%s_value_2", node);
-		String statement = String.format("MERGE (%s:%s {%s:'%s', %s:'%s', %s:'%s'}) RETURN %s", node, label,
-				property_key_0, property_value_0, property_key_1, property_value_1, property_key_2, property_value_2,
-				node);
+	private void mergeNode(String label) {
+		String property_key_0 = "property_key_0";
+		String property_value_0 = "property_value_0";
+		String property_key_1 = "property_key_1";
+		String property_value_1 = "property_value_1";
+		String property_key_2 = "property_key_2";
+		String property_value_2 = "property_value_2";
+		String statement = String.format("MERGE (node_0:%s {%s:'%s', %s:'%s', %s:'%s'}) RETURN node_0", label,
+				property_key_0, property_value_0, property_key_1, property_value_1, property_key_2, property_value_2);
 		StatementResult result = assistant.run(statement);
 		Assert.assertTrue(result.hasNext());
 	}
 
-	private String generateLable(String nodeOrRelationship) {
-		String label = String.format("%s_label", nodeOrRelationship);
-		return label;
-	}
 }

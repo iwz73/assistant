@@ -1,0 +1,21 @@
+[
+  {
+    "name" : "documentRecency",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}recip( ms(NOW,last_modified), 3.16e-11, 1, 1)"
+    }
+  },
+  {
+    "name" : "isBook",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "fq": ["{!terms f=cat}book"]
+    }
+  },
+  {
+    "name" : "originalScore",
+    "class" : "org.apache.solr.ltr.feature.OriginalScoreFeature",
+    "params" : {}
+  }
+]

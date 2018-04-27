@@ -1,0 +1,16 @@
+{
+  "class" : "org.apache.solr.ltr.model.LinearModel",
+  "name" : "myModel",
+  "features" : [
+    { "name" : "documentRecency" },
+    { "name" : "isBook" },
+    { "name" : "originalScore" }
+  ],
+  "params" : {
+    "weights" : {
+      "documentRecency" : 1.0,
+      "isBook" : 0.1,
+      "originalScore" : 0.5
+    }
+  }
+}

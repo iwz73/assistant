@@ -1,0 +1,26 @@
+[
+  {
+    "store" : "myEfiFeatureStore",
+    "name" : "isPreferredManufacturer",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "fq" : [ "{!field f=manu}${preferredManufacturer}" ] }
+  },
+  {
+    "store" : "myEfiFeatureStore",
+    "name" : "userAnswerValue",
+    "class" : "org.apache.solr.ltr.feature.ValueFeature",
+    "params" : { "value" : "${answer:42}" }
+  },
+  {
+    "store" : "myEfiFeatureStore",
+    "name" : "userFromMobileValue",
+    "class" : "org.apache.solr.ltr.feature.ValueFeature",
+    "params" : { "value" : "${fromMobile}", "required" : true }
+  },
+  {
+    "store" : "myEfiFeatureStore",
+    "name" : "userTextCat",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!field f=cat}${text}" }
+  }
+]

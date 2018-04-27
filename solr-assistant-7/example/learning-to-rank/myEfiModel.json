@@ -1,0 +1,19 @@
+{
+  "store" : "myEfiFeatureStore",
+  "name" : "myEfiModel",
+  "class" : "org.apache.solr.ltr.model.LinearModel",
+  "features" : [
+    { "name" : "isPreferredManufacturer" },
+    { "name" : "userAnswerValue" },
+    { "name" : "userFromMobileValue" },
+    { "name" : "userTextCat" }
+  ],
+  "params" : {
+    "weights" : {
+      "isPreferredManufacturer" : 0.2,
+      "userAnswerValue" : 1.0,
+      "userFromMobileValue" : 1.0,
+      "userTextCat" : 0.1
+    }
+  }
+}

@@ -1,0 +1,109 @@
+## start solr
+/opt/solr-7.3.0/bin/solr start -force
+# create collection
+/opt/solr-7.3.0/bin/solr create -force -c my_collection
+# check config
+http://localhost:8983/solr/my_collection/config
+
+## example : learning-to-rank
+# start solr with learning-to-rank
+/opt/solr-7.3.0/bin/solr start -force -e techproducts -Dsolr.ltr.enabled=true
+# upload features
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myFeatures.json" -H 'Content-type:application/json'
+# check upload features
+http://localhost:8983/solr/techproducts/schema/feature-store/_DEFAULT_
+# extracting features as a query
+http://localhost:8983/solr/techproducts/query?q=test&fl=id,score,[features]
+# upload model
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myModel.json" -H 'Content-type:application/json'
+# check upload model
+http://localhost:8983/solr/techproducts/schema/model-store
+# rerank query
+http://localhost:8983/solr/techproducts/query?q=test&rq={!ltr model=myModel reRankDocs=100}&fl=id,score,[features]
+# upload external feature information
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myEfiFeatures.json" -H 'Content-type:application/json'
+# check upload external feature information
+http://localhost:8983/solr/techproducts/schema/feature-store/myEfiFeatureStore
+# extracting features
+http://localhost:8983/solr/techproducts/query?q=test&fl=id,cat,manu,score,[features store=myEfiFeatureStore efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=1]
+http://localhost:8983/solr/techproducts/query?q=test&fl=id,cat,manu,score,[features store=myEfiFeatureStore efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=0 efi.answer=13]
+# uploading external feature information model
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myEfiModel.json" -H 'Content-type:application/json'
+# check uploading external feature information model
+http://localhost:8983/solr/techproducts/schema/model-store
+# run a rerank query
+http://localhost:8983/solr/techproducts/query?q=test&rq={!ltr model=myEfiModel efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=1}&fl=id,cat,manu,score,[features]
+http://localhost:8983/solr/techproducts/query?q=test&rq={!ltr model=myEfiModel efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=0 efi.answer=13}&fl=id,cat,manu,score,[features]
+# extracting features while reranking
+http://localhost:8983/solr/techproducts/query?q=test&rq={!ltr model=myModel}&fl=id,cat,manu,score,[features store=myEfiFeatureStore efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=1]
+
+# stop solr
+/opt/solr-7.3.0/bin/solr stop -all
+
+
+------------------------------------------------------------------------
+# start solr
+/opt/solr-4.10.3/bin/solr start -a "-Dsolr.clustering.enabled=true"
+
+# add example xml document
+cd /opt/solr-4.10.3/example/exampledocs
+java -jar post.jar *.xml
+
+# Solritas url
+http://localhost:8983/solr/collection1/browse
+
+# add UpperCaseTokenFilterFactory
+mv /opt/solr-4.10.3/example/solr/collection1/conf/solrconfig.xml /opt/solr-4.10.3/example/solr/collection1/conf/solrconfig.xml_original
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/solrconfig.xml /opt/solr-4.10.3/example/solr/collection1/conf/solrconfig.xml
+mv /opt/solr-4.10.3/example/solr/collection1/conf/schema.xml /opt/solr-4.10.3/example/solr/collection1/conf/schema.xml_original
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/schema.xml /opt/solr-4.10.3/example/solr/collection1/conf/schema.xml
+mv /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt_original
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/synonyms.txt /opt/solr-4.10.3/example/solr/collection1/conf/synonyms.txt
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/wdfftypes.txt /opt/solr-4.10.3/example/solr/collection1/conf/wdfftypes.txt
+#compile and copy to solr (and jieba-analysis-assistant, hanlp-assistant, ansj_seg-assistant)
+Maven Build... -> Goals:package
+mkdir /opt/solr-4.10.3/contrib/thank
+cp /home/hsiehpinghan/git/assistant/solr-assistant/target/solr-assistant-1.0.0.jar /opt/solr-4.10.3/contrib/thank
+uncomment solrconfig.xml and schema.xml
+cp -f /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/solrconfig.xml /opt/solr-4.10.3/example/solr/collection1/conf/solrconfig.xml
+cp -f /home/hsiehpinghan/git/assistant/solr-assistant/src/test/solr-4.10.3/schema.xml /opt/solr-4.10.3/example/solr/collection1/conf/schema.xml
+/opt/solr-4.10.3/bin/solr stop -all
+/opt/solr-4.10.3/bin/solr start -a "-Dsolr.clustering.enabled=true"
+
+# add jts.jar for polygon search
+cp /home/hsiehpinghan/git/assistant/solr-assistant/src/main/lib/jts-1.13.jar /opt/solr-4.10.3/example/solr-webapp/webapp/WEB-INF/lib
+
+modify the query parser
+  /select?q={!edismax}hello world
+  /select?q={!term}hello
+  /select?q={!edismax}hello world OR {!lucene}title:"my title"
+  
+LOCAL PARAMS SYNTAX
+  /select?q={!type=edismax qf="title^10 text" q.op=AND}hello world
+  /select?q={!type=edismax qf='title^10 text' q.op=AND}hello world
+  
+PARAMETER VALUE
+  /select?q={!edismax qf="title^10 text"}hello world
+  /select?q={!edismax qf="title^10 text" v="hello world"}
+  
+  /select?q={!edismax qf="title^10 text"}"hello world"
+  /select?q={!edismax qf="title^10 text" v="\"hello world\""}
+
+PARAMETER DEREFERENCING
+  /select?q={!edismax v=$userQuery}&userQuery="hello world"
+
+TURN CACHING OFF
+  fq={!cache=false}id:123&
+  fq={!frange l=90 u=100 cache=false}scale(query({!v="content:(solr OR lucene)"}),0,100)
+  
+CHANGING THE ORDER OF FILTER EXECUTION
+  fq={!cost=1}category:technology&
+  fq={!cost=2}date:[NOW/DAY-1YEAR TO *]&
+  fq={!geofilt pt=37.773,-122.419 sfield=location d=50 cost=3}&
+  fq={!frange l=90 u=100 cache=false cost=100}scale(query({!v="content:(solr OR lucene)"}),0,100)
+  
+GET TERM FREQUENCY (https://cwiki.apache.org/confluence/display/solr/The+Terms+Component)
+http://localhost:8983/solr/collection1/terms?wt=json&terms=true&terms.fl=name
+
+GET TERM VECTOR
+http://localhost:8983/solr/collection1/tvrh?q=id%3A(%22MA147LL%2FA%22+OR++%223007WFP%22+OR+%229885A004%22)&tv=true&tv.fl=includes&tv.all=true&wt=json

@@ -19,6 +19,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import idv.hsiehpinghan.solrassistant7.configuration.SpringConfiguration;
 import idv.hsiehpinghan.solrassistant7.document.DefaultDocument;
 
@@ -77,6 +79,8 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 	private MapSolrParams solrParams = generateMapSolrParams();
 	private DefaultDocument defaultDocument = generateDefaultDocument();
 
+	@Autowired
+	private ObjectMapper objectMapper;
 	@Autowired
 	private SolrAssistant solrAssistant;
 
@@ -233,6 +237,21 @@ public class SolrAssistantTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(doc.getDynamicfield_d(), solrInputDocument.getFieldValue("dynamicfield_d"));
 			Assert.assertEquals(String.valueOf(doc.getDynamicfield_ds()),
 					String.valueOf(solrInputDocument.getFieldValues("dynamicfield_ds")));
+		}
+	}
+
+	@Test
+	public void learningToRank() throws Exception {
+		Map<String, String> queryParamMap = new HashMap<String, String>();
+		queryParamMap.put("q", "test");
+		queryParamMap.put("rq",
+				"{!ltr model=myEfiModel efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=0 efi.answer=13}");
+		queryParamMap.put("fl", "id,cat,manu,score,[features]");
+		MapSolrParams mapSolrParams = new MapSolrParams(queryParamMap);
+		QueryResponse queryResponse = solrAssistant.query(mapSolrParams);
+		SolrDocumentList solrDocumentList = queryResponse.getResults();
+		for (SolrDocument solrDocument : solrDocumentList) {
+			Assert.assertTrue(((Float) solrDocument.get("score")) > 0);
 		}
 	}
 

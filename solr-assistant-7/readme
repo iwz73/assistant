@@ -9,26 +9,26 @@ http://localhost:8983/solr/my_collection/config
 # start solr with learning-to-rank
 /opt/solr-7.3.0/bin/solr start -force -e techproducts -Dsolr.ltr.enabled=true
 # upload features
-curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myFeatures.json" -H 'Content-type:application/json'
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant-7/example/learning-to-rank/myFeatures.json" -H 'Content-type:application/json'
 # check upload features
 http://localhost:8983/solr/techproducts/schema/feature-store/_DEFAULT_
 # extracting features as a query
 http://localhost:8983/solr/techproducts/query?q=test&fl=id,score,[features]
 # upload model
-curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myModel.json" -H 'Content-type:application/json'
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant-7/example/learning-to-rank/myModel.json" -H 'Content-type:application/json'
 # check upload model
 http://localhost:8983/solr/techproducts/schema/model-store
 # rerank query
 http://localhost:8983/solr/techproducts/query?q=test&rq={!ltr model=myModel reRankDocs=100}&fl=id,score,[features]
 # upload external feature information
-curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myEfiFeatures.json" -H 'Content-type:application/json'
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/feature-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant-7/example/learning-to-rank/myEfiFeatures.json" -H 'Content-type:application/json'
 # check upload external feature information
 http://localhost:8983/solr/techproducts/schema/feature-store/myEfiFeatureStore
 # extracting features
 http://localhost:8983/solr/techproducts/query?q=test&fl=id,cat,manu,score,[features store=myEfiFeatureStore efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=1]
 http://localhost:8983/solr/techproducts/query?q=test&fl=id,cat,manu,score,[features store=myEfiFeatureStore efi.text=test efi.preferredManufacturer=Apache efi.fromMobile=0 efi.answer=13]
 # uploading external feature information model
-curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant/example/learning-to-rank/myEfiModel.json" -H 'Content-type:application/json'
+curl -XPUT 'http://localhost:8983/solr/techproducts/schema/model-store' --data-binary "@/home/hsiehpinghan/git/assistant/solr-assistant-7/example/learning-to-rank/myEfiModel.json" -H 'Content-type:application/json'
 # check uploading external feature information model
 http://localhost:8983/solr/techproducts/schema/model-store
 # run a rerank query

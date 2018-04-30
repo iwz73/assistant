@@ -149,6 +149,73 @@ public class DefaultDocument {
 	@Field
 	private List<String> attr_dynamicfield;
 
+	// public DefaultDocument() {
+	// super();
+	// }
+
+	public DefaultDocument(String id, String sku, String name, String manu, List<String> cat, List<String> features,
+			String includes, Float weight, Float price, Integer popularity, Boolean inStock, String store,
+			List<String> title, String subject, String description, String comments, String author, String keywords,
+			String category, String resourcename, String url, List<String> content_type, Date last_modified,
+			List<String> links, List<String> content, List<String> text, List<String> text_rev, String manu_exact,
+			String payloads, Integer dynamicfield_i, List<Integer> dynamicfield_is, String dynamicfield_s,
+			List<String> dynamicfield_ss, Long dynamicfield_l, List<Long> dynamicfield_ls, String dynamicfield_t,
+			List<String> dynamicfield_txt, List<String> dynamicfield_en, Boolean dynamicfield_b,
+			List<Boolean> dynamicfield_bs, Float dynamicfield_f, List<Float> dynamicfield_fs, Double dynamicfield_d,
+			List<Double> dynamicfield_ds, Date dynamicfield_dt, List<Date> dynamicfield_dts, String dynamicfield_p,
+			Object ignored_dynamicfield, List<String> attr_dynamicfield) {
+		super();
+		this.id = id;
+		this.sku = sku;
+		this.name = name;
+		this.manu = manu;
+		this.cat = cat;
+		this.features = features;
+		this.includes = includes;
+		this.weight = weight;
+		this.price = price;
+		this.popularity = popularity;
+		this.inStock = inStock;
+		this.store = store;
+		this.title = title;
+		this.subject = subject;
+		this.description = description;
+		this.comments = comments;
+		this.author = author;
+		this.keywords = keywords;
+		this.category = category;
+		this.resourcename = resourcename;
+		this.url = url;
+		this.content_type = content_type;
+		this.last_modified = last_modified;
+		this.links = links;
+		this.content = content;
+		this.text = text;
+		this.text_rev = text_rev;
+		this.manu_exact = manu_exact;
+		this.payloads = payloads;
+		this.dynamicfield_i = dynamicfield_i;
+		this.dynamicfield_is = dynamicfield_is;
+		this.dynamicfield_s = dynamicfield_s;
+		this.dynamicfield_ss = dynamicfield_ss;
+		this.dynamicfield_l = dynamicfield_l;
+		this.dynamicfield_ls = dynamicfield_ls;
+		this.dynamicfield_t = dynamicfield_t;
+		this.dynamicfield_txt = dynamicfield_txt;
+		this.dynamicfield_en = dynamicfield_en;
+		this.dynamicfield_b = dynamicfield_b;
+		this.dynamicfield_bs = dynamicfield_bs;
+		this.dynamicfield_f = dynamicfield_f;
+		this.dynamicfield_fs = dynamicfield_fs;
+		this.dynamicfield_d = dynamicfield_d;
+		this.dynamicfield_ds = dynamicfield_ds;
+		this.dynamicfield_dt = dynamicfield_dt;
+		this.dynamicfield_dts = dynamicfield_dts;
+		this.dynamicfield_p = dynamicfield_p;
+		this.ignored_dynamicfield = ignored_dynamicfield;
+		this.attr_dynamicfield = attr_dynamicfield;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -539,6 +606,26 @@ public class DefaultDocument {
 
 	public void setAttr_dynamicfield(List<String> attr_dynamicfield) {
 		this.attr_dynamicfield = attr_dynamicfield;
+	}
+
+	@Override
+	public String toString() {
+		return "DefaultDocument [id=" + id + ", sku=" + sku + ", name=" + name + ", manu=" + manu + ", cat=" + cat
+				+ ", features=" + features + ", includes=" + includes + ", weight=" + weight + ", price=" + price
+				+ ", popularity=" + popularity + ", inStock=" + inStock + ", store=" + store + ", title=" + title
+				+ ", subject=" + subject + ", description=" + description + ", comments=" + comments + ", author="
+				+ author + ", keywords=" + keywords + ", category=" + category + ", resourcename=" + resourcename
+				+ ", url=" + url + ", content_type=" + content_type + ", last_modified=" + last_modified + ", links="
+				+ links + ", content=" + content + ", text=" + text + ", text_rev=" + text_rev + ", manu_exact="
+				+ manu_exact + ", payloads=" + payloads + ", dynamicfield_i=" + dynamicfield_i + ", dynamicfield_is="
+				+ dynamicfield_is + ", dynamicfield_s=" + dynamicfield_s + ", dynamicfield_ss=" + dynamicfield_ss
+				+ ", dynamicfield_l=" + dynamicfield_l + ", dynamicfield_ls=" + dynamicfield_ls + ", dynamicfield_t="
+				+ dynamicfield_t + ", dynamicfield_txt=" + dynamicfield_txt + ", dynamicfield_en=" + dynamicfield_en
+				+ ", dynamicfield_b=" + dynamicfield_b + ", dynamicfield_bs=" + dynamicfield_bs + ", dynamicfield_f="
+				+ dynamicfield_f + ", dynamicfield_fs=" + dynamicfield_fs + ", dynamicfield_d=" + dynamicfield_d
+				+ ", dynamicfield_ds=" + dynamicfield_ds + ", dynamicfield_dt=" + dynamicfield_dt
+				+ ", dynamicfield_dts=" + dynamicfield_dts + ", dynamicfield_p=" + dynamicfield_p
+				+ ", ignored_dynamicfield=" + ignored_dynamicfield + ", attr_dynamicfield=" + attr_dynamicfield + "]";
 	}
 
 }

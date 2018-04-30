@@ -149,10 +149,6 @@ public class DefaultDocument {
 	@Field
 	private List<String> attr_dynamicfield;
 
-	// public DefaultDocument() {
-	// super();
-	// }
-
 	public DefaultDocument(String id, String sku, String name, String manu, List<String> cat, List<String> features,
 			String includes, Float weight, Float price, Integer popularity, Boolean inStock, String store,
 			List<String> title, String subject, String description, String comments, String author, String keywords,

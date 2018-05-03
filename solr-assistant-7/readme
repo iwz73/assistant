@@ -5,6 +5,21 @@
 # check config
 http://localhost:8983/solr/my_collection/config
 
+## Common Query Parameters (/opt/solr-7.3.0/bin/solr start -force -e techproducts)
+# defType
+http://localhost:8983/solr/techproducts/select?defType=edismax&q=*:*
+# sort
+http://localhost:8983/solr/techproducts/select?q=*:*&sort=name asc, price desc
+# start
+http://localhost:8983/solr/techproducts/select?q=*:*&start=100
+# row
+http://localhost:8983/solr/techproducts/select?q=*:*&rows=100
+# fq (filter query)
+http://localhost:8983/solr/techproducts/select?q=*:*&fq=popularity:[10 TO *]&fq=price:[300 TO 400]	// to cache
+http://localhost:8983/solr/techproducts/select?q=*:*&fq=+popularity:[10 TO *] +price:[300 TO 400]	// one cache
+# fl (field list)
+
+
 ## example : learning-to-rank
 # start solr with learning-to-rank
 /opt/solr-7.3.0/bin/solr start -force -e techproducts -Dsolr.ltr.enabled=true

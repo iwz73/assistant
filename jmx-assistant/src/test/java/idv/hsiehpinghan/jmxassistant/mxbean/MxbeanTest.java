@@ -26,9 +26,6 @@ public class MxbeanTest extends AbstractTestNGSpringContextTests {
 	public void test() throws MalformedObjectNameException, InstanceNotFoundException, IOException {
 		ObjectName objectName = new ObjectName(Mxbean.MX_BEAN_NAME);
 		MxbeanMXBean mxbeanProxy = JMX.newMXBeanProxy(connection, objectName, MxbeanMXBean.class, true);
-		
-		System.err.println(mxbeanProxy.getCompositeData().getInteger());
-		
 		mxbeanProxy.setCompositeData(COMPOSITE_DATA);
 		Assert.assertEquals(mxbeanProxy.getCompositeData().getInteger(), COMPOSITE_DATA.getInteger());
 		Assert.assertEquals(mxbeanProxy.getCompositeData().getString(), COMPOSITE_DATA.getString());

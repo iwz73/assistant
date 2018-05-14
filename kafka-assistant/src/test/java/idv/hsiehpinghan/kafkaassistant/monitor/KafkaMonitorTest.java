@@ -2,6 +2,8 @@ package idv.hsiehpinghan.kafkaassistant.monitor;
 
 import java.io.IOException;
 
+import javax.management.Attribute;
+import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
@@ -32,10 +34,24 @@ public class KafkaMonitorTest extends AbstractTestNGSpringContextTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void getAttribute() throws AttributeNotFoundException, InstanceNotFoundException,
+	public void getAttribute() throws Exception {
+		testBytesInPerSec();
+		testOperatingSystem();
+	}
+
+	private void testBytesInPerSec() throws AttributeNotFoundException, InstanceNotFoundException,
 			MalformedObjectNameException, MBeanException, ReflectionException, IOException {
 		Long messagesInPerSec = (Long) kafkaMonitor
 				.getAttribute("kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=test_topic", "Count");
 		Assert.assertTrue(0L <= messagesInPerSec.longValue());
+	}
+
+	private void testOperatingSystem() throws AttributeNotFoundException, InstanceNotFoundException,
+			MalformedObjectNameException, MBeanException, ReflectionException, IOException {
+		AttributeList attributeList = kafkaMonitor.getAttributeList("java.lang:type=OperatingSystem",
+				new String[] { "ProcessCpuLoad" });
+		Attribute attribute = (Attribute) attributeList.get(0);
+		Double value = (Double) attribute.getValue();
+		Assert.assertTrue(0.0 < value);
 	}
 }

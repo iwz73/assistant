@@ -2,6 +2,7 @@ package idv.hsiehpinghan.kafkaassistant.monitor;
 
 import java.io.IOException;
 
+import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
@@ -23,4 +24,8 @@ public class KafkaMonitor {
 		return mBeanServerConnection.getAttribute(new ObjectName(name), attribute);
 	}
 
+	public AttributeList getAttributeList(String name, String[] attributes) throws AttributeNotFoundException,
+			InstanceNotFoundException, MalformedObjectNameException, MBeanException, ReflectionException, IOException {
+		return (AttributeList) mBeanServerConnection.getAttributes(new ObjectName(name), attributes);
+	}
 }

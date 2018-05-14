@@ -68,4 +68,10 @@ vi /tmp/increase-replication-factor.json
 
 /opt/kafka_2.11-0.10.1.1/bin/kafka-reassign-partitions --zookeeper localhost:2181 --reassignment-json-file /tmp/increase-replication-factor.json --execute
 
+--------------------------- Enable Kafka Jmx -------------------------- 
+vi /opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh
+	export JMX_PORT="9999"
+
+
+
 

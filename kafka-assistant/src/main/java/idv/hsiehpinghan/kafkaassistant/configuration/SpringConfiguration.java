@@ -1,6 +1,12 @@
 package idv.hsiehpinghan.kafkaassistant.configuration;
 
+import java.io.IOException;
 import java.util.Properties;
+
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -28,6 +34,13 @@ public class SpringConfiguration {
 
 	@Autowired
 	private Environment environment;
+
+	@Bean
+	public MBeanServerConnection mBeanServerConnection() throws IOException {
+		JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi");
+		JMXConnector connector = JMXConnectorFactory.connect(url, null);
+		return connector.getMBeanServerConnection();
+	}
 
 	@Bean
 	public Producer<String, String> basicProducer_0() {

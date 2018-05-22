@@ -88,7 +88,7 @@ public class GroupSearchTest extends AbstractTestNGSpringContextTests {
 		solrQuery.setParam("group.format", "simple");
 		solrQuery.setParam("group.limit", "3");
 		QueryResponse response = solrAssistant.query(solrQuery);
-		System.err.println("<< groupMainTest >>");
+		System.err.println("<< groupFormatTest >>");
 		GroupResponse groupResponse = response.getGroupResponse();
 		List<GroupCommand> groupCommands = groupResponse.getValues();
 		int i = 0;
@@ -128,7 +128,7 @@ public class GroupSearchTest extends AbstractTestNGSpringContextTests {
 		solrQuery.add("group.field", "manu_id_s");
 		solrQuery.add("group.field", "popularity");
 		QueryResponse response = solrAssistant.query(solrQuery);
-		System.err.println("<< groupedSearchTest >>");
+		System.err.println("<< groupFieldTest >>");
 		GroupResponse groupResponse = response.getGroupResponse();
 		List<GroupCommand> groupCommands = groupResponse.getValues();
 		int i = 0;

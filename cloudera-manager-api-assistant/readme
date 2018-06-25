@@ -1,9 +1,27 @@
 # reference : http://cloudera.github.io/cm_api/apidocs/v14/index.html
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/version
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/tools/echo?message=hello
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/clusters
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/clusters/Cluster%201/services
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/clusters/Cluster%201/services/hdfs/config
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/clusters/Cluster%201/services/hdfs/config?view=full
-curl -X GET -u admin:admin http://127.0.0.1:7180/api/v14/timeseries?query=select%20dfs_capacity,%20dfs_capacity_used,%20dfs_capacity_used_non_hdfs%20where%20entityName=hdfs
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/version
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/tools/echo?message=hello
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters/Cluster%201/services
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters/Cluster%201/services/hdfs/config
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters/Cluster%201/services/hdfs/config?view=full
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters/Cluster%201/hosts
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/clusters/Cluster%201/services
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/cm/service
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/hosts
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/timeseries/entityTypes
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/timeseries/entityTypeAttributes
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/timeseries/schema
+
+curl -X GET -u admin:admin http://10.88.97.22:7180/api/v14/timeseries?query=select%20dfs_capacity,%20dfs_capacity_used,%20dfs_capacity_used_non_hdfs%20where%20entityName=hdfs
+
+
 

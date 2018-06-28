@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.clouderamanagerapiassistant;
+package idv.hsiehpinghan.clouderamanagerapiassistant.resource;
 
 import java.io.IOException;
 

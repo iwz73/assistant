@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.clouderamanagerapiassistant;
+package idv.hsiehpinghan.clouderamanagerapiassistant.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

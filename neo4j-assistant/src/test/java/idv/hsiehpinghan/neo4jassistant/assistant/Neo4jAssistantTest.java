@@ -1,13 +1,14 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
+import org.neo4j.driver.internal.value.NodeValue;
+import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.types.Node;
+import org.neo4j.driver.v1.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -25,11 +26,14 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	
 	@Test
 	public void create() {
-//		createSingleNode();
-//		createMultipleNodes();
-//		createSingleNodeWithLebel();
-//		createSingleNodeWithMultipleLebel();
+		createSingleNode();
+		createMultipleNodes();
+		createSingleNodeWithLebel();
+		createSingleNodeWithMultipleLebel();
 		createSingleNodeWithMultipleProperty();
+		createNodeAndRelationship();
+		createNodeAndRelationshipWithLabelAndProperty();
+		createRelationshipBetweenExistingNode();
 	}
 	
 	private void createSingleNode() {
@@ -127,8 +131,96 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 	
-	
-	
+	private void createNodeAndRelationship() {
+		String createStatement = String.format("CREATE (n_0)-[r:l_0]->(n_1) RETURN n_0, r, n_1");
+		StatementResult createResult = assistant.run(createStatement);
+		int i = 0;
+		while (createResult.hasNext()) {
+			Record record = createResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 3);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				if(value instanceof NodeValue) {
+					Node node = value.asNode();
+					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
+				} else if(value instanceof RelationshipValue) {
+					Relationship relationship = value.asRelationship();
+					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", relationship.id())).hasNext());
+				} else {
+					throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void createNodeAndRelationshipWithLabelAndProperty() {
+		String createStatement = String.format("CREATE (n_0)-[r:l_0 {p_0:'A', p_1:'B', p_2:'C'}]->(n_1) RETURN n_0, r, n_1");
+		StatementResult createResult = assistant.run(createStatement);
+		int i = 0;
+		while (createResult.hasNext()) {
+			Record record = createResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 3);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				if(value instanceof NodeValue) {
+					Node node = value.asNode();
+					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
+				} else if(value instanceof RelationshipValue) {
+					Relationship relationship = value.asRelationship();
+					Assert.assertEquals(relationship.type(), "l_0");
+					Assert.assertEquals(relationship.asMap().size(), 3);
+				} else {
+					throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void createRelationshipBetweenExistingNode() {
+		String property_0 = "p_0_" + NOW;
+		String property_1 = "p_1_" + NOW;
+		String createStatement = String.format("CREATE (n_0:l_0 {p_0:'%s'}), (n_1:l_1 {p_1:'%s'}) RETURN n_0, n_1", property_0, property_1);
+		StatementResult createResult = assistant.run(createStatement);
+		int i = 0;
+		while (createResult.hasNext()) {
+			Record record = createResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 2);
+			String matchCreateStatement = String.format(
+					"MATCH (n_0:l_0), (n_1:l_1) WHERE n_0.p_0='%s' AND n_1.p_1='%s' " +
+					"CREATE (n_0)-[r:l_0]->(n_1) RETURN n_0, r, n_1", property_0, property_1);
+			StatementResult matchCreateResult = assistant.run(matchCreateStatement);
+			int j = 0;
+			while (matchCreateResult.hasNext()) {
+				Record matchRecord = matchCreateResult.next();
+				int matchSize = matchRecord.size();
+				Assert.assertEquals(matchSize, 3);
+				for(int k = 0; k < matchSize; ++k) {
+					Value value = matchRecord.get(k);
+					if(value instanceof NodeValue) {
+						Node node = value.asNode();
+						Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
+					} else if(value instanceof RelationshipValue) {
+						Relationship relationship = value.asRelationship();
+						Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", relationship.id())).hasNext());
+					} else {
+						throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
+					}
+				}
+				++j;
+			}
+			Assert.assertEquals(j, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 //	private final long NOW = new Date().getTime();
 //	private final String NODE_0_LABEL_0 = "create_label_0_0" + NOW;
 //	private final String RELATIONSHIP_LABEL_0 = "create_label_0_1" + NOW;

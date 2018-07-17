@@ -26,14 +26,14 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	
 	@Test
 	public void create() {
-//		createSingleNode();
-//		createMultipleNodes();
-//		createSingleNodeWithLebel();
-//		createSingleNodeWithMultipleLebel();
-//		createSingleNodeWithMultipleProperty();
-//		createNodeAndRelationship();
-//		createNodeAndRelationshipWithLabelAndProperty();
-//		createRelationshipBetweenExistingNode();
+		createSingleNode();
+		createMultipleNodes();
+		createSingleNodeWithLebel();
+		createSingleNodeWithMultipleLebel();
+		createSingleNodeWithMultipleProperty();
+		createNodeAndRelationship();
+		createNodeAndRelationshipWithLabelAndProperty();
+		createRelationshipBetweenExistingNode();
 		createPath();
 	}
 	
@@ -42,11 +42,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.run(createStatement);
 		int i = 0;
 		while (createResult.hasNext()) {
-			Record record = createResult.next();
-			Node node = record.get(0).asNode();
-			String retrieveStatement = String.format("MATCH (n) " + "WHERE ID(n) = %d " + "RETURN n", node.id());
-			StatementResult retrieveResult = assistant.run(retrieveStatement);
-			Assert.assertTrue(retrieveResult.hasNext());
+			int size = createResult.next().size();
+			Assert.assertEquals(size, 1);
 			++i;
 		}
 		Assert.assertEquals(i, 1);
@@ -57,15 +54,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.run(createStatement);
 		int i = 0;
 		while (createResult.hasNext()) {
-			Record record = createResult.next();
-			int size = record.size();
+			int size = createResult.next().size();
 			Assert.assertEquals(size, 2);
-			for(int j = 0; j < size; ++j) {
-				Node node = record.get(j).asNode();
-				String retrieveStatement = String.format("MATCH (n) " + "WHERE ID(n) = %d " + "RETURN n", node.id());
-				StatementResult retrieveResult = assistant.run(retrieveStatement);
-				Assert.assertTrue(retrieveResult.hasNext());
-			}
 			++i;
 		}
 		Assert.assertEquals(i, 1);
@@ -76,13 +66,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.run(createStatement);
 		int i = 0;
 		while (createResult.hasNext()) {
-			Record record = createResult.next();
-			Node node = record.get(0).asNode();
-			String retrieveStatement = String.format("MATCH (n) " + "WHERE ID(n) = %d " + "RETURN n", node.id());
-			StatementResult retrieveResult = assistant.run(retrieveStatement);
-			Assert.assertTrue(retrieveResult.hasNext());
 			int j = 0;
-			for(String label : retrieveResult.next().get(0).asNode().labels()) {
+			for(String label : createResult.next().get(0).asNode().labels()) {
 				Assert.assertEquals(label, "l");
 				++j;
 			}
@@ -97,13 +82,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.run(createStatement);
 		int i = 0;
 		while (createResult.hasNext()) {
-			Record record = createResult.next();
-			Node node = record.get(0).asNode();
-			String retrieveStatement = String.format("MATCH (n) " + "WHERE ID(n) = %d " + "RETURN n", node.id());
-			StatementResult retrieveResult = assistant.run(retrieveStatement);
-			Assert.assertTrue(retrieveResult.hasNext());
 			int j = 0;
-			for(String label : retrieveResult.next().get(0).asNode().labels()) {
+			for(String label : createResult.next().get(0).asNode().labels()) {
 				++j;
 			}
 			Assert.assertEquals(j, 3);
@@ -117,13 +97,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.run(createStatement);
 		int i = 0;
 		while (createResult.hasNext()) {
-			Record record = createResult.next();
-			Node node = record.get(0).asNode();
-			String retrieveStatement = String.format("MATCH (n) " + "WHERE ID(n) = %d " + "RETURN n", node.id());
-			StatementResult retrieveResult = assistant.run(retrieveStatement);
-			Assert.assertTrue(retrieveResult.hasNext());
 			int j = 0;
-			for(Value property : retrieveResult.next().get(0).asNode().values()) {
+			for(Value property : createResult.next().get(0).asNode().values()) {
 				++j;
 			}
 			Assert.assertEquals(j, 3);
@@ -140,18 +115,6 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			Record record = createResult.next();
 			int size = record.size();
 			Assert.assertEquals(size, 3);
-			for(int j = 0; j < size; ++j) {
-				Value value = record.get(j);
-				if(value instanceof NodeValue) {
-					Node node = value.asNode();
-					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
-				} else if(value instanceof RelationshipValue) {
-					Relationship relationship = value.asRelationship();
-					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", relationship.id())).hasNext());
-				} else {
-					throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
-				}
-			}
 			++i;
 		}
 		Assert.assertEquals(i, 1);
@@ -167,15 +130,10 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(size, 3);
 			for(int j = 0; j < size; ++j) {
 				Value value = record.get(j);
-				if(value instanceof NodeValue) {
-					Node node = value.asNode();
-					Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
-				} else if(value instanceof RelationshipValue) {
+				if(value instanceof RelationshipValue) {
 					Relationship relationship = value.asRelationship();
 					Assert.assertEquals(relationship.type(), "l_0");
 					Assert.assertEquals(relationship.asMap().size(), 3);
-				} else {
-					throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
 				}
 			}
 			++i;
@@ -202,18 +160,6 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 				Record matchRecord = matchCreateResult.next();
 				int matchSize = matchRecord.size();
 				Assert.assertEquals(matchSize, 3);
-				for(int k = 0; k < matchSize; ++k) {
-					Value value = matchRecord.get(k);
-					if(value instanceof NodeValue) {
-						Node node = value.asNode();
-						Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", node.id())).hasNext());
-					} else if(value instanceof RelationshipValue) {
-						Relationship relationship = value.asRelationship();
-						Assert.assertTrue(assistant.run(String.format("MATCH (n) WHERE ID(n) = %d RETURN n", relationship.id())).hasNext());
-					} else {
-						throw new RuntimeException(String.format("value class(%s) not implements !!!", value.getClass().toString()));
-					}
-				}
 				++j;
 			}
 			Assert.assertEquals(j, 1);

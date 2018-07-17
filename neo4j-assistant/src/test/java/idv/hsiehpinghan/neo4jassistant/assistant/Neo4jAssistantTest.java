@@ -26,14 +26,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	
 	@Test
 	public void create() {
-		createSingleNode();
-		createMultipleNodes();
-		createSingleNodeWithLebel();
-		createSingleNodeWithMultipleLebel();
-		createSingleNodeWithMultipleProperty();
-		createNodeAndRelationship();
-		createNodeAndRelationshipWithLabelAndProperty();
-		createRelationshipBetweenExistingNode();
+//		createSingleNode();
+//		createMultipleNodes();
+//		createSingleNodeWithLebel();
+//		createSingleNodeWithMultipleLebel();
+//		createSingleNodeWithMultipleProperty();
+//		createNodeAndRelationship();
+//		createNodeAndRelationshipWithLabelAndProperty();
+//		createRelationshipBetweenExistingNode();
+		createPath();
 	}
 	
 	private void createSingleNode() {
@@ -221,6 +222,20 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
+	private void createPath() {
+		String createStatement = String.format("CREATE (n_0)-[r_0:l_0]->(n_1)-[r_1:l_1]->(n_2) RETURN n_0, r_0, n_1, r_1, n_2");
+		StatementResult createResult = assistant.run(createStatement);
+		int i = 0;
+		while (createResult.hasNext()) {
+			Record record = createResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 5);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	
 //	private final long NOW = new Date().getTime();
 //	private final String NODE_0_LABEL_0 = "create_label_0_0" + NOW;
 //	private final String RELATIONSHIP_LABEL_0 = "create_label_0_1" + NOW;

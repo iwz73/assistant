@@ -89,6 +89,17 @@ echo -e "foo_1\nbar_1" >> /tmp/test.txt
 ???vi /opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh
 ???	export JMX_PORT="9999"
 
-
-
-
+--------------------------- Kafka Streams Test -------------------------- 
+# create kafka streams topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic streams_input_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic streams_output_topic --config cleanup.policy=compact
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --list --zookeeper localhost:2181
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic streams_input_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic streams_output_topic
+Run As -> Maven build... -> Goals : clean package
+export CLASSPATH="/home/hsiehpinghan/git/assistant/kafka-assistant-2/target/kafka-assistant-2-1.0.0.jar"
+/opt/kafka_2.11-2.0.0/bin/kafka-run-class.sh idv.hsiehpinghan.kafkaassistant2.WordCountDemo
+/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic streams_input_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic streams_output_topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+    
+    

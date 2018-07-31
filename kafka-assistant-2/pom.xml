@@ -12,6 +12,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
@@ -66,7 +69,11 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>${kafka.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -78,6 +85,7 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,0 +1,94 @@
+-------------------------- A single node – a single broker cluster -------------------------- 
+# start kafka
+/opt/kafka_2.11-2.0.0/bin/zookeeper-server-start.sh /opt/kafka_2.11-2.0.0/config/zookeeper.properties
+/opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh /opt/kafka_2.11-2.0.0/config/server.properties
+
+# create topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic
+
+# list topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+# describe topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic
+
+# delete topic (add delete.topic.enable=true in /opt/kafka_2.11-2.0.0/config/server.properties and restart kafka server)
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic
+
+???# undelete topic
+???/opt/kafka_2.11-2.0.0/bin/zookeeper-shell.sh localhost:2181
+???<<zookeeper prompt>>ls /admin/delete_topics
+???<<zookeeper prompt>>rmr /admin/delete_topics/test_topic
+
+# producer send message
+/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic
+
+# consumer get message
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test_topic --from-beginning
+
+--------------------------- A single node – multiple broker clusters -------------------------- 
+# start kafka
+/opt/kafka_2.11-2.0.0/bin/zookeeper-server-start.sh /opt/kafka_2.11-2.0.0/config/zookeeper.properties
+/opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant-2/file/single_node_multiple_broker/server_0.properties
+/opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant-2/file/single_node_multiple_broker/server_1.properties
+/opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh /home/hsiehpinghan/git/assistant/kafka-assistant-2/file/single_node_multiple_broker/server_2.properties
+
+# create topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 3 --topic single_node_multiple_broker_topic
+
+# list topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+# describe topic
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic single_node_multiple_broker_topic
+
+???# alter topic
+???/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --alter --zookeeper localhost:2181 --partitions 2 --topic single_node_multiple_broker_topic
+
+# producer send message
+/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic
+
+# consumer get message
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic --from-beginning
+
+# fault-tolerance test
+ps aux | grep server_1.properties
+kill -9 <<pid>>
+/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic single_node_multiple_broker_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic --from-beginning
+
+--------------------------- Use Kafka Connect to import/export data -------------------------- 
+# start kafka
+/opt/kafka_2.11-2.0.0/bin/zookeeper-server-start.sh /opt/kafka_2.11-2.0.0/config/zookeeper.properties
+/opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh /opt/kafka_2.11-2.0.0/config/server.properties
+
+# start connect
+echo -e "foo_0\nbar_0" > /tmp/test.txt
+cd /tmp
+/opt/kafka_2.11-2.0.0/bin/connect-standalone.sh /opt/kafka_2.11-2.0.0/config/connect-standalone.properties /opt/kafka_2.11-2.0.0/config/connect-file-source.properties /opt/kafka_2.11-2.0.0/config/connect-file-sink.properties
+cat /tmp/test.sink.txt
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+echo -e "foo_1\nbar_1" >> /tmp/test.txt
+
+--------------------------- Change Kafka Partition -------------------------- 
+???/opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic test_topic --partitions 3
+
+--------------------------- Change Kafka Replication -------------------------- 
+???vi /tmp/increase-replication-factor.json
+???{"version":1,
+???  "partitions":[
+???     {"topic":"end_trip","partition":0,"replicas":[0,1,2]},
+???     {"topic":"end_trip","partition":1,"replicas":[0,1,2]},
+???     {"topic":"end_trip","partition":2,"replicas":[0,1,2]}
+???]}
+
+???/opt/kafka_2.11-2.0.0/bin/kafka-reassign-partitions --zookeeper localhost:2181 --reassignment-json-file /tmp/increase-replication-factor.json --execute
+
+--------------------------- Enable Kafka Jmx -------------------------- 
+???vi /opt/kafka_2.11-2.0.0/bin/kafka-server-start.sh
+???	export JMX_PORT="9999"
+
+
+
+

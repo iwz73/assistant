@@ -26,6 +26,20 @@
 # consumer get message
 /opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test_topic --from-beginning
 
+# check consumer position
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test_topic --group test_group --from-beginning
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group test_group
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-group --members --verbose
+
+# check consumer status
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group test_group --state
+
+# list all group
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+
+# delte group
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --delete --group test_group
+
 --------------------------- A single node – multiple broker clusters -------------------------- 
 # start kafka
 /opt/kafka_2.11-2.0.0/bin/zookeeper-server-start.sh /opt/kafka_2.11-2.0.0/config/zookeeper.properties
@@ -49,14 +63,28 @@
 /opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic
 
 # consumer get message
-/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic --from-beginning
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic --from-beginning
+
+# check consumer position
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic --group single_node_multiple_broker_group --from-beginning
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --describe --group single_node_multiple_broker_group
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --describe --group single_node_multiple_broker_group --members --verbose
+
+# check consumer status
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --describe --group single_node_multiple_broker_group --state
+
+# list all group
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --list
+
+# delte group <this group must has no member)
+/opt/kafka_2.11-2.0.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --delete --group single_node_multiple_broker_group
 
 # fault-tolerance test
 ps aux | grep server_1.properties
 kill -9 <<pid>>
 /opt/kafka_2.11-2.0.0/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic single_node_multiple_broker_topic
-/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic
-/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9094 --topic single_node_multiple_broker_topic --from-beginning
+/opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic
+/opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9093,localhost:9094,localhost:9095 --topic single_node_multiple_broker_topic --from-beginning
 
 --------------------------- Use Kafka Connect to import/export data -------------------------- 
 # start kafka
@@ -101,5 +129,4 @@ export CLASSPATH="/home/hsiehpinghan/git/assistant/kafka-assistant-2/target/kafk
 /opt/kafka_2.11-2.0.0/bin/kafka-run-class.sh idv.hsiehpinghan.kafkaassistant2.WordCountDemo
 /opt/kafka_2.11-2.0.0/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic streams_input_topic
 /opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic streams_output_topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
-    
-    
+

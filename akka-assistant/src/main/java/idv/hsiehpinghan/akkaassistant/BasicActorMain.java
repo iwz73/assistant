@@ -10,9 +10,9 @@ import idv.hsiehpinghan.akkaassistant.actor.BasicActor_1;
 import idv.hsiehpinghan.akkaassistant.message.Message_0;
 import idv.hsiehpinghan.akkaassistant.message.Message_1;
 
-public class ActorMain {
+public class BasicActorMain {
 	public static void main(String[] args) {
-		final ActorSystem actorSystem = ActorSystem.create("actorMain");
+		final ActorSystem actorSystem = ActorSystem.create("basicActorMain");
 		try {
 			ActorRef basicActor_0Ref = actorSystem.actorOf(BasicActor_0.props(), "basicActor_0");
 			ActorRef basicActor_1Ref = actorSystem.actorOf(BasicActor_1.props(), "basicActor_1");

@@ -18,7 +18,7 @@ USE my_keyspace;
 ALTER KEYSPACE my_keyspace  
 WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor' : 1};
 
-# drrop keyspace
+# drop keyspace
 DROP keyspace my_keyspace;
 
 # create table
@@ -43,6 +43,32 @@ CREATE TABLE my_table (
     list_col LIST<TEXT>,
     map_col MAP<TEXT, INT>
 );
+CREATE TABLE my_combined_key_table (
+    id_0 INT,
+    id_1 TEXT, 
+    ascii_col ASCII,  
+    bigint_col BIGINT,
+    blob_col BLOB,
+    boolean_col BOOLEAN,
+    decimal_col DECIMAL,
+    double_col DOUBLE,
+    float_col FLOAT,
+    inet_col INET,
+    int_col INT,
+    text_col TEXT,
+    timestamp_col TIMESTAMP,
+    timeuuid_col TIMEUUID,
+    uuid_col UUID,
+    varchar_col VARCHAR,
+    varint_col VARINT,
+    set_col SET<TEXT>,
+    list_col LIST<TEXT>,
+    map_col MAP<TEXT, INT>,
+    PRIMARY KEY (id_0, id_1)
+);
+
+# list tables
+DESCRIBE TABLES 
 
 # alter table
 ALTER TABLE my_table ADD add_col text;

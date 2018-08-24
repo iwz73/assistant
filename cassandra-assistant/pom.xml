@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>idv.hsiehpinghan</groupId>
-  <artifactId>cassandra-assistant</artifactId>
-  <version>1.0.0</version>
-  <packaging>jar</packaging>
+	<groupId>idv.hsiehpinghan</groupId>
+	<artifactId>cassandra-assistant</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 
-  <name>cassandra-assistant</name>
-  <url>http://maven.apache.org</url>
+	<name>cassandra-assistant</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,6 +18,8 @@
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
+		<cassandra-driver.version>3.5.1</cassandra-driver.version>
+		<cassandra-unit.version>3.5.0.1</cassandra-unit.version>
 	</properties>
 
 	<dependencies>
@@ -53,6 +55,21 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- cassandra-driver -->
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+			<version>${cassandra-driver.version}</version>
+		</dependency>
+
+		<!-- cassandra-unit -->
+		<dependency>
+			<groupId>org.cassandraunit</groupId>
+			<artifactId>cassandra-unit</artifactId>
+			<version>${cassandra-unit.version}</version>
 			<scope>test</scope>
 		</dependency>
 

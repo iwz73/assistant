@@ -1,0 +1,122 @@
+# start cassandra
+cassandra -R
+
+# start 
+cqlsh
+
+# create keyspace
+CREATE KEYSPACE my_keyspace  
+WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
+    
+# list keyspace
+DESCRIBE KEYSPACES
+
+# user keyspace
+USE my_keyspace;
+
+# alter keyspace
+ALTER KEYSPACE my_keyspace  
+WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor' : 1};
+
+# drrop keyspace
+DROP keyspace my_keyspace;
+
+# create table
+CREATE TABLE my_table (  
+    id INT PRIMARY KEY,  
+    ascii_col ASCII,  
+    bigint_col BIGINT,
+    blob_col BLOB,
+    boolean_col BOOLEAN,
+    decimal_col DECIMAL,
+    double_col DOUBLE,
+    float_col FLOAT,
+    inet_col INET,
+    int_col INT,
+    text_col TEXT,
+    timestamp_col TIMESTAMP,
+    timeuuid_col TIMEUUID,
+    uuid_col UUID,
+    varchar_col VARCHAR,
+    varint_col VARINT,
+    set_col SET<TEXT>,
+    list_col LIST<TEXT>,
+    map_col MAP<TEXT, INT>
+);
+
+# alter table
+ALTER TABLE my_table ADD add_col text;
+ALTER TABLE my_table DROP add_col;
+
+# truncate table
+TRUNCATE my_table;
+
+# create index
+CREATE INDEX varchar_col_idx ON my_table (varchar_col);
+
+# drop index
+DROP INDEX my_keyspace.varchar_col_idx;
+
+# drop table
+DROP TABLE my_table;
+
+# insert
+INSERT INTO my_table (  
+    id,  
+    ascii_col,  
+    bigint_col,
+    blob_col,
+    boolean_col,
+    decimal_col,
+    double_col,
+    float_col,
+    inet_col,
+    int_col,
+    text_col,
+    timestamp_col,
+    timeuuid_col,
+    uuid_col,
+    varchar_col,
+    varint_col,
+    set_col,
+    list_col,
+    map_col
+) VALUES (
+	0,
+	'ascii_0',
+	0,
+	textAsBlob('blob_col_0'),
+	TRUE,
+	0.0,
+	0.0,
+	0.0,
+	'127.0.0.1',
+	0,
+	'text_col_0',
+	0,
+	now(),
+	now(),
+	'varchar_col_0',
+	0,
+	{'set_col_0', 'set_col_1', 'set_col_0'},
+	['list_col_0', 'list_col_1', 'list_col_0'],
+	{'map_col_0' : 0, 'map_col_1' : 1, 'map_col_0' : 2}
+);
+
+# select
+SELECT * 
+FROM my_table;
+
+# update
+UPDATE my_table 
+SET bigint_col = 1, varchar_col = 'varchar_col_1'
+WHERE id = 0;
+
+# delete
+DELETE
+FROM my_table
+WHERE id = 0;
+
+DELETE bigint_col, varchar_col 
+FROM my_table 
+WHERE id = 0;

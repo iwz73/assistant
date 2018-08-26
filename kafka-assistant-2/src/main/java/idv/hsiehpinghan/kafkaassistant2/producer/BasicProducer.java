@@ -24,8 +24,6 @@ public class BasicProducer implements InitializingBean {
 	private Producer<Long, String> producer;
 	@Value("${bootstrap.servers}")
 	private String bootstrapServers;
-	@Value("${basic.topic}")
-	private String topic;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -33,7 +31,7 @@ public class BasicProducer implements InitializingBean {
 		producer = new KafkaProducer<>(properties);
 	}
 
-	public RecordMetadata send(Long key, String value) throws InterruptedException, ExecutionException {
+	public RecordMetadata send(String topic, Long key, String value) throws InterruptedException, ExecutionException {
 		ProducerRecord<Long, String> producerRecord = new ProducerRecord<>(topic, key, value);
 		Future<RecordMetadata> future = producer.send(producerRecord);
 		while (future.isDone() == false) {

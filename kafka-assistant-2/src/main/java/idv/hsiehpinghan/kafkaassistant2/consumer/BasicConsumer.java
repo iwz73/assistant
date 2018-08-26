@@ -25,21 +25,17 @@ public class BasicConsumer implements InitializingBean {
 	private Consumer<Long, String> consumer;
 	@Value("${bootstrap.servers}")
 	private String bootstrapServers;
-	@Value("${basic.topic}")
-	private String topic;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		Properties properties = generateProperties();
 		consumer = new KafkaConsumer<>(properties);
-		consumer.subscribe(Arrays.asList(topic));
 	}
 
-	public ConsumerRecords<Long, String> poll() {
-		while (true) {
-			LOGGER.info("consumer polling ...");
-			return consumer.poll(TIMEOUT);
-		}
+	public ConsumerRecords<Long, String> poll(String topic) {
+		LOGGER.info("consumer polling ...");
+		consumer.subscribe(Arrays.asList(topic));
+		return consumer.poll(TIMEOUT);
 	}
 
 	private Properties generateProperties() {

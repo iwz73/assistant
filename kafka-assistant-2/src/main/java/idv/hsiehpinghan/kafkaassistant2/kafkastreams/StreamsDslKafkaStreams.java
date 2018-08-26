@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Produced;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,16 +21,33 @@ public class StreamsDslKafkaStreams {
 	@Value("${bootstrap.servers}")
 	private String bootstrapServers;
 
-	public void kStreamReadWrite() {
-		StreamsBuilder streamsBuilder = new StreamsBuilder();
-		streamsBuilder.stream("kStreamReadWriteInputTopic", Consumed.with(Serdes.Long(), Serdes.String()))
-				.to("kStreamReadWriteOutputTopic", Produced.with(Serdes.Long(), Serdes.String()));
-		start(streamsBuilder);
+	public void startTopicStreamTopic(String inputTopic, String outputTopic) {
+		Topology topology = generateTopicStreamTopicTopology(inputTopic, outputTopic);
+		start(topology);
 	}
 
-	private void start(StreamsBuilder streamsBuilder) {
+	Topology generateTopicStreamTopicTopology(String inputTopic, String outputTopic) {
+		StreamsBuilder streamsBuilder = new StreamsBuilder();
+		// @formatter:off
+		streamsBuilder
+			.stream(inputTopic, Consumed.with(Serdes.Long(), Serdes.String()))
+			.to(outputTopic, Produced.with(Serdes.Long(), Serdes.String()));
+		// @formatter:on
+		return streamsBuilder.build();
+	}
+
+	Properties generateProperties() {
+		Properties properties = new Properties();
+		properties.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
+		properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		properties.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
+		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+		return properties;
+	}
+
+	private void start(Topology topology) {
 		Properties properties = generateProperties();
-		KafkaStreams kafkaStreams = new KafkaStreams(streamsBuilder.build(), properties);
+		KafkaStreams kafkaStreams = new KafkaStreams(topology, properties);
 		kafkaStreams.setUncaughtExceptionHandler((Thread thread, Throwable throwable) -> {
 			throw new RuntimeException(throwable);
 		});
@@ -48,15 +66,6 @@ public class StreamsDslKafkaStreams {
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private Properties generateProperties() {
-		Properties properties = new Properties();
-		properties.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
-		properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		properties.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
-		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-		return properties;
 	}
 
 }

@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.kafkaassistant2.producer;
+package idv.hsiehpinghan.kafkaassistant2.producerconsumer;
 
 import java.util.Date;
 
@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.kafkaassistant2.configuration.SpringConfiguration;
 import idv.hsiehpinghan.kafkaassistant2.consumer.BasicConsumer;
+import idv.hsiehpinghan.kafkaassistant2.producer.BasicProducer;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class BasicTest extends AbstractTestNGSpringContextTests {

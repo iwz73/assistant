@@ -4,17 +4,16 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.streams.processor.TopologyBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import idv.hsiehpinghan.kafkaassistant.deserializer.JsonDeserializer;
+import idv.hsiehpinghan.kafkaassistant.processor.UpperCaseJsonVoProcessor;
 import idv.hsiehpinghan.kafkaassistant.serializer.JsonSerializer;
 import idv.hsiehpinghan.kafkaassistant.vo.JsonVo;
 import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
@@ -27,53 +26,19 @@ public class ProcessorApiKafkaStreams {
 	@Value("${bootstrap_servers}")
 	private String bootstrapServers;
 
-	public void startJsonTopicStreamTopic(String inputTopic, String outputTopic) {
-		TopologyBuilder topologyBuilder = generateJsonTopicStreamTopicTopologyBuilder(inputTopic, outputTopic);
+	public void startJsonProcessor(String inputTopic, String outputTopic) {
+		TopologyBuilder topologyBuilder = generateJsonProcessorTopologyBuilder(inputTopic, outputTopic);
 		start(topologyBuilder);
 	}
 
-	TopologyBuilder generateJsonTopicStreamTopicTopologyBuilder(String inputTopic, String outputTopic) {
-//		 TopologyBuilder topologyBuilder = new TopologyBuilder();
-//		 topologyBuilder.addSource("SOURCE", stringDeserializer, purchaseJsonDeserializer, "src-topic")
-		 
-		return null;
-		 
-//		Serde<Long> inputKeySerde = Serdes.Long();
-//		Serde<JsonVo> inputValueSerde = Serdes.serdeFrom(new JsonSerializer<>(), new JsonDeserializer<>(JsonVo.class));
-//		Serde<Long> outputKeySerde = Serdes.Long();
-//		Serde<UpperCaseJsonVo> outputValueSerde = Serdes.serdeFrom(new JsonSerializer<>(),
-//				new JsonDeserializer<>(UpperCaseJsonVo.class));
-//		KStreamBuilder kStreamBuilder = new KStreamBuilder();
-//		KStream<Long, JsonVo> kStream = kStreamBuilder.stream(inputKeySerde, inputValueSerde, inputTopic);
-//		kStream.mapValues(jsonVo -> UpperCaseJsonVo.builder(jsonVo).build()).to(outputKeySerde, outputValueSerde,
-//				outputTopic);
-//		return kStreamBuilder;
+	TopologyBuilder generateJsonProcessorTopologyBuilder(String inputTopic, String outputTopic) {
+		TopologyBuilder topologyBuilder = new TopologyBuilder();
+		topologyBuilder.addSource("SOURCE", new LongDeserializer(), new JsonDeserializer<>(JsonVo.class), inputTopic)
+				.addProcessor("UPPER_CASE", UpperCaseJsonVoProcessor::new, "SOURCE").addSink("SINK", outputTopic,
+						new LongSerializer(), new JsonSerializer<UpperCaseJsonVo>(), "UPPER_CASE");
+		return topologyBuilder;
 	}
 
-//	JsonDeserializer<Purchase> purchaseJsonDeserializer = new JsonDeserializer<>(Purchase.class);
-//	JsonSerializer<Purchase> purchaseJsonSerializer = new JsonSerializer<>();
-//	JsonSerializer<RewardAccumulator> rewardAccumulatorJsonSerializer = new JsonSerializer<>();
-//	JsonSerializer<PurchasePattern> purchasePatternJsonSerializer = new JsonSerializer<>();
-//
-//	StringDeserializer stringDeserializer = new StringDeserializer();
-//	StringSerializer stringSerializer = new StringSerializer();
-//
-//	 TopologyBuilder topologyBuilder = new TopologyBuilder();
-//	 topologyBuilder.addSource("SOURCE", stringDeserializer, purchaseJsonDeserializer, "src-topic")
-//
-//	    .addProcessor("PROCESS", CreditCardAnonymizer::new, "SOURCE")
-//	    .addProcessor("PROCESS2", PurchasePatterns::new, "PROCESS")
-//	    .addProcessor("PROCESS3", CustomerRewards::new, "PROCESS")
-//
-//	    .addSink("SINK", "patterns", stringSerializer, purchasePatternJsonSerializer, "PROCESS2")
-//	    .addSink("SINK2", "rewards",stringSerializer, rewardAccumulatorJsonSerializer, "PROCESS3")
-//	    .addSink("SINK3", "purchases", stringSerializer, purchaseJsonSerializer, "PROCESS");
-//
-//	//Use the topologyBuilder and streamingConfig to start the kafka streams process
-//	KafkaStreams streaming = new KafkaStreams(topologyBuilder, streamingConfig);
-//	streaming.start();
-
-	
 	Properties generateProperties() {
 		Properties properties = new Properties();
 		properties.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);

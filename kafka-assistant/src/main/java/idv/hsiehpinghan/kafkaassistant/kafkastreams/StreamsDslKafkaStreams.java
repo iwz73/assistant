@@ -21,6 +21,7 @@ import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 
 @Component
 public class StreamsDslKafkaStreams {
+	private static final long SLEEP_MILLIS = 10 * 1000;
 	@Value("${application_id}")
 	private String applicationId;
 	@Value("${bootstrap_servers}")
@@ -70,10 +71,17 @@ public class StreamsDslKafkaStreams {
 		});
 		try {
 			kafkaStreams.start();
+			sleepAndCloseForTest(kafkaStreams, countDownLatch);
 			countDownLatch.await();
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	private void sleepAndCloseForTest(KafkaStreams kafkaStreams, CountDownLatch countDownLatch)
+			throws InterruptedException {
+		Thread.sleep(SLEEP_MILLIS);
+		kafkaStreams.close();
+		countDownLatch.countDown();
+	}
 }

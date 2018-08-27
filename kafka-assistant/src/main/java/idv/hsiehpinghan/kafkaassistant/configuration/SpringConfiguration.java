@@ -16,6 +16,8 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.IntegerSerializer;
+import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public Producer<String, String> basicProducer_0() {
+	public Producer<Long, String> basicProducer_0() {
 		Properties properties = generateBasicProducerProperties();
 		return new KafkaProducer<>(properties);
 	}
@@ -63,7 +65,7 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public Consumer<String, String> basicConsumer_0() {
+	public Consumer<Long, String> basicConsumer_0() {
 		Properties properties = generateBasicConsumerProperties();
 		return new KafkaConsumer<>(properties);
 	}
@@ -90,7 +92,7 @@ public class SpringConfiguration {
 		objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 		return objectMapper;
 	}
-	
+
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
@@ -104,7 +106,7 @@ public class SpringConfiguration {
 		properties.put(ProducerConfig.BATCH_SIZE_CONFIG, environment.getRequiredProperty("batch_size"));
 		properties.put(ProducerConfig.LINGER_MS_CONFIG, environment.getRequiredProperty("linger_ms"));
 		properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, environment.getRequiredProperty("buffer_memory"));
-		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
 		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 		return properties;
 	}
@@ -130,7 +132,7 @@ public class SpringConfiguration {
 		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, environment.getRequiredProperty("enable_auto_commit"));
 		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG,
 				environment.getRequiredProperty("auto_commit_interval_ms"));
-		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, environment.getRequiredProperty("auto_offset_reset"));
 		return properties;

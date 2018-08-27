@@ -47,13 +47,13 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);
 		basicProducer.send(INPUT_TOPIC, jsonStr);
 		streamsDslKafkaStreams.startJsonTopicStreamTopic(INPUT_TOPIC, OUTPUT_TOPIC);
-		ConsumerRecords<String, String> consumerRecords = basicConsumer.poll(OUTPUT_TOPIC);
+		ConsumerRecords<Long, String> consumerRecords = basicConsumer.poll(OUTPUT_TOPIC);
 		Assert.assertTrue(isExist(consumerRecords, STRING));
 	}
 
-	private boolean isExist(ConsumerRecords<String, String> consumerRecords, String _string)
+	private boolean isExist(ConsumerRecords<Long, String> consumerRecords, String _string)
 			throws JsonParseException, JsonMappingException, IOException {
-		for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
+		for (ConsumerRecord<Long, String> consumerRecord : consumerRecords) {
 			String actual = consumerRecord.value();
 			UpperCaseJsonVo upperCaseJsonVo = objectMapper.readValue(actual, UpperCaseJsonVo.class);
 			if (_string.toUpperCase().equals(upperCaseJsonVo.get_string()) == true) {

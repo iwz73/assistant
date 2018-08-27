@@ -4,7 +4,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -31,9 +30,9 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = { "send" })
 	public void poll() {
-		ConsumerRecords<String, String> consumerRecords = basicConsumer.poll(TOPIC);
+		ConsumerRecords<Long, String> consumerRecords = basicConsumer.poll(TOPIC);
 		int i = 0;
-		for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
+		for (ConsumerRecord<Long, String> consumerRecord : consumerRecords) {
 			String actual = consumerRecord.value();
 			Assert.assertEquals(actual, VALUE);
 			++i;

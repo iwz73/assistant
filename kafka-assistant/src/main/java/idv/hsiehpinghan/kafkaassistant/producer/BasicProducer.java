@@ -15,10 +15,10 @@ public class BasicProducer {
 	private final long SLEEP_MILLISECONDS = 100;
 	@Autowired
 	@Qualifier("basicProducer_0")
-	private Producer<String, String> basicProducer;
+	private Producer<Long, String> basicProducer;
 
 	public RecordMetadata send(String topic, String value) throws InterruptedException, ExecutionException {
-		ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, value);
+		ProducerRecord<Long, String> record = new ProducerRecord<>(topic, value);
 		Future<RecordMetadata> future = basicProducer.send(record);
 		while (future.isDone() == false) {
 			Thread.sleep(SLEEP_MILLISECONDS);

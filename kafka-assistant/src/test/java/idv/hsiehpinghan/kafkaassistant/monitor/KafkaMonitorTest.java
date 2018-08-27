@@ -11,6 +11,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ReflectionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -18,6 +19,10 @@ import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.kafkaassistant.configuration.SpringConfiguration;
 
+/**
+ * run after basic_topic created.
+ */
+@ActiveProfiles({ "jmx" })
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class KafkaMonitorTest extends AbstractTestNGSpringContextTests {
 	@Autowired
@@ -42,7 +47,7 @@ public class KafkaMonitorTest extends AbstractTestNGSpringContextTests {
 	private void testBytesInPerSec() throws AttributeNotFoundException, InstanceNotFoundException,
 			MalformedObjectNameException, MBeanException, ReflectionException, IOException {
 		Long messagesInPerSec = (Long) kafkaMonitor
-				.getAttribute("kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=test_topic", "Count");
+				.getAttribute("kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=basic_topic", "Count");
 		Assert.assertTrue(0L <= messagesInPerSec.longValue());
 	}
 

@@ -26,8 +26,8 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 	@Test
 	public void startJsonTopicStreamTopic() throws Exception {
 		JsonVo jsonVo = generateJsonVo();
-
-		System.err.println(objectMapper.writeValueAsString(jsonVo));
+		String jsonStr = objectMapper.writeValueAsString(jsonVo);
+		
 
 		String inputTopic = "jsonTopicStreamTopicInputTopic";
 		String outputTopic = "jsonTopicStreamTopicOutputTopic";

@@ -61,6 +61,6 @@ public class PartitionerTest extends AbstractTestNGSpringContextTests {
 			Assert.assertEquals(consumerRecord.value(), VALUE);
 			++receiveAmount;
 		}
-		Assert.assertTrue(receiveAmount > SENT_AMOUT);
+		Assert.assertTrue(receiveAmount >= SENT_AMOUT);
 	}
 }

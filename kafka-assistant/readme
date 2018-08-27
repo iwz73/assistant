@@ -70,8 +70,8 @@ vi /tmp/increase-replication-factor.json
 
 --------------------------- Enable Kafka Jmx -------------------------- 
 vi /opt/kafka_2.11-0.10.1.1/bin/kafka-server-start.sh
-	export JMX_PORT="9999"
-
+	export JMX_PORT="9999"  
+	exec $base_dir/kafka-run-class.sh $EXTRA_ARGS kafka.Kafka "$@"
 
 
 

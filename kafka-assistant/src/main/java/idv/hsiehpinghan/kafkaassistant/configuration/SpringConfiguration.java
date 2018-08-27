@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
@@ -42,6 +43,7 @@ public class SpringConfiguration {
 	private Environment environment;
 
 	@Bean
+	@Profile("jmx")
 	public MBeanServerConnection mBeanServerConnection() throws IOException {
 		JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi");
 		JMXConnector connector = JMXConnectorFactory.connect(url, null);

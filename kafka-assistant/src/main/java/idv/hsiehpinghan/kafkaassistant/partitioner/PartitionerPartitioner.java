@@ -6,7 +6,7 @@ import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;
 
 public class PartitionerPartitioner implements Partitioner {
-	public static final int PARTITION_COUNT = 2;
+	public static final int PARTITION_COUNT = 1;
 
 	@Override
 	public void configure(Map<String, ?> configs) {

@@ -12,9 +12,11 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("jmx")
 public class KafkaMonitor {
 	@Autowired
 	private MBeanServerConnection mBeanServerConnection;

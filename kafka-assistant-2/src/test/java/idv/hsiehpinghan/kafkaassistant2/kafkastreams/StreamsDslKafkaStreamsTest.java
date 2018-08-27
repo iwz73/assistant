@@ -26,7 +26,7 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 	private StreamsDslKafkaStreams streamsDslKafkaStreams;
 
 	@Test
-	public void topicStreamTopic() throws Exception {
+	public void startTopicStreamTopic() throws Exception {
 		String inputTopic = "topicStreamTopicInputTopic";
 		String outputTopic = "topicStreamTopicOutputTopic";
 		Topology topology = streamsDslKafkaStreams.generateTopicStreamTopicTopology(inputTopic, outputTopic);

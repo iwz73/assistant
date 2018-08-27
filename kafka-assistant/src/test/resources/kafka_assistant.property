@@ -1,3 +1,4 @@
+application_id=kafka-assistant
 metadata_broker_list=localhost:9092,localhost:9093
 bootstrap_servers=localhost:9092
 basic_topic=basic_topic

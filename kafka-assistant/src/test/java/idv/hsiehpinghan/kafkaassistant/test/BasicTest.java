@@ -16,9 +16,8 @@ import idv.hsiehpinghan.kafkaassistant.producer.BasicProducer;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class BasicTest extends AbstractTestNGSpringContextTests {
+	public static final String TOPIC = "basic_topic";
 	public static final String VALUE = "basicProducer send";
-	@Autowired
-	private Environment environment;
 	@Autowired
 	private BasicProducer basicProducer;
 	@Autowired
@@ -26,13 +25,13 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void send() throws Exception {
-		RecordMetadata recordMetadata = basicProducer.send(VALUE);
-		Assert.assertEquals(recordMetadata.topic(), environment.getRequiredProperty("basic_topic"));
+		RecordMetadata recordMetadata = basicProducer.send(TOPIC, VALUE);
+		Assert.assertEquals(recordMetadata.topic(), TOPIC);
 	}
 
 	@Test(dependsOnMethods = { "send" })
 	public void poll() {
-		ConsumerRecords<String, String> consumerRecords = basicConsumer.poll();
+		ConsumerRecords<String, String> consumerRecords = basicConsumer.poll(TOPIC);
 		int i = 0;
 		for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
 			String actual = consumerRecord.value();

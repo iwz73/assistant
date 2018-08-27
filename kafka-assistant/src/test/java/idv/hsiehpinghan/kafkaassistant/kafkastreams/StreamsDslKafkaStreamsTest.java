@@ -51,6 +51,7 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 		List<JsonVo._Object> objects = new ArrayList<>(SIZE);
 		for (int i = 0; i < SIZE; ++i) {
 			JsonVo._Object object = generateJsonVoObject(i);
+			objects.add(object);
 		}
 		return objects;
 	}

@@ -27,6 +27,9 @@ import idv.hsiehpinghan.kafkaassistant.vo.JsonVo;
 import idv.hsiehpinghan.kafkaassistant.vo.JsonVo._Object;
 import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 
+/**
+ * need seperate test.
+ */
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTests {
 	private static final int SIZE = 3;
@@ -49,36 +52,33 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 	@Autowired
 	private ProcessorApiKafkaStreams processorApiKafkaStreams;
 
-//	@Test
+	@Test
 	public void startJsonProcessor() throws Exception {
 		JsonVo jsonVo = generateJsonVo(0);
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);
 		longStringProducer.send(JSON_PROCESSOR_INPUT_TOPIC, jsonStr);
 		processorApiKafkaStreams.startJsonProcessor(JSON_PROCESSOR_INPUT_TOPIC, JSON_PROCESSOR_OUTPUT_TOPIC);
-//		Thread.sleep(SLEEP_MILLISECONDS);
+		Thread.sleep(SLEEP_MILLISECONDS);
 		ConsumerRecords<Long, String> consumerRecords = longStringConsumer.poll(JSON_PROCESSOR_OUTPUT_TOPIC);
 		Assert.assertTrue(isExist(consumerRecords, STRING));
 	}
 
 	@Test
 	public void startAggregateProcessor() throws Exception {
+		processorApiKafkaStreams.startAggregateProcessor(AGGREGATE_PROCESSOR_INPUT_TOPIC,
+				AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
 		for (int i = 0; i < 10; ++i) {
 			JsonVo jsonVo = generateJsonVo(i % 3);
 			String jsonStr = objectMapper.writeValueAsString(jsonVo);
 			longStringProducer.send(AGGREGATE_PROCESSOR_INPUT_TOPIC, jsonStr);
 		}
-		processorApiKafkaStreams.startAggregateProcessor(AGGREGATE_PROCESSOR_INPUT_TOPIC,
-				AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
 		Thread.sleep(SLEEP_MILLISECONDS);
 		ConsumerRecords<Integer, String> consumerRecords = integerStringConsumer.poll(AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
 		int j = 0;
 		for (ConsumerRecord<Integer, String> consumerRecord : consumerRecords) {
 			String value = consumerRecord.value();
 			AggregateJsonVo vo = objectMapper.readValue(value, AggregateJsonVo.class);
-			
-			System.err.println("result : " + vo);
-			
-			Assert.assertTrue(FLOAT_VALUE < vo.get_float());
+			Assert.assertTrue(FLOAT_VALUE <= vo.get_float());
 			++j;
 		}
 		Assert.assertTrue(j > 0);

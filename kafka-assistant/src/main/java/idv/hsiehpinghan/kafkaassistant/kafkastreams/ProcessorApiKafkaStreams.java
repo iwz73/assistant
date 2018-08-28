@@ -29,7 +29,7 @@ import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 
 @Component
 public class ProcessorApiKafkaStreams {
-	private static final long WAIT_SECOND = 10;
+	private static final long WAIT_SECOND = 5;
 	private static final int STATE_STORE_MAX_ENTRY = 100;
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	@Value("${application_id}")
@@ -99,6 +99,7 @@ public class ProcessorApiKafkaStreams {
 		try {
 			kafkaStreams.start();
 			countDownLatch.await(WAIT_SECOND, TimeUnit.SECONDS);
+			kafkaStreams.close();
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}

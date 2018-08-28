@@ -29,17 +29,6 @@ public class AggregateJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
 		} else {
 			aggregateJsonVo.aggregate(jsonVo);
 		}
-		
-		
-		
-		
-
-		System.err.println(aggregateJsonVo);
-		
-		
-		
-		
-
 		aggregateStore.put(_integer, aggregateJsonVo);
 		this.context.commit();
 	}
@@ -47,9 +36,6 @@ public class AggregateJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
 	@Override
 	public void punctuate(long timestamp) {
 		KeyValueIterator<Integer, AggregateJsonVo> iter = aggregateStore.all();
-		
-		System.err.println(" in !!!");
-		
 		while (iter.hasNext()) {
 			AggregateJsonVo aggregateJsonVo = iter.next().value;
 			this.context.forward(aggregateJsonVo.get_integer(), aggregateJsonVo);

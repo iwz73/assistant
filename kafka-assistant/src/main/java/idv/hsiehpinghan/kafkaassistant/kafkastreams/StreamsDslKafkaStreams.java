@@ -2,6 +2,7 @@ package idv.hsiehpinghan.kafkaassistant.kafkastreams;
 
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serde;
@@ -21,7 +22,7 @@ import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 
 @Component
 public class StreamsDslKafkaStreams {
-	private static final long SLEEP_MILLIS = 10 * 1000;
+	private static final long WAIT_SECOND = 10;
 	@Value("${application_id}")
 	private String applicationId;
 	@Value("${bootstrap_servers}")
@@ -71,17 +72,10 @@ public class StreamsDslKafkaStreams {
 		});
 		try {
 			kafkaStreams.start();
-			sleepAndCloseForTest(kafkaStreams, countDownLatch);
-			countDownLatch.await();
+			countDownLatch.await(WAIT_SECOND, TimeUnit.SECONDS);
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void sleepAndCloseForTest(KafkaStreams kafkaStreams, CountDownLatch countDownLatch)
-			throws InterruptedException {
-		Thread.sleep(SLEEP_MILLIS);
-		kafkaStreams.close();
-		countDownLatch.countDown();
-	}
 }

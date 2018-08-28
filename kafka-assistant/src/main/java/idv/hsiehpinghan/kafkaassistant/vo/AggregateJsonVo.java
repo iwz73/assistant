@@ -31,7 +31,6 @@ public class AggregateJsonVo {
 	}
 
 	public void aggregate(JsonVo jsonVo) {
-		this._integer += jsonVo.get_integer();
 		this._float += jsonVo.get_float();
 	}
 

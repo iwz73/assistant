@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import idv.hsiehpinghan.kafkaassistant.configuration.SpringConfiguration;
-import idv.hsiehpinghan.kafkaassistant.consumer.IntegerAggregateJsonVoConsumer;
+import idv.hsiehpinghan.kafkaassistant.consumer.IntegerStringConsumer;
 import idv.hsiehpinghan.kafkaassistant.consumer.LongStringConsumer;
 import idv.hsiehpinghan.kafkaassistant.producer.LongStringProducer;
 import idv.hsiehpinghan.kafkaassistant.vo.AggregateJsonVo;
@@ -30,12 +30,14 @@ import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTests {
 	private static final int SIZE = 3;
+	private static final Float FLOAT_VALUE = 1.1f;
 	private static final Date NOW = new Date();
 	private static final String STRING = "string_" + NOW.getTime();
 	private static final String JSON_PROCESSOR_INPUT_TOPIC = "jsonProcessorInputTopic";
 	private static final String JSON_PROCESSOR_OUTPUT_TOPIC = "jsonProcessorOutputTopic";
 	private static final String AGGREGATE_PROCESSOR_INPUT_TOPIC = "aggregateProcessorInputTopic";
 	private static final String AGGREGATE_PROCESSOR_OUTPUT_TOPIC = "aggregateProcessorOutputTopic";
+	private final long SLEEP_MILLISECONDS = 30 * 1000;
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
@@ -43,40 +45,43 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 	@Autowired
 	private LongStringConsumer longStringConsumer;
 	@Autowired
-	private IntegerAggregateJsonVoConsumer integerAggregateJsonVoConsumer;
+	private IntegerStringConsumer integerStringConsumer;
 	@Autowired
 	private ProcessorApiKafkaStreams processorApiKafkaStreams;
 
 //	@Test
 	public void startJsonProcessor() throws Exception {
-		JsonVo jsonVo = generateJsonVo();
+		JsonVo jsonVo = generateJsonVo(0);
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);
 		longStringProducer.send(JSON_PROCESSOR_INPUT_TOPIC, jsonStr);
 		processorApiKafkaStreams.startJsonProcessor(JSON_PROCESSOR_INPUT_TOPIC, JSON_PROCESSOR_OUTPUT_TOPIC);
+//		Thread.sleep(SLEEP_MILLISECONDS);
 		ConsumerRecords<Long, String> consumerRecords = longStringConsumer.poll(JSON_PROCESSOR_OUTPUT_TOPIC);
 		Assert.assertTrue(isExist(consumerRecords, STRING));
 	}
 
 	@Test
 	public void startAggregateProcessor() throws Exception {
-		JsonVo jsonVo = generateJsonVo();
-		String jsonStr = objectMapper.writeValueAsString(jsonVo);
-		longStringProducer.send(AGGREGATE_PROCESSOR_INPUT_TOPIC, jsonStr);
-		processorApiKafkaStreams.startAggregateProcessor(AGGREGATE_PROCESSOR_INPUT_TOPIC, AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
-		ConsumerRecords<Integer, AggregateJsonVo> consumerRecords = integerAggregateJsonVoConsumer.poll(AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
-		int i = 0;
-		for (ConsumerRecord<Integer, AggregateJsonVo> consumerRecord : consumerRecords) {
-			AggregateJsonVo actual = consumerRecord.value();
-			
-			System.err.println(actual);
-			
-//			UpperCaseJsonVo upperCaseJsonVo = objectMapper.readValue(actual, UpperCaseJsonVo.class);
-//			if (_string.toUpperCase().equals(upperCaseJsonVo.get_string()) == true) {
-//				return true;
-//			}
-			++i;
+		for (int i = 0; i < 10; ++i) {
+			JsonVo jsonVo = generateJsonVo(i % 3);
+			String jsonStr = objectMapper.writeValueAsString(jsonVo);
+			longStringProducer.send(AGGREGATE_PROCESSOR_INPUT_TOPIC, jsonStr);
 		}
-		Assert.assertTrue(i > 0);
+		processorApiKafkaStreams.startAggregateProcessor(AGGREGATE_PROCESSOR_INPUT_TOPIC,
+				AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
+		Thread.sleep(SLEEP_MILLISECONDS);
+		ConsumerRecords<Integer, String> consumerRecords = integerStringConsumer.poll(AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
+		int j = 0;
+		for (ConsumerRecord<Integer, String> consumerRecord : consumerRecords) {
+			String value = consumerRecord.value();
+			AggregateJsonVo vo = objectMapper.readValue(value, AggregateJsonVo.class);
+			
+			System.err.println("result : " + vo);
+			
+			Assert.assertTrue(FLOAT_VALUE < vo.get_float());
+			++j;
+		}
+		Assert.assertTrue(j > 0);
 	}
 
 	private boolean isExist(ConsumerRecords<Long, String> consumerRecords, String _string)
@@ -91,10 +96,9 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 		return false;
 	}
 
-	private JsonVo generateJsonVo() {
+	private JsonVo generateJsonVo(Integer _integer) {
 		Boolean _boolean = true;
-		Integer _integer = 0;
-		Float _float = 1.1f;
+		Float _float = FLOAT_VALUE;
 		String _string = STRING;
 		_Object _object = generateJsonVoObject(0);
 		List<String> _array = Arrays.asList("string_0", "string_1", "string_2");

@@ -32,6 +32,7 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 	private static final String STRING = "string_" + NOW.getTime();
 	private static final String INPUT_TOPIC = "jsonTopicStreamTopicInputTopic";
 	private static final String OUTPUT_TOPIC = "jsonTopicStreamTopicOutputTopic";
+	private final long SLEEP_MILLISECONDS = 5 * 1000;
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
@@ -47,6 +48,7 @@ public class StreamsDslKafkaStreamsTest extends AbstractTestNGSpringContextTests
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);
 		basicProducer.send(INPUT_TOPIC, jsonStr);
 		streamsDslKafkaStreams.startJsonTopicStreamTopic(INPUT_TOPIC, OUTPUT_TOPIC);
+		Thread.sleep(SLEEP_MILLISECONDS);
 		ConsumerRecords<Long, String> consumerRecords = basicConsumer.poll(OUTPUT_TOPIC);
 		Assert.assertTrue(isExist(consumerRecords, STRING));
 	}

@@ -17,9 +17,7 @@ public class LongStringConsumer {
 
 	public ConsumerRecords<Long, String> poll(String topic) {
 		longStringConsumer.subscribe(Arrays.asList(topic));
-		while (true) {
-			return longStringConsumer.poll(TIMEOUT);
-		}
+		return longStringConsumer.poll(TIMEOUT);
 	}
 
 }

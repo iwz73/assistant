@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BasicConsumer {
+public class IntegerStringConsumer {
 	private final long TIMEOUT = 1000;
 	@Autowired
-	@Qualifier("basicConsumer_0")
-	private Consumer<Long, String> basicConsumer;
+	@Qualifier("integerStringConsumer_0")
+	private Consumer<Integer, String> integerStringConsumer;
 
-	public ConsumerRecords<Long, String> poll(String topic) {
-		basicConsumer.subscribe(Arrays.asList(topic));
-		return basicConsumer.poll(TIMEOUT);
+	public ConsumerRecords<Integer, String> poll(String topic) {
+		integerStringConsumer.subscribe(Arrays.asList(topic));
+		return integerStringConsumer.poll(TIMEOUT);
 	}
 
 }

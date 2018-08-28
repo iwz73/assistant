@@ -34,9 +34,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import idv.hsiehpinghan.kafkaassistant.deserializer.JsonDeserializer;
 import idv.hsiehpinghan.kafkaassistant.partitioner.PartitionerPartitioner;
-import idv.hsiehpinghan.kafkaassistant.vo.AggregateJsonVo;
 
 @Configuration("kafkaAssistantSpringConfiguration")
 @PropertySource("classpath:/kafka_assistant.property")
@@ -85,8 +83,8 @@ public class SpringConfiguration {
 	}
 
 	@Bean
-	public Consumer<Integer, AggregateJsonVo> integerAggregateJsonVoConsumer_0() {
-		Properties properties = generateIntegerAggregateJsonVoConsumerProperties();
+	public Consumer<Integer, String> integerStringConsumer_0() {
+		Properties properties = generateIntegerStringConsumerProperties();
 		return new KafkaConsumer<>(properties);
 	}
 
@@ -184,7 +182,7 @@ public class SpringConfiguration {
 		return properties;
 	}
 
-	private Properties generateIntegerAggregateJsonVoConsumerProperties() {
+	private Properties generateIntegerStringConsumerProperties() {
 		Properties properties = new Properties();
 		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
 		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "integer_aggregate_json_vo_group_id");
@@ -192,7 +190,7 @@ public class SpringConfiguration {
 		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG,
 				environment.getRequiredProperty("auto_commit_interval_ms"));
 		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class.getName());
-		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, environment.getRequiredProperty("auto_offset_reset"));
 		return properties;
 	}

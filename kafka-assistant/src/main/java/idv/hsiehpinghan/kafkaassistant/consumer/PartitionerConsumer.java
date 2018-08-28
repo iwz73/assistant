@@ -25,9 +25,7 @@ public class PartitionerConsumer {
 
 	public ConsumerRecords<Integer, String> poll(String topic) {
 		partitionerConsumer.subscribe(Arrays.asList(topic));
-		while (true) {
-			return partitionerConsumer.poll(TIMEOUT);
-		}
+		return partitionerConsumer.poll(TIMEOUT);
 	}
 
 	public ConsumerRecords<Integer, String> fetchAll(String topic) {
@@ -38,8 +36,6 @@ public class PartitionerConsumer {
 		}
 		partitionerFetchAllConsumer.assign(topicPartitions);
 		partitionerFetchAllConsumer.seekToBeginning(topicPartitions);
-		while (true) {
-			return partitionerFetchAllConsumer.poll(TIMEOUT);
-		}
+		return partitionerFetchAllConsumer.poll(TIMEOUT);
 	}
 }

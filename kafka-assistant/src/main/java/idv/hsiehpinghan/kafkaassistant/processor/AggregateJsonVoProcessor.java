@@ -9,7 +9,7 @@ import idv.hsiehpinghan.kafkaassistant.vo.AggregateJsonVo;
 import idv.hsiehpinghan.kafkaassistant.vo.JsonVo;
 
 public class AggregateJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
-	private static final long PUNCTUATIONS_INTERVAL_MILLI_SECOND = 10 * 1000;
+	private static final long PUNCTUATIONS_INTERVAL_MILLI_SECOND = 500;
 	private ProcessorContext context;
 	private KeyValueStore<Integer, AggregateJsonVo> aggregateStore;
 
@@ -29,6 +29,17 @@ public class AggregateJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
 		} else {
 			aggregateJsonVo.aggregate(jsonVo);
 		}
+		
+		
+		
+		
+
+		System.err.println(aggregateJsonVo);
+		
+		
+		
+		
+
 		aggregateStore.put(_integer, aggregateJsonVo);
 		this.context.commit();
 	}
@@ -36,6 +47,9 @@ public class AggregateJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
 	@Override
 	public void punctuate(long timestamp) {
 		KeyValueIterator<Integer, AggregateJsonVo> iter = aggregateStore.all();
+		
+		System.err.println(" in !!!");
+		
 		while (iter.hasNext()) {
 			AggregateJsonVo aggregateJsonVo = iter.next().value;
 			this.context.forward(aggregateJsonVo.get_integer(), aggregateJsonVo);

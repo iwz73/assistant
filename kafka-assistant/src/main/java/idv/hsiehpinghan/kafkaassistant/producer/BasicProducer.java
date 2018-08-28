@@ -22,9 +22,8 @@ public class BasicProducer {
 		Future<RecordMetadata> future = basicProducer.send(record);
 		while (future.isDone() == false) {
 			Thread.sleep(SLEEP_MILLISECONDS);
-			return future.get();
 		}
-		return null;
+		return future.get();
 	}
 
 }

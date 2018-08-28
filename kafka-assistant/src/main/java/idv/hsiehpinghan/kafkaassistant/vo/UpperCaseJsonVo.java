@@ -25,7 +25,7 @@ public class UpperCaseJsonVo {
 	}
 
 	public static final class Builder {
-		private JsonVo jsonVo;
+		private String _string;
 
 		public Builder() {
 			super();
@@ -33,11 +33,10 @@ public class UpperCaseJsonVo {
 
 		public Builder(JsonVo jsonVo) {
 			super();
-			this.jsonVo = jsonVo;
+			this._string = jsonVo.get_string().toUpperCase();
 		}
 
 		public UpperCaseJsonVo build() {
-			String _string = jsonVo.get_string().toUpperCase();
 			return new UpperCaseJsonVo(_string);
 		}
 

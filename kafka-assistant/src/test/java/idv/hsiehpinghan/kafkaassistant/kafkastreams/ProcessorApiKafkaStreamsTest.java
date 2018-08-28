@@ -19,8 +19,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import idv.hsiehpinghan.kafkaassistant.configuration.SpringConfiguration;
-import idv.hsiehpinghan.kafkaassistant.consumer.BasicConsumer;
-import idv.hsiehpinghan.kafkaassistant.producer.BasicProducer;
+import idv.hsiehpinghan.kafkaassistant.consumer.IntegerAggregateJsonVoConsumer;
+import idv.hsiehpinghan.kafkaassistant.consumer.LongStringConsumer;
+import idv.hsiehpinghan.kafkaassistant.producer.LongStringProducer;
+import idv.hsiehpinghan.kafkaassistant.vo.AggregateJsonVo;
 import idv.hsiehpinghan.kafkaassistant.vo.JsonVo;
 import idv.hsiehpinghan.kafkaassistant.vo.JsonVo._Object;
 import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
@@ -30,25 +32,51 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 	private static final int SIZE = 3;
 	private static final Date NOW = new Date();
 	private static final String STRING = "string_" + NOW.getTime();
-	private static final String INPUT_TOPIC = "jsonProcessorInputTopic";
-	private static final String OUTPUT_TOPIC = "jsonProcessorOutputTopic";
+	private static final String JSON_PROCESSOR_INPUT_TOPIC = "jsonProcessorInputTopic";
+	private static final String JSON_PROCESSOR_OUTPUT_TOPIC = "jsonProcessorOutputTopic";
+	private static final String AGGREGATE_PROCESSOR_INPUT_TOPIC = "aggregateProcessorInputTopic";
+	private static final String AGGREGATE_PROCESSOR_OUTPUT_TOPIC = "aggregateProcessorOutputTopic";
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
-	private BasicProducer basicProducer;
+	private LongStringProducer longStringProducer;
 	@Autowired
-	private BasicConsumer basicConsumer;
+	private LongStringConsumer longStringConsumer;
+	@Autowired
+	private IntegerAggregateJsonVoConsumer integerAggregateJsonVoConsumer;
 	@Autowired
 	private ProcessorApiKafkaStreams processorApiKafkaStreams;
 
-	@Test
+//	@Test
 	public void startJsonProcessor() throws Exception {
 		JsonVo jsonVo = generateJsonVo();
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);
-		basicProducer.send(INPUT_TOPIC, jsonStr);
-		processorApiKafkaStreams.startJsonProcessor(INPUT_TOPIC, OUTPUT_TOPIC);
-		ConsumerRecords<Long, String> consumerRecords = basicConsumer.poll(OUTPUT_TOPIC);
+		longStringProducer.send(JSON_PROCESSOR_INPUT_TOPIC, jsonStr);
+		processorApiKafkaStreams.startJsonProcessor(JSON_PROCESSOR_INPUT_TOPIC, JSON_PROCESSOR_OUTPUT_TOPIC);
+		ConsumerRecords<Long, String> consumerRecords = longStringConsumer.poll(JSON_PROCESSOR_OUTPUT_TOPIC);
 		Assert.assertTrue(isExist(consumerRecords, STRING));
+	}
+
+	@Test
+	public void startAggregateProcessor() throws Exception {
+		JsonVo jsonVo = generateJsonVo();
+		String jsonStr = objectMapper.writeValueAsString(jsonVo);
+		longStringProducer.send(AGGREGATE_PROCESSOR_INPUT_TOPIC, jsonStr);
+		processorApiKafkaStreams.startAggregateProcessor(AGGREGATE_PROCESSOR_INPUT_TOPIC, AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
+		ConsumerRecords<Integer, AggregateJsonVo> consumerRecords = integerAggregateJsonVoConsumer.poll(AGGREGATE_PROCESSOR_OUTPUT_TOPIC);
+		int i = 0;
+		for (ConsumerRecord<Integer, AggregateJsonVo> consumerRecord : consumerRecords) {
+			AggregateJsonVo actual = consumerRecord.value();
+			
+			System.err.println(actual);
+			
+//			UpperCaseJsonVo upperCaseJsonVo = objectMapper.readValue(actual, UpperCaseJsonVo.class);
+//			if (_string.toUpperCase().equals(upperCaseJsonVo.get_string()) == true) {
+//				return true;
+//			}
+			++i;
+		}
+		Assert.assertTrue(i > 0);
 	}
 
 	private boolean isExist(ConsumerRecords<Long, String> consumerRecords, String _string)

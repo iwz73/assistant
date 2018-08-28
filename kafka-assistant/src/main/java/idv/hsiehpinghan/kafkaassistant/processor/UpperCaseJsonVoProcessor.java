@@ -9,8 +9,7 @@ public class UpperCaseJsonVoProcessor extends AbstractProcessor<Long, JsonVo> {
 
 	@Override
 	public void process(Long key, JsonVo jsonVo) {
-		String _string = jsonVo.get_string().toUpperCase();
-		UpperCaseJsonVo upperCaseJsonVo = new UpperCaseJsonVo(_string);
+		UpperCaseJsonVo upperCaseJsonVo = new UpperCaseJsonVo.Builder(jsonVo).build();
 		context().forward(key, upperCaseJsonVo);
 		context().commit();
 	}

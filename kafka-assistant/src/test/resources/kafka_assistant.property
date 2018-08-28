@@ -1,8 +1,6 @@
 application_id=kafka-assistant
 metadata_broker_list=localhost:9092,localhost:9093
 bootstrap_servers=localhost:9092
-basic_group_id=basic_group_id
-partitioner_group_id=partitioner_group_id
 enable_auto_commit=true
 auto_commit_interval_ms=1000
 #key_deserializer=org.apache.kafka.common.serialization.StringDeserializer

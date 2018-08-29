@@ -29,9 +29,9 @@ import idv.hsiehpinghan.kafkaassistant.vo.UpperCaseJsonVo;
 
 @Component
 public class ProcessorApiKafkaStreams {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessorApiKafkaStreams.class);
 	private static final long WAIT_SECOND = 5;
 	private static final int STATE_STORE_MAX_ENTRY = 100;
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	@Value("${application_id}")
 	private String applicationId;
 	@Value("${bootstrap_servers}")
@@ -76,6 +76,8 @@ public class ProcessorApiKafkaStreams {
 		properties.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
 		properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		properties.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
+		// for RocksDB
+		properties.put(StreamsConfig.STATE_DIR_CONFIG, "/tmp");
 		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		return properties;
 	}

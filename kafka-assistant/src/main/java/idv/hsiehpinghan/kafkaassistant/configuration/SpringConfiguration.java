@@ -21,13 +21,11 @@ import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 
@@ -87,6 +85,12 @@ public class SpringConfiguration {
 	@Bean
 	public Consumer<Integer, String> integerStringConsumer_0() {
 		Properties properties = generateIntegerStringConsumerProperties();
+		return new KafkaConsumer<>(properties);
+	}
+
+	@Bean
+	public Consumer<String, Long> stringLongConsumer_0() {
+		Properties properties = generateStringLongConsumerProperties();
 		return new KafkaConsumer<>(properties);
 	}
 
@@ -193,6 +197,19 @@ public class SpringConfiguration {
 				environment.getRequiredProperty("auto_commit_interval_ms"));
 		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class.getName());
 		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, environment.getRequiredProperty("auto_offset_reset"));
+		return properties;
+	}
+
+	private Properties generateStringLongConsumerProperties() {
+		Properties properties = new Properties();
+		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
+		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "integer_aggregate_json_vo_group_id");
+		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, environment.getRequiredProperty("enable_auto_commit"));
+		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG,
+				environment.getRequiredProperty("auto_commit_interval_ms"));
+		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, environment.getRequiredProperty("auto_offset_reset"));
 		return properties;
 	}

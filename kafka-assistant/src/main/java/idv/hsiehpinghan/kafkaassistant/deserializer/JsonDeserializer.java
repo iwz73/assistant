@@ -8,10 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import idv.hsiehpinghan.kafkaassistant.serializer.JsonSerializer;
-
 public class JsonDeserializer<T> implements Deserializer<T> {
-	private final static Logger LOGGER = LoggerFactory.getLogger(JsonSerializer.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(JsonDeserializer.class);
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Class<T> deserializedClass;
 

@@ -191,7 +191,7 @@ public class SpringConfiguration {
 	private Properties generateIntegerStringConsumerProperties() {
 		Properties properties = new Properties();
 		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
-		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "integer_aggregate_json_vo_group_id");
+		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "integer_string_group_id");
 		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, environment.getRequiredProperty("enable_auto_commit"));
 		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG,
 				environment.getRequiredProperty("auto_commit_interval_ms"));
@@ -204,7 +204,7 @@ public class SpringConfiguration {
 	private Properties generateStringLongConsumerProperties() {
 		Properties properties = new Properties();
 		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getRequiredProperty("bootstrap_servers"));
-		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "integer_aggregate_json_vo_group_id");
+		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "string_long_group_id");
 		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, environment.getRequiredProperty("enable_auto_commit"));
 		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG,
 				environment.getRequiredProperty("auto_commit_interval_ms"));

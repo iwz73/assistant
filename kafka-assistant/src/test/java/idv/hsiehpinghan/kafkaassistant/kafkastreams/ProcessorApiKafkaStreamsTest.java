@@ -40,7 +40,7 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 	private static final String JSON_PROCESSOR_OUTPUT_TOPIC = "jsonProcessorOutputTopic";
 	private static final String AGGREGATE_PROCESSOR_INPUT_TOPIC = "aggregateProcessorInputTopic";
 	private static final String AGGREGATE_PROCESSOR_OUTPUT_TOPIC = "aggregateProcessorOutputTopic";
-	private final long SLEEP_MILLISECONDS = 30 * 1000;
+	private final long SLEEP_MILLISECONDS = 10 * 1000;
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
@@ -52,7 +52,7 @@ public class ProcessorApiKafkaStreamsTest extends AbstractTestNGSpringContextTes
 	@Autowired
 	private ProcessorApiKafkaStreams processorApiKafkaStreams;
 
-	@Test
+//	@Test
 	public void startJsonProcessor() throws Exception {
 		JsonVo jsonVo = generateJsonVo(0);
 		String jsonStr = objectMapper.writeValueAsString(jsonVo);

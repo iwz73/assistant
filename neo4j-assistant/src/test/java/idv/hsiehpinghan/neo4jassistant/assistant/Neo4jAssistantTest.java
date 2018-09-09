@@ -6,6 +6,7 @@ import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -61,6 +62,86 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		removeSingleProperty();
 		removeSingleLabel();
 		removeMultiLabel();
+	}
+
+	@Test
+	public void foreach() {
+		String label = "l_" + System.currentTimeMillis();
+		String property = "p_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0:%s)-[r_0:l_0]->(n_1)-[r_1:l_1]->(n_2 {p_0:'%s'})", label, property);
+		assistant.run(createStatement);
+		String matchStatement = String.format(
+				"MATCH p = (n_0)-[*]->(n_2) " +
+				"WHERE n_0:%s AND n_2.p_0 = '%s' " +
+				"FOREACH (n IN nodes(p)| SET n.p_a = TRUE) " +
+				"RETURN p ", label, property);
+		StatementResult matchResult = assistant.run(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			int j = 0;
+			for(Node node : matchResult.next().get(0).asPath().nodes()) {
+				Assert.assertTrue(node.get("p_a").asBoolean());
+				++j;
+			}
+			Assert.assertEquals(j, 3);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	@Test
+	public void match() {
+		matchAllNode();
+		matchNodeByLabel();
+		matchNodeByRelationshipLabel();
+		optionalMatchNode();
+	}
+
+	private void optionalMatchNode() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String matchSetStatement = String.format(
+			"MATCH (n:%s) " +
+			"OPTIONAL MATCH (n)-[r:not_exist]->(n_not_exist) " +
+			"RETURN n, r, n_not_exist", label);
+		StatementResult matchSetResult = assistant.run(matchSetStatement);
+		int i = 0;
+		while (matchSetResult.hasNext()) {
+			matchSetResult.next();
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void matchNodeByRelationshipLabel() {
+		String relationshipLabel = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1) RETURN n_0, r, n_1", relationshipLabel);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String matchSetStatement = String.format("MATCH (n_0)-[r:%s]->(n_1) RETURN n_1", relationshipLabel);
+		StatementResult matchSetResult = assistant.run(matchSetStatement);
+		Assert.assertTrue(matchSetResult.hasNext());
+	}
+
+	private void matchNodeByLabel() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String matchSetStatement = String.format("MATCH (n:%s) RETURN n", label);
+		StatementResult matchSetResult = assistant.run(matchSetStatement);
+		Assert.assertTrue(matchSetResult.hasNext());
+	}
+
+	private void matchAllNode() {
+		String createStatement = String.format("CREATE (n) RETURN n");
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String matchSetStatement = String.format("MATCH (n) RETURN n");
+		StatementResult matchSetResult = assistant.run(matchSetStatement);
+		Assert.assertTrue(matchSetResult.hasNext());
 	}
 
 	private void removeMultiLabel() {

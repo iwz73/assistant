@@ -1,7 +1,7 @@
 # download neo4j community version (https://neo4j.com/download/other-releases/#releases)
-/opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password neo4j
+/opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password %h39FuW
 
-# start neo4j (change username / password to neo4j / %h39FuW
+# start neo4j
 /opt/neo4j-community-3.3.5/bin/neo4j start
 
 # url

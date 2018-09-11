@@ -2,6 +2,7 @@ package idv.hsiehpinghan.neo4jassistant.assistant;
 
 import java.util.Date;
 
+import org.neo4j.driver.internal.value.IntegerValue;
 import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
@@ -95,6 +96,119 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		matchNodeByLabel();
 		matchNodeByRelationshipLabel();
 		optionalMatchNode();
+	}
+
+	@Test
+	public void where() {
+		whereWithMultipleConditions();
+		whereWithRelationship();
+	}
+
+	@Test
+	public void count() {
+		basicCount();
+		relationshipCount();
+	}
+
+	@Test
+	public void orderBy() {
+		String property = "p_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0 {p_0:'B', p_1:1, p_2:'%s'}), (n_1 {p_0:'A', p_1:0, p_2:'%s'}) RETURN n_0, n_1", property, property);
+		assistant.run(createStatement);
+		String orderByStatement = String.format("MATCH (n {p_2:'%s'}) RETURN n ORDER BY n.p_0 ASC, n.p_1 DESC", property);
+		StatementResult countResult = assistant.run(orderByStatement);
+		int i = 0;
+		while (countResult.hasNext()) {
+			Record record = countResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			String p_0 = record.get(0).asNode().get("p_0").asString();
+			if(i == 0) {
+				Assert.assertEquals(p_0, "A");
+			} else if(i == 1) {
+				Assert.assertEquals(p_0, "B");
+			} else {
+				throw new RuntimeException(String.format("j(%d) not implements !!!", i));
+			}
+			++i;
+		}
+		Assert.assertTrue(i > 0);
+	}
+
+	private void relationshipCount() {
+		String relationshipLabel = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String countStatement = String.format("MATCH (n_0)-[r]->(n_1:l {p:'A'}) RETURN type(r), count(*)");
+		StatementResult countResult = assistant.run(countStatement);
+		int i = 0;
+		while (countResult.hasNext()) {
+			Record record = countResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 2);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				if(value instanceof IntegerValue) {
+					Assert.assertEquals(value.asInt(), 1);
+				}
+			}
+			++i;
+		}
+		Assert.assertTrue(i > 0);
+	}
+
+	private void basicCount() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String countStatement = String.format("MATCH (n:%s) RETURN n, count(*)", label);
+		StatementResult countResult = assistant.run(countStatement);
+		int i = 0;
+		while (countResult.hasNext()) {
+			Record record = countResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 2);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				if(value instanceof IntegerValue) {
+					Assert.assertEquals(value.asInt(), 1);
+				}
+			}
+			++i;
+		}
+		Assert.assertTrue(i > 0);
+	}
+
+	private void whereWithRelationship() {
+		String relationshipLabel = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String whereStatement = String.format(
+			"MATCH (n_0) " +
+			"WHERE (n_0)-[:%s]->(:l {p:'A'}) " +
+			"RETURN n_0",
+			relationshipLabel
+		);
+		StatementResult whereResult = assistant.run(whereStatement);
+		Assert.assertTrue(whereResult.hasNext());
+	}
+
+	private void whereWithMultipleConditions() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p_0:'A', p_1:3}) RETURN n", label);
+		StatementResult createResult = assistant.run(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String whereStatement = String.format(
+			"MATCH (n:%s) " +
+			"WHERE n.p_0='A' AND n.p_1 > 0 " +
+			"RETURN n",
+			label
+		);
+		StatementResult whereResult = assistant.run(whereStatement);
+		Assert.assertTrue(whereResult.hasNext());
 	}
 
 	private void optionalMatchNode() {

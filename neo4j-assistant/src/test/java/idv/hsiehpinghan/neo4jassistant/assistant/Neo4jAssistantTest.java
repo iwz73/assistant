@@ -135,6 +135,71 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(i > 0);
 	}
 
+	@Test
+	public void limit() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0:%s), (n_1:%s) RETURN n_0, n_1", label, label);
+		StatementResult createResult = assistant.run(createStatement);
+		String limitStatement = String.format("MATCH (n:%s) RETURN n LIMIT 1", label);
+		StatementResult limitResult = assistant.run(limitStatement);
+		int i = 0;
+		while (limitResult.hasNext()) {
+			int size = limitResult.next().size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
+	@Test
+	public void skip() {
+		String label = "l_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0:%s {p:'A'}), (n_1:%s {p:'B'}) RETURN n_0, n_1", label, label);
+		StatementResult createResult = assistant.run(createStatement);
+		String skipStatement = String.format("MATCH (n:%s) RETURN n ORDER BY n.p ASC SKIP 1", label);
+		StatementResult skipResult = assistant.run(skipStatement);
+		int i = 0;
+		while (skipResult.hasNext()) {
+			Record record = skipResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p").asString(), "B");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	@Test
+	public void with() {
+		String label_0 = "l_0_" + System.currentTimeMillis();
+		String label_1 = "l_1_" + System.currentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r_0:%s]->(n_1)-[r_1:%s]->(n_2) RETURN n_0, r_0, n_1, r_1, n_2", label_0, label_1);
+		StatementResult createResult = assistant.run(createStatement);
+		String withStatement = String.format(
+			"MATCH (n_0)-[r:%s]->(n_1) " +
+			"WITH n_1 " +
+			"MATCH (n_1)-[r:%s]->(n_2)" +
+			"RETURN n_2 ",
+			label_0, label_1
+		);
+		StatementResult withResult = assistant.run(withStatement);
+		int i = 0;
+		while (withResult.hasNext()) {
+			Record record = withResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+		
+//		MATCH (n { name: 'Anders' })--(m)
+//		WITH m
+//		ORDER BY m.name DESC LIMIT 1
+//		MATCH (m)--(o)
+//		RETURN o.name
+	}
+
 	private void relationshipCount() {
 		String relationshipLabel = "l_" + System.currentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);

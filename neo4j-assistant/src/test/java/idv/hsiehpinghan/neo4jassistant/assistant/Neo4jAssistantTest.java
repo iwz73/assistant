@@ -7,6 +7,7 @@ import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.exceptions.ClientException;
 import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	public void with() {
 		String label_0 = "l_0_" + System.currentTimeMillis();
 		String label_1 = "l_1_" + System.currentTimeMillis();
-		String createStatement = String.format("CREATE (n_0)-[r_0:%s]->(n_1)-[r_1:%s]->(n_2) RETURN n_0, r_0, n_1, r_1, n_2", label_0, label_1);
+		String createStatement = String.format("CREATE (n_0)-[r_0:%s]->(n_1)-[r_1:%s]->(n_2 {p:'A'}) RETURN n_0, r_0, n_1, r_1, n_2", label_0, label_1);
 		StatementResult createResult = assistant.run(createStatement);
 		String withStatement = String.format(
 			"MATCH (n_0)-[r:%s]->(n_1) " +
@@ -189,17 +190,57 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			Record record = withResult.next();
 			int size = record.size();
 			Assert.assertEquals(size, 1);
+			Assert.assertEquals(record.get(0).asNode().get("p").asString(), "A");
 			++i;
 		}
 		Assert.assertEquals(i, 1);
-		
-//		MATCH (n { name: 'Anders' })--(m)
-//		WITH m
-//		ORDER BY m.name DESC LIMIT 1
-//		MATCH (m)--(o)
-//		RETURN o.name
 	}
 
+	@Test
+	public void index() {
+		String label = "l_" + System.currentTimeMillis();
+		createIndex(label);
+		dropIndex(label);
+	}
+	
+	@Test
+	public void constraint() {
+		String label = "l_" + System.currentTimeMillis();
+		createConstraint(label);
+		dropConstraint(label);
+	}
+	
+	private void dropConstraint(String label) {
+		String constraintStatement = String.format("DROP CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
+		StatementResult constraintResult = assistant.run(constraintStatement);
+	}
+	
+	private void createConstraint(String label) {
+		String createStatement = String.format("CREATE (n:%s {p:'A'}) RETURN n", label);
+		assistant.run(createStatement);
+		String constraintStatement = String.format("CREATE CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
+		StatementResult constraintResult = assistant.run(constraintStatement);
+		Exception ex = null;
+		try {
+			assistant.run(createStatement);
+		} catch (Exception e) {
+			ex = e;
+		}
+		Assert.assertEquals(ex.getClass().getName(), "org.neo4j.driver.v1.exceptions.ClientException");
+	}
+	
+	private void dropIndex(String label) {
+		String indexStatement = String.format("DROP INDEX ON :%s(n)", label);
+		StatementResult indexResult = assistant.run(indexStatement);
+	}
+	
+	private void createIndex(String label) {
+		String createStatement = String.format("CREATE (n_0:%s), (n_1:%s) RETURN n_0, n_1", label, label);
+		StatementResult createResult = assistant.run(createStatement);
+		String indexStatement = String.format("CREATE INDEX ON :%s(n)", label);
+		StatementResult indexResult = assistant.run(indexStatement);
+	}
+	
 	private void relationshipCount() {
 		String relationshipLabel = "l_" + System.currentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);

@@ -7,7 +7,6 @@ import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
-import org.neo4j.driver.v1.exceptions.ClientException;
 import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +66,9 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void foreach() {
-		String label = "l_" + System.currentTimeMillis();
-		String property = "p_" + System.currentTimeMillis();
+	public void foreach() throws Exception {
+		String label = "l_" + getCurrentTimeMillis();
+		String property = "p_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0:%s)-[r_0:l_0]->(n_1)-[r_1:l_1]->(n_2 {p_0:'%s'})", label, property);
 		assistant.run(createStatement);
 		String matchStatement = String.format(
@@ -92,7 +91,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void match() {
+	public void match() throws Exception  {
 		matchAllNode();
 		matchNodeByLabel();
 		matchNodeByRelationshipLabel();
@@ -100,20 +99,20 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void where() {
+	public void where() throws Exception  {
 		whereWithMultipleConditions();
 		whereWithRelationship();
 	}
 
 	@Test
-	public void count() {
+	public void count() throws Exception  {
 		basicCount();
 		relationshipCount();
 	}
 
 	@Test
-	public void orderBy() {
-		String property = "p_" + System.currentTimeMillis();
+	public void orderBy() throws Exception  {
+		String property = "p_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0 {p_0:'B', p_1:1, p_2:'%s'}), (n_1 {p_0:'A', p_1:0, p_2:'%s'}) RETURN n_0, n_1", property, property);
 		assistant.run(createStatement);
 		String orderByStatement = String.format("MATCH (n {p_2:'%s'}) RETURN n ORDER BY n.p_0 ASC, n.p_1 DESC", property);
@@ -137,8 +136,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void limit() {
-		String label = "l_" + System.currentTimeMillis();
+	public void limit() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0:%s), (n_1:%s) RETURN n_0, n_1", label, label);
 		StatementResult createResult = assistant.run(createStatement);
 		String limitStatement = String.format("MATCH (n:%s) RETURN n LIMIT 1", label);
@@ -153,8 +152,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	public void skip() {
-		String label = "l_" + System.currentTimeMillis();
+	public void skip() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0:%s {p:'A'}), (n_1:%s {p:'B'}) RETURN n_0, n_1", label, label);
 		StatementResult createResult = assistant.run(createStatement);
 		String skipStatement = String.format("MATCH (n:%s) RETURN n ORDER BY n.p ASC SKIP 1", label);
@@ -172,9 +171,9 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void with() {
-		String label_0 = "l_0_" + System.currentTimeMillis();
-		String label_1 = "l_1_" + System.currentTimeMillis();
+	public void with() throws Exception  {
+		String label_0 = "l_0_" + getCurrentTimeMillis();
+		String label_1 = "l_1_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r_0:%s]->(n_1)-[r_1:%s]->(n_2 {p:'A'}) RETURN n_0, r_0, n_1, r_1, n_2", label_0, label_1);
 		StatementResult createResult = assistant.run(createStatement);
 		String withStatement = String.format(
@@ -197,15 +196,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void index() {
-		String label = "l_" + System.currentTimeMillis();
+	public void index() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		createIndex(label);
 		dropIndex(label);
 	}
 	
 	@Test
-	public void constraint() {
-		String label = "l_" + System.currentTimeMillis();
+	public void constraint() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		createConstraint(label);
 		dropConstraint(label);
 	}
@@ -241,8 +240,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult indexResult = assistant.run(indexStatement);
 	}
 	
-	private void relationshipCount() {
-		String relationshipLabel = "l_" + System.currentTimeMillis();
+	private void relationshipCount() throws Exception  {
+		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -264,8 +263,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(i > 0);
 	}
 
-	private void basicCount() {
-		String label = "l_" + System.currentTimeMillis();
+	private void basicCount() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -287,8 +286,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(i > 0);
 	}
 
-	private void whereWithRelationship() {
-		String relationshipLabel = "l_" + System.currentTimeMillis();
+	private void whereWithRelationship() throws Exception  {
+		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -302,8 +301,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(whereResult.hasNext());
 	}
 
-	private void whereWithMultipleConditions() {
-		String label = "l_" + System.currentTimeMillis();
+	private void whereWithMultipleConditions() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n:%s {p_0:'A', p_1:3}) RETURN n", label);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -317,8 +316,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(whereResult.hasNext());
 	}
 
-	private void optionalMatchNode() {
-		String label = "l_" + System.currentTimeMillis();
+	private void optionalMatchNode() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -335,8 +334,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
-	private void matchNodeByRelationshipLabel() {
-		String relationshipLabel = "l_" + System.currentTimeMillis();
+	private void matchNodeByRelationshipLabel() throws Exception  {
+		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1) RETURN n_0, r, n_1", relationshipLabel);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -345,8 +344,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(matchSetResult.hasNext());
 	}
 
-	private void matchNodeByLabel() {
-		String label = "l_" + System.currentTimeMillis();
+	private void matchNodeByLabel() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n:%s) RETURN n", label);
 		StatementResult createResult = assistant.run(createStatement);
 		Assert.assertTrue(createResult.hasNext());
@@ -780,4 +779,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
+	private long getCurrentTimeMillis() throws InterruptedException {
+		Thread.sleep(1);
+		return System.currentTimeMillis();
+	}
 }

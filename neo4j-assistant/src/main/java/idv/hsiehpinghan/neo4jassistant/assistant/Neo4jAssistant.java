@@ -13,7 +13,9 @@ public class Neo4jAssistant {
 
 	public StatementResult run(String statement) {
 		try (Session session = driver.session()) {
-			return session.run(statement);
+			return session.writeTransaction(tx -> {
+				return tx.run(statement);
+			});
 		}
 	}
 

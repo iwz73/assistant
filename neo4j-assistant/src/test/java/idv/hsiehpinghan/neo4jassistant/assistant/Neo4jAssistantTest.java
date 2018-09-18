@@ -1,6 +1,8 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.neo4j.driver.internal.value.IntegerValue;
 import org.neo4j.driver.internal.value.RelationshipValue;
@@ -209,6 +211,19 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		dropConstraint(label);
 	}
 	
+	@Test
+	public void withParameter() throws Exception  {
+		String createStatement = String.format("CREATE (n) RETURN n");
+		StatementResult createResult = assistant.write(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		long id = createResult.next().get(0).asNode().id();
+		String matchStatement = "MATCH (n) WHERE ID(n) = $id RETURN n";
+		Map<String, Object> parameter = new HashMap<>();
+		parameter.put("id", id);
+		StatementResult matchResult = assistant.readWithParameter(matchStatement, parameter);
+		Assert.assertTrue(matchResult.hasNext());
+	}
+
 	private void dropConstraint(String label) {
 		String constraintStatement = String.format("DROP CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
 		StatementResult constraintResult = assistant.write(constraintStatement);

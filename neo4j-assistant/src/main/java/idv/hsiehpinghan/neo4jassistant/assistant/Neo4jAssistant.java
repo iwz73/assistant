@@ -1,5 +1,7 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
+import java.util.Map;
+
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
@@ -26,4 +28,13 @@ public class Neo4jAssistant {
 			});
 		}
 	}
+
+	public StatementResult readWithParameter(String statement, Map<String, Object> parameter) {
+		try (Session session = driver.session()) {
+			return session.readTransaction(tx -> {
+				return tx.run(statement, parameter);
+			});
+		}
+	}
+
 }

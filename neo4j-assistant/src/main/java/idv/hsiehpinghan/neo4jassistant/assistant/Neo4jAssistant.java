@@ -11,7 +11,7 @@ public class Neo4jAssistant {
 	@Autowired
 	private Driver driver;
 
-	public StatementResult run(String statement) {
+	public StatementResult write(String statement) {
 		try (Session session = driver.session()) {
 			return session.writeTransaction(tx -> {
 				return tx.run(statement);
@@ -19,4 +19,11 @@ public class Neo4jAssistant {
 		}
 	}
 
+	public StatementResult read(String statement) {
+		try (Session session = driver.session()) {
+			return session.readTransaction(tx -> {
+				return tx.run(statement);
+			});
+		}
+	}
 }

@@ -11,9 +11,9 @@ service mysqld start
 # change root password
 grep "password" /var/log/mysqld.log
 mysql -u root -p
-<<mysql>>SHOW VARIABLES LIKE 'validate_password%';
 <<mysql>>SET GLOBAL validate_password_length=7;
 <<mysql>>ALTER USER 'root'@'localhost' IDENTIFIED BY '<<new password>>';
+<<mysql>>SHOW VARIABLES LIKE 'validate_password%';
 
 # create database
 CREATE DATABASE <<database>> DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -267,23 +267,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void nodeCount() throws Exception  {
-		String nodeLabel_0_0 = "l_0_0_" + getCurrentTimeMillis();
-		String nodeLabel_0_1 = "l_0_1_" + getCurrentTimeMillis();
-		String nodeLabel_1_0 = "l_1_0_" + getCurrentTimeMillis();
-		String nodeLabel_1_1 = "l_1_1_" + getCurrentTimeMillis();
-		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String property = "p_0" + getCurrentTimeMillis();
 		// @formatter:off
 		String createStatement_0_0 = String.format(
-			"CREATE (n_0_0:%s {p:'%s'})-[:%s]->(n_1_0:%s {p:'%s'}) " + 
-			"CREATE (n_0_0)-[:%s]->(n_1_1:%s {p:'%s'}) " +
-			"CREATE (n_0_1:%s {p:'%s'})-[:%s]->(n_1_0) "
-			, nodeLabel_0_0, property, relationshipLabel, nodeLabel_1_0, property
-			, relationshipLabel, nodeLabel_1_1, property
-			, nodeLabel_0_1, property, relationshipLabel); 
+			"CREATE (n_0 {p:'%s'})-[r_0_0:l {p:'%s'}]->(n_1 {p:'%s'})-[r_1_0:l {p:'%s'}]->(n_2 {p:'%s'}) " + 
+			"CREATE (n_0)-[r_0_1:l {p:'%s'}]->(n_1)-[r_1_1:l {p:'%s'}]->(n_2) "
+			, property, property, property, property, property, property, property); 
 		// @formatter:on
 		assistant.write(createStatement_0_0);
-		String countStatement = String.format("MATCH (n_0 {p:'%s'})-[r]->(n_1 {p:'%s'}) RETURN n_0, n_1, count(*)", property, property);
+		String countStatement = String.format("MATCH (n_0 {p:'%s'})-[r_0 {p:'%s'}]->(n_1 {p:'%s'})-[r_1 {p:'%s'}]->(n_2 {p:'%s'}) RETURN n_0, n_2, count(*)", property, property, property, property, property);
 		StatementResult countResult = assistant.read(countStatement);
 		int i = 0;
 		while (countResult.hasNext()) {
@@ -292,7 +284,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			for(int j = 0; j < size; ++j) {
 				Value value = record.get(j);
 				if(value instanceof IntegerValue) {
-					Assert.assertEquals(value.asInt(), 1);
+					Assert.assertEquals(value.asInt(), 4);
 				}
 			}
 			++i;

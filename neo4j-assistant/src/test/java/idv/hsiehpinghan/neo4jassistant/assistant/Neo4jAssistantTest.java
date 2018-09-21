@@ -110,6 +110,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	public void count() throws Exception  {
 		basicCount();
 		relationshipCount();
+		nodeCount();
 	}
 
 	@Test
@@ -224,6 +225,16 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(matchResult.hasNext());
 	}
 
+	@Test
+	public void regex() throws Exception  {
+		String createStatement = String.format("CREATE (n {p:'regex_test'}) RETURN n");
+		StatementResult createResult = assistant.write(createStatement);
+		Assert.assertTrue(createResult.hasNext());
+		String matchStatement = "MATCH (n) WHERE n.p =~ 'regex_.*' RETURN n";
+		StatementResult matchResult = assistant.read(matchStatement);
+		Assert.assertTrue(matchResult.hasNext());
+	}
+
 	private void dropConstraint(String label) {
 		String constraintStatement = String.format("DROP CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
 		StatementResult constraintResult = assistant.write(constraintStatement);
@@ -254,7 +265,41 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		String indexStatement = String.format("CREATE INDEX ON :%s(n)", label);
 		StatementResult indexResult = assistant.write(indexStatement);
 	}
-	
+
+	private void nodeCount() throws Exception  {
+		String nodeLabel_0_0 = "l_0_0_" + getCurrentTimeMillis();
+		String nodeLabel_0_1 = "l_0_1_" + getCurrentTimeMillis();
+		String nodeLabel_1_0 = "l_1_0_" + getCurrentTimeMillis();
+		String nodeLabel_1_1 = "l_1_1_" + getCurrentTimeMillis();
+		String relationshipLabel = "l_" + getCurrentTimeMillis();
+		String property = "p_0" + getCurrentTimeMillis();
+		// @formatter:off
+		String createStatement_0_0 = String.format(
+			"CREATE (n_0_0:%s {p:'%s'})-[:%s]->(n_1_0:%s {p:'%s'}) " + 
+			"CREATE (n_0_0)-[:%s]->(n_1_1:%s {p:'%s'}) " +
+			"CREATE (n_0_1:%s {p:'%s'})-[:%s]->(n_1_0) "
+			, nodeLabel_0_0, property, relationshipLabel, nodeLabel_1_0, property
+			, relationshipLabel, nodeLabel_1_1, property
+			, nodeLabel_0_1, property, relationshipLabel); 
+		// @formatter:on
+		assistant.write(createStatement_0_0);
+		String countStatement = String.format("MATCH (n_0 {p:'%s'})-[r]->(n_1 {p:'%s'}) RETURN n_0, n_1, count(*)", property, property);
+		StatementResult countResult = assistant.read(countStatement);
+		int i = 0;
+		while (countResult.hasNext()) {
+			Record record = countResult.next();
+			int size = record.size();
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				if(value instanceof IntegerValue) {
+					Assert.assertEquals(value.asInt(), 1);
+				}
+			}
+			++i;
+		}
+		Assert.assertTrue(i > 0);
+	}
+
 	private void relationshipCount() throws Exception  {
 		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);

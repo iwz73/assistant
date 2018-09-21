@@ -47,10 +47,12 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void set() {
+	public void set() throws Exception {
 		setNodeProperty();
 		removeNodeProperty();
 		setNodeLabel();
+		replaceNodeAllProperty();
+		updateNodeAllProperty();
 	}
 	
 	@Test
@@ -104,6 +106,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	public void where() throws Exception  {
 		whereWithMultipleConditions();
 		whereWithRelationship();
+		whereWithDynamicalProperty();
 	}
 
 	@Test
@@ -235,6 +238,24 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(matchResult.hasNext());
 	}
 
+	@Test
+	public void unwind() throws Exception  {
+		String unwindStatement = String.format("WITH [2, 4, 7, 9, 12] AS numberlist " + 
+				"UNWIND numberlist AS number " + 
+				"WITH number " + 
+				"WHERE number = 4 OR (number > 6 AND number < 10) " + 
+				"RETURN number ");
+		StatementResult unwindResult = assistant.write(unwindStatement);
+		int i = 0;
+		while (unwindResult.hasNext()) {
+			Record record = unwindResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 3);
+	}
+
 	private void dropConstraint(String label) {
 		String constraintStatement = String.format("DROP CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
 		StatementResult constraintResult = assistant.write(constraintStatement);
@@ -341,6 +362,32 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(i > 0);
 	}
 
+	
+	private void whereWithDynamicalProperty() throws Exception  {
+		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
+		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s {score_A:3}) " + 
+			"CREATE (n_1:%s {type:'A'}) ", 
+			nodeLabel_0, nodeLabel_1);
+		StatementResult createResult = assistant.write(createStatement);
+		String whereStatement = String.format(
+			"MATCH (n_0:%s), (n_1:%s) " +
+			"WHERE n_0['score_' + n_1.type] = 3 " +
+			"RETURN n_0['score_' + n_1.type] ",
+			nodeLabel_0, nodeLabel_1
+		);
+		StatementResult whereResult = assistant.read(whereStatement);
+		int i = 0;
+		while (whereResult.hasNext()) {
+			Record record = whereResult.next();
+			Value value = record.get(0);
+			Assert.assertEquals(value.asInt(), 3);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
 	private void whereWithRelationship() throws Exception  {
 		String relationshipLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
@@ -544,6 +591,72 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 				"RETURN n");
 		StatementResult matchResult = assistant.read(matchStatement);
 		Assert.assertFalse(matchResult.hasNext());
+	}
+
+	private void replaceNodeAllProperty() throws InterruptedException {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchSetStatement = String.format(
+				"MATCH (n:%s) " +
+				"SET n = {p_1:'B'} " +
+				"RETURN n.p_0, n.p_1 ", nodeLabel);
+		StatementResult matchSetResult = assistant.write(matchSetStatement);
+		Assert.assertTrue(matchSetResult.hasNext());
+		int i = 0;
+		while (matchSetResult.hasNext()) {
+			Record record = matchSetResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 2);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				switch (j) {
+				case 0:
+					Assert.assertTrue(value.isNull());
+					break;
+				case 1:
+					Assert.assertEquals(value.asString(), "B");
+					break;
+				default:
+					break;
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
+	private void updateNodeAllProperty() throws InterruptedException {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchSetStatement = String.format(
+				"MATCH (n:%s) " +
+				"SET n += {p_1:'B'} " +
+				"RETURN n.p_0, n.p_1 ", nodeLabel);
+		StatementResult matchSetResult = assistant.write(matchSetStatement);
+		Assert.assertTrue(matchSetResult.hasNext());
+		int i = 0;
+		while (matchSetResult.hasNext()) {
+			Record record = matchSetResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 2);
+			for(int j = 0; j < size; ++j) {
+				Value value = record.get(j);
+				switch (j) {
+				case 0:
+					Assert.assertEquals(value.asString(), "A");
+					break;
+				case 1:
+					Assert.assertEquals(value.asString(), "B");
+					break;
+				default:
+					break;
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void setNodeLabel() {

@@ -101,6 +101,12 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		matchNodeByLabel();
 		matchNodeByRelationshipLabel();
 		matchNodeByMultiRelationshipLabel();
+		matchNodeWithTwoRelationship();
+		matchNodeWithTwoToThreeRelationship();
+		matchNodeWithMoreThanTwoRelationship();
+		matchNodeWithMoreThanTwoRelationshipAndLabel();
+		matchNodeWithLessOrEqualToThreeRelationship();
+		matchAnyLenthRelationship();
 		optionalMatchNode();
 	}
 
@@ -660,6 +666,150 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
+	private void matchNodeWithLessOrEqualToThreeRelationship() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) " +
+			"CREATE (n_2_0:%s)-[:l]->(n_2_1:%s)-[:l]->(n_2_2:%s)-[:l]->(n_2_3:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[*..3]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 10);
+	}
+
+	private void matchAnyLenthRelationship() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
+			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[*]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 4);
+	}
+
+	private void matchNodeWithMoreThanTwoRelationshipAndLabel() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) " +
+			"CREATE (n_2_0:%s)-[:l]->(n_2_1:%s)-[:l]->(n_2_2:%s)-[:l]->(n_2_3:%s) " +
+			"CREATE (n_3_0:%s)-[:l]->(n_3_1:%s)-[:l]->(n_3_2:%s)-[:l]->(n_3_3:%s)-[:l]->(n_3_4:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
+			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[:l *2..]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 10);
+	}
+
+	private void matchNodeWithMoreThanTwoRelationship() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) " +
+			"CREATE (n_2_0:%s)-[:l]->(n_2_1:%s)-[:l]->(n_2_2:%s)-[:l]->(n_2_3:%s) " +
+			"CREATE (n_3_0:%s)-[:l]->(n_3_1:%s)-[:l]->(n_3_2:%s)-[:l]->(n_3_3:%s)-[:l]->(n_3_4:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
+			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[*2..]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 10);
+	}
+
+	private void matchNodeWithTwoToThreeRelationship() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) " +
+			"CREATE (n_2_0:%s)-[:l]->(n_2_1:%s)-[:l]->(n_2_2:%s)-[:l]->(n_2_3:%s) " +
+			"CREATE (n_3_0:%s)-[:l]->(n_3_1:%s)-[:l]->(n_3_2:%s)-[:l]->(n_3_3:%s)-[:l]->(n_3_4:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
+			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[*2..3]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 9);
+	}
+
+	private void matchNodeWithTwoRelationship() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
+			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) "
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = (n_0:%s)-[*2]->(n_1:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
 	private void matchNodeByMultiRelationshipLabel() throws Exception  {
 		String relationshipLabel_0 = "l_0" + getCurrentTimeMillis();
 		String relationshipLabel_1 = "l_1" + getCurrentTimeMillis();

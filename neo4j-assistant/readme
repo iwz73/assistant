@@ -1,8 +1,14 @@
 # download neo4j community version (https://neo4j.com/download/other-releases/#releases)
 /opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password %h39FuW
 
-# start neo4j
-/opt/neo4j-community-3.3.5/bin/neo4j start
+# start with docker
+docker run \
+    --publish=7474:7474 --publish=7687:7687 \
+    --volume=$HOME/neo4j/data:/tmp/data \
+    --volume=$HOME/neo4j/logs:/tmp/logs \
+    --user="$(id -u):$(id -g)" \
+    -e "TZ=Asia/Taipei" \
+    neo4j:3.4
 
 # url
 http://localhost:7474/

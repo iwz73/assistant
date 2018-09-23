@@ -2,6 +2,7 @@ package idv.hsiehpinghan.neo4jassistant.assistant;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.neo4j.driver.internal.value.IntegerValue;
@@ -245,7 +246,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 				"WITH number " + 
 				"WHERE number = 4 OR (number > 6 AND number < 10) " + 
 				"RETURN number ");
-		StatementResult unwindResult = assistant.write(unwindStatement);
+		StatementResult unwindResult = assistant.read(unwindStatement);
 		int i = 0;
 		while (unwindResult.hasNext()) {
 			Record record = unwindResult.next();
@@ -254,6 +255,129 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			++i;
 		}
 		Assert.assertEquals(i, 3);
+	}
+
+	@Test
+	public void temporal() throws Exception  {
+		String temporalStatement = String.format("WITH localdatetime({ year:2018, month:1, day:1, hour:0, minute:0, second:0 }) AS localDateTime, " + 
+				"duration({ years: 1, nanoseconds: 1 }) AS duration " + 
+				"RETURN localDateTime + duration, localDateTime - duration, localDateTime + duration('P1M'), 2 * duration('P1M'), duration('P1M') / 2 ");
+		StatementResult temporalResult = assistant.read(temporalStatement);
+		int i = 0;
+		while (temporalResult.hasNext()) {
+			Record record = temporalResult.next();
+			for(int j = 0, size = record.size(); j < size; ++j) {
+				switch (j) {
+				case 0:
+					Assert.assertEquals(record.get(j).asLocalDateTime().toString(), "2019-01-01T00:00:00.000000001");
+					break;
+				case 1:
+					Assert.assertEquals(record.get(j).asLocalDateTime().toString(), "2016-12-31T23:59:59.999999999");
+					break;
+				case 2:
+					Assert.assertEquals(record.get(j).asLocalDateTime().toString(), "2018-02-01T00:00");
+					break;
+				case 3:
+					Assert.assertEquals(record.get(j).asIsoDuration().toString(), "P2M0DT0S");
+					break;
+				case 4:
+					Assert.assertEquals(record.get(j).asIsoDuration().toString(), "P0M15DT18873S");
+					break;
+				default:
+					throw new RuntimeException(String.format("index(%d) not implements !!!", j));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
+	@Test
+	public void map() {
+		dynamicallyAccessing();
+	}
+
+	@Test
+	public void list() {
+		concatenateList();
+		checkIfNumberIsInList();
+		checkIfListIsInList();
+	}
+
+	private void checkIfListIsInList() {
+		String listStatement = String.format(
+				"RETURN [2, 1] IN [0,[2, 1], 3] ");
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			boolean result = listResult.next().get(0).asBoolean();
+			switch (i) {
+			case 0:
+				Assert.assertTrue(result);
+				break;
+			default:
+				break;
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+
+	private void checkIfNumberIsInList() {
+		String listStatement = String.format(
+				"WITH [1, 3, 5, 7] AS list " + 
+				"UNWIND list AS ele " + 
+				"WITH ele " + 
+				"WHERE ele IN [3, 4, 5]" + 
+				"RETURN ele");
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			int ele = listResult.next().get(0).asInt();
+			switch (i) {
+			case 0:
+				Assert.assertEquals(ele, 3);
+				break;
+			case 1:
+				Assert.assertEquals(ele, 5);
+				break;
+			default:
+				break;
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 2);	
+	}
+
+	private void concatenateList() {
+		String listStatement = String.format(
+				"RETURN [0,1,2]+[3,4] ");
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			List<Object> list = listResult.next().get(0).asList();
+			for(int j = 0, size = list.size(); j < size; ++j) {
+				Assert.assertEquals(((Long)list.get(j)).intValue(), j);
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+	
+	private void dynamicallyAccessing() {
+		String mapStatement = String.format(
+				"WITH { key_0: 'value_0', key_1: 3 } AS map " + 
+				"RETURN map[$key] ");
+		Map<String, Object> parameter = new HashMap<>();
+		parameter.put("key", "key_0");
+		StatementResult mapResult = assistant.readWithParameter(mapStatement, parameter);
+		int i = 0;
+		while (mapResult.hasNext()) {
+			Record record = mapResult.next();
+			Assert.assertEquals(record.get(0).asString(), "value_0");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void dropConstraint(String label) {

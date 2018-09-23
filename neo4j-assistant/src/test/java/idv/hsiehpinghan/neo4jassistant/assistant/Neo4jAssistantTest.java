@@ -100,6 +100,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		matchAllNode();
 		matchNodeByLabel();
 		matchNodeByRelationshipLabel();
+		matchNodeByMultiRelationshipLabel();
 		optionalMatchNode();
 	}
 
@@ -108,6 +109,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		whereWithMultipleConditions();
 		whereWithRelationship();
 		whereWithDynamicalProperty();
+		whereWithChainingComparison();
 	}
 
 	@Test
@@ -294,7 +296,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	
 	@Test
 	public void map() {
-		dynamicallyAccessing();
+		dynamicallyAccessingMap();
 	}
 
 	@Test
@@ -302,6 +304,93 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		concatenateList();
 		checkIfNumberIsInList();
 		checkIfListIsInList();
+		accessingElementsInList();
+		dynamicallyAccessingList();
+	}
+
+	@Test
+	public void pattern() throws Exception {
+		nodesWithRelationship();
+		nodesWithRelationshipOfBothDirection();
+	}
+
+	private void nodesWithRelationshipOfBothDirection() throws Exception  {
+		String nodeLabel_0 = "l_0" + getCurrentTimeMillis();
+		String nodeLabel_1 = "l_1" + getCurrentTimeMillis();
+		// @formatter:off
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) "
+			, nodeLabel_0, nodeLabel_1); 
+		// @formatter:on
+		assistant.write(createStatement);
+		String matchStatement = String.format("MATCH p = (n_0:%s)--(n_1:%s) RETURN p", nodeLabel_0, nodeLabel_1);
+		StatementResult matchResult = assistant.read(matchStatement);
+		Assert.assertTrue(matchResult.hasNext());
+	}
+
+	private void nodesWithRelationship() throws Exception  {
+		String nodeLabel_0 = "l_0" + getCurrentTimeMillis();
+		String nodeLabel_1 = "l_1" + getCurrentTimeMillis();
+		// @formatter:off
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) "
+			, nodeLabel_0, nodeLabel_1); 
+		// @formatter:on
+		assistant.write(createStatement);
+		String matchStatement = String.format("MATCH p = (n_0:%s)-->(n_1:%s) RETURN p", nodeLabel_0, nodeLabel_1);
+		StatementResult matchResult = assistant.read(matchStatement);
+		Assert.assertTrue(matchResult.hasNext());
+	}
+
+	private void dynamicallyAccessingList() {
+		String listStatement = String.format(
+				"WITH ['A', 'B', 'C', 'D', 'E'] AS list " + 
+				"RETURN list[$index] ");
+		Map<String, Object> parameter = new HashMap<>();
+		parameter.put("index", 3);
+		StatementResult listResult = assistant.readWithParameter(listStatement, parameter);
+		int i = 0;
+		while (listResult.hasNext()) {
+			Record record = listResult.next();
+			for(int j = 0, size = record.size(); j < size; ++j) {
+				String result = record.get(j).asString();
+				switch (j) {
+				case 0:
+					Assert.assertEquals(result, "D");
+					break;
+				default:
+					throw new RuntimeException(String.format("index(%d) not implements !!!", j));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+
+	private void accessingElementsInList() {
+		String listStatement = String.format(
+				"WITH ['A', 'B', 'C', 'D', 'E'] AS list " + 
+				"RETURN list[1..3] ");
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			List<Object> list = listResult.next().get(0).asList();
+			for(int j = 0, size = list.size(); j < size; ++j) {
+				String result = list.get(j).toString();
+				switch (j) {
+				case 0:
+					Assert.assertEquals(result, "B");
+					break;
+				case 1:
+					Assert.assertEquals(result, "C");
+					break;
+				default:
+					throw new RuntimeException(String.format("index(%d) not implements !!!", j));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
 	}
 
 	private void checkIfListIsInList() {
@@ -364,7 +453,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);	
 	}
 	
-	private void dynamicallyAccessing() {
+	private void dynamicallyAccessingMap() {
 		String mapStatement = String.format(
 				"WITH { key_0: 'value_0', key_1: 3 } AS map " + 
 				"RETURN map[$key] ");
@@ -485,7 +574,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertTrue(i > 0);
 	}
-
+	
+	private void whereWithChainingComparison() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p:3})", nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String whereStatement = String.format(
+			"MATCH (n:%s) WHERE 2 < n.p <= 3 RETURN n ",
+			nodeLabel
+		);
+		StatementResult whereResult = assistant.read(whereStatement);
+		Assert.assertTrue(whereResult.hasNext());
+	}
 	
 	private void whereWithDynamicalProperty() throws Exception  {
 		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
@@ -558,6 +658,24 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			++i;
 		}
 		Assert.assertEquals(i, 1);
+	}
+
+	private void matchNodeByMultiRelationshipLabel() throws Exception  {
+		String relationshipLabel_0 = "l_0" + getCurrentTimeMillis();
+		String relationshipLabel_1 = "l_1" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_0)-[r_0:%s]->(n_0_1) " +
+			"CREATE (n_1_0)-[r_1:%s]->(n_1_1) ", 
+			relationshipLabel_0, relationshipLabel_1);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format("MATCH p = (n_0)-[r:%s|%s]->(n_1) RETURN p", relationshipLabel_0, relationshipLabel_1);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			matchResult.next();
+			++i;
+		}
+		Assert.assertEquals(i, 2);
 	}
 
 	private void matchNodeByRelationshipLabel() throws Exception  {

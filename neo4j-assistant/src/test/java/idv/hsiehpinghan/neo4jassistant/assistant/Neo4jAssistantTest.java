@@ -301,8 +301,9 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	public void map() {
+	public void map() throws Exception {
 		dynamicallyAccessingMap();
+		projectionMap();
 	}
 
 	@Test
@@ -312,6 +313,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		checkIfListIsInList();
 		accessingElementsInList();
 		dynamicallyAccessingList();
+		rangeAndSubList();
+		listComprehension();
 	}
 
 	@Test
@@ -346,6 +349,46 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		String matchStatement = String.format("MATCH p = (n_0:%s)-->(n_1:%s) RETURN p", nodeLabel_0, nodeLabel_1);
 		StatementResult matchResult = assistant.read(matchStatement);
 		Assert.assertTrue(matchResult.hasNext());
+	}
+
+	private void listComprehension() {
+		String listStatement = "RETURN [x IN range(0,3) WHERE x % 2 = 0 | x^3] ";
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			List<Object> list = listResult.next().get(0).asList();
+			for(int j = 0, size = list.size(); j < size; ++j) {
+				String result = list.get(j).toString();
+				switch (j) {
+				case 0:
+					Assert.assertEquals(result, "0.0");
+					break;
+				case 1:
+					Assert.assertEquals(result, "8.0");
+					break;
+				default:
+					throw new RuntimeException(String.format("index(%d) not implements !!!", j));
+				}
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+	
+	private void rangeAndSubList() {
+		String listStatement = String.format(
+				"RETURN range(0, 10)[0..-5] ");
+		StatementResult listResult = assistant.read(listStatement);
+		int i = 0;
+		while (listResult.hasNext()) {
+			List<Object> list = listResult.next().get(0).asList();
+			for(int j = 0, size = list.size(); j < size; ++j) {
+				Long result = (Long)list.get(j);
+				Assert.assertEquals(result.intValue(), j);
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void dynamicallyAccessingList() {
@@ -458,7 +501,32 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertEquals(i, 1);	
 	}
-	
+
+	private void projectionMap() throws InterruptedException {
+		String label = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n_0:%s {p_0: 0, p_1: 1, p_a: 'A', p_b: 'B'})-[r:l]->(n_1:%s {p_0: 0, p_1: 1, p_a: 'A', p_b: 'B'})", label, label);
+		assistant.write(createStatement);
+		String matchStatement = String.format(
+				"MATCH (n_0:%s)-[:l]->(n_1:%s) " +
+				"RETURN n_0 { .*, n_1: collect(n_1 { .p_0, .p_a }) } ", label, label);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> outerMap = (Map<String, Object>)matchResult.next().asMap().get("n_0");
+			Assert.assertEquals(outerMap.get("p_0"), 0L);
+			Assert.assertEquals(outerMap.get("p_1"), 1L);
+			Assert.assertEquals(outerMap.get("p_a"), "A");
+			Assert.assertEquals(outerMap.get("p_b"), "B");
+			@SuppressWarnings("unchecked")
+			Map<String, Object> innerMap = (Map<String, Object>)((List<Object>)outerMap.get("n_1")).get(0);
+			Assert.assertEquals(innerMap.get("p_0"), 0L);
+			Assert.assertEquals(innerMap.get("p_a"), "A");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 	private void dynamicallyAccessingMap() {
 		String mapStatement = String.format(
 				"WITH { key_0: 'value_0', key_1: 3 } AS map " + 

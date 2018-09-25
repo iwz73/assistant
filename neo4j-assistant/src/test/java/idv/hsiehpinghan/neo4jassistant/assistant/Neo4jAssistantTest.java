@@ -29,6 +29,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void create() {
 		createSingleNode();
+		createNodeWithEscapeCharacter();
 		createMultipleNodes();
 		createSingleNodeWithLebel();
 		createSingleNodeWithMultipleLebel();
@@ -106,7 +107,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		matchNodeWithMoreThanTwoRelationship();
 		matchNodeWithMoreThanTwoRelationshipAndLabel();
 		matchNodeWithLessOrEqualToThreeRelationship();
-		matchAnyLenthRelationship();
+		matchAnyLengthRelationship();
+		matchAnyLengthRelationshipWithProperty();
 		optionalMatchNode();
 	}
 
@@ -792,13 +794,12 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 10);
 	}
 
-	private void matchAnyLenthRelationship() throws Exception  {
+	private void matchAnyLengthRelationship() throws Exception  {
 		String nodeLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:l]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:l]->(n_1_1:%s)-[:l]->(n_1_2:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
-			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*]->(n_1:%s) RETURN p",
@@ -813,6 +814,28 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			++i;
 		}
 		Assert.assertEquals(i, 4);
+	}
+
+	private void matchAnyLengthRelationshipWithProperty() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0_0:%s)-[:l {p:'A'}]->(n_0_1:%s) " +
+			"CREATE (n_1_0:%s)-[:l {p:'B'}]->(n_1_1:%s) " 
+			, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p =(:%s)-[* {p:'B'}]->(:%s) RETURN p",
+			nodeLabel, nodeLabel
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int size = record.size();
+			Assert.assertEquals(size, 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void matchNodeWithMoreThanTwoRelationshipAndLabel() throws Exception  {
@@ -920,7 +943,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 			"CREATE (n_1_0)-[r_1:%s]->(n_1_1) ", 
 			relationshipType_0, relationshipType_1);
 		StatementResult createResult = assistant.write(createStatement);
-		String matchStatement = String.format("MATCH p = (n_0)-[r:%s|%s]->(n_1) RETURN p", relationshipType_0, relationshipType_1);
+		String matchStatement = String.format("MATCH p = (n_0)-[r:%s|:%s]->(n_1) RETURN p", relationshipType_0, relationshipType_1);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
 		while (matchResult.hasNext()) {
@@ -1307,7 +1330,25 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertEquals(i, 1);
 	}
-	
+
+	private void createNodeWithEscapeCharacter() {
+		String escapeCharacter = "TYPE\\nWITH SPACE";
+		String createStatement = String.format("CREATE ()-[:`%s`]->()", escapeCharacter);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+				"MATCH ()-[r:`%s`]->() " + 
+				"RETURN type(r)",
+				escapeCharacter);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.get(0).asString(), escapeCharacter);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}	
+
 	private void createMultipleNodes() {
 		String createStatement = String.format("CREATE (n_0), (n_1) RETURN n_0, n_1");
 		StatementResult createResult = assistant.write(createStatement);

@@ -323,6 +323,40 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		nodesWithRelationshipOfBothDirection();
 	}
 
+	@Test
+	public void spatial() throws Exception {
+		geographicCoordinateReferenceSystems();
+		cartesianCoordinateReferenceSystems();
+	}
+	
+	private void cartesianCoordinateReferenceSystems() {
+		String spatialStatement = "WITH point({ x:0, y:0, z:0 }) AS p1, " +
+				"point({ x:3, y:4, z:0 }) AS p2 " + 
+				"RETURN distance(p1,p2) ";
+		StatementResult spatialResult = assistant.read(spatialStatement);
+		int i = 0;
+		while (spatialResult.hasNext()) {
+			Record record = spatialResult.next();
+			Assert.assertEquals(record.get(0).toString(), "5.0");
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+
+	private void geographicCoordinateReferenceSystems() {
+		String spatialStatement = "WITH point({ latitude:toFloat('13.43'), longitude:toFloat('56.21')}) AS p1, " +
+				"point({ latitude:toFloat('13.10'), longitude:toFloat('56.41')}) AS p2 " + 
+				"RETURN distance(p1,p2) as meter ";
+		StatementResult spatialResult = assistant.read(spatialStatement);
+		int i = 0;
+		while (spatialResult.hasNext()) {
+			Record record = spatialResult.next();
+			Assert.assertEquals(record.get(0).toString(), "42650.62522789842");
+			++i;
+		}
+		Assert.assertEquals(i, 1);	
+	}
+
 	private void nodesWithRelationshipOfBothDirection() throws Exception  {
 		String nodeLabel_0 = "l_0" + getCurrentTimeMillis();
 		String nodeLabel_1 = "l_1" + getCurrentTimeMillis();

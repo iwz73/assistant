@@ -99,8 +99,8 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	public void match() throws Exception  {
 		matchAllNode();
 		matchNodeByLabel();
-		matchNodeByRelationshipLabel();
-		matchNodeByMultiRelationshipLabel();
+		matchNodeByRelationshipType();
+		matchNodeByMultiRelationshipType();
 		matchNodeWithTwoRelationship();
 		matchNodeWithTwoToThreeRelationship();
 		matchNodeWithMoreThanTwoRelationship();
@@ -721,15 +721,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	private void whereWithRelationship() throws Exception  {
-		String relationshipLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipLabel);
+		String relationshipType = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1:l {p:'A'}) RETURN n_0, r, n_1", relationshipType);
 		StatementResult createResult = assistant.write(createStatement);
 		Assert.assertTrue(createResult.hasNext());
 		String whereStatement = String.format(
 			"MATCH (n_0) " +
 			"WHERE (n_0)-[:%s]->(:l {p:'A'}) " +
 			"RETURN n_0",
-			relationshipLabel
+			relationshipType
 		);
 		StatementResult whereResult = assistant.read(whereStatement);
 		Assert.assertTrue(whereResult.hasNext());
@@ -912,15 +912,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 	
-	private void matchNodeByMultiRelationshipLabel() throws Exception  {
-		String relationshipLabel_0 = "l_0" + getCurrentTimeMillis();
-		String relationshipLabel_1 = "l_1" + getCurrentTimeMillis();
+	private void matchNodeByMultiRelationshipType() throws Exception  {
+		String relationshipType_0 = "l_0" + getCurrentTimeMillis();
+		String relationshipType_1 = "l_1" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_0)-[r_0:%s]->(n_0_1) " +
 			"CREATE (n_1_0)-[r_1:%s]->(n_1_1) ", 
-			relationshipLabel_0, relationshipLabel_1);
+			relationshipType_0, relationshipType_1);
 		StatementResult createResult = assistant.write(createStatement);
-		String matchStatement = String.format("MATCH p = (n_0)-[r:%s|%s]->(n_1) RETURN p", relationshipLabel_0, relationshipLabel_1);
+		String matchStatement = String.format("MATCH p = (n_0)-[r:%s|%s]->(n_1) RETURN p", relationshipType_0, relationshipType_1);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
 		while (matchResult.hasNext()) {
@@ -930,12 +930,12 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 2);
 	}
 
-	private void matchNodeByRelationshipLabel() throws Exception  {
-		String relationshipLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1) RETURN n_0, r, n_1", relationshipLabel);
+	private void matchNodeByRelationshipType() throws Exception  {
+		String relationshipType = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n_0)-[r:%s]->(n_1) RETURN n_0, r, n_1", relationshipType);
 		StatementResult createResult = assistant.write(createStatement);
 		Assert.assertTrue(createResult.hasNext());
-		String matchSetStatement = String.format("MATCH (n_0)-[r:%s]->(n_1) RETURN n_1", relationshipLabel);
+		String matchSetStatement = String.format("MATCH (n_0)-[r:%s]->(n_1) RETURN n_1", relationshipType);
 		StatementResult matchSetResult = assistant.write(matchSetStatement);
 		Assert.assertTrue(matchSetResult.hasNext());
 	}

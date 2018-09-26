@@ -239,6 +239,9 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(matchResult.hasNext());
 	}
 
+	/**
+	 * reference : https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
+	 */
 	@Test
 	public void regex() throws Exception  {
 		String createStatement = String.format("CREATE (n {p:'regex_test'}) RETURN n");
@@ -338,6 +341,29 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		exists();
 	}
 
+	@Test
+	public void distinct() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) " +
+			"CREATE (n_0)-[:l]->(n_1) " +
+			"CREATE (n_0)-[:l]->(n_1) "
+			, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH (n_0:%s)-[:l]->(n_1:%s) RETURN DISTINCT n_0, n_1",
+			nodeLabel, nodeLabel
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.size(), 2);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 	private void exists() throws Exception  {
 		String nodeLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
@@ -356,33 +382,6 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		while (matchResult.hasNext()) {
 			Record record = matchResult.next();
 			Assert.assertEquals(record.size(), 1);
-			++i;
-		}
-		Assert.assertEquals(i, 1);
-	}
-
-	@Test
-	public void return_() throws Exception {
-		distinct();
-	}
-	
-	private void distinct() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format(
-			"CREATE (n_0:%s)-[:l]->(n_1:%s) " +
-			"CREATE (n_0)-[:l]->(n_1) " +
-			"CREATE (n_0)-[:l]->(n_1) "
-			, nodeLabel, nodeLabel);
-		StatementResult createResult = assistant.write(createStatement);
-		String matchStatement = String.format(
-			"MATCH (n_0:%s)-[:l]->(n_1:%s) RETURN DISTINCT n_0, n_1",
-			nodeLabel, nodeLabel
-		);	
-		StatementResult matchResult = assistant.read(matchStatement);
-		int i = 0;
-		while (matchResult.hasNext()) {
-			Record record = matchResult.next();
-			Assert.assertEquals(record.size(), 2);
 			++i;
 		}
 		Assert.assertEquals(i, 1);

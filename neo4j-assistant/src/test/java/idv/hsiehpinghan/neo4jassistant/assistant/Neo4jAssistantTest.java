@@ -331,6 +331,110 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		cartesianCoordinateReferenceSystems();
 	}
 	
+	@Test
+	public void function() throws Exception {
+		shortestPath();
+		allShortestPaths();
+		exists();
+	}
+
+	private void exists() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s {p:'A'}) " +
+			"CREATE (n_1:%s) "
+			, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH (n:%s) " +
+			"WHERE exists(n.p) " +
+			"RETURN n",
+			nodeLabel, nodeLabel
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.size(), 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	@Test
+	public void return_() throws Exception {
+		distinct();
+	}
+	
+	private void distinct() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) " +
+			"CREATE (n_0)-[:l]->(n_1) " +
+			"CREATE (n_0)-[:l]->(n_1) "
+			, nodeLabel, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH (n_0:%s)-[:l]->(n_1:%s) RETURN DISTINCT n_0, n_1",
+			nodeLabel, nodeLabel
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.size(), 2);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void allShortestPaths() throws Exception  {
+		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
+		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) " +
+			"CREATE (n_0)-[:l]->(n_1) " +
+			"CREATE (n_0)-[:l]->()-[:l]->(n_1) " +
+			"CREATE (n_0)-[:l]->()-[:l]->()-[:l]->(n_1) "
+			, nodeLabel_0, nodeLabel_1);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = allShortestPaths((n_0:%s)-[*]->(n_1:%s)) RETURN length(p)",
+			nodeLabel_0, nodeLabel_1
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.get(0).asInt(), 1);
+			++i;
+		}
+		Assert.assertEquals(i, 2);
+	}
+
+	private void shortestPath() throws Exception  {
+		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
+		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s)-[:l]->(n_1:%s) " +
+			"CREATE (n_0)-[:l]->()-[:l]->(n_1) " +
+			"CREATE (n_0)-[:l]->()-[:l]->()-[:l]->(n_1) "
+			, nodeLabel_0, nodeLabel_1);
+		StatementResult createResult = assistant.write(createStatement);
+		String matchStatement = String.format(
+			"MATCH p = shortestPath((n_0:%s)-[*]->(n_1:%s)) RETURN length(p)",
+			nodeLabel_0, nodeLabel_1
+		);	
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			Assert.assertEquals(record.get(0).asInt(), 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 	private void cartesianCoordinateReferenceSystems() {
 		String spatialStatement = "WITH point({ x:0, y:0, z:0 }) AS p1, " +
 				"point({ x:3, y:4, z:0 }) AS p2 " + 

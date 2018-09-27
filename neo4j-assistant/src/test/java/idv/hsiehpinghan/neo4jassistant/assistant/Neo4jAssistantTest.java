@@ -364,6 +364,70 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
+	@Test
+	public void procedure() throws Exception  {
+		callLabels();
+		callLabelsWithYield();
+		callLabelsWithYieldAndWhere();
+	}
+	
+	private void callLabelsWithYieldAndWhere() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s) "
+			, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String callStatement = String.format(
+				"CALL db.labels() YIELD label " +
+				"WHERE label =~ 'l_.*' " +
+				"RETURN count(label) ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Assert.assertTrue(record.get(0).asInt() > 0);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void callLabelsWithYield() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s) "
+			, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String callStatement = String.format(
+				"CALL db.labels() YIELD label " +
+				"RETURN count(label) ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Assert.assertTrue(record.get(0).asInt() > 0);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void callLabels() throws Exception  {
+		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format(
+			"CREATE (n_0:%s) "
+			, nodeLabel);
+		StatementResult createResult = assistant.write(createStatement);
+		String callStatement = String.format("CALL db.labels ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			if(nodeLabel.equals(record.get(0).asString()) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 	private void exists() throws Exception  {
 		String nodeLabel = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(

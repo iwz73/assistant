@@ -376,8 +376,66 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		callLabelsWithYield();
 		callLabelsWithYieldAndWhere();
 		callConstraints();
+		callProcedures();
+//		callAlgorithmList();
+	}
+
+	@Test
+	public void algorithm() throws Exception  {
+		centralities();
+		communityDetection();
+		pathFinding();
+		similarity();
+		preprocessing();
 	}
 	
+	private void preprocessing() {
+//		oneHotEncoding();
+	}
+	
+	private void similarity() {
+//		jaccard()
+//		cosine();
+//		euclidean();
+	}
+
+	private void pathFinding() {
+//		mst();
+//		shortestPath();
+//		shortestPath();
+//		allShortestPaths();
+//		astar();
+//		kShortestPaths();
+//		randomWalk();
+	}
+	
+	private void communityDetection() {
+//		louvain();
+//		labelPropagation();
+//		unionFind();
+//		scc();
+//		triangleCount();
+	}
+	
+	private void centralities() {
+//		pageRank();
+//		betweenness();
+//		closeness();
+//		harmonic();
+	}
+	
+	private void callProcedures() throws Exception  {
+		String callStatement = String.format(
+				"CALL dbms.procedures() ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertTrue(0 < i);
+	}
+
 	private void callConstraints() throws Exception  {
 		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);

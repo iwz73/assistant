@@ -1,15 +1,25 @@
 # download neo4j community version (https://neo4j.com/download/other-releases/#releases)
 /opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password %h39FuW
 
+# install algorithm (https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases)
+curl -L https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases/download/3.4.7.0/graph-algorithms-algo-3.4.7.0.jar -o /tmp/graph-algorithms-algo-3.4.7.0.jar
+
+
+
 # start with docker
+mkdir -p /tmp/neo4j/data
+chmod 777 /tmp/neo4j/data
+mkdir -p /tmp/neo4j/logs
+chmod 777 /tmp/neo4j/logs
 docker run \
     --publish=7474:7474 --publish=7687:7687 \
-    --volume=$HOME/neo4j/data:/tmp/data \
-    --volume=$HOME/neo4j/logs:/tmp/logs \
+    --volume=/tmp/neo4j/data:/data:z \
+    --volume=/tmp/neo4j/logs:/logs:z \
     --user="$(id -u):$(id -g)" \
     -e "TZ=Asia/Taipei" \
+    -d \
     neo4j:3.4
-
+    
 # url
 http://localhost:7474/
 

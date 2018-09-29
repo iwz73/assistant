@@ -217,6 +217,9 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		String label = "l_" + getCurrentTimeMillis();
 		createIndex(label);
 		dropIndex(label);
+		String compositeLabel = "l_" + getCurrentTimeMillis();
+		createCompositeIndex(compositeLabel);
+		dropCompositeIndex(compositeLabel);
 	}
 	
 	@Test
@@ -849,10 +852,37 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		}
 		Assert.assertEquals(ex.getClass().getName(), "org.neo4j.driver.v1.exceptions.ClientException");
 	}
-	
+
+	private void dropCompositeIndex(String label) {
+		String indexStatement = String.format("DROP INDEX ON :%s(p_0, p_1)", label);
+		StatementResult indexResult = assistant.write(indexStatement);
+		String callStatement = String.format("CALL db.indexes");
+		StatementResult callResult = assistant.write(callStatement);		
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String indexName = String.format("INDEX ON :%s(p_0, p_1)", label);
+			if(record.get(0).asString().equals(indexName) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 0);
+	}
+
 	private void dropIndex(String label) {
 		String indexStatement = String.format("DROP INDEX ON :%s(p)", label);
 		StatementResult indexResult = assistant.write(indexStatement);
+		String callStatement = String.format("CALL db.indexes");
+		StatementResult callResult = assistant.write(callStatement);		
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String indexName = String.format("INDEX ON :%s(p)", label);
+			if(record.get(0).asString().equals(indexName) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 0);
 	}
 	
 	private void createIndex(String label) {
@@ -860,6 +890,35 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.write(createStatement);
 		String indexStatement = String.format("CREATE INDEX ON :%s(p)", label);
 		StatementResult indexResult = assistant.write(indexStatement);
+		String callStatement = String.format("CALL db.indexes");
+		StatementResult callResult = assistant.write(callStatement);		
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String indexName = String.format("INDEX ON :%s(p)", label);
+			if(record.get(0).asString().equals(indexName) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void createCompositeIndex(String label) throws InterruptedException {
+		String createStatement = String.format("CREATE (n_0:%s {p_0:'A_0', p_1:'A_1'}), (n_1:%s {p_0:'B_0', p_1:'B_1'})", label, label);
+		StatementResult createResult = assistant.write(createStatement);
+		String indexStatement = String.format("CREATE INDEX ON :%s(p_0, p_1)", label);
+		StatementResult indexResult = assistant.write(indexStatement);
+		String callStatement = String.format("CALL db.indexes");
+		StatementResult callResult = assistant.write(callStatement);		
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String indexName = String.format("INDEX ON :%s(p_0, p_1)", label);
+			if(record.get(0).asString().equals(indexName) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void nodeCount() throws Exception  {

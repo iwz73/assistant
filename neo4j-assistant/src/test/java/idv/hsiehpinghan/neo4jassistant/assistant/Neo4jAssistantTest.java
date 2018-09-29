@@ -52,7 +52,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	public void set() throws Exception {
 		setNodeProperty();
 		removeNodeProperty();
-		setNodeLabel();
+		setLabel();
 		replaceNodeAllProperty();
 		updateNodeAllProperty();
 	}
@@ -346,16 +346,16 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void distinct() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s)-[:t]->(n_1:%s) " +
 			"CREATE (n_0)-[:t]->(n_1) " +
 			"CREATE (n_0)-[:t]->(n_1) "
-			, nodeLabel, nodeLabel);
+			, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH (n_0:%s)-[:t]->(n_1:%s) RETURN DISTINCT n_0, n_1",
-			nodeLabel, nodeLabel
+			label, label
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -372,13 +372,31 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		callLabels();
 		callLabelsWithYield();
 		callLabelsWithYieldAndWhere();
+		callConstraints();
 	}
 	
+	private void callConstraints() throws Exception  {
+		String label = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);
+		StatementResult createResult = assistant.write(createStatement);
+		String callStatement = String.format(
+				"CALL db.constraints() ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			if(String.format("CONSTRAINT ON ( %s:%s ) ASSERT %s.p IS UNIQUE", label, label, label).equals(record.get(0).asString()) == true) {
+				++i;
+			}
+		}
+		Assert.assertEquals(i, 1);
+	}
+
 	private void callLabelsWithYieldAndWhere() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s) "
-			, nodeLabel);
+			, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String callStatement = String.format(
 				"CALL db.labels() YIELD label " +
@@ -395,10 +413,10 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void callLabelsWithYield() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s) "
-			, nodeLabel);
+			, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String callStatement = String.format(
 				"CALL db.labels() YIELD label " +
@@ -414,17 +432,17 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void callLabels() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s) "
-			, nodeLabel);
+			, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String callStatement = String.format("CALL db.labels ");	
 		StatementResult callResult = assistant.read(callStatement);
 		int i = 0;
 		while (callResult.hasNext()) {
 			Record record = callResult.next();
-			if(nodeLabel.equals(record.get(0).asString()) == true) {
+			if(label.equals(record.get(0).asString()) == true) {
 				++i;
 			}
 		}
@@ -432,15 +450,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void reduce() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s {p:1})-[:t]->(n_1:%s {p:2}) "
-			, nodeLabel, nodeLabel);
+			, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p=(n_0:%s)-->(n_1:%s) " +
 			"RETURN reduce(accumulator = 0, node IN nodes(p) | accumulator + node.p)",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -453,15 +471,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void filter() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s {p:'A'})-[:t]->(n_1:%s {p:'B'}) "
-			, nodeLabel, nodeLabel);
+			, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p=(n_0:%s)-->(n_1:%s) " +
 			"RETURN filter(node IN nodes(p) WHERE node.p = 'B') ",
-			nodeLabel, nodeLabel
+			label, label
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -474,15 +492,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void extract() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s {p:'A'})-[:t]->(n_1:%s {p:'B'}) "
-			, nodeLabel, nodeLabel);
+			, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p=(n_0:%s)-->(n_1:%s) " +
 			"RETURN extract(node IN nodes(p) | node.p) ",
-			nodeLabel, nodeLabel
+			label, label
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -496,17 +514,17 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void exists() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s {p:'A'}) " +
 			"CREATE (n_1:%s) "
-			, nodeLabel, nodeLabel);
+			, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH (n:%s) " +
 			"WHERE exists(n.p) " +
 			"RETURN n",
-			nodeLabel, nodeLabel
+			label, label
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -519,18 +537,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void allShortestPaths() throws Exception  {
-		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
-		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String label_0 = "l_" + getCurrentTimeMillis();
+		String label_1 = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s)-[:t]->(n_1:%s) " +
 			"CREATE (n_0)-[:t]->(n_1) " +
 			"CREATE (n_0)-[:t]->()-[:t]->(n_1) " +
 			"CREATE (n_0)-[:t]->()-[:t]->()-[:t]->(n_1) "
-			, nodeLabel_0, nodeLabel_1);
+			, label_0, label_1);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = allShortestPaths((n_0:%s)-[*]->(n_1:%s)) RETURN length(p)",
-			nodeLabel_0, nodeLabel_1
+			label_0, label_1
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -543,17 +561,17 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void shortestPath() throws Exception  {
-		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
-		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String label_0 = "l_" + getCurrentTimeMillis();
+		String label_1 = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s)-[:t]->(n_1:%s) " +
 			"CREATE (n_0)-[:t]->()-[:t]->(n_1) " +
 			"CREATE (n_0)-[:t]->()-[:t]->()-[:t]->(n_1) "
-			, nodeLabel_0, nodeLabel_1);
+			, label_0, label_1);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = shortestPath((n_0:%s)-[*]->(n_1:%s)) RETURN length(p)",
-			nodeLabel_0, nodeLabel_1
+			label_0, label_1
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -594,29 +612,29 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void nodesWithRelationshipOfBothDirection() throws Exception  {
-		String nodeLabel_0 = "l_0" + getCurrentTimeMillis();
-		String nodeLabel_1 = "l_1" + getCurrentTimeMillis();
+		String label_0 = "l_0" + getCurrentTimeMillis();
+		String label_1 = "l_1" + getCurrentTimeMillis();
 		// @formatter:off
 		String createStatement = String.format(
 			"CREATE (n_0:%s)-[:t]->(n_1:%s) "
-			, nodeLabel_0, nodeLabel_1); 
+			, label_0, label_1); 
 		// @formatter:on
 		assistant.write(createStatement);
-		String matchStatement = String.format("MATCH p = (n_0:%s)--(n_1:%s) RETURN p", nodeLabel_0, nodeLabel_1);
+		String matchStatement = String.format("MATCH p = (n_0:%s)--(n_1:%s) RETURN p", label_0, label_1);
 		StatementResult matchResult = assistant.read(matchStatement);
 		Assert.assertTrue(matchResult.hasNext());
 	}
 
 	private void nodesWithRelationship() throws Exception  {
-		String nodeLabel_0 = "l_0" + getCurrentTimeMillis();
-		String nodeLabel_1 = "l_1" + getCurrentTimeMillis();
+		String label_0 = "l_0" + getCurrentTimeMillis();
+		String label_1 = "l_1" + getCurrentTimeMillis();
 		// @formatter:off
 		String createStatement = String.format(
 			"CREATE (n_0:%s)-[:t]->(n_1:%s) "
-			, nodeLabel_0, nodeLabel_1); 
+			, label_0, label_1); 
 		// @formatter:on
 		assistant.write(createStatement);
-		String matchStatement = String.format("MATCH p = (n_0:%s)-->(n_1:%s) RETURN p", nodeLabel_0, nodeLabel_1);
+		String matchStatement = String.format("MATCH p = (n_0:%s)-->(n_1:%s) RETURN p", label_0, label_1);
 		StatementResult matchResult = assistant.read(matchStatement);
 		Assert.assertTrue(matchResult.hasNext());
 	}
@@ -920,30 +938,30 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	private void whereWithChainingComparison() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format("CREATE (n:%s {p:3})", nodeLabel);
+		String label = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p:3})", label);
 		StatementResult createResult = assistant.write(createStatement);
 		String whereStatement = String.format(
 			"MATCH (n:%s) WHERE 2 < n.p <= 3 RETURN n ",
-			nodeLabel
+			label
 		);
 		StatementResult whereResult = assistant.read(whereStatement);
 		Assert.assertTrue(whereResult.hasNext());
 	}
 	
 	private void whereWithDynamicalProperty() throws Exception  {
-		String nodeLabel_0 = "l_" + getCurrentTimeMillis();
-		String nodeLabel_1 = "l_" + getCurrentTimeMillis();
+		String label_0 = "l_" + getCurrentTimeMillis();
+		String label_1 = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0:%s {score_A:3}) " + 
 			"CREATE (n_1:%s {type:'A'}) ", 
-			nodeLabel_0, nodeLabel_1);
+			label_0, label_1);
 		StatementResult createResult = assistant.write(createStatement);
 		String whereStatement = String.format(
 			"MATCH (n_0:%s), (n_1:%s) " +
 			"WHERE n_0['score_' + n_1.type] = 3 " +
 			"RETURN n_0['score_' + n_1.type] ",
-			nodeLabel_0, nodeLabel_1
+			label_0, label_1
 		);
 		StatementResult whereResult = assistant.read(whereStatement);
 		int i = 0;
@@ -1005,17 +1023,17 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchNodeWithLessOrEqualToThreeRelationship() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) " +
 			"CREATE (n_2_0:%s)-[:t]->(n_2_1:%s)-[:t]->(n_2_2:%s)-[:t]->(n_2_3:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label
+			, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*..3]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1029,15 +1047,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchAnyLengthRelationship() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1051,15 +1069,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchAnyLengthRelationshipWithProperty() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_0:%s)-[:t {p:'A'}]->(n_0_1:%s) " +
 			"CREATE (n_1_0:%s)-[:t {p:'B'}]->(n_1_1:%s) " 
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p =(:%s)-[* {p:'B'}]->(:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);	
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1073,18 +1091,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchNodeWithMoreThanTwoRelationshipAndLabel() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) " +
 			"CREATE (n_2_0:%s)-[:t]->(n_2_1:%s)-[:t]->(n_2_2:%s)-[:t]->(n_2_3:%s) " +
 			"CREATE (n_3_0:%s)-[:t]->(n_3_1:%s)-[:t]->(n_3_2:%s)-[:t]->(n_3_3:%s)-[:t]->(n_3_4:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
-			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label, label, label, label, 
+			label, label, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[:t *2..]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1098,18 +1116,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchNodeWithMoreThanTwoRelationship() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) " +
 			"CREATE (n_2_0:%s)-[:t]->(n_2_1:%s)-[:t]->(n_2_2:%s)-[:t]->(n_2_3:%s) " +
 			"CREATE (n_3_0:%s)-[:t]->(n_3_1:%s)-[:t]->(n_3_2:%s)-[:t]->(n_3_3:%s)-[:t]->(n_3_4:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
-			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label, label, label, label, 
+			label, label, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*2..]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1123,18 +1141,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchNodeWithTwoToThreeRelationship() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) " +
 			"CREATE (n_2_0:%s)-[:t]->(n_2_1:%s)-[:t]->(n_2_2:%s)-[:t]->(n_2_3:%s) " +
 			"CREATE (n_3_0:%s)-[:t]->(n_3_1:%s)-[:t]->(n_3_2:%s)-[:t]->(n_3_3:%s)-[:t]->(n_3_4:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, 
-			nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label, label, label, label, 
+			label, label, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*2..3]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1148,15 +1166,15 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void matchNodeWithTwoRelationship() throws Exception  {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
+		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format(
 			"CREATE (n_0_1:%s)-[:t]->(n_0_2:%s) " +
 			"CREATE (n_1_0:%s)-[:t]->(n_1_1:%s)-[:t]->(n_1_2:%s) "
-			, nodeLabel, nodeLabel, nodeLabel, nodeLabel, nodeLabel);
+			, label, label, label, label, label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchStatement = String.format(
 			"MATCH p = (n_0:%s)-[*2]->(n_1:%s) RETURN p",
-			nodeLabel, nodeLabel
+			label, label
 		);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
@@ -1345,13 +1363,13 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void replaceNodeAllProperty() throws InterruptedException {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", nodeLabel);
+		String label = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchSetStatement = String.format(
 				"MATCH (n:%s) " +
 				"SET n = {p_1:'B'} " +
-				"RETURN n.p_0, n.p_1 ", nodeLabel);
+				"RETURN n.p_0, n.p_1 ", label);
 		StatementResult matchSetResult = assistant.write(matchSetStatement);
 		Assert.assertTrue(matchSetResult.hasNext());
 		int i = 0;
@@ -1378,13 +1396,13 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	private void updateNodeAllProperty() throws InterruptedException {
-		String nodeLabel = "l_" + getCurrentTimeMillis();
-		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", nodeLabel);
+		String label = "l_" + getCurrentTimeMillis();
+		String createStatement = String.format("CREATE (n:%s {p_0:'A'})", label);
 		StatementResult createResult = assistant.write(createStatement);
 		String matchSetStatement = String.format(
 				"MATCH (n:%s) " +
 				"SET n += {p_1:'B'} " +
-				"RETURN n.p_0, n.p_1 ", nodeLabel);
+				"RETURN n.p_0, n.p_1 ", label);
 		StatementResult matchSetResult = assistant.write(matchSetStatement);
 		Assert.assertTrue(matchSetResult.hasNext());
 		int i = 0;
@@ -1410,7 +1428,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
-	private void setNodeLabel() {
+	private void setLabel() {
 		String createStatement = String.format("CREATE (n) RETURN n");
 		StatementResult createResult = assistant.write(createStatement);
 		Assert.assertTrue(createResult.hasNext());

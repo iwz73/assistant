@@ -377,7 +377,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		callLabelsWithYieldAndWhere();
 		callConstraints();
 		callProcedures();
-//		callAlgorithmList();
+		callAlgorithmList();
 	}
 
 	@Test
@@ -436,6 +436,18 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(0 < i);
 	}
 
+	private void callAlgorithmList() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.list() ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertTrue(0 < i);
+	}
+	
 	private void callConstraints() throws Exception  {
 		String label = "l_" + getCurrentTimeMillis();
 		String createStatement = String.format("CREATE CONSTRAINT ON (n:%s) ASSERT n.p IS UNIQUE", label);

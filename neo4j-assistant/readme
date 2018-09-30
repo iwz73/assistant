@@ -2,9 +2,8 @@
 /opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password %h39FuW
 
 # install algorithm (https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases)
-curl -L https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases/download/3.4.7.0/graph-algorithms-algo-3.4.7.0.jar -o /tmp/graph-algorithms-algo-3.4.7.0.jar
-
-
+mkdir -p /tmp/neo4j/plugins
+curl -L https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases/download/3.4.7.0/graph-algorithms-algo-3.4.7.0.jar -o /tmp/neo4j/plugins/graph-algorithms-algo-3.4.7.0.jar
 
 # start with docker
 mkdir -p /tmp/neo4j/data
@@ -15,6 +14,7 @@ docker run \
     --publish=7474:7474 --publish=7687:7687 \
     --volume=/tmp/neo4j/data:/data:z \
     --volume=/tmp/neo4j/logs:/logs:z \
+    --volume=/tmp/neo4j/plugins:/plugins:z \
     --user="$(id -u):$(id -g)" \
     -e "TZ=Asia/Taipei" \
     -d \
@@ -23,3 +23,12 @@ docker run \
 # url
 http://localhost:7474/
 
+
+
+docker run \
+    --publish=7474:7474 --publish=7687:7687 \
+    --volume=/tmp/neo4j/data:/data:z \
+    --volume=/tmp/neo4j/logs:/logs:z \
+    --user="$(id -u):$(id -g)" \
+    -e "TZ=Asia/Taipei" \
+    neo4j:3.4

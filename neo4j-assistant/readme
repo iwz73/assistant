@@ -1,7 +1,7 @@
 # download neo4j community version (https://neo4j.com/download/other-releases/#releases)
 /opt/neo4j-community-3.3.5/bin/neo4j-admin set-initial-password %h39FuW
 
-# install algorithm (https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases)
+# install algo (https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases)
 mkdir -p /tmp/neo4j/plugins
 curl -L https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases/download/3.4.7.0/graph-algorithms-algo-3.4.7.0.jar -o /tmp/neo4j/plugins/graph-algorithms-algo-3.4.7.0.jar
 mkdir -p /tmp/neo4j/conf
@@ -9,6 +9,11 @@ docker cp <<container id>>:/var/lib/neo4j/conf/neo4j.conf /tmp/neo4j/conf
 vi /tmp/neo4j/conf/neo4j.conf
     dbms.security.procedures.unrestricted=algo.*
 chmod 777 -R /tmp/neo4j/conf
+<<start new neo4j container>>
+
+# install apoc (https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases)
+mkdir -p /tmp/neo4j/plugins
+curl -L https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar -o /tmp/neo4j/plugins/apoc-3.4.0.3-all.jar
 <<start new neo4j container>>
 
 # start with docker

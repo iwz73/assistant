@@ -376,6 +376,7 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		callLabelsWithYield();
 		callLabelsWithYieldAndWhere();
 		callConstraints();
+		callFunctions();
 		callProcedures();
 		callAlgorithmList();
 	}
@@ -423,7 +424,19 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 //		closeness();
 //		harmonic();
 	}
-	
+
+	private void callFunctions() throws Exception  {
+		String callStatement = String.format(
+				"CALL dbms.functions() ");	
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertTrue(0 < i);
+	}
+
 	private void callProcedures() throws Exception  {
 		String callStatement = String.format(
 				"CALL dbms.procedures() ");	

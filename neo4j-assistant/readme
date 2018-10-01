@@ -14,6 +14,11 @@ chmod 777 -R /tmp/neo4j/conf
 # install apoc (https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases)
 mkdir -p /tmp/neo4j/plugins
 curl -L https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.3/apoc-3.4.0.3-all.jar -o /tmp/neo4j/plugins/apoc-3.4.0.3-all.jar
+mkdir -p /tmp/neo4j/conf
+docker cp <<container id>>:/var/lib/neo4j/conf/neo4j.conf /tmp/neo4j/conf
+vi /tmp/neo4j/conf/neo4j.conf
+    dbms.security.procedures.unrestricted=apoc.*
+chmod 777 -R /tmp/neo4j/conf
 <<start new neo4j container>>
 
 # start with docker

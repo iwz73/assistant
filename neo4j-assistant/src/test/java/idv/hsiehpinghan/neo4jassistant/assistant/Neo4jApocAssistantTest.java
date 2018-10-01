@@ -31,16 +31,16 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 	private void indexNodes() throws Exception {
 		// @formatter:off
 		String callStatement = String.format(
-				"CALL apoc.index.nodes('Airport','name:inter*') YIELD node AS airport, weight" + 
+				"CALL apoc.index.nodes('Airport','name:*ter*') YIELD node AS airport, weight " + 
 				"RETURN airport.name, weight " + 
 				"LIMIT 10 ");
 		// @formatter:on
-		StatementResult callResult = assistant.write(callStatement);		
+		StatementResult callResult = assistant.run(callStatement);		
 		int i = 0;
 		while (callResult.hasNext()) {
 			Record record = callResult.next();
 			
-			System.err.println(record.get(0).asNode());
+			System.err.println(record.get(0).asString());
 			System.err.println(record.get(1).asDouble());
 			
 //			String indexName = String.format("Airport");			

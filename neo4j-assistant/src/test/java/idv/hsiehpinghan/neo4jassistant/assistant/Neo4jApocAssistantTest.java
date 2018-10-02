@@ -17,9 +17,10 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private Neo4jAssistant assistant;
-	
-	
-	
+
+	/**
+	 * if fail, rm -rf /tmp/neo4j/data/* and restart neo4j, and try again.
+	 */
 	@Test
 	public void index() throws Exception {
 		initData();
@@ -31,24 +32,16 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 	private void indexNodes() throws Exception {
 		// @formatter:off
 		String callStatement = String.format(
-				"CALL apoc.index.nodes('Airport','name:*ter*') YIELD node AS airport, weight " + 
-				"RETURN airport.name, weight " + 
-				"LIMIT 10 ");
+			"CALL apoc.index.nodes('Airport','name:inter*') YIELD node AS airport, weight " + 
+			"RETURN airport.name, weight ");
 		// @formatter:on
 		StatementResult callResult = assistant.run(callStatement);		
 		int i = 0;
 		while (callResult.hasNext()) {
 			Record record = callResult.next();
-			
-			System.err.println(record.get(0).asString());
-			System.err.println(record.get(1).asDouble());
-			
-//			String indexName = String.format("Airport");			
-//			if(record.get(1).asString().equals(indexName) == true) {
-//				++i;
-//			}
+			++i;
 		}
-		Assert.assertEquals(i, 0);
+		Assert.assertEquals(i, 2);
 	}
 
 	private void indexRemove() throws Exception {

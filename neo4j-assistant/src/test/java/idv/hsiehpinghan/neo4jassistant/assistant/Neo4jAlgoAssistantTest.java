@@ -1,17 +1,10 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.neo4j.driver.internal.value.IntegerValue;
-import org.neo4j.driver.internal.value.RelationshipValue;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
-import org.neo4j.driver.v1.Value;
-import org.neo4j.driver.v1.types.Node;
-import org.neo4j.driver.v1.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -60,25 +53,60 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 //		randomWalk();
 	}
 	
-	private void communityDetection() {
+	private void centralities() throws Exception {
+//		initPageRankData();
+//		pageRank();
+//		personalizedPageRank();
+//		initBetweennessData();
+//		betweenness();
+//		approximationBetweenness();
+//		initClosenessData();
+//		closeness();
+//		initClosenessHarmonic();
+//		closenessHarmonic();
+	}
+
+	
+	private void communityDetection() throws Exception {
+//		initLouvainData();
 //		louvain();
-//		labelPropagation();
+		initLabelPropagationData();
+		labelPropagation();
 //		unionFind();
 //		scc();
 //		triangleCount();
 	}
 	
-	private void centralities() throws Exception {
-		initPageRankData();
-		pageRank();
-		personalizedPageRank();
-		initBetweennessData();
-		betweenness();
-		approximationBetweenness();
-		initClosenessData();
-		closeness();
-		initClosenessHarmonic();
-		closenessHarmonic();
+	private void labelPropagation() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.labelPropagation.stream('User', 'FOLLOW', {direction: 'OUTGOING', iterations: 10}) " +
+			"YIELD nodeId, label "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		Set<Integer> labels = new HashSet<>();
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Integer label = record.get(1).asInt();
+			labels.add(label);
+		}
+		Assert.assertEquals(labels.size(), 2);
+	}
+
+	private void louvain() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.louvain.stream('User', 'FRIEND', {}) " + 
+				"YIELD nodeId, community " + 
+				"MATCH (user:User) WHERE id(user) = nodeId " + 
+				"RETURN user.id AS user, community " + 
+				"ORDER BY community ");
+		StatementResult callResult = assistant.read(callStatement);
+		Set<Integer> communities = new HashSet<>();
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Integer community = record.get(1).asInt();
+			communities.add(community);
+		}
+		Assert.assertEquals(communities.size(), 2);
 	}
 
 	private void closenessHarmonic() throws Exception  {
@@ -241,6 +269,49 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			"MERGE (a)-[:LINK]->(b) " + 
 			"MERGE (b)-[:LINK]->(c) " + 
 			"MERGE (d)-[:LINK]->(e) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initLouvainData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (nAlice:User {id:'Alice'}) " + 
+			"MERGE (nBridget:User {id:'Bridget'}) " + 
+			"MERGE (nCharles:User {id:'Charles'}) " + 
+			"MERGE (nDoug:User {id:'Doug'}) " + 
+			"MERGE (nMark:User {id:'Mark'}) " + 
+			"MERGE (nMichael:User {id:'Michael'}) " + 
+			"MERGE (nAlice)-[:FRIEND]->(nBridget) " + 
+			"MERGE (nAlice)-[:FRIEND]->(nCharles) " + 
+			"MERGE (nMark)-[:FRIEND]->(nDoug) " + 
+			"MERGE (nBridget)-[:FRIEND]->(nMichael) " + 
+			"MERGE (nCharles)-[:FRIEND]->(nMark) " + 
+			"MERGE (nAlice)-[:FRIEND]->(nMichael) " + 
+			"MERGE (nCharles)-[:FRIEND]->(nDoug) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initLabelPropagationData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (nAlice:User {id:'Alice'}) SET nAlice.seed_label=52 " + 
+			"MERGE (nBridget:User {id:'Bridget'}) SET nBridget.seed_label=21 " + 
+			"MERGE (nCharles:User {id:'Charles'}) SET nCharles.seed_label=43 " + 
+			"MERGE (nDoug:User {id:'Doug'}) SET nDoug.seed_label=21 " + 
+			"MERGE (nMark:User {id:'Mark'}) SET nMark.seed_label=19 " + 
+			"MERGE (nMichael:User {id:'Michael'}) SET nMichael.seed_label=52 " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nBridget) " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nCharles) " + 
+			"MERGE (nMark)-[:FOLLOW]->(nDoug) " + 
+			"MERGE (nBridget)-[:FOLLOW]->(nMichael) " + 
+			"MERGE (nDoug)-[:FOLLOW]->(nMark) " + 
+			"MERGE (nMichael)-[:FOLLOW]->(nAlice) " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nMichael) " + 
+			"MERGE (nBridget)-[:FOLLOW]->(nAlice) " + 
+			"MERGE (nMichael)-[:FOLLOW]->(nBridget) " + 
+			"MERGE (nCharles)-[:FOLLOW]->(nDoug) ");
 		StatementResult createResult = assistant.write(createStatement);
 	}
 

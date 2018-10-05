@@ -378,51 +378,6 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 		callConstraints();
 		callFunctions();
 		callProcedures();
-		callAlgorithmList();
-	}
-
-	@Test
-	public void algorithm() throws Exception  {
-		centralities();
-		communityDetection();
-		pathFinding();
-		similarity();
-		preprocessing();
-	}
-	
-	private void preprocessing() {
-//		oneHotEncoding();
-	}
-	
-	private void similarity() {
-//		jaccard()
-//		cosine();
-//		euclidean();
-	}
-
-	private void pathFinding() {
-//		mst();
-//		shortestPath();
-//		shortestPath();
-//		allShortestPaths();
-//		astar();
-//		kShortestPaths();
-//		randomWalk();
-	}
-	
-	private void communityDetection() {
-//		louvain();
-//		labelPropagation();
-//		unionFind();
-//		scc();
-//		triangleCount();
-	}
-	
-	private void centralities() {
-//		pageRank();
-//		betweenness();
-//		closeness();
-//		harmonic();
 	}
 
 	private void callFunctions() throws Exception  {
@@ -440,18 +395,6 @@ public class Neo4jAssistantTest extends AbstractTestNGSpringContextTests {
 	private void callProcedures() throws Exception  {
 		String callStatement = String.format(
 				"CALL dbms.procedures() ");	
-		StatementResult callResult = assistant.read(callStatement);
-		int i = 0;
-		while (callResult.hasNext()) {
-			Record record = callResult.next();
-			++i;
-		}
-		Assert.assertTrue(0 < i);
-	}
-
-	private void callAlgorithmList() throws Exception  {
-		String callStatement = String.format(
-				"CALL algo.list() ");	
 		StatementResult callResult = assistant.read(callStatement);
 		int i = 0;
 		while (callResult.hasNext()) {

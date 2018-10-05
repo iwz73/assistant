@@ -72,15 +72,65 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 		initPageRankData();
 		pageRank();
 		personalizedPageRank();
-//		betweenness();
-//		closeness();
-//		harmonic();
+		initBetweennessData();
+		betweenness();
+		approximationBetweenness();
+		initClosenessData();
+		closeness();
+		initClosenessHarmonic();
+		closenessHarmonic();
 	}
 
+	private void closenessHarmonic() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.closeness.harmonic.stream('Node', 'LINK') YIELD nodeId, centrality " + 
+				"MATCH (n:Node) WHERE id(n) = nodeId " + 
+				"RETURN n.id AS node, centrality " + 
+				"ORDER BY centrality DESC " + 
+				"LIMIT 20 ");
+		StatementResult callResult = assistant.read(callStatement);
+		Assert.assertEquals(callResult.next().get(0).asString(), "B");
+	}
+
+	private void closeness() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.closeness.stream('Node', 'LINK') " + 
+				"YIELD nodeId, centrality " + 
+				"MATCH (n:Node) WHERE id(n) = nodeId " + 
+				"RETURN n.id AS node, centrality " + 
+				"ORDER BY centrality DESC " + 
+				"LIMIT 20 ");
+		StatementResult callResult = assistant.read(callStatement);
+		Assert.assertEquals(callResult.next().get(0).asString(), "C");
+	}
+
+	private void approximationBetweenness() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.betweenness.sampled.stream('User','MANAGE', " + 
+				"{strategy:'random', probability:1.0, maxDepth:1, direction: 'out'}) " + 
+				"YIELD nodeId, centrality " + 
+				"MATCH (user) WHERE id(user) = nodeId " + 
+				"RETURN user.id AS user,centrality " + 
+				"ORDER BY centrality DESC ");	
+		StatementResult callResult = assistant.read(callStatement);
+		Assert.assertEquals(callResult.next().get(0).asString(), "Alice");
+	}
+
+	private void betweenness() throws Exception  {
+		String callStatement = String.format(
+				"CALL algo.betweenness.stream('User','MANAGE',{direction:'out'}) " + 
+				"YIELD nodeId, centrality " + 
+				"MATCH (user:User) WHERE id(user) = nodeId " + 
+				"RETURN user.id AS user,centrality " + 
+				"ORDER BY centrality DESC ");	
+		StatementResult callResult = assistant.read(callStatement);
+		Assert.assertEquals(callResult.next().get(0).asString(), "Alice");
+	}
+	
 	private void personalizedPageRank() throws Exception  {
 		String callStatement = String.format(
 				" MATCH (siteA:Page {name: 'Site A'}) " +
-				" CALL algo.pageRank.stream('Page', 'LINKS', {iterations:20, dampingFactor:0.85, sourceNodes: [siteA]})}) " + 
+				" CALL algo.pageRank.stream('Page', 'LINKS', {iterations:20, dampingFactor:0.85, sourceNodes: [siteA]}) " + 
 				" YIELD nodeId, score " + 
 				" MATCH (node) WHERE id(node) = nodeId " + 
 				" RETURN node.name AS page,score " + 
@@ -138,6 +188,59 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			"MERGE (c)-[:LINKS]->(home) " + 
 			"MERGE (links)-[:LINKS]->(d) " + 
 			"MERGE (d)-[:LINKS]->(home) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initBetweennessData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (nAlice:User {id:'Alice'}) " + 
+			"MERGE (nBridget:User {id:'Bridget'}) " + 
+			"MERGE (nCharles:User {id:'Charles'}) " + 
+			"MERGE (nDoug:User {id:'Doug'}) " + 
+			"MERGE (nMark:User {id:'Mark'}) " + 
+			"MERGE (nMichael:User {id:'Michael'}) " + 
+			"MERGE (nAlice)-[:MANAGE]->(nBridget) " + 
+			"MERGE (nAlice)-[:MANAGE]->(nCharles) " + 
+			"MERGE (nAlice)-[:MANAGE]->(nDoug) " + 
+			"MERGE (nMark)-[:MANAGE]->(nAlice) " + 
+			"MERGE (nCharles)-[:MANAGE]->(nMichael) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initClosenessData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (a:Node{id:'A'}) " + 
+			"MERGE (b:Node{id:'B'}) " + 
+			"MERGE (c:Node{id:'C'}) " + 
+			"MERGE (d:Node{id:'D'}) " + 
+			"MERGE (e:Node{id:'E'}) " + 
+			"MERGE (a)-[:LINK]->(b) " + 
+			"MERGE (b)-[:LINK]->(a) " + 
+			"MERGE (b)-[:LINK]->(c) " + 
+			"MERGE (c)-[:LINK]->(b) " + 
+			"MERGE (c)-[:LINK]->(d) " + 
+			"MERGE (d)-[:LINK]->(c) " + 
+			"MERGE (d)-[:LINK]->(e) " + 
+			"MERGE (e)-[:LINK]->(d) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initClosenessHarmonic() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (a:Node{id:'A'}) " + 
+			"MERGE (b:Node{id:'B'}) " + 
+			"MERGE (c:Node{id:'C'}) " + 
+			"MERGE (d:Node{id:'D'}) " + 
+			"MERGE (e:Node{id:'E'}) " + 
+			"MERGE (a)-[:LINK]->(b) " + 
+			"MERGE (b)-[:LINK]->(c) " + 
+			"MERGE (d)-[:LINK]->(e) ");
 		StatementResult createResult = assistant.write(createStatement);
 	}
 

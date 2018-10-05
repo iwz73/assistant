@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.types.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,7 +25,7 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 	 */
 //	@Test
 	public void index() throws Exception {
-		initData();
+		initIndexData();
 		indexAddNode();
 		indexNodes();
 		indexList();
@@ -70,11 +71,216 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
-	@Test
+//	@Test
 	public void spatial() throws Exception {
 		geocodeOnce();
 		geocode();
 		reverseGeocode();
+	}
+	
+//	@Test
+	public void group() throws Exception {
+		initGroupData();
+		nodesGroup();
+	}
+
+//	@Test
+	public void schema() throws Exception {
+		schemaAssert();
+		schemaNodes();
+	}
+	
+	@Test
+	public void atomic() throws Exception {
+		String label = "l_" + getCurrentTimeMillis();
+		initAtomicData(label);
+		atomicAdd(label);
+		atomicSubtract(label);
+		atomicConcat(label);
+		atomicInsert(label);
+		atomicRemove(label);
+		atomicUpdate(label);
+	}
+
+	private void atomicUpdate(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.update(n, 'p_3', 'n.p_0 * 3', 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_3").asInt(), 3);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void atomicRemove(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.remove(n, 'p_2', 1, 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_2").asList().toString(), "[ele_0, ele_1, ele_2]");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void atomicInsert(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.insert(n, 'p_2', 1, 'ele_A', 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_2").asList().toString(), "[ele_0, ele_A, ele_1, ele_2]");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void atomicConcat(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.concat(n, 'p_1', '_0', 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_1").asString(), "str_0");
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void atomicSubtract(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.subtract(n, 'p_0', 1, 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_0").asInt(), 1);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
+	private void atomicAdd(String label) throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"MATCH (n:%s) " + 
+			"CALL apoc.atomic.add(n, 'p_0', 1, 5) YIELD oldValue, newValue " + 
+			"RETURN n ",
+			label);
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);	
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Node node = record.get(0).asNode();
+			Assert.assertEquals(node.get("p_0").asInt(), 2);
+			++i;
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void schemaAssert() throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"CALL apoc.schema.assert( " + 
+			"  {index_l_0:['index_p_0_0','index_p_0_1'], index_l_1:['index_p_1_0','index_p_1_1']}, " + 
+			"  {constraint_l_0:['constraint_p_0_0', 'constraint_p_0_1'], constraint_l_1:['constraint_p_1_0', 'constraint_p_1_1']} " +
+			") yield label, key, keys, unique, action ");
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);		
+		int i = 0;
+		boolean containIndex = false;
+		boolean containConstraint = false;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String label = record.get(0).asString();
+			if("index_l_1".equals(label) == true) {
+				containIndex = true;
+			}
+			if("constraint_l_0".equals(label) == true) {
+				containConstraint = true;
+			}
+			++i;
+		}
+		Assert.assertTrue((0 < i) && containIndex && containConstraint);
+	}
+	
+	private void schemaNodes() throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"CALL apoc.schema.nodes() yield name, label, properties, status, type ");
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);		
+		int i = 0;
+		boolean containIndex = false;
+		boolean containConstraint = false;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String label = record.get(1).asString();
+			if("index_l_1".equals(label) == true) {
+				containIndex = true;
+			}
+			if("constraint_l_0".equals(label) == true) {
+				containConstraint = true;
+			}
+			++i;
+		}
+		Assert.assertTrue((0 < i) && containIndex && containConstraint);
+	}
+
+	private void nodesGroup() throws Exception {
+		// @formatter:off
+		String callStatement = String.format(
+			"CALL apoc.nodes.group(['*'],['gender'], [{`*`:'count', age:'min'}, {`*`:'count'} ]) " +
+			"yield node, relationship " +
+			"return * ");
+		// @formatter:on
+		StatementResult callResult = assistant.run(callStatement);		
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+//			System.err.println(record.get(0).asNode().asMap());
+//			System.err.println(record.get(1).asRelationship().asMap());
+			++i;
+		}
+		Assert.assertEquals(i, 4);
 	}
 
 	private void geocode() throws Exception {
@@ -200,7 +406,7 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
-	private void initData() throws Exception  {
+	private void initIndexData() throws Exception  {
 		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
 		assistant.write(detachDeleteStatement);
 		String createStatement = String.format(
@@ -218,5 +424,36 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 			"CREATE (f23)-[:DESTINATION {arr_delay:-21, taxi_time:3}]->(slc) " +
 			"CREATE (f30)-[:DESTINATION]->(slc) ");
 		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initGroupData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"CREATE " + 
+			"(alice:Person {name:'Alice', gender:'female', age:32, kids:1}), " + 
+			"(bob:Person   {name:'Bob',   gender:'male',   age:42, kids:3}), " + 
+			"(eve:Person   {name:'Eve',   gender:'female', age:28, kids:2}), " + 
+			"(graphs:Forum {name:'Graphs',    members:23}), " + 
+			"(dbs:Forum    {name:'Databases', members:42}), " + 
+			"(alice)-[:KNOWS {since:2017}]->(bob), " + 
+			"(eve)-[:KNOWS   {since:2018}]->(bob), " + 
+			"(alice)-[:MEMBER_OF]->(graphs), " + 
+			"(alice)-[:MEMBER_OF]->(dbs), " + 
+			"(bob)-[:MEMBER_OF]->(dbs), " + 
+			"(eve)-[:MEMBER_OF]->(graphs) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initAtomicData(String label) throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format("CREATE (n:%s {p_0:1, p_1:'str', p_2:['ele_0','ele_1','ele_2'], p_3:0}) RETURN n", label);
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private long getCurrentTimeMillis() throws InterruptedException {
+		Thread.sleep(1);
+		return System.currentTimeMillis();
 	}
 }

@@ -1,6 +1,9 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
+import static org.testng.Assert.assertTrue;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.neo4j.driver.v1.Record;
@@ -19,7 +22,7 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private Neo4jAssistant assistant;
 
-//	@Test
+	@Test
 	public void procedure() throws Exception  {
 		callAlgorithmList();
 	}
@@ -29,53 +32,49 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 		centralities();
 		communityDetection();
 		pathFinding();
-		similarity();
-		preprocessing();
+//		similarity();
+//		preprocessing();
 	}
-	
-	private void preprocessing() {
-//		oneHotEncoding();
-	}
-	
+
 	private void centralities() throws Exception {
-//		initPageRankData();
-//		pageRank();
-//		personalizedPageRank();
-//		initBetweennessData();
-//		betweenness();
-//		approximationBetweenness();
-//		initClosenessData();
-//		closeness();
-//		initClosenessHarmonic();
-//		closenessHarmonic();
+		initPageRankData();
+		pageRank();
+		personalizedPageRank();
+		initBetweennessData();
+		betweenness();
+		approximationBetweenness();
+		initClosenessData();
+		closeness();
+		initClosenessHarmonic();
+		closenessHarmonic();
 	}
 
 	
 	private void communityDetection() throws Exception {
-//		initLouvainData();
-//		louvain();
-//		initLabelPropagationData();
-//		labelPropagation();
-//		initUnionFindData();
-//		unionFind();
-//		unionFindWithWeight();
-//		initSccData();
-//		scc();
-//		initTriangleData();
-//		triangle();
-//		triangleCount();
+		initLouvainData();
+		louvain();
+		initLabelPropagationData();
+		labelPropagation();
+		initUnionFindData();
+		unionFind();
+		unionFindWithWeight();
+		initSccData();
+		scc();
+		initTriangleData();
+		triangle();
+		triangleCount();
 	}
 
 	private void pathFinding() throws Exception {
-//		initSpanningTreeData();
-//		spanningTreeMinimum();
-//		spanningTreeKmin();
-//		initShortestPathData();
-//		shortestPath();
-//		allShortestPaths();
-//		kShortestPaths();
-//		initAstarData();
-//		astar();
+		initSpanningTreeData();
+		spanningTreeMinimum();
+		spanningTreeKmin();
+		initShortestPathData();
+		shortestPath();
+		allShortestPaths();
+		kShortestPaths();
+		initAstarData();
+		astar();
 //		initRandomWalkData();
 //		randomWalk();
 	}
@@ -83,8 +82,94 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 	private void similarity() throws Exception {
 		initJaccardData();
 		jaccard();
-//		cosine();
-//		euclidean();
+		initCosineData();
+		cosine();
+		initEuclideanData();
+		euclidean();
+	}
+	
+	private void preprocessing() throws Exception {
+		initOneHotEncodingData();
+		oneHotEncoding();
+	}
+	
+	private void oneHotEncoding() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (cuisine:Cuisine) " + 
+			"WITH cuisine ORDER BY cuisine.name " + 
+			"WITH collect(cuisine) AS cuisines " + 
+			"MATCH (p:Person) " + 
+			"RETURN p.name AS person, " + 
+			"  algo.ml.oneHotEncoding(cuisines, [(p)-[:LIKES]->(cuisine) | cuisine]) AS " + 
+			"encoding " + 
+			"ORDER BY person "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String person = record.get(0).asString();
+			List<?> encoding = record.get(1).asList();
+			if(person.equals("Michael") == true) {
+				Assert.assertEquals(encoding.toString(), "[1, 0, 1]");
+				++i;
+			} 
+		}
+		Assert.assertEquals(i, 1);
+	}
+
+	private void euclidean() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (p:Person), (c:Cuisine) " + 
+			"OPTIONAL MATCH (p)-[likes:LIKES]->(c) " + 
+			"WITH {item:id(p), weights: collect(coalesce(likes.score, 0))} as userData " + 
+			"WITH collect(userData) as data " + 
+			"CALL algo.similarity.euclidean.stream(data) " + 
+			"YIELD item1, item2, count1, count2, similarity " + 
+			"RETURN algo.getNodeById(item1).name AS from, algo.getNodeById(item2).name AS to, " + 
+			"similarity " + 
+			"ORDER BY similarity "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String from = record.get(0).asString();
+			String to = record.get(1).asString();
+			double similarity = record.get(2).asDouble();
+			if(from.equals("Arya") && to.equals("Karin")) {
+				Assert.assertEquals(similarity, 7.681145747868608);
+				++i;
+			}	 
+		}
+		Assert.assertEquals(i, 1);
+	}
+	
+	private void cosine() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (p:Person), (c:Cuisine) " + 
+			"OPTIONAL MATCH (p)-[likes:LIKES]->(c) " + 
+			"WITH {item:id(p), weights: collect(coalesce(likes.score, 0))} as userData " + 
+			"WITH collect(userData) as data " + 
+			"CALL algo.similarity.cosine.stream(data) " + 
+			"YIELD item1, item2, count1, count2, similarity " + 
+			"RETURN algo.getNodeById(item1).name AS from, algo.getNodeById(item2).name AS to, " + 
+			"similarity " + 
+			"ORDER BY similarity DESC "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String from = record.get(0).asString();
+			String to = record.get(1).asString();
+			double similarity = record.get(2).asDouble();
+			if(from.equals("Arya") && to.equals("Karin")) {
+				Assert.assertEquals(similarity, 0.8893006975229283);
+				++i;
+			}	 
+		}
+		Assert.assertEquals(i, 1);
 	}
 
 	private void jaccard() throws Exception  {
@@ -107,10 +192,10 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			double similarity = record.get(3).asDouble();
 			if(from.equals("Michael") && to.equals("Karin")) {
 				Assert.assertEquals(similarity, 0.25);
+				++i;
 			}	 
-			++i;
 		}
-		Assert.assertEquals(i, 3);
+		Assert.assertEquals(i, 1);
 	}
 	
 	private void randomWalk() throws Exception  {
@@ -155,15 +240,20 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 		String callStatement = String.format(
 			"MATCH (start:Loc{name:'A'}), (end:Loc{name:'F'}) " + 
 			"CALL algo.kShortestPaths(start, end, 3, 'cost' ,{}) " + 
-			"MATCH p=()-[r:PATH_0|:PATH_1|:PATH_2]->() RETURN p "
+			"YIELD resultCount " + 
+			"RETURN resultCount "
 		);
 		StatementResult callResult = assistant.read(callStatement);
+		String matchStatement = String.format(
+			"MATCH p=()-[r:PATH_0]->() RETURN p "
+		);
+		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
-		while (callResult.hasNext()) {
-			Record record = callResult.next();
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
 			++i;
 		}
-		Assert.assertEquals(i, 3);
+		Assert.assertEquals(i, 4);
 	}
 
 	private void allShortestPaths() throws Exception  {
@@ -239,34 +329,26 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			);
 		StatementResult matchResult = assistant.read(matchStatement);
 		int i = 0;
+		int kminstA = 0;
+		int kminstB = -1;
+		int kminstC = -2;
 		while (matchResult.hasNext()) {
 			Record record = matchResult.next();
 			String id = record.get(0).asString();
 			int kminst = record.get(1).asInt();
 			switch (id) {
 			case "A":
+				kminstA = kminst;
 			case "B":
+				kminstB = kminst;
 			case "C":	
-				Assert.assertEquals(kminst, 1);
-				break;
-			case "D":
-				Assert.assertEquals(kminst, 3);
-				break;
-			case "E":
-				Assert.assertEquals(kminst, 4);
-				break;
-			case "F":
-				Assert.assertEquals(kminst, 5);
-				break;
-			case "G":
-				Assert.assertEquals(kminst, 6);
-				break;
-			default:
-				throw new RuntimeException(String.format("id(%s) not implement !!!", id));
+				kminstC = kminst;
 			}
 			++i;
 		}
 		Assert.assertEquals(i, 7);
+		assertTrue(kminstA == kminstB);
+		assertTrue(kminstB == kminstC);
 	}
 
 	private void spanningTreeMinimum() throws Exception  {
@@ -425,13 +507,13 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 				"RETURN user.id AS user, community " + 
 				"ORDER BY community ");
 		StatementResult callResult = assistant.read(callStatement);
-		Set<Integer> communities = new HashSet<>();
+		Set<Object> allCommunities = new HashSet<>();
 		while (callResult.hasNext()) {
 			Record record = callResult.next();
 			Integer community = record.get(1).asInt();
-			communities.add(community);
+			allCommunities.add(community);
 		}
-		Assert.assertEquals(communities.size(), 2);
+		Assert.assertEquals(allCommunities.size(), 2);
 	}
 
 	private void closenessHarmonic() throws Exception  {
@@ -821,6 +903,82 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			"MERGE (arya)-[:LIKES]->(portuguese) " + 
 			"MERGE (karin)-[:LIKES]->(lebanese) " + 
 			"MERGE (karin)-[:LIKES]->(italian) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initCosineData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (french:Cuisine {name:'French'}) " + 
+			"MERGE (italian:Cuisine {name:'Italian'}) " + 
+			"MERGE (indian:Cuisine {name:'Indian'}) " + 
+			"MERGE (lebanese:Cuisine {name:'Lebanese'}) " + 
+			"MERGE (portuguese:Cuisine {name:'Portuguese'}) " + 
+			"MERGE (zhen:Person {name: 'Zhen'}) " + 
+			"MERGE (praveena:Person {name: 'Praveena'}) " + 
+			"MERGE (michael:Person {name: 'Michael'}) " + 
+			"MERGE (arya:Person {name: 'Arya'}) " + 
+			"MERGE (karin:Person {name: 'Karin'}) " + 
+			"MERGE (praveena)-[:LIKES {score: 9}]->(indian) " + 
+			"MERGE (praveena)-[:LIKES {score: 7}]->(portuguese) " + 
+			"MERGE (zhen)-[:LIKES {score: 10}]->(french) " + 
+			"MERGE (zhen)-[:LIKES {score: 6}]->(indian) " + 
+			"MERGE (michael)-[:LIKES {score: 8}]->(french) " + 
+			"MERGE (michael)-[:LIKES {score: 7}]->(italian) " + 
+			"MERGE (michael)-[:LIKES {score: 9}]->(indian) " + 
+			"MERGE (arya)-[:LIKES {score: 10}]->(lebanese) " + 
+			"MERGE (arya)-[:LIKES {score: 10}]->(italian) " + 
+			"MERGE (arya)-[:LIKES {score: 7}]->(portuguese) " + 
+			"MERGE (karin)-[:LIKES {score: 9}]->(lebanese) " + 
+			"MERGE (karin)-[:LIKES {score: 7}]->(italian) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initEuclideanData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (french:Cuisine {name:'French'}) " + 
+			"MERGE (italian:Cuisine {name:'Italian'}) " + 
+			"MERGE (indian:Cuisine {name:'Indian'}) " + 
+			"MERGE (lebanese:Cuisine {name:'Lebanese'}) " + 
+			"MERGE (portuguese:Cuisine {name:'Portuguese'}) " + 
+			"MERGE (zhen:Person {name: 'Zhen'}) " + 
+			"MERGE (praveena:Person {name: 'Praveena'}) " + 
+			"MERGE (michael:Person {name: 'Michael'}) " + 
+			"MERGE (arya:Person {name: 'Arya'}) " + 
+			"MERGE (karin:Person {name: 'Karin'}) " + 
+			"MERGE (praveena)-[:LIKES {score: 9}]->(indian) " + 
+			"MERGE (praveena)-[:LIKES {score: 7}]->(portuguese) " + 
+			"MERGE (zhen)-[:LIKES {score: 10}]->(french) " + 
+			"MERGE (zhen)-[:LIKES {score: 6}]->(indian) " + 
+			"MERGE (michael)-[:LIKES {score: 8}]->(french) " + 
+			"MERGE (michael)-[:LIKES {score: 7}]->(italian) " + 
+			"MERGE (michael)-[:LIKES {score: 9}]->(indian) " + 
+			"MERGE (arya)-[:LIKES {score: 10}]->(lebanese) " + 
+			"MERGE (arya)-[:LIKES {score: 10}]->(italian) " + 
+			"MERGE (arya)-[:LIKES {score: 7}]->(portuguese) " + 
+			"MERGE (karin)-[:LIKES {score: 9}]->(lebanese) " + 
+			"MERGE (karin)-[:LIKES {score: 7}]->(italian) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initOneHotEncodingData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (french:Cuisine {name:'French'}) " + 
+			"MERGE (italian:Cuisine {name:'Italian'}) " + 
+			"MERGE (indian:Cuisine {name:'Indian'}) " + 
+			"MERGE (zhen:Person {name: 'Zhen'}) " + 
+			"MERGE (praveena:Person {name: 'Praveena'}) " + 
+			"MERGE (michael:Person {name: 'Michael'}) " + 
+			"MERGE (arya:Person {name: 'Arya'}) " + 
+			"MERGE (praveena)-[:LIKES]->(indian) " + 
+			"MERGE (zhen)-[:LIKES]->(french) " + 
+			"MERGE (michael)-[:LIKES]->(french) " + 
+			"MERGE (michael)-[:LIKES]->(italian) ");
 		StatementResult createResult = assistant.write(createStatement);
 	}
 	

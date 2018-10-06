@@ -70,13 +70,65 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 	private void communityDetection() throws Exception {
 //		initLouvainData();
 //		louvain();
-		initLabelPropagationData();
-		labelPropagation();
+//		initLabelPropagationData();
+//		labelPropagation();
+//		initUnionFindData();
 //		unionFind();
-//		scc();
+//		unionFindWithWeight();
+		initSccData();
+		scc();
 //		triangleCount();
 	}
 	
+	private void scc() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.scc.stream('User','FOLLOW', {}) " + 
+			"YIELD nodeId, partition "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		Set<Integer> labels = new HashSet<>();
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Integer label = record.get(1).asInt();
+			labels.add(label);
+		}
+		Assert.assertEquals(labels.size(), 3);
+	}
+
+	private void unionFindWithWeight() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.unionFind.stream('User', 'FRIEND', {weightProperty:'weight', defaultValue:0.0, threshold:1.0, concurrency: 1}) " + 
+			"YIELD nodeId,setId " + 
+			"MATCH (u:User) WHERE id(u) = nodeId " + 
+			"RETURN u.id AS user, setId "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		Set<Integer> labels = new HashSet<>();
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Integer label = record.get(1).asInt();
+			labels.add(label);
+		}
+		Assert.assertEquals(labels.size(), 3);
+	}
+	
+	private void unionFind() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.unionFind.stream('User', 'FRIEND', {}) " + 
+			"YIELD nodeId,setId " + 
+			"MATCH (u:User) WHERE id(u) = nodeId " + 
+			"RETURN u.id AS user, setId "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		Set<Integer> labels = new HashSet<>();
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			Integer label = record.get(1).asInt();
+			labels.add(label);
+		}
+		Assert.assertEquals(labels.size(), 2);
+	}
+
 	private void labelPropagation() throws Exception  {
 		String callStatement = String.format(
 			"CALL algo.labelPropagation.stream('User', 'FOLLOW', {direction: 'OUTGOING', iterations: 10}) " +
@@ -312,6 +364,46 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 			"MERGE (nBridget)-[:FOLLOW]->(nAlice) " + 
 			"MERGE (nMichael)-[:FOLLOW]->(nBridget) " + 
 			"MERGE (nCharles)-[:FOLLOW]->(nDoug) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initUnionFindData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (nAlice:User {id:'Alice'}) " + 
+			"MERGE (nBridget:User {id:'Bridget'}) " + 
+			"MERGE (nCharles:User {id:'Charles'}) " + 
+			"MERGE (nDoug:User {id:'Doug'}) " + 
+			"MERGE (nMark:User {id:'Mark'}) " + 
+			"MERGE (nMichael:User {id:'Michael'}) " + 
+			"MERGE (nAlice)-[:FRIEND {weight:0.5}]->(nBridget) " + 
+			"MERGE (nAlice)-[:FRIEND {weight:4}]->(nCharles) " + 
+			"MERGE (nMark)-[:FRIEND {weight:1}]->(nDoug) " + 
+			"MERGE (nMark)-[:FRIEND {weight:2}]->(nMichael) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initSccData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (nAlice:User {id:'Alice'}) " + 
+			"MERGE (nBridget:User {id:'Bridget'}) " + 
+			"MERGE (nCharles:User {id:'Charles'}) " + 
+			"MERGE (nDoug:User {id:'Doug'}) " + 
+			"MERGE (nMark:User {id:'Mark'}) " + 
+			"MERGE (nMichael:User {id:'Michael'}) " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nBridget) " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nCharles) " + 
+			"MERGE (nMark)-[:FOLLOW]->(nDoug) " + 
+			"MERGE (nMark)-[:FOLLOW]->(nMichael) " + 
+			"MERGE (nBridget)-[:FOLLOW]->(nMichael) " + 
+			"MERGE (nDoug)-[:FOLLOW]->(nMark) " + 
+			"MERGE (nMichael)-[:FOLLOW]->(nAlice) " + 
+			"MERGE (nAlice)-[:FOLLOW]->(nMichael) " + 
+			"MERGE (nBridget)-[:FOLLOW]->(nAlice) " + 
+			"MERGE (nMichael)-[:FOLLOW]->(nBridget) ");
 		StatementResult createResult = assistant.write(createStatement);
 	}
 

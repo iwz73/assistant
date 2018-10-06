@@ -37,22 +37,6 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 //		oneHotEncoding();
 	}
 	
-	private void similarity() {
-//		jaccard()
-//		cosine();
-//		euclidean();
-	}
-
-	private void pathFinding() {
-//		mst();
-//		shortestPath();
-//		shortestPath();
-//		allShortestPaths();
-//		astar();
-//		kShortestPaths();
-//		randomWalk();
-	}
-	
 	private void centralities() throws Exception {
 //		initPageRankData();
 //		pageRank();
@@ -75,9 +59,298 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 //		initUnionFindData();
 //		unionFind();
 //		unionFindWithWeight();
-		initSccData();
-		scc();
+//		initSccData();
+//		scc();
+//		initTriangleData();
+//		triangle();
 //		triangleCount();
+	}
+
+	private void pathFinding() throws Exception {
+//		initSpanningTreeData();
+//		spanningTreeMinimum();
+//		spanningTreeKmin();
+//		initShortestPathData();
+//		shortestPath();
+//		allShortestPaths();
+//		kShortestPaths();
+//		initAstarData();
+//		astar();
+//		initRandomWalkData();
+//		randomWalk();
+	}
+	
+	private void similarity() throws Exception {
+		initJaccardData();
+		jaccard();
+//		cosine();
+//		euclidean();
+	}
+
+	private void jaccard() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (p:Person)-[:LIKES]->(cuisine) " + 
+			"WITH {item:id(p), categories: collect(id(cuisine))} as userData " + 
+			"WITH collect(userData) as data " + 
+			"CALL algo.similarity.jaccard.stream(data) " + 
+			"YIELD item1, item2, count1, count2, intersection, similarity " + 
+			"RETURN algo.getNodeById(item1).name AS from, algo.getNodeById(item2).name AS to, " + 
+			"intersection, similarity " + 
+			"ORDER BY similarity DESC "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String from = record.get(0).asString();
+			String to = record.get(1).asString();
+			double similarity = record.get(3).asDouble();
+			if(from.equals("Michael") && to.equals("Karin")) {
+				Assert.assertEquals(similarity, 0.25);
+			}	 
+			++i;
+		}
+		Assert.assertEquals(i, 3);
+	}
+	
+	private void randomWalk() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (home:Page {name: 'Home'}) " + 
+			"CALL algo.randomWalk.stream(id(home), 3, 1) " + 
+			"YIELD nodeIds " + 
+			"UNWIND nodeIds AS nodeId " + 
+			"MATCH (n) WHERE id(n) = nodeId " + 
+			"RETURN n.name AS page "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		
+	}
+
+	private void astar() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (start:Station{name:'King\\'s Cross St. Pancras'}),(end:Station{name:'Kentish " + 
+			"Town'}) " + 
+			"CALL algo.shortestPath.astar.stream(start, end, 'time', 'latitude', 'longitude', " + 
+			"{defaultValue:1.0}) " + 
+			"YIELD nodeId, cost " + 
+			"MATCH (n) where id(n) = nodeId " + 
+			"RETURN n.name as station,cost "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			int cost = record.get(1).asInt();
+			i += cost;
+		}
+		Assert.assertEquals(i, 14);
+	}
+	
+	private void kShortestPaths() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (start:Loc{name:'A'}), (end:Loc{name:'F'}) " + 
+			"CALL algo.kShortestPaths(start, end, 3, 'cost' ,{}) " + 
+			"MATCH p=()-[r:PATH_0|:PATH_1|:PATH_2]->() RETURN p "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertEquals(i, 3);
+	}
+
+	private void allShortestPaths() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.allShortestPaths.stream('cost',{nodeQuery:'Loc',defaultValue:1.0}) " + 
+			"YIELD sourceNodeId, targetNodeId, distance " + 
+			"WITH sourceNodeId, targetNodeId, distance " + 
+			"WHERE algo.isFinite(distance) = true " + 
+			"MATCH (source:Loc) WHERE id(source) = sourceNodeId " + 
+			"MATCH (target:Loc) WHERE id(target) = targetNodeId " + 
+			"WITH source, target, distance WHERE source <> target " + 
+			"RETURN source.name AS source, target.name AS target, distance " + 
+			"ORDER BY distance DESC "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertEquals(i, 14);
+	}
+	
+	private void shortestPath() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (start:Loc{name:'A'}), (end:Loc{name:'F'}) " + 
+			"CALL algo.shortestPath.stream(start, end, 'cost') " + 
+			"YIELD nodeId, cost " + 
+			"MATCH (other:Loc) WHERE id(other) = nodeId " + 
+			"RETURN other.name AS name, cost "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String name = record.get(0).asString();
+			int cost = record.get(1).asInt();
+			switch (name) {
+			case "A":
+				Assert.assertEquals(cost, 0);
+				break;
+			case "B":	
+			case "C":
+				Assert.assertEquals(cost, 50);
+				break;
+			case "D":
+				Assert.assertEquals(cost, 90);
+				break;
+			case "E":
+				Assert.assertEquals(cost, 120);
+				break;
+			case "F":
+				Assert.assertEquals(cost, 160);
+				break;
+			default:
+				throw new RuntimeException(String.format("name(%s) not implement !!!", name));
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 5);
+	}
+
+	private void spanningTreeKmin() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (n:Place{id:'D'}) " + 
+			"CALL algo.spanningTree.kmin('Place', 'LINK', 'cost',id(n), 3, {writeProperty:'kminst'}) " + 
+			"YIELD loadMillis, computeMillis, writeMillis, effectiveNodeCount " + 
+			"RETURN loadMillis,computeMillis,writeMillis, effectiveNodeCount "
+		);
+		assistant.write(callStatement);
+		String matchStatement = String.format(
+			"MATCH(n) RETURN n.id AS id, n.kminst AS kminst "
+			);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			String id = record.get(0).asString();
+			int kminst = record.get(1).asInt();
+			switch (id) {
+			case "A":
+			case "B":
+			case "C":	
+				Assert.assertEquals(kminst, 1);
+				break;
+			case "D":
+				Assert.assertEquals(kminst, 3);
+				break;
+			case "E":
+				Assert.assertEquals(kminst, 4);
+				break;
+			case "F":
+				Assert.assertEquals(kminst, 5);
+				break;
+			case "G":
+				Assert.assertEquals(kminst, 6);
+				break;
+			default:
+				throw new RuntimeException(String.format("id(%s) not implement !!!", id));
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 7);
+	}
+
+	private void spanningTreeMinimum() throws Exception  {
+		String callStatement = String.format(
+			"MATCH (n:Place {id:'D'}) " + 
+			"CALL algo.spanningTree.minimum('Place', 'LINK', 'cost', id(n), {write:true, writeProperty:'MINST'}) " + 
+			"YIELD loadMillis, computeMillis, writeMillis, effectiveNodeCount " + 
+			"RETURN loadMillis, computeMillis, writeMillis, effectiveNodeCount "
+		);
+		assistant.write(callStatement);
+		String matchStatement = String.format(
+			"MATCH path = (n:Place {id:'D'})-[:MINST*]-() " + 
+			"WITH relationships(path) AS rels " + 
+			"UNWIND rels AS rel " + 
+			"WITH DISTINCT rel AS rel " + 
+			"RETURN startNode(rel).id AS source, endNode(rel).id AS destination, rel.cost AS cost "
+			);
+		StatementResult matchResult = assistant.read(matchStatement);
+		int i = 0;
+		while (matchResult.hasNext()) {
+			Record record = matchResult.next();
+			int cost = record.get(2).asInt();
+			i += cost;
+		}
+		Assert.assertEquals(i, 12);
+	}
+
+	private void triangleCount() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.triangleCount.stream('Person', 'KNOWS', {concurrency:4}) " + 
+			"YIELD nodeId, triangles, coefficient " + 
+			"MATCH (p:Person) WHERE id(p) = nodeId " + 
+			"RETURN p.id AS name, triangles, coefficient " + 
+			"ORDER BY coefficient DESC "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			String name = record.get(0).asString();
+			int triangles = record.get(1).asInt();
+			switch (name) {
+			case "Karin":
+				Assert.assertEquals(triangles, 1);
+				break;
+			case "Mark":
+				Assert.assertEquals(triangles, 1);
+				break;
+			case "Chris":
+				Assert.assertEquals(triangles, 2);
+				break;
+			case "Will":
+				Assert.assertEquals(triangles, 2);
+				break;
+			case "Michael":
+				Assert.assertEquals(triangles, 3);
+				break;
+			case "Alice":
+				Assert.assertEquals(triangles, 0);
+				break;
+			default:
+				throw new RuntimeException(String.format("name(%s) not implement !!!", name));
+			}
+			++i;
+		}
+		Assert.assertEquals(i, 6);
+	}
+
+	private void triangle() throws Exception  {
+		String callStatement = String.format(
+			"CALL algo.triangle.stream('Person','KNOWS') " + 
+			"YIELD nodeA,nodeB,nodeC " + 
+			"MATCH (a:Person) WHERE id(a) = nodeA " + 
+			"MATCH (b:Person) WHERE id(b) = nodeB " + 
+			"MATCH (c:Person) WHERE id(c) = nodeC " + 
+			"RETURN a.id AS nodeA, b.id AS nodeB, c.id AS nodeC "
+		);
+		StatementResult callResult = assistant.read(callStatement);
+		int i = 0;
+		while (callResult.hasNext()) {
+			Record record = callResult.next();
+			++i;
+		}
+		Assert.assertEquals(i, 3);
 	}
 	
 	private void scc() throws Exception  {
@@ -407,6 +680,150 @@ public class Neo4jAlgoAssistantTest extends AbstractTestNGSpringContextTests {
 		StatementResult createResult = assistant.write(createStatement);
 	}
 
+	private void initTriangleData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (alice:Person{id:'Alice'}) " + 
+			"MERGE (michael:Person{id:'Michael'}) " + 
+			"MERGE (karin:Person{id:'Karin'}) " + 
+			"MERGE (chris:Person{id:'Chris'}) " + 
+			"MERGE (will:Person{id:'Will'}) " + 
+			"MERGE (mark:Person{id:'Mark'}) " + 
+			"MERGE (michael)-[:KNOWS]->(karin) " + 
+			"MERGE (michael)-[:KNOWS]->(chris) " + 
+			"MERGE (will)-[:KNOWS]->(michael) " + 
+			"MERGE (mark)-[:KNOWS]->(michael) " + 
+			"MERGE (mark)-[:KNOWS]->(will) " + 
+			"MERGE (alice)-[:KNOWS]->(michael) " + 
+			"MERGE (will)-[:KNOWS]->(chris) " + 
+			"MERGE (chris)-[:KNOWS]->(karin) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initSpanningTreeData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (a:Place {id:'A'}) " + 
+			"MERGE (b:Place {id:'B'}) " + 
+			"MERGE (c:Place {id:'C'}) " + 
+			"MERGE (d:Place {id:'D'}) " + 
+			"MERGE (e:Place {id:'E'}) " + 
+			"MERGE (f:Place {id:'F'}) " + 
+			"MERGE (g:Place {id:'G'}) " + 
+			"MERGE (d)-[:LINK {cost:4}]->(b) " + 
+			"MERGE (d)-[:LINK {cost:6}]->(e) " + 
+			"MERGE (b)-[:LINK {cost:1}]->(a) " + 
+			"MERGE (b)-[:LINK {cost:3}]->(c) " + 
+			"MERGE (a)-[:LINK {cost:2}]->(c) " + 
+			"MERGE (c)-[:LINK {cost:5}]->(e) " + 
+			"MERGE (f)-[:LINK {cost:1}]->(g) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initShortestPathData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (a:Loc {name:'A'}) " + 
+			"MERGE (b:Loc {name:'B'}) " + 
+			"MERGE (c:Loc {name:'C'}) " + 
+			"MERGE (d:Loc {name:'D'}) " + 
+			"MERGE (e:Loc {name:'E'}) " + 
+			"MERGE (f:Loc {name:'F'}) " + 
+			"MERGE (a)-[:ROAD {cost:50}]->(b) " + 
+			"MERGE (a)-[:ROAD {cost:50}]->(c) " + 
+			"MERGE (a)-[:ROAD {cost:100}]->(d) " + 
+			"MERGE (b)-[:ROAD {cost:40}]->(d) " + 
+			"MERGE (c)-[:ROAD {cost:40}]->(d) " + 
+			"MERGE (c)-[:ROAD {cost:80}]->(e) " + 
+			"MERGE (d)-[:ROAD {cost:30}]->(e) " + 
+			"MERGE (d)-[:ROAD {cost:80}]->(f) " + 
+			"MERGE (e)-[:ROAD {cost:40}]->(f) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
+	private void initAstarData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (a:Station{name:'King\\'s Cross St. Pancras'}) " + 
+			"SET a.latitude = 51.5308,a.longitude = -0.1238 " + 
+			"MERGE (b:Station{name:'Euston'}) " + 
+			"SET b.latitude = 51.5282, b.longitude = -0.1337 " + 
+			"MERGE (c:Station{name:'Camden Town'}) " + 
+			"SET c.latitude = 51.5392, c.longitude = -0.1426 " + 
+			"MERGE (d:Station{name:'Mornington Crescent'}) " + 
+			"SET d.latitude = 51.5342, d.longitude = -0.1387 " + 
+			"MERGE (e:Station{name:'Kentish Town'}) " + 
+			"SET e.latitude = 51.5507, e.longitude = -0.1402 " + 
+			"MERGE (a)-[:CONNECTION{time:2}]->(b) " + 
+			"MERGE (b)-[:CONNECTION{time:3}]->(c) " + 
+			"MERGE (b)-[:CONNECTION{time:2}]->(d) " + 
+			"MERGE (d)-[:CONNECTION{time:2}]->(c) " + 
+			"MERGE (c)-[:CONNECTION{time:2}]->(e) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initRandomWalkData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (home:Page {name:'Home'}) " + 
+			"MERGE (about:Page {name:'About'}) " + 
+			"MERGE (product:Page {name:'Product'}) " + 
+			"MERGE (links:Page {name:'Links'}) " + 
+			"MERGE (a:Page {name:'Site A'}) " + 
+			"MERGE (b:Page {name:'Site B'}) " + 
+			"MERGE (c:Page {name:'Site C'}) " + 
+			"MERGE (d:Page {name:'Site D'}) " + 
+			"MERGE (home)-[:LINKS]->(about) " + 
+			"MERGE (about)-[:LINKS]->(home) " + 
+			"MERGE (product)-[:LINKS]->(home) " + 
+			"MERGE (home)-[:LINKS]->(product) " + 
+			"MERGE (links)-[:LINKS]->(home) " + 
+			"MERGE (home)-[:LINKS]->(links) " + 
+			"MERGE (links)-[:LINKS]->(a) " + 
+			"MERGE (a)-[:LINKS]->(home) " + 
+			"MERGE (links)-[:LINKS]->(b) " + 
+			"MERGE (b)-[:LINKS]->(home) " + 
+			"MERGE (links)-[:LINKS]->(c) " + 
+			"MERGE (c)-[:LINKS]->(home) " + 
+			"MERGE (links)-[:LINKS]->(d) " + 
+			"MERGE (d)-[:LINKS]->(home) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+
+	private void initJaccardData() throws Exception  {
+		String detachDeleteStatement = String.format("MATCH (n) DETACH DELETE n");
+		assistant.write(detachDeleteStatement);
+		String createStatement = String.format(
+			"MERGE (french:Cuisine {name:'French'}) " + 
+			"MERGE (italian:Cuisine {name:'Italian'}) " + 
+			"MERGE (indian:Cuisine {name:'Indian'}) " + 
+			"MERGE (lebanese:Cuisine {name:'Lebanese'}) " + 
+			"MERGE (portuguese:Cuisine {name:'Portuguese'}) " + 
+			"MERGE (zhen:Person {name: 'Zhen'}) " + 
+			"MERGE (praveena:Person {name: 'Praveena'}) " + 
+			"MERGE (michael:Person {name: 'Michael'}) " + 
+			"MERGE (arya:Person {name: 'Arya'}) " + 
+			"MERGE (karin:Person {name: 'Karin'}) " + 
+			"MERGE (praveena)-[:LIKES]->(indian) " + 
+			"MERGE (praveena)-[:LIKES]->(portuguese) " + 
+			"MERGE (zhen)-[:LIKES]->(french) " + 
+			"MERGE (zhen)-[:LIKES]->(indian) " + 
+			"MERGE (michael)-[:LIKES]->(french) " + 
+			"MERGE (michael)-[:LIKES]->(italian) " + 
+			"MERGE (michael)-[:LIKES]->(indian) " + 
+			"MERGE (arya)-[:LIKES]->(lebanese) " + 
+			"MERGE (arya)-[:LIKES]->(italian) " + 
+			"MERGE (arya)-[:LIKES]->(portuguese) " + 
+			"MERGE (karin)-[:LIKES]->(lebanese) " + 
+			"MERGE (karin)-[:LIKES]->(italian) ");
+		StatementResult createResult = assistant.write(createStatement);
+	}
+	
 	private long getCurrentTimeMillis() throws InterruptedException {
 		Thread.sleep(1);
 		return System.currentTimeMillis();

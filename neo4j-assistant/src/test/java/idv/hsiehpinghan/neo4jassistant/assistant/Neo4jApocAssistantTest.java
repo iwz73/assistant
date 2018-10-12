@@ -23,7 +23,7 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 	/**
 	 * if fail, rm -rf /tmp/neo4j/data/* and restart neo4j, and try again.
 	 */
-//	@Test
+	@Test
 	public void index() throws Exception {
 		initIndexData();
 		indexAddNode();
@@ -32,7 +32,7 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 		indexRemove();
 	}
 
-//	@Test
+	@Test
 	public void help() throws Exception {
 		String name = "dijkstra";
 		// @formatter:off
@@ -47,7 +47,7 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(0 < i);
 	}
 
-//	@Test
+	@Test
 	public void loadJson() throws Exception {
 		String url = "https://raw.githubusercontent.com/neo4j-contrib/neo4j-apoc-procedures/3.4/src/test/resources/person.json";
 		// @formatter:off
@@ -71,20 +71,20 @@ public class Neo4jApocAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(i, 1);
 	}
 
-//	@Test
+	@Test
 	public void spatial() throws Exception {
 		geocodeOnce();
 		geocode();
 		reverseGeocode();
 	}
 	
-//	@Test
+	@Test
 	public void group() throws Exception {
 		initGroupData();
 		nodesGroup();
 	}
 
-//	@Test
+	@Test
 	public void schema() throws Exception {
 		schemaAssert();
 		schemaNodes();

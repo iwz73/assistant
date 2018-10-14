@@ -36,6 +36,11 @@ vi /etc/resolv.conf
 /opt/zookeeper-3.4.13/bin/zkServer.sh start
 
 # run mesos
+echo "docker,mesos" | tee /etc/mesos-slave/containerizers
+echo "5mins" | tee /etc/mesos-slave/executor_registration_timeout
+export MESOS_zk=zk://localhost:2181
+export MESOS_work_dir=/var/lib/mesos
+export MESOS_log_dir=/var/log/mesos
 systemctl start mesos-master
 systemctl start mesos-slave
 
@@ -127,18 +132,23 @@ curl -X POST -H "Content-Type: application/json" http://localhost:5050/quota -d 
 curl -X GET http://localhost:5050/master/quota
 
 # marathon rest api
-curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/tomcat.json
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/marathon/app/tomcat.json
 << http://tomcat.marathon.mesos:1234/ >>
 curl -X GET http://localhost:8080/v2/apps
 curl -X DELETE http://localhost:8080/v2/apps/tomcat
-curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/jenkins.json
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/marathon/app/jenkins.json
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/assistant/mesos-assistant/json/marathon/docker/nginx.json
+<< http://localhost:80/ >>
 
 # chronos rest api
-curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/scheduler/iso8601 -d @/home/hsiehpinghan/git/example/mesos-assistant/json/chronos.json
+curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/scheduler/iso8601 -d @/home/hsiehpinghan/git/example/mesos-assistant/json/chronos/chronos.json
 curl -X PUT -L http://localhost:8081/v1/scheduler/job/chronos_test
 curl -X GET -L http://localhost:8081/v1/scheduler/jobs
 curl -X DELETE -L http://localhost:8081/v1/scheduler/job/chronos_test
 
 # clear mesos sandbox 
 rm -rf /var/lib/mesos/
+
+# clear mesos log
+rm -rf /var/log/mesos/
 

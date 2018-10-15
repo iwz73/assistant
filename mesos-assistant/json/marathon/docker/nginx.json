@@ -1,0 +1,19 @@
+{
+  "id": "nginx",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 128,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "docker": {
+      "image": "nginx"
+    },
+    "type": "DOCKER"
+  },
+  "networks": [
+    {
+      "mode": "host"
+    }
+  ]
+}

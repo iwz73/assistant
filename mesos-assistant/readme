@@ -1,0 +1,154 @@
+# install zookeeper (reference : https://raw.githubusercontent.com/hsiehpinghan/assistant/master/zookeeper-assistant/readme)
+
+# install mesos
+yum install http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+yum install -y mesos
+
+# install marathon
+wget -L https://downloads.mesosphere.com/marathon/releases/1.6.322/marathon-1.6.322-2bf46b341.tgz -O /tmp/marathon-1.6.322-2bf46b341.tgz
+tar xvfz /tmp/marathon-1.6.322-2bf46b341.tgz -C /opt
+
+# install
+docker run --net=host -e PORT0=8081 -e PORT1=8082 mesosphere/chronos:v3.0.0 --zk_hosts 127.0.0.1:2181 --master zk://127.0.0.1:2181/mesos
+
+# install mesos-dns (https://github.com/mesosphere/mesos-dns/releases/, https://mesosphere.github.io/mesos-dns/docs/configuration-parameters.html)
+mkdir /opt/mesos-dns
+wget -L https://github.com/mesosphere/mesos-dns/releases/download/v0.6.0/mesos-dns-v0.6.0-linux-amd64 -O /opt/mesos-dns/mesos-dns-v0.6.0-linux-amd64
+vi /opt/mesos-dns/mesos-dns.conf
+  {
+    "zk": "zk://localhost:2181/mesos",
+    "domain": "mesos",
+    "port": 53,
+    "resolvers": ["8.8.8.8"]
+  }
+chmod 777 /opt/mesos-dns/mesos-dns-v0.6.0-linux-amd64
+<< stop all process using 53 port >>
+/opt/mesos-dns/mesos-dns-v0.6.0-linux-amd64 -config=/opt/mesos-dns/mesos-dns.conf
+vi /etc/resolv.conf
+  nameserver 127.0.0.1
+<< http://marathon.mesos:8080/ >>
+
+# install spark (reference : https://raw.githubusercontent.com/hsiehpinghan/example/master/spark-example/readme)
+
+# install docker (reference : https://raw.githubusercontent.com/hsiehpinghan/example/master/docker-example/readme)
+
+# run zookeeper
+/opt/zookeeper-3.4.13/bin/zkServer.sh start
+
+# run mesos
+echo "docker,mesos" | tee /etc/mesos-slave/containerizers
+echo "5mins" | tee /etc/mesos-slave/executor_registration_timeout
+export MESOS_zk=zk://localhost:2181
+export MESOS_work_dir=/var/lib/mesos
+export MESOS_log_dir=/var/log/mesos
+systemctl start mesos-master
+systemctl start mesos-slave
+
+# run marathon
+/opt/marathon-1.6.322-2bf46b341/bin/marathon --master=zk://localhost:2181/mesos
+
+## run spark
+# local
+/opt/spark-2.3.1-bin-hadoop2.7/bin/spark-submit --class org.apache.spark.examples.SparkPi --master mesos://localhost:5050 /opt/spark-2.3.1-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.3.1.jar 1000
+# cluster
+/opt/spark-2.3.1-bin-hadoop2.7/sbin/start-mesos-dispatcher.sh --master mesos://localhost:5050
+/opt/spark-2.3.1-bin-hadoop2.7/bin/spark-submit --deploy-mode cluster --class org.apache.spark.examples.SparkPi --master mesos://localhost:7077 /opt/spark-2.3.1-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.3.1.jar 1000
+
+# run framework
+Run As -> Maven build... -> clean package
+java -jar /home/hsiehpinghan/git/assistant/mesos-assistant/target/maven-example-jar-with-dependencies.jar
+
+# run docker
+systemctl start docker
+
+## ui
+# mesos
+http://localhost:5050/
+# marathon
+http://localhost:8080/
+
+# mesos rest api
+curl -i \
+-X POST http://localhost:5050/master/reserve \
+-d slaveId=<slave_id> \
+-d resources='[
+  {
+    "name": "cpus",
+    "type": "SCALAR",
+    "scalar": { "value": 1 },
+    "reservations": [
+      {
+        "type": "DYNAMIC",
+        "role": "reserve_role_0",
+        "principal": ""
+      }
+    ]
+  },
+  {
+    "name": "mem",
+    "type": "SCALAR",
+    "scalar": { "value": 1024 },
+    "reservations": [
+      {
+        "type": "DYNAMIC",
+        "role": "reserve_role_0",
+        "principal": ""
+      }
+    ]
+  }
+]'
+
+curl -i \
+-X POST http://localhost:5050/master/unreserve \
+-d slaveId=<slave_id> \
+-d resources='[
+  {
+    "name": "cpus",
+    "type": "SCALAR",
+    "scalar": { "value": 1 },
+    "reservations": [
+      {
+        "type": "DYNAMIC",
+        "role": "reserve_role_0",
+        "principal": ""
+      }
+    ]
+  },
+  {
+    "name": "mem",
+    "type": "SCALAR",
+    "scalar": { "value": 1024 },
+    "reservations": [
+      {
+        "type": "DYNAMIC",
+        "role": "reserve_role_0",
+        "principal": ""
+      }
+    ]
+  }
+]'
+      
+curl -X POST -H "Content-Type: application/json" http://localhost:5050/quota -d @/home/hsiehpinghan/git/example/mesos-assistant/json/quota.json
+curl -X GET http://localhost:5050/master/quota
+
+# marathon rest api
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/marathon/app/tomcat.json
+<< http://tomcat.marathon.mesos:1234/ >>
+curl -X GET http://localhost:8080/v2/apps
+curl -X DELETE http://localhost:8080/v2/apps/tomcat
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/example/mesos-assistant/json/marathon/app/jenkins.json
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/v2/apps -d @/home/hsiehpinghan/git/assistant/mesos-assistant/json/marathon/docker/nginx.json
+<< http://localhost:80/ >>
+
+# chronos rest api
+curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/scheduler/iso8601 -d @/home/hsiehpinghan/git/example/mesos-assistant/json/chronos/chronos.json
+curl -X PUT -L http://localhost:8081/v1/scheduler/job/chronos_test
+curl -X GET -L http://localhost:8081/v1/scheduler/jobs
+curl -X DELETE -L http://localhost:8081/v1/scheduler/job/chronos_test
+
+# clear mesos sandbox 
+rm -rf /var/lib/mesos/
+
+# clear mesos log
+rm -rf /var/log/mesos/
+

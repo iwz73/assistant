@@ -19,6 +19,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<neo4j-java-driver.version>1.6.2</neo4j-java-driver.version>
+		<neo4j-ogm.version>3.1.4</neo4j-ogm.version>
 	</properties>
 
 	<dependencies>
@@ -35,7 +36,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-
 		<!-- testng -->
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -49,21 +49,30 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<!-- neo4j-java-driver -->
 		<dependency>
 			<groupId>org.neo4j.driver</groupId>
 			<artifactId>neo4j-java-driver</artifactId>
 			<version>${neo4j-java-driver.version}</version>
 		</dependency>
-
+		<!-- neo4j-ogm -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-core</artifactId>
+			<version>${neo4j-ogm.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-bolt-driver</artifactId>
+            <version>${neo4j-ogm.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 	</dependencies>
 
 	<build>

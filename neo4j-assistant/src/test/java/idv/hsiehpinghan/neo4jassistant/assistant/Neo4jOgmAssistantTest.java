@@ -24,7 +24,6 @@ import idv.hsiehpinghan.neo4jassistant.node.Node_0_0;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
-	private static Long id = System.currentTimeMillis();
 	private static String null_ = null;
 	private static List<String> list = Arrays.asList("A", "B", "C");
 	private static Map<String, Integer> map = generateMap();
@@ -40,7 +39,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	private static LocalDateTime localDateTime = LocalDateTime.now();
 	private static IsoDuration isoDuration = Values.isoDuration(1L, 2L, 3L, 4).asIsoDuration();
 	private static Point point = Values.point(4979, 1.1, 2.2, 3.3).asPoint();
-	private Node_0_0 node_0_0 = new Node_0_0(id, null_, list, map, boolean_, long_, double_, string, bytes, localDate, offsetTime, localTime, zonedDateTime, localDateTime, isoDuration, point);
+	private Node_0_0 node_0_0 = new Node_0_0(null_, list, boolean_, long_, double_, string, bytes, localDate, offsetTime, localTime, zonedDateTime, localDateTime, isoDuration, point);
 	@Autowired
 	private Neo4jOgmAssistant assistant;
 	

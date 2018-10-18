@@ -1,4 +1,4 @@
-package idv.hsiehpinghan.neo4jassistant.node;
+package idv.hsiehpinghan.neo4jassistant.relationship;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.Properties;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -28,13 +28,9 @@ import org.neo4j.ogm.typeconversion.OffsettDateTimeStringConverter;
 import org.neo4j.ogm.typeconversion.UuidStringConverter;
 
 import idv.hsiehpinghan.neo4jassistant.enumeration.Enumeration;
-import idv.hsiehpinghan.neo4jassistant.relationship.BasicRelationship;
+import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
-/**
- * reference : https://www.javadoc.io/doc/org.neo4j/neo4j-ogm-core/3.1.4
- */
-@NodeEntity
-public class BasicNode extends BaseNode {
+public class BasicRelationship extends BaseRelationship {
 	// primative
 	private boolean primativeBoolean;
 	private Boolean wrappedBoolean;
@@ -104,21 +100,17 @@ public class BasicNode extends BaseNode {
 	private OffsetDateTime offsetDateTime;
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
-	// relationship
-	@Relationship(type = "outcomeNode")
-	private BasicNode outcomeNode;
-	@Relationship(type = "incomeNode", direction = "INCOMING")
+	// node
+	@StartNode
 	private BasicNode incomeNode;
-	@Relationship(type = "outcomeRelationship")
-	private BasicRelationship outcomeRelationship;
-	@Relationship(type = "incomeRelationship", direction = "INCOMING")
-	private BasicRelationship incomeRelationship;
+	@EndNode
+	private BasicNode outcomeNode;
 
-	public BasicNode() {
+	public BasicRelationship() {
 		super();
 	}
 
-	public BasicNode(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
+	public BasicRelationship(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
 			Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
 			Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString, int primativeInt,
 			Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong, Long longString,
@@ -128,8 +120,7 @@ public class BasicNode extends BaseNode {
 			List<Enumeration> enumList, Map<String, Integer> map, Date date, Date dateLong, Date dateString,
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
-			OffsetDateTime offsetDateTimeString, BasicNode outcomeNode, BasicNode incomeNode,
-			BasicRelationship outcomeRelationship, BasicRelationship incomeRelationship) {
+			OffsetDateTime offsetDateTimeString, BasicNode incomeNode, BasicNode outcomeNode) {
 		super();
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -177,10 +168,8 @@ public class BasicNode extends BaseNode {
 		this.localDateTimeString = localDateTimeString;
 		this.offsetDateTime = offsetDateTime;
 		this.offsetDateTimeString = offsetDateTimeString;
-		this.outcomeNode = outcomeNode;
 		this.incomeNode = incomeNode;
-		this.outcomeRelationship = outcomeRelationship;
-		this.incomeRelationship = incomeRelationship;
+		this.outcomeNode = outcomeNode;
 	}
 
 	public boolean isPrimativeBoolean() {
@@ -551,14 +540,6 @@ public class BasicNode extends BaseNode {
 		this.offsetDateTimeString = offsetDateTimeString;
 	}
 
-	public BasicNode getOutcomeNode() {
-		return outcomeNode;
-	}
-
-	public void setOutcomeNode(BasicNode outcomeNode) {
-		this.outcomeNode = outcomeNode;
-	}
-
 	public BasicNode getIncomeNode() {
 		return incomeNode;
 	}
@@ -567,25 +548,17 @@ public class BasicNode extends BaseNode {
 		this.incomeNode = incomeNode;
 	}
 
-	public BasicRelationship getOutcomeRelationship() {
-		return outcomeRelationship;
+	public BasicNode getOutcomeNode() {
+		return outcomeNode;
 	}
 
-	public void setOutcomeRelationship(BasicRelationship outcomeRelationship) {
-		this.outcomeRelationship = outcomeRelationship;
-	}
-
-	public BasicRelationship getIncomeRelationship() {
-		return incomeRelationship;
-	}
-
-	public void setIncomeRelationship(BasicRelationship incomeRelationship) {
-		this.incomeRelationship = incomeRelationship;
+	public void setOutcomeNode(BasicNode outcomeNode) {
+		this.outcomeNode = outcomeNode;
 	}
 
 	@Override
 	public String toString() {
-		return "BasicNode [primativeBoolean=" + primativeBoolean + ", wrappedBoolean=" + wrappedBoolean
+		return "BasicRelationship [primativeBoolean=" + primativeBoolean + ", wrappedBoolean=" + wrappedBoolean
 				+ ", primativeByte=" + primativeByte + ", wrappedByte=" + wrappedByte + ", byteString=" + byteString
 				+ ", primativeChar=" + primativeChar + ", wrappedChar=" + wrappedChar + ", primativeDouble="
 				+ primativeDouble + ", wrappedDouble=" + wrappedDouble + ", doubleString=" + doubleString

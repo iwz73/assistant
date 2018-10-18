@@ -5,7 +5,7 @@ import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import idv.hsiehpinghan.neo4jassistant.node.Node_0_0;
+import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
 @Component
 public class Neo4jOgmAssistant {
@@ -17,12 +17,12 @@ public class Neo4jOgmAssistant {
 		session.purgeDatabase();
 	}
 
-	public void save(Node_0_0 node, int depth) {
+	public void save(BasicNode node, int depth) {
 		Session session = sessionFactory.openSession();
 		session.save(node, depth);
 	}
 
-	public Node_0_0 load(Class<Node_0_0> type, Long id, int depth) {
+	public BasicNode load(Class<BasicNode> type, Long id, int depth) {
 		Session session = sessionFactory.openSession();
 		return session.load(type, id, depth);
 	}

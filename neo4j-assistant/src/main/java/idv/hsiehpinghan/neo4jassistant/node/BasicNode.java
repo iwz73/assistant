@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Properties;
+import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -32,7 +33,7 @@ import idv.hsiehpinghan.neo4jassistant.enumeration.Enumeration;
  * reference : https://www.javadoc.io/doc/org.neo4j/neo4j-ogm-core/3.1.4
  */
 @NodeEntity
-public class Node_0_0 extends BaseNode {
+public class BasicNode extends BaseNode {
 	// primative
 	private boolean primativeBoolean;
 	private Boolean wrappedBoolean;
@@ -102,12 +103,17 @@ public class Node_0_0 extends BaseNode {
 	private OffsetDateTime offsetDateTime;
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
+	// relationship
+	@Relationship(type = "outcomeType_0")
+	private BasicNode outcomeNode_0;
+	@Relationship(type = "incomeType_0", direction = "INCOMING")
+	private BasicNode incomeNode_0;
 
-	public Node_0_0() {
+	public BasicNode() {
 		super();
 	}
 
-	public Node_0_0(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
+	public BasicNode(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
 			Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
 			Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString, int primativeInt,
 			Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong, Long longString,
@@ -117,7 +123,7 @@ public class Node_0_0 extends BaseNode {
 			List<Enumeration> enumList, Map<String, Integer> map, Date date, Date dateLong, Date dateString,
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
-			OffsetDateTime offsetDateTimeString) {
+			OffsetDateTime offsetDateTimeString, BasicNode outcomeNode_0, BasicNode incomeNode_0) {
 		super();
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -165,6 +171,8 @@ public class Node_0_0 extends BaseNode {
 		this.localDateTimeString = localDateTimeString;
 		this.offsetDateTime = offsetDateTime;
 		this.offsetDateTimeString = offsetDateTimeString;
+		this.outcomeNode_0 = outcomeNode_0;
+		this.incomeNode_0 = incomeNode_0;
 	}
 
 	public boolean isPrimativeBoolean() {
@@ -535,9 +543,25 @@ public class Node_0_0 extends BaseNode {
 		this.offsetDateTimeString = offsetDateTimeString;
 	}
 
+	public BasicNode getOutcomeNode_0() {
+		return outcomeNode_0;
+	}
+
+	public void setOutcomeNode_0(BasicNode outcomeNode_0) {
+		this.outcomeNode_0 = outcomeNode_0;
+	}
+
+	public BasicNode getIncomeNode_0() {
+		return incomeNode_0;
+	}
+
+	public void setIncomeNode_0(BasicNode incomeNode_0) {
+		this.incomeNode_0 = incomeNode_0;
+	}
+
 	@Override
 	public String toString() {
-		return "Node_0_0 [primativeBoolean=" + primativeBoolean + ", wrappedBoolean=" + wrappedBoolean
+		return "BasicNode [primativeBoolean=" + primativeBoolean + ", wrappedBoolean=" + wrappedBoolean
 				+ ", primativeByte=" + primativeByte + ", wrappedByte=" + wrappedByte + ", byteString=" + byteString
 				+ ", primativeChar=" + primativeChar + ", wrappedChar=" + wrappedChar + ", primativeDouble="
 				+ primativeDouble + ", wrappedDouble=" + wrappedDouble + ", doubleString=" + doubleString
@@ -553,7 +577,7 @@ public class Node_0_0 extends BaseNode {
 				+ ", instantLong=" + instantLong + ", instantString=" + instantString + ", localDate=" + localDate
 				+ ", localDateString=" + localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString="
 				+ localDateTimeString + ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString="
-				+ offsetDateTimeString + "]";
+				+ offsetDateTimeString + ", outcomeNode_0=" + outcomeNode_0 + ", incomeNode_0=" + incomeNode_0 + "]";
 	}
 
 }

@@ -16,12 +16,14 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.neo4jassistant.configuration.SpringConfiguration;
 import idv.hsiehpinghan.neo4jassistant.enumeration.Enumeration;
-import idv.hsiehpinghan.neo4jassistant.node.Node_0_0;
+import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
+import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
@@ -71,25 +73,79 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	private LocalDateTime localDateTimeString = LocalDateTime.now();
 	private OffsetDateTime offsetDateTime = OffsetDateTime.now();
 	private OffsetDateTime offsetDateTimeString = OffsetDateTime.now();
-	private Node_0_0 node_0_0 = new Node_0_0(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString);
+	private BasicNode basicNode = null;
 	@Autowired
 	private Neo4jOgmAssistant assistant;
 
 	@BeforeClass
 	public void beforeClass() {
 		assistant.purgeDatabase();
+		BasicNode outcomeNode_0 = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null);		
+		basicNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, outcomeNode_0, null);	
 	}
 
 	@Test
 	public void saveAndLoad() {
 		int depth = 1;
-		assistant.save(node_0_0, depth);
-		Long id = node_0_0.getNativeGraphId();
-		Node_0_0 returnNode = assistant.load(Node_0_0.class, id, depth);
-		System.err.println(returnNode);
-
+		assistant.save(basicNode, depth);
+		Long id = basicNode.getNativeGraphId();
+		BasicNode returnNode = assistant.load(BasicNode.class, id, depth);
+		assertNode(returnNode);
 	}
 
+	private void assertNode(BasicNode returnNode) {
+		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
+		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);
+		Assert.assertEquals(returnNode.getPrimativeByte(), primativeByte);
+		Assert.assertEquals(returnNode.getWrappedByte(), wrappedByte);
+		Assert.assertEquals(returnNode.getByteString(), byteString);
+		Assert.assertEquals(returnNode.getPrimativeChar(), primativeChar);
+		Assert.assertEquals(returnNode.getWrappedChar(), wrappedChar);
+		Assert.assertEquals(returnNode.getPrimativeDouble(), primativeDouble);
+		Assert.assertEquals(returnNode.getWrappedDouble(), wrappedDouble);
+		Assert.assertEquals(returnNode.getDoubleString(), doubleString);
+		Assert.assertEquals(returnNode.getPrimativeFloat(), primativeFloat);
+		Assert.assertEquals(returnNode.getWrappedFloat(), wrappedFloat);
+		Assert.assertEquals(returnNode.getFloatString(), floatString);
+		Assert.assertEquals(returnNode.getPrimativeInt(), primativeInt);
+		Assert.assertEquals(returnNode.getWrappedInt(), wrappedInt);
+		Assert.assertEquals(returnNode.getIntegerString(), integerString);
+		Assert.assertEquals(returnNode.getPrimativeLong(), primativeLong);
+		Assert.assertEquals(returnNode.getWrappedLong(), wrappedLong);
+		Assert.assertEquals(returnNode.getLongString(), longString);
+		Assert.assertEquals(returnNode.getPrimativeShort(), primativeShort);
+		Assert.assertEquals(returnNode.getWrappedShort(), wrappedShort);
+		Assert.assertEquals(returnNode.getUuid(), uuid);
+		Assert.assertEquals(returnNode.getString(), string);
+		Assert.assertEquals(returnNode.getBigDecimal(), bigDecimal);
+		Assert.assertEquals(returnNode.getBigDecimalString(), bigDecimalString);
+		Assert.assertEquals(returnNode.getBigInteger(), bigInteger);
+		Assert.assertEquals(returnNode.getBigIntegerString(), bigIntegerString);
+		Assert.assertEquals(returnNode.getEnum_(), enum_);
+		Assert.assertEquals(returnNode.getEnumString(), enumString);
+		Assert.assertEquals(returnNode.getByteArray(), byteArray);
+		Assert.assertEquals(returnNode.getStringArray(), stringArray);
+		Assert.assertEquals(returnNode.getDateList(), dateList);
+		Assert.assertEquals(returnNode.getEnumList(), enumList);
+		Assert.assertEquals(returnNode.getMap(), map);
+		Assert.assertEquals(returnNode.getDate(), date);
+		Assert.assertEquals(returnNode.getDateLong(), dateLong);
+		Assert.assertEquals(returnNode.getDateString(), dateString);
+		Assert.assertEquals(returnNode.getInstant(), instant);
+		Assert.assertEquals(returnNode.getInstantLong(), instantLong);
+		Assert.assertEquals(returnNode.getInstantString(), instantString);
+		Assert.assertEquals(returnNode.getLocalDate(), localDate);
+		Assert.assertEquals(returnNode.getLocalDateString(), localDateString);
+		Assert.assertEquals(returnNode.getLocalDateTime(), localDateTime);
+		Assert.assertEquals(returnNode.getLocalDateTimeString(), localDateTimeString);
+		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
+		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
+		BasicNode outcomeNode_0 = returnNode.getOutcomeNode_0();
+		if(outcomeNode_0 != null) {
+			assertNode(outcomeNode_0);
+		}
+	}
+	
 	private Map<String, Integer> generateMap() {
 		Map<String, Integer> map = new HashMap<>();
 		for (int i = 0; i < 3; ++i) {

@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.Properties;
+import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
@@ -30,6 +31,7 @@ import org.neo4j.ogm.typeconversion.UuidStringConverter;
 import idv.hsiehpinghan.neo4jassistant.enumeration.Enumeration;
 import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
+@RelationshipEntity(type = "basic")
 public class BasicRelationship extends BaseRelationship {
 	// primative
 	private boolean primativeBoolean;

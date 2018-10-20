@@ -75,8 +75,8 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	private LocalDateTime localDateTimeString = LocalDateTime.now();
 	private OffsetDateTime offsetDateTime = OffsetDateTime.now();
 	private OffsetDateTime offsetDateTimeString = OffsetDateTime.now();
-	private Long incomeNodeNativeGraphId = null;
-	private Long outcomeNodeNativeGraphId = null;
+	private String incomeNodeId = null;
+	private String outcomeNodeId = null;
 	
 	@Autowired
 	private Neo4jOgmAssistant assistant;
@@ -87,27 +87,27 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void saveAndLoadBasicNode() {
+	public void saveAndLoadBasicNode() throws Exception {
 		int depth = 1;
-		BasicNode outcomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);		
-		BasicNode incomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, outcomeNode, null, null, null);	
-		assistant.save(incomeNode, depth);
-		incomeNodeNativeGraphId = incomeNode.getNativeGraphId();
-		outcomeNodeNativeGraphId = incomeNode.getOutcomeNode().getNativeGraphId();
-		BasicNode returnNode = assistant.load(BasicNode.class, incomeNodeNativeGraphId, depth);
+		BasicNode outcomeNode = new BasicNode(generateId(), primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);		
+		BasicNode incomeNode = new BasicNode(generateId(), primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, outcomeNode, null, null, null);	
+		assistant.save(incomeNode);
+		incomeNodeId = incomeNode.getId();
+		outcomeNodeId = incomeNode.getOutcomeNode().getId();
+		BasicNode returnNode = assistant.load(BasicNode.class, incomeNodeId, depth);
 		assertNode(returnNode);
 	}
 
 	@Test(dependsOnMethods= {"saveAndLoadBasicNode"})
-	public void saveAndLoadBasicRelationship() {
+	public void saveAndLoadBasicRelationship() throws Exception {
 		int depth = 1;
-		BasicNode outcomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);		
-		BasicNode incomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);	
-		BasicRelationship relationship = new BasicRelationship(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, incomeNode, outcomeNode);
-		assistant.save(relationship, depth);
-		incomeNodeNativeGraphId = relationship.getIncomeNode().getNativeGraphId();
-		outcomeNodeNativeGraphId = relationship.getOutcomeNode().getNativeGraphId();
-		BasicNode returnNode = assistant.load(BasicNode.class, incomeNodeNativeGraphId, depth);
+		BasicNode outcomeNode = new BasicNode(generateId(), primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);		
+		BasicNode incomeNode = new BasicNode(generateId(), primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);	
+		BasicRelationship relationship = new BasicRelationship(generateId(), primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, incomeNode, outcomeNode);
+		assistant.save(relationship);
+		incomeNodeId = relationship.getIncomeNode().getId();
+		outcomeNodeId = relationship.getOutcomeNode().getId();
+		BasicNode returnNode = assistant.load(BasicNode.class, incomeNodeId, depth);
 		assertRelationship(returnNode);
 	}
 
@@ -228,10 +228,10 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnNode.getLocalDateTimeString(), localDateTimeString);
 		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
-		if(returnNode.getNativeGraphId().equals(incomeNodeNativeGraphId) == true) {
+		if(returnNode.getId().equals(incomeNodeId) == true) {
 			BasicNode outcomeNode = returnNode.getOutcomeNode();
 			assertNode(outcomeNode);
-		} else if(returnNode.getNativeGraphId().equals(outcomeNodeNativeGraphId) == true) {
+		} else if(returnNode.getId().equals(outcomeNodeId) == true) {
 			// do nothing
 		} else {
 			throw new RuntimeException("unknown nativeGraphId !!!");
@@ -285,10 +285,10 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnNode.getLocalDateTimeString(), localDateTimeString);
 		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
-		if(returnNode.getNativeGraphId().equals(incomeNodeNativeGraphId) == true) {
+		if(returnNode.getId().equals(incomeNodeId) == true) {
 			BasicNode outcomeNode = returnNode.getOutcomeRelationships().iterator().next().getOutcomeNode();
 			assertRelationship(outcomeNode);
-		} else if(returnNode.getNativeGraphId().equals(outcomeNodeNativeGraphId) == true) {
+		} else if(returnNode.getId().equals(outcomeNodeId) == true) {
 			// do nothing
 		} else {
 			throw new RuntimeException("unknown nativeGraphId !!!");
@@ -303,5 +303,10 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 			map.put(key, value);
 		}
 		return map;
+	}
+	
+	private String generateId() throws InterruptedException {
+		Thread.sleep(1);
+		return String.valueOf(System.currentTimeMillis());
 	}
 }

@@ -1,22 +1,32 @@
 package idv.hsiehpinghan.neo4jassistant.relationship;
 
-import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 
 public abstract class BaseRelationship {
 	@Id
-	@GeneratedValue
-	private Long nativeGraphId;
+	private String id;
 
-	public Long getNativeGraphId() {
-		return nativeGraphId;
+	public BaseRelationship() {
+	}
+
+	public BaseRelationship(String id) {
+		super();
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nativeGraphId == null) ? 0 : nativeGraphId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -29,10 +39,10 @@ public abstract class BaseRelationship {
 		if (getClass() != obj.getClass())
 			return false;
 		BaseRelationship other = (BaseRelationship) obj;
-		if (nativeGraphId == null) {
-			if (other.nativeGraphId != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!nativeGraphId.equals(other.nativeGraphId))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

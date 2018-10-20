@@ -18,12 +18,12 @@ public class Neo4jOgmAssistant {
 		session.purgeDatabase();
 	}
 
-	public void save(Object node, int depth) {
+	public void save(Object node) {
 		Session session = sessionFactory.openSession();
-		session.save(node, depth);
+		session.save(node);
 	}
 
-	public <T, ID extends Serializable> T load(Class<T> type, Long id, int depth) {
+	public <T, ID extends Serializable> T load(Class<T> type, String id, int depth) {
 		Session session = sessionFactory.openSession();
 		return session.load(type, id, depth);
 	}

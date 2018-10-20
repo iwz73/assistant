@@ -112,7 +112,7 @@ public class BasicRelationship extends BaseRelationship {
 		super();
 	}
 
-	public BasicRelationship(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
+	public BasicRelationship(String id, boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
 			Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
 			Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString, int primativeInt,
 			Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong, Long longString,
@@ -123,7 +123,7 @@ public class BasicRelationship extends BaseRelationship {
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
 			OffsetDateTime offsetDateTimeString, BasicNode incomeNode, BasicNode outcomeNode) {
-		super();
+		super(id);
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
 		this.primativeByte = primativeByte;

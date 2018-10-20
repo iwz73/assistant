@@ -119,7 +119,7 @@ public class BasicNode extends BaseNode {
 		super();
 	}
 
-	public BasicNode(boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
+	public BasicNode(String id, boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
 			Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
 			Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString, int primativeInt,
 			Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong, Long longString,
@@ -131,7 +131,7 @@ public class BasicNode extends BaseNode {
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
 			OffsetDateTime offsetDateTimeString, BasicNode outcomeNode, BasicNode incomeNode,
 			Set<BasicRelationship> outcomeRelationships, Set<BasicRelationship> incomeRelationships) {
-		super();
+		super(id);
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
 		this.primativeByte = primativeByte;

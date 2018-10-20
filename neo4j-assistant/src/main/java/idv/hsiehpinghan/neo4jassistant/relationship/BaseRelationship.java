@@ -3,7 +3,7 @@ package idv.hsiehpinghan.neo4jassistant.relationship;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 
-public class BaseRelationship {
+public abstract class BaseRelationship {
 	@Id
 	@GeneratedValue
 	private Long nativeGraphId;

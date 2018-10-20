@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -109,10 +110,10 @@ public class BasicNode extends BaseNode {
 	private BasicNode outcomeNode;
 	@Relationship(type = "incomeNode", direction = "INCOMING")
 	private BasicNode incomeNode;
-	@Relationship(type = "outcomeRelationship")
-	private BasicRelationship outcomeRelationship;
-	@Relationship(type = "incomeRelationship", direction = "INCOMING")
-	private BasicRelationship incomeRelationship;
+	@Relationship(type = "basic")
+	private Set<BasicRelationship> outcomeRelationships;
+	@Relationship(type = "basic", direction = "INCOMING")
+	private Set<BasicRelationship> incomeRelationships;
 
 	public BasicNode() {
 		super();
@@ -129,7 +130,7 @@ public class BasicNode extends BaseNode {
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
 			OffsetDateTime offsetDateTimeString, BasicNode outcomeNode, BasicNode incomeNode,
-			BasicRelationship outcomeRelationship, BasicRelationship incomeRelationship) {
+			Set<BasicRelationship> outcomeRelationships, Set<BasicRelationship> incomeRelationships) {
 		super();
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -179,8 +180,8 @@ public class BasicNode extends BaseNode {
 		this.offsetDateTimeString = offsetDateTimeString;
 		this.outcomeNode = outcomeNode;
 		this.incomeNode = incomeNode;
-		this.outcomeRelationship = outcomeRelationship;
-		this.incomeRelationship = incomeRelationship;
+		this.outcomeRelationships = outcomeRelationships;
+		this.incomeRelationships = incomeRelationships;
 	}
 
 	public boolean isPrimativeBoolean() {
@@ -567,20 +568,20 @@ public class BasicNode extends BaseNode {
 		this.incomeNode = incomeNode;
 	}
 
-	public BasicRelationship getOutcomeRelationship() {
-		return outcomeRelationship;
+	public Set<BasicRelationship> getOutcomeRelationships() {
+		return outcomeRelationships;
 	}
 
-	public void setOutcomeRelationship(BasicRelationship outcomeRelationship) {
-		this.outcomeRelationship = outcomeRelationship;
+	public void setOutcomeRelationships(Set<BasicRelationship> outcomeRelationships) {
+		this.outcomeRelationships = outcomeRelationships;
 	}
 
-	public BasicRelationship getIncomeRelationship() {
-		return incomeRelationship;
+	public Set<BasicRelationship> getIncomeRelationships() {
+		return incomeRelationships;
 	}
 
-	public void setIncomeRelationship(BasicRelationship incomeRelationship) {
-		this.incomeRelationship = incomeRelationship;
+	public void setIncomeRelationships(Set<BasicRelationship> incomeRelationships) {
+		this.incomeRelationships = incomeRelationships;
 	}
 
 	@Override

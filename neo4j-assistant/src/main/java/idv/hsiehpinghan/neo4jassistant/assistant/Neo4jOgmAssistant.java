@@ -1,6 +1,7 @@
 package idv.hsiehpinghan.neo4jassistant.assistant;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
@@ -25,5 +26,10 @@ public class Neo4jOgmAssistant {
 	public <T, ID extends Serializable> T load(Class<T> type, Long id, int depth) {
 		Session session = sessionFactory.openSession();
 		return session.load(type, id, depth);
+	}
+
+	public <T> Iterable<T> query(Class<T> type, String cypher, Map<String, ?> parameters) {
+		Session session = sessionFactory.openSession();
+		return session.query(type, cypher, parameters);
 	}
 }

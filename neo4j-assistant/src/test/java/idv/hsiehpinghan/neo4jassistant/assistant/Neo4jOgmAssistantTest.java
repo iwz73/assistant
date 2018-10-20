@@ -11,8 +11,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
+import org.neo4j.ogm.annotation.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -96,9 +98,9 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		assertNode(returnNode);
 	}
 
-	@Test
+	@Test(dependsOnMethods= {"saveAndLoadBasicNode"})
 	public void saveAndLoadBasicRelationship() {
-		int depth = 3;
+		int depth = 1;
 		BasicNode outcomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);		
 		BasicNode incomeNode = new BasicNode(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, null, null, null, null);	
 		BasicRelationship relationship = new BasicRelationship(primativeBoolean, wrappedBoolean, primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong, wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString, incomeNode, outcomeNode);
@@ -108,7 +110,77 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		BasicNode returnNode = assistant.load(BasicNode.class, incomeNodeNativeGraphId, depth);
 		assertRelationship(returnNode);
 	}
+
+	@Test(dependsOnMethods= {"saveAndLoadBasicRelationship"})
+	public void query() {
+		String cypher = "MATCH (n_0)-[r]->(n_1 {primativeBoolean:$primativeBoolean}) RETURN n_0, r, n_1";
+		Map<String, Object> parameters = new HashMap<>(1);
+		parameters.put ("primativeBoolean", primativeBoolean);
+		int i = 0;
+		for(BasicNode returnNode : assistant.query(BasicNode.class, cypher, parameters)) {	
+			assertQuery(returnNode);
+			++i;
+		}
+		Assert.assertEquals(i, 4);
+	}
 	
+	private void assertQuery(BasicNode returnNode) {
+		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
+		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);
+		Assert.assertEquals(returnNode.getPrimativeByte(), primativeByte);
+		Assert.assertEquals(returnNode.getWrappedByte(), wrappedByte);
+		Assert.assertEquals(returnNode.getByteString(), byteString);
+		Assert.assertEquals(returnNode.getPrimativeChar(), primativeChar);
+		Assert.assertEquals(returnNode.getWrappedChar(), wrappedChar);
+		Assert.assertEquals(returnNode.getPrimativeDouble(), primativeDouble);
+		Assert.assertEquals(returnNode.getWrappedDouble(), wrappedDouble);
+		Assert.assertEquals(returnNode.getDoubleString(), doubleString);
+		Assert.assertEquals(returnNode.getPrimativeFloat(), primativeFloat);
+		Assert.assertEquals(returnNode.getWrappedFloat(), wrappedFloat);
+		Assert.assertEquals(returnNode.getFloatString(), floatString);
+		Assert.assertEquals(returnNode.getPrimativeInt(), primativeInt);
+		Assert.assertEquals(returnNode.getWrappedInt(), wrappedInt);
+		Assert.assertEquals(returnNode.getIntegerString(), integerString);
+		Assert.assertEquals(returnNode.getPrimativeLong(), primativeLong);
+		Assert.assertEquals(returnNode.getWrappedLong(), wrappedLong);
+		Assert.assertEquals(returnNode.getLongString(), longString);
+		Assert.assertEquals(returnNode.getPrimativeShort(), primativeShort);
+		Assert.assertEquals(returnNode.getWrappedShort(), wrappedShort);
+		Assert.assertEquals(returnNode.getUuid(), uuid);
+		Assert.assertEquals(returnNode.getString(), string);
+		Assert.assertEquals(returnNode.getBigDecimal(), bigDecimal);
+		Assert.assertEquals(returnNode.getBigDecimalString(), bigDecimalString);
+		Assert.assertEquals(returnNode.getBigInteger(), bigInteger);
+		Assert.assertEquals(returnNode.getBigIntegerString(), bigIntegerString);
+		Assert.assertEquals(returnNode.getEnum_(), enum_);
+		Assert.assertEquals(returnNode.getEnumString(), enumString);
+		Assert.assertEquals(returnNode.getByteArray(), byteArray);
+		Assert.assertEquals(returnNode.getStringArray(), stringArray);
+		Assert.assertEquals(returnNode.getDateList(), dateList);
+		Assert.assertEquals(returnNode.getEnumList(), enumList);
+		Assert.assertEquals(returnNode.getMap(), map);
+		Assert.assertEquals(returnNode.getDate(), date);
+		Assert.assertEquals(returnNode.getDateLong(), dateLong);
+		Assert.assertEquals(returnNode.getDateString(), dateString);
+		Assert.assertEquals(returnNode.getInstant(), instant);
+		Assert.assertEquals(returnNode.getInstantLong(), instantLong);
+		Assert.assertEquals(returnNode.getInstantString(), instantString);
+		Assert.assertEquals(returnNode.getLocalDate(), localDate);
+		Assert.assertEquals(returnNode.getLocalDateString(), localDateString);
+		Assert.assertEquals(returnNode.getLocalDateTime(), localDateTime);
+		Assert.assertEquals(returnNode.getLocalDateTimeString(), localDateTimeString);
+		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
+		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
+		BasicNode outcomeNode = returnNode.getOutcomeNode();
+		if(outcomeNode != null) {
+			assertQuery(outcomeNode);
+		}
+		Set<BasicRelationship> outcomeRelationships = returnNode.getOutcomeRelationships();
+		if(outcomeRelationships != null) {
+			assertQuery(outcomeRelationships.iterator().next().getOutcomeNode());
+		}
+	}
+
 	private void assertNode(BasicNode returnNode) {
 		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);
@@ -164,8 +236,8 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		} else {
 			throw new RuntimeException("unknown nativeGraphId !!!");
 		}
-//		}
 	}
+	
 	private void assertRelationship(BasicNode returnNode) {
 		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);

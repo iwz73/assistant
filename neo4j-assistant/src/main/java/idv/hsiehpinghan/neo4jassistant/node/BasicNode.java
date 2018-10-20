@@ -106,9 +106,9 @@ public class BasicNode extends BaseNode {
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
 	// relationship
-	@Relationship(type = "outcomeNode")
+	@Relationship(type = "type")
 	private BasicNode outcomeNode;
-	@Relationship(type = "incomeNode", direction = "INCOMING")
+	@Relationship(type = "type", direction = "INCOMING")
 	private BasicNode incomeNode;
 	@Relationship(type = "basic")
 	private Set<BasicRelationship> outcomeRelationships;

@@ -16,6 +16,7 @@ import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
+import org.neo4j.ogm.annotation.Transient;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -102,6 +103,9 @@ public class BasicRelationship extends BaseRelationship {
 	private OffsetDateTime offsetDateTime;
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
+	// transient
+	@Transient
+	private String transientValue;
 	// node
 	@StartNode
 	private BasicNode incomeNode;
@@ -112,17 +116,17 @@ public class BasicRelationship extends BaseRelationship {
 		super();
 	}
 
-	public BasicRelationship(String id, boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte, Byte wrappedByte,
-			Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble, Double wrappedDouble,
-			Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString, int primativeInt,
-			Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong, Long longString,
-			short primativeShort, Short wrappedShort, UUID uuid, String string, BigDecimal bigDecimal,
+	public BasicRelationship(String id, boolean primativeBoolean, Boolean wrappedBoolean, byte primativeByte,
+			Byte wrappedByte, Byte byteString, char primativeChar, Character wrappedChar, double primativeDouble,
+			Double wrappedDouble, Double doubleString, float primativeFloat, Float wrappedFloat, Float floatString,
+			int primativeInt, Integer wrappedInt, Integer integerString, long primativeLong, Long wrappedLong,
+			Long longString, short primativeShort, Short wrappedShort, UUID uuid, String string, BigDecimal bigDecimal,
 			BigDecimal bigDecimalString, BigInteger bigInteger, BigInteger bigIntegerString, Enumeration enum_,
 			Enumeration enumString, byte[] byteArray, String[] stringArray, List<Date> dateList,
 			List<Enumeration> enumList, Map<String, Integer> map, Date date, Date dateLong, Date dateString,
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
-			OffsetDateTime offsetDateTimeString, BasicNode incomeNode, BasicNode outcomeNode) {
+			OffsetDateTime offsetDateTimeString, String transientValue, BasicNode incomeNode, BasicNode outcomeNode) {
 		super(id);
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -170,6 +174,7 @@ public class BasicRelationship extends BaseRelationship {
 		this.localDateTimeString = localDateTimeString;
 		this.offsetDateTime = offsetDateTime;
 		this.offsetDateTimeString = offsetDateTimeString;
+		this.transientValue = transientValue;
 		this.incomeNode = incomeNode;
 		this.outcomeNode = outcomeNode;
 	}
@@ -542,6 +547,14 @@ public class BasicRelationship extends BaseRelationship {
 		this.offsetDateTimeString = offsetDateTimeString;
 	}
 
+	public String getTransientValue() {
+		return transientValue;
+	}
+
+	public void setTransientValue(String transientValue) {
+		this.transientValue = transientValue;
+	}
+
 	public BasicNode getIncomeNode() {
 		return incomeNode;
 	}
@@ -576,7 +589,7 @@ public class BasicRelationship extends BaseRelationship {
 				+ ", instantLong=" + instantLong + ", instantString=" + instantString + ", localDate=" + localDate
 				+ ", localDateString=" + localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString="
 				+ localDateTimeString + ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString="
-				+ offsetDateTimeString + "]";
+				+ offsetDateTimeString + ", transientValue=" + transientValue + "]";
 	}
 
 }

@@ -77,6 +77,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	private OffsetDateTime offsetDateTime = OffsetDateTime.now();
 	private OffsetDateTime offsetDateTimeString = OffsetDateTime.now();
 	private String transientValue = "transientValue";
+	private String indexString = "indexString";
 	private String incomeNodeId = null;
 	private String outcomeNodeId = null;
 
@@ -97,15 +98,16 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 				wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString,
 				bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date,
 				dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime,
-				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, null, null, null, null);
+				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, indexString, null, null,
+				null, null);
 		BasicNode incomeNode = new BasicNode(generateId(), labels, primativeBoolean, wrappedBoolean, primativeByte,
 				wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString,
 				primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong,
 				wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString,
 				bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date,
 				dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime,
-				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, outcomeNode, null, null,
-				null);
+				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, indexString, outcomeNode,
+				null, null, null);
 		assistant.save(incomeNode);
 		incomeNodeId = incomeNode.getId();
 		outcomeNodeId = incomeNode.getOutcomeNode().getId();
@@ -122,14 +124,16 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 				wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString,
 				bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date,
 				dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime,
-				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, null, null, null, null);
+				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, indexString, null, null,
+				null, null);
 		BasicNode incomeNode = new BasicNode(generateId(), labels, primativeBoolean, wrappedBoolean, primativeByte,
 				wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble, doubleString,
 				primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString, primativeLong,
 				wrappedLong, longString, primativeShort, wrappedShort, uuid, string, bigDecimal, bigDecimalString,
 				bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList, enumList, map, date,
 				dateLong, dateString, instant, instantLong, instantString, localDate, localDateString, localDateTime,
-				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, null, null, null, null);
+				localDateTimeString, offsetDateTime, offsetDateTimeString, transientValue, indexString, null, null,
+				null, null);
 		BasicRelationship relationship = new BasicRelationship(generateId(), primativeBoolean, wrappedBoolean,
 				primativeByte, wrappedByte, byteString, primativeChar, wrappedChar, primativeDouble, wrappedDouble,
 				doubleString, primativeFloat, wrappedFloat, floatString, primativeInt, wrappedInt, integerString,
@@ -137,7 +141,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 				bigDecimalString, bigInteger, bigIntegerString, enum_, enumString, byteArray, stringArray, dateList,
 				enumList, map, date, dateLong, dateString, instant, instantLong, instantString, localDate,
 				localDateString, localDateTime, localDateTimeString, offsetDateTime, offsetDateTimeString,
-				transientValue, incomeNode, outcomeNode);
+				transientValue, indexString, incomeNode, outcomeNode);
 		assistant.save(relationship);
 		incomeNodeId = relationship.getIncomeNode().getId();
 		outcomeNodeId = relationship.getOutcomeNode().getId();
@@ -207,6 +211,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
 		Assert.assertNull(returnNode.getTransientValue());
+		Assert.assertEquals(returnNode.getIndexString(), indexString);
 		BasicNode outcomeNode = returnNode.getOutcomeNode();
 		if (outcomeNode != null) {
 			assertQuery(outcomeNode);
@@ -218,6 +223,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void assertNode(BasicNode returnNode) {
+		Assert.assertEquals(returnNode.getVersion_().longValue(), 0L);
 		Assert.assertEquals(returnNode.getLabels(), labels);
 		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);
@@ -266,6 +272,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
 		Assert.assertNull(returnNode.getTransientValue());
+		Assert.assertEquals(returnNode.getIndexString(), indexString);
 		if (returnNode.getId().equals(incomeNodeId) == true) {
 			BasicNode outcomeNode = returnNode.getOutcomeNode();
 			assertNode(outcomeNode);
@@ -277,6 +284,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void assertRelationshipNode(BasicNode returnNode) {
+		Assert.assertEquals(returnNode.getVersion_().longValue(), 0L);
 		Assert.assertEquals(returnNode.getLabels(), labels);
 		Assert.assertEquals(returnNode.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnNode.getWrappedBoolean(), wrappedBoolean);
@@ -325,6 +333,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnNode.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnNode.getOffsetDateTimeString(), offsetDateTimeString);
 		Assert.assertNull(returnNode.getTransientValue());
+		Assert.assertEquals(returnNode.getIndexString(), indexString);
 		if (returnNode.getId().equals(incomeNodeId) == true) {
 			BasicRelationship returnRelationship = returnNode.getOutcomeRelationships().iterator().next();
 			assertRelationship(returnRelationship);
@@ -336,6 +345,7 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 	}
 
 	private void assertRelationship(BasicRelationship returnRelationship) {
+		Assert.assertEquals(returnRelationship.getVersion_().longValue(), 0L);
 		Assert.assertEquals(returnRelationship.isPrimativeBoolean(), primativeBoolean);
 		Assert.assertEquals(returnRelationship.getWrappedBoolean(), wrappedBoolean);
 		Assert.assertEquals(returnRelationship.getPrimativeByte(), primativeByte);
@@ -383,10 +393,11 @@ public class Neo4jOgmAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(returnRelationship.getOffsetDateTime(), offsetDateTime);
 		Assert.assertEquals(returnRelationship.getOffsetDateTimeString(), offsetDateTimeString);
 		Assert.assertNull(returnRelationship.getTransientValue());
+		Assert.assertEquals(returnRelationship.getIndexString(), indexString);
 		BasicNode outcomeNode = returnRelationship.getOutcomeNode();
 		assertRelationshipNode(outcomeNode);
 	}
-	
+
 	private Map<String, Integer> generateMap() {
 		Map<String, Integer> map = new HashMap<>();
 		for (int i = 0; i < 3; ++i) {

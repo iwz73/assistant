@@ -13,10 +13,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.Transient;
+import org.neo4j.ogm.annotation.Version;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -34,6 +36,8 @@ import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
 @RelationshipEntity(type = "basic")
 public class BasicRelationship extends BaseRelationship {
+	@Version
+	private Long version_;
 	// primative
 	private boolean primativeBoolean;
 	private Boolean wrappedBoolean;
@@ -103,6 +107,9 @@ public class BasicRelationship extends BaseRelationship {
 	private OffsetDateTime offsetDateTime;
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
+	// index
+	@Index(unique = true)
+	private String indexString;
 	// transient
 	@Transient
 	private String transientValue;
@@ -126,7 +133,8 @@ public class BasicRelationship extends BaseRelationship {
 			List<Enumeration> enumList, Map<String, Integer> map, Date date, Date dateLong, Date dateString,
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
-			OffsetDateTime offsetDateTimeString, String transientValue, BasicNode incomeNode, BasicNode outcomeNode) {
+			OffsetDateTime offsetDateTimeString, String transientValue, String indexString, BasicNode incomeNode,
+			BasicNode outcomeNode) {
 		super(id);
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -175,8 +183,17 @@ public class BasicRelationship extends BaseRelationship {
 		this.offsetDateTime = offsetDateTime;
 		this.offsetDateTimeString = offsetDateTimeString;
 		this.transientValue = transientValue;
+		this.indexString = indexString;
 		this.incomeNode = incomeNode;
 		this.outcomeNode = outcomeNode;
+	}
+
+	public Long getVersion_() {
+		return version_;
+	}
+
+	public void setVersion_(Long version_) {
+		this.version_ = version_;
 	}
 
 	public boolean isPrimativeBoolean() {
@@ -555,6 +572,14 @@ public class BasicRelationship extends BaseRelationship {
 		this.transientValue = transientValue;
 	}
 
+	public String getIndexString() {
+		return indexString;
+	}
+
+	public void setIndexString(String indexString) {
+		this.indexString = indexString;
+	}
+
 	public BasicNode getIncomeNode() {
 		return incomeNode;
 	}
@@ -573,23 +598,24 @@ public class BasicRelationship extends BaseRelationship {
 
 	@Override
 	public String toString() {
-		return "BasicRelationship [primativeBoolean=" + primativeBoolean + ", wrappedBoolean=" + wrappedBoolean
-				+ ", primativeByte=" + primativeByte + ", wrappedByte=" + wrappedByte + ", byteString=" + byteString
-				+ ", primativeChar=" + primativeChar + ", wrappedChar=" + wrappedChar + ", primativeDouble="
-				+ primativeDouble + ", wrappedDouble=" + wrappedDouble + ", doubleString=" + doubleString
-				+ ", primativeFloat=" + primativeFloat + ", wrappedFloat=" + wrappedFloat + ", floatString="
-				+ floatString + ", primativeInt=" + primativeInt + ", wrappedInt=" + wrappedInt + ", integerString="
-				+ integerString + ", primativeLong=" + primativeLong + ", wrappedLong=" + wrappedLong + ", longString="
-				+ longString + ", primativeShort=" + primativeShort + ", wrappedShort=" + wrappedShort + ", uuid="
-				+ uuid + ", string=" + string + ", bigDecimal=" + bigDecimal + ", bigDecimalString=" + bigDecimalString
-				+ ", bigInteger=" + bigInteger + ", bigIntegerString=" + bigIntegerString + ", enum_=" + enum_
-				+ ", enumString=" + enumString + ", byteArray=" + Arrays.toString(byteArray) + ", stringArray="
-				+ Arrays.toString(stringArray) + ", dateList=" + dateList + ", enumList=" + enumList + ", map=" + map
-				+ ", date=" + date + ", dateLong=" + dateLong + ", dateString=" + dateString + ", instant=" + instant
-				+ ", instantLong=" + instantLong + ", instantString=" + instantString + ", localDate=" + localDate
-				+ ", localDateString=" + localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString="
-				+ localDateTimeString + ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString="
-				+ offsetDateTimeString + ", transientValue=" + transientValue + "]";
+		return "BasicRelationship [version_=" + version_ + ", primativeBoolean=" + primativeBoolean
+				+ ", wrappedBoolean=" + wrappedBoolean + ", primativeByte=" + primativeByte + ", wrappedByte="
+				+ wrappedByte + ", byteString=" + byteString + ", primativeChar=" + primativeChar + ", wrappedChar="
+				+ wrappedChar + ", primativeDouble=" + primativeDouble + ", wrappedDouble=" + wrappedDouble
+				+ ", doubleString=" + doubleString + ", primativeFloat=" + primativeFloat + ", wrappedFloat="
+				+ wrappedFloat + ", floatString=" + floatString + ", primativeInt=" + primativeInt + ", wrappedInt="
+				+ wrappedInt + ", integerString=" + integerString + ", primativeLong=" + primativeLong
+				+ ", wrappedLong=" + wrappedLong + ", longString=" + longString + ", primativeShort=" + primativeShort
+				+ ", wrappedShort=" + wrappedShort + ", uuid=" + uuid + ", string=" + string + ", bigDecimal="
+				+ bigDecimal + ", bigDecimalString=" + bigDecimalString + ", bigInteger=" + bigInteger
+				+ ", bigIntegerString=" + bigIntegerString + ", enum_=" + enum_ + ", enumString=" + enumString
+				+ ", byteArray=" + Arrays.toString(byteArray) + ", stringArray=" + Arrays.toString(stringArray)
+				+ ", dateList=" + dateList + ", enumList=" + enumList + ", map=" + map + ", date=" + date
+				+ ", dateLong=" + dateLong + ", dateString=" + dateString + ", instant=" + instant + ", instantLong="
+				+ instantLong + ", instantString=" + instantString + ", localDate=" + localDate + ", localDateString="
+				+ localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString=" + localDateTimeString
+				+ ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString=" + offsetDateTimeString
+				+ ", indexString=" + indexString + ", transientValue=" + transientValue + "]";
 	}
 
 }

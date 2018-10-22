@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,7 @@ import java.util.UUID;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.Labels;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.PostLoad;
 import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.Transient;
@@ -39,7 +39,8 @@ import idv.hsiehpinghan.neo4jassistant.relationship.BasicRelationship;
  * reference : https://www.javadoc.io/doc/org.neo4j/neo4j-ogm-core/3.1.4
  */
 @NodeEntity
-// @CompositeIndex(value = { "string" }, unique = true) // enterprise version only
+// @CompositeIndex(value = { "string" }, unique = true) // enterprise version
+// only
 public class BasicNode extends BaseNode {
 	@Labels
 	private Set<String> labels;
@@ -117,12 +118,15 @@ public class BasicNode extends BaseNode {
 	// transient
 	@Transient
 	private String transientValue;
+	// postLoad
+	@Transient
+	private String postLoadValue;
 	// index
 	@Index(unique = true)
 	private String indexString;
-//	// required
-//	@Required	// enterprise version only
-//	private String requiredString;
+	// // required
+	// @Required // enterprise version only
+	// private String requiredString;
 	// relationship
 	@Relationship(type = "type")
 	private BasicNode outcomeNode;
@@ -598,6 +602,14 @@ public class BasicNode extends BaseNode {
 		this.transientValue = transientValue;
 	}
 
+	public String getPostLoadValue() {
+		return postLoadValue;
+	}
+
+	public void setPostLoadValue(String postLoadValue) {
+		this.postLoadValue = postLoadValue;
+	}
+
 	public String getIndexString() {
 		return indexString;
 	}
@@ -638,26 +650,9 @@ public class BasicNode extends BaseNode {
 		this.incomeRelationships = incomeRelationships;
 	}
 
-	@Override
-	public String toString() {
-		return "BasicNode [labels=" + labels + ", version_=" + version_ + ", primativeBoolean=" + primativeBoolean
-				+ ", wrappedBoolean=" + wrappedBoolean + ", primativeByte=" + primativeByte + ", wrappedByte="
-				+ wrappedByte + ", byteString=" + byteString + ", primativeChar=" + primativeChar + ", wrappedChar="
-				+ wrappedChar + ", primativeDouble=" + primativeDouble + ", wrappedDouble=" + wrappedDouble
-				+ ", doubleString=" + doubleString + ", primativeFloat=" + primativeFloat + ", wrappedFloat="
-				+ wrappedFloat + ", floatString=" + floatString + ", primativeInt=" + primativeInt + ", wrappedInt="
-				+ wrappedInt + ", integerString=" + integerString + ", primativeLong=" + primativeLong
-				+ ", wrappedLong=" + wrappedLong + ", longString=" + longString + ", primativeShort=" + primativeShort
-				+ ", wrappedShort=" + wrappedShort + ", uuid=" + uuid + ", string=" + string + ", bigDecimal="
-				+ bigDecimal + ", bigDecimalString=" + bigDecimalString + ", bigInteger=" + bigInteger
-				+ ", bigIntegerString=" + bigIntegerString + ", enum_=" + enum_ + ", enumString=" + enumString
-				+ ", byteArray=" + Arrays.toString(byteArray) + ", stringArray=" + Arrays.toString(stringArray)
-				+ ", dateList=" + dateList + ", enumList=" + enumList + ", map=" + map + ", date=" + date
-				+ ", dateLong=" + dateLong + ", dateString=" + dateString + ", instant=" + instant + ", instantLong="
-				+ instantLong + ", instantString=" + instantString + ", localDate=" + localDate + ", localDateString="
-				+ localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString=" + localDateTimeString
-				+ ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString=" + offsetDateTimeString
-				+ ", transientValue=" + transientValue + ", indexString=" + indexString + "]";
+	@PostLoad
+	private void postLoad() {
+		postLoadValue = "postLoadValue";
 	}
 
 }

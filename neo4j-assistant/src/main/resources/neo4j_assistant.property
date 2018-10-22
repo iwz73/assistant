@@ -2,3 +2,5 @@ uri=bolt://localhost:7687
 username=neo4j
 password=%h39FuW
 packages=idv.hsiehpinghan.neo4jassistant.node,idv.hsiehpinghan.neo4jassistant.relationship
+// none, validate, assert, update, dump
+autoIndex=update

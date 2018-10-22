@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.neo4j.ogm.annotation.EndNode;
-import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
@@ -107,12 +106,12 @@ public class BasicRelationship extends BaseRelationship {
 	private OffsetDateTime offsetDateTime;
 	@Convert(value = OffsettDateTimeStringConverter.class)
 	private OffsetDateTime offsetDateTimeString;
-	// index
-	@Index(unique = true)
-	private String indexString;
 	// transient
 	@Transient
 	private String transientValue;
+//	// required
+//	@Required	// enterprise version only
+//	private String requiredString;
 	// node
 	@StartNode
 	private BasicNode incomeNode;
@@ -133,8 +132,7 @@ public class BasicRelationship extends BaseRelationship {
 			List<Enumeration> enumList, Map<String, Integer> map, Date date, Date dateLong, Date dateString,
 			Instant instant, Instant instantLong, Instant instantString, LocalDate localDate, LocalDate localDateString,
 			LocalDateTime localDateTime, LocalDateTime localDateTimeString, OffsetDateTime offsetDateTime,
-			OffsetDateTime offsetDateTimeString, String transientValue, String indexString, BasicNode incomeNode,
-			BasicNode outcomeNode) {
+			OffsetDateTime offsetDateTimeString, String transientValue, BasicNode incomeNode, BasicNode outcomeNode) {
 		super(id);
 		this.primativeBoolean = primativeBoolean;
 		this.wrappedBoolean = wrappedBoolean;
@@ -183,7 +181,6 @@ public class BasicRelationship extends BaseRelationship {
 		this.offsetDateTime = offsetDateTime;
 		this.offsetDateTimeString = offsetDateTimeString;
 		this.transientValue = transientValue;
-		this.indexString = indexString;
 		this.incomeNode = incomeNode;
 		this.outcomeNode = outcomeNode;
 	}
@@ -572,14 +569,6 @@ public class BasicRelationship extends BaseRelationship {
 		this.transientValue = transientValue;
 	}
 
-	public String getIndexString() {
-		return indexString;
-	}
-
-	public void setIndexString(String indexString) {
-		this.indexString = indexString;
-	}
-
 	public BasicNode getIncomeNode() {
 		return incomeNode;
 	}
@@ -615,7 +604,7 @@ public class BasicRelationship extends BaseRelationship {
 				+ instantLong + ", instantString=" + instantString + ", localDate=" + localDate + ", localDateString="
 				+ localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString=" + localDateTimeString
 				+ ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString=" + offsetDateTimeString
-				+ ", indexString=" + indexString + ", transientValue=" + transientValue + "]";
+				+ ", transientValue=" + transientValue + "]";
 	}
 
 }

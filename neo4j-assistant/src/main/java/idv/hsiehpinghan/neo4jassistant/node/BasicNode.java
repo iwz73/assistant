@@ -39,6 +39,7 @@ import idv.hsiehpinghan.neo4jassistant.relationship.BasicRelationship;
  * reference : https://www.javadoc.io/doc/org.neo4j/neo4j-ogm-core/3.1.4
  */
 @NodeEntity
+// @CompositeIndex(value = { "string" }, unique = true) // enterprise version only
 public class BasicNode extends BaseNode {
 	@Labels
 	private Set<String> labels;
@@ -119,6 +120,9 @@ public class BasicNode extends BaseNode {
 	// index
 	@Index(unique = true)
 	private String indexString;
+//	// required
+//	@Required	// enterprise version only
+//	private String requiredString;
 	// relationship
 	@Relationship(type = "type")
 	private BasicNode outcomeNode;

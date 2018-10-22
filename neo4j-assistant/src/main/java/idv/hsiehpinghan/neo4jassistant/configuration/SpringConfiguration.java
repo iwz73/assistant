@@ -23,6 +23,8 @@ public class SpringConfiguration {
 	private String password;
 	@Value("${packages}")
 	private String[] packages;
+	@Value("${autoIndex}")
+	private String autoIndex;
 
 	@Bean
 	public Driver driver() {
@@ -33,7 +35,7 @@ public class SpringConfiguration {
 	@Bean
 	public SessionFactory sessionFactory() {
 		org.neo4j.ogm.config.Configuration configuration = new org.neo4j.ogm.config.Configuration.Builder().uri(uri)
-				.credentials(username, password).build();
+				.credentials(username, password).autoIndex(autoIndex).build();
 		SessionFactory sessionFactory = new SessionFactory(configuration, packages);
 		return sessionFactory;
 	}

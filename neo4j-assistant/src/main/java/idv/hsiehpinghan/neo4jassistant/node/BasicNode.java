@@ -19,7 +19,6 @@ import org.neo4j.ogm.annotation.PostLoad;
 import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.Transient;
-import org.neo4j.ogm.annotation.Version;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -44,8 +43,6 @@ import idv.hsiehpinghan.neo4jassistant.relationship.BasicRelationship;
 public class BasicNode extends BaseNode {
 	@Labels
 	private Set<String> labels;
-	@Version
-	private Long version_;
 	// primative
 	private boolean primativeBoolean;
 	private Boolean wrappedBoolean;
@@ -216,14 +213,6 @@ public class BasicNode extends BaseNode {
 
 	public void setLabels(Set<String> labels) {
 		this.labels = labels;
-	}
-
-	public Long getVersion_() {
-		return version_;
-	}
-
-	public void setVersion_(Long version_) {
-		this.version_ = version_;
 	}
 
 	public boolean isPrimativeBoolean() {

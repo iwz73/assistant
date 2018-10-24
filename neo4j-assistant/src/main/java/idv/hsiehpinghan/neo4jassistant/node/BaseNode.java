@@ -1,8 +1,11 @@
 package idv.hsiehpinghan.neo4jassistant.node;
 
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Version;
 
 public abstract class BaseNode {
+	@Version
+	private Long version_;
 	@Id
 	private String id;
 
@@ -12,6 +15,14 @@ public abstract class BaseNode {
 	public BaseNode(String id) {
 		super();
 		this.id = id;
+	}
+
+	public Long getVersion_() {
+		return version_;
+	}
+
+	public void setVersion_(Long version_) {
+		this.version_ = version_;
 	}
 
 	public String getId() {

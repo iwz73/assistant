@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import org.neo4j.ogm.annotation.Properties;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.Transient;
-import org.neo4j.ogm.annotation.Version;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
@@ -35,8 +33,6 @@ import idv.hsiehpinghan.neo4jassistant.node.BasicNode;
 
 @RelationshipEntity(type = "basic")
 public class BasicRelationship extends BaseRelationship {
-	@Version
-	private Long version_;
 	// primative
 	private boolean primativeBoolean;
 	private Boolean wrappedBoolean;
@@ -109,9 +105,9 @@ public class BasicRelationship extends BaseRelationship {
 	// transient
 	@Transient
 	private String transientValue;
-//	// required
-//	@Required	// enterprise version only
-//	private String requiredString;
+	// // required
+	// @Required // enterprise version only
+	// private String requiredString;
 	// node
 	@StartNode
 	private BasicNode incomeNode;
@@ -183,14 +179,6 @@ public class BasicRelationship extends BaseRelationship {
 		this.transientValue = transientValue;
 		this.incomeNode = incomeNode;
 		this.outcomeNode = outcomeNode;
-	}
-
-	public Long getVersion_() {
-		return version_;
-	}
-
-	public void setVersion_(Long version_) {
-		this.version_ = version_;
 	}
 
 	public boolean isPrimativeBoolean() {
@@ -583,28 +571,6 @@ public class BasicRelationship extends BaseRelationship {
 
 	public void setOutcomeNode(BasicNode outcomeNode) {
 		this.outcomeNode = outcomeNode;
-	}
-
-	@Override
-	public String toString() {
-		return "BasicRelationship [version_=" + version_ + ", primativeBoolean=" + primativeBoolean
-				+ ", wrappedBoolean=" + wrappedBoolean + ", primativeByte=" + primativeByte + ", wrappedByte="
-				+ wrappedByte + ", byteString=" + byteString + ", primativeChar=" + primativeChar + ", wrappedChar="
-				+ wrappedChar + ", primativeDouble=" + primativeDouble + ", wrappedDouble=" + wrappedDouble
-				+ ", doubleString=" + doubleString + ", primativeFloat=" + primativeFloat + ", wrappedFloat="
-				+ wrappedFloat + ", floatString=" + floatString + ", primativeInt=" + primativeInt + ", wrappedInt="
-				+ wrappedInt + ", integerString=" + integerString + ", primativeLong=" + primativeLong
-				+ ", wrappedLong=" + wrappedLong + ", longString=" + longString + ", primativeShort=" + primativeShort
-				+ ", wrappedShort=" + wrappedShort + ", uuid=" + uuid + ", string=" + string + ", bigDecimal="
-				+ bigDecimal + ", bigDecimalString=" + bigDecimalString + ", bigInteger=" + bigInteger
-				+ ", bigIntegerString=" + bigIntegerString + ", enum_=" + enum_ + ", enumString=" + enumString
-				+ ", byteArray=" + Arrays.toString(byteArray) + ", stringArray=" + Arrays.toString(stringArray)
-				+ ", dateList=" + dateList + ", enumList=" + enumList + ", map=" + map + ", date=" + date
-				+ ", dateLong=" + dateLong + ", dateString=" + dateString + ", instant=" + instant + ", instantLong="
-				+ instantLong + ", instantString=" + instantString + ", localDate=" + localDate + ", localDateString="
-				+ localDateString + ", localDateTime=" + localDateTime + ", localDateTimeString=" + localDateTimeString
-				+ ", offsetDateTime=" + offsetDateTime + ", offsetDateTimeString=" + offsetDateTimeString
-				+ ", transientValue=" + transientValue + "]";
 	}
 
 }

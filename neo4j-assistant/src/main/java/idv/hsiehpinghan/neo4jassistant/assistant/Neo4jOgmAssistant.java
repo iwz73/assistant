@@ -32,12 +32,12 @@ public class Neo4jOgmAssistant {
 		}
 	}
 
-	public void save(Object node) {
+	public void save(Object obj) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			session.save(node);
+			session.save(obj);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {

@@ -3,6 +3,8 @@
 # install mesos
 yum install http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
 yum install -y mesos
+echo "docker,mesos" | tee /etc/mesos-slave/containerizers
+echo "5mins" | tee /etc/mesos-slave/executor_registration_timeout
 
 # install marathon
 wget -L https://downloads.mesosphere.com/marathon/releases/1.6.322/marathon-1.6.322-2bf46b341.tgz -O /tmp/marathon-1.6.322-2bf46b341.tgz
@@ -36,8 +38,6 @@ vi /etc/resolv.conf
 /opt/zookeeper-3.4.13/bin/zkServer.sh start
 
 # run mesos
-echo "docker,mesos" | tee /etc/mesos-slave/containerizers
-echo "5mins" | tee /etc/mesos-slave/executor_registration_timeout
 export MESOS_zk=zk://localhost:2181
 export MESOS_work_dir=/var/lib/mesos
 export MESOS_log_dir=/var/log/mesos
@@ -145,6 +145,14 @@ curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/sch
 curl -X PUT -L http://localhost:8081/v1/scheduler/job/chronos_test
 curl -X GET -L http://localhost:8081/v1/scheduler/jobs
 curl -X DELETE -L http://localhost:8081/v1/scheduler/job/chronos_test
+
+## mesos command-line
+# show running tasks on the cluster
+mesos ps --master=zk://localhost:2181/mesos
+# show leading master
+mesos resolve zk://localhost:2181/mesos
+# execute command
+mesos execute --command="echo 'Hello, Mesos'" --name=HelloMesos --master=$(mesos resolve zk://localhost:2181/mesos)
 
 # clear mesos sandbox 
 rm -rf /var/lib/mesos/

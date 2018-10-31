@@ -1,0 +1,17 @@
+{
+	"schedule": "R/2018-10-31T00:00:00.000Z/PT24H",
+	"name": "chronos_docker_test",
+	"description": "",
+	"container": {
+		"type": "DOCKER",
+		"image": "python:3.4.3"
+	},
+	"cpus": 0.1,
+	"mem": 128.0,
+	"owner": "",
+	"uris": [
+		"https://raw.githubusercontent.com/hsiehpinghan/example/master/python-example/basic_/basic.py"
+	],
+	"command": "cd $MESOS_SANDBOX && python3 basic.py",
+	"environmentVariables": []
+}

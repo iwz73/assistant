@@ -1,3 +1,8 @@
+# reference
+http://www.cnblogs.com/kevingrace/p/5685313.html
+https://hk.saowen.com/a/ae9b11bf0e96c5b4689125df0085b87889e52adb9f051a9ae9d6f9446a725821
+https://hk.saowen.com/a/f38e20c5dcbe5a2036c922e559b188f51a731fec78aaf168a542bb8786006522
+
 # install zookeeper (reference : https://raw.githubusercontent.com/hsiehpinghan/assistant/master/zookeeper-assistant/readme)
 
 # install mesos
@@ -10,8 +15,11 @@ echo "5mins" | tee /etc/mesos-slave/executor_registration_timeout
 wget -L https://downloads.mesosphere.com/marathon/releases/1.6.322/marathon-1.6.322-2bf46b341.tgz -O /tmp/marathon-1.6.322-2bf46b341.tgz
 tar xvfz /tmp/marathon-1.6.322-2bf46b341.tgz -C /opt
 
-# install
+# install chronos
 docker run --net=host -e PORT0=8081 -e PORT1=8082 mesosphere/chronos:v3.0.0 --zk_hosts 127.0.0.1:2181 --master zk://127.0.0.1:2181/mesos
+
+# install marathon-lb
+docker pull mesosphere/marathon-lb:v1.12.3
 
 # install mesos-dns (https://github.com/mesosphere/mesos-dns/releases/, https://mesosphere.github.io/mesos-dns/docs/configuration-parameters.html)
 mkdir /opt/mesos-dns

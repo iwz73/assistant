@@ -3,3 +3,10 @@ Maven Build... -> Goals:package
 mkdir /opt/solr-4.10.3/contrib/thank
 cp /home/hsiehpinghan/git/assistant/hanlp-assistant/target/hanlp-assistant-1.0.0.jar /opt/solr-4.10.3/contrib/thank
 cp /home/hsiehpinghan/.m2/repository/com/hankcs/hanlp/portable-1.3.1/hanlp-portable-1.3.1.jar /opt/solr-4.10.3/contrib/thank
+
+# HanLP词性标注集
+com.hankcs.hanlp.corpus.tag.Nature
+
+# 863标注集
+com.hankcs.hanlp.dependency.nnparser.util.PosTagUtil
+

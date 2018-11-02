@@ -157,7 +157,7 @@ curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/sch
 curl -X PUT -L http://localhost:8081/v1/scheduler/job/chronos_test
 curl -X GET -L http://localhost:8081/v1/scheduler/jobs
 curl -X DELETE -L http://localhost:8081/v1/scheduler/job/chronos_test
-??? curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/scheduler/iso8601 -d @/home/hsiehpinghan/git/assistant/mesos-assistant/json/chronos/chronos_docker.json
+curl -X POST -L -H 'Content-Type: application/json' http://localhost:8081/v1/scheduler/iso8601 -d @/home/hsiehpinghan/git/assistant/mesos-assistant/json/chronos/chronos_docker.json
 
 # haproxy rest api
 http://localhost:9090/haproxy?stats

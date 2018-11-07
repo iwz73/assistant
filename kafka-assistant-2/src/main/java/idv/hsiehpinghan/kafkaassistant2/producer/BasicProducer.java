@@ -4,6 +4,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -39,6 +40,14 @@ public class BasicProducer implements InitializingBean {
 			Thread.sleep(SLEEP_MILLISECONDS);
 		}
 		return future.get();
+	}
+
+	public void sendWithCallback(String topic, Long key, String value, Callback callback)
+			throws InterruptedException, ExecutionException {
+		ProducerRecord<Long, String> producerRecord = new ProducerRecord<>(topic, key, value);
+		producer.send(producerRecord, callback);
+		LOGGER.info("producer sending with callback...");
+		Thread.sleep(SLEEP_MILLISECONDS);
 	}
 
 	private Properties generateProperties() {

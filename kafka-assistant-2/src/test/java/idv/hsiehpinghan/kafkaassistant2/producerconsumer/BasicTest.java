@@ -11,6 +11,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import idv.hsiehpinghan.kafkaassistant2.callback.MyCallback;
 import idv.hsiehpinghan.kafkaassistant2.configuration.SpringConfiguration;
 import idv.hsiehpinghan.kafkaassistant2.consumer.BasicConsumer;
 import idv.hsiehpinghan.kafkaassistant2.producer.BasicProducer;
@@ -32,6 +33,13 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = { "send" })
+	public void sendWithCallback() throws Exception {
+		MyCallback myCallback = new MyCallback();
+		basicProducer.sendWithCallback(TOPIC, KEY, VALUE, myCallback);
+		Assert.assertTrue(myCallback.isCallbacked());
+	}
+
+	@Test(dependsOnMethods = { "sendWithCallback" })
 	public void poll() {
 		ConsumerRecords<Long, String> consumerRecords = basicConsumer.poll(TOPIC);
 		boolean isExist = false;

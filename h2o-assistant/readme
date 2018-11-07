@@ -1,0 +1,5 @@
+# run h2o
+java -jar /opt/h2o-3.20.0.7/h2o.jar
+
+# ui
+http://localhost:54321/

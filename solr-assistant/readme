@@ -63,3 +63,11 @@ http://localhost:8983/solr/collection1/terms?wt=json&terms=true&terms.fl=name
 
 GET TERM VECTOR
 http://localhost:8983/solr/collection1/tvrh?q=id%3A(%22MA147LL%2FA%22+OR++%223007WFP%22+OR+%229885A004%22)&tv=true&tv.fl=includes&tv.all=true&wt=json
+
+GET STATS
+http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=popularity
+http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=weight
+http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=cat
+
+
+

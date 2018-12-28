@@ -68,6 +68,7 @@ GET STATS
 http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=popularity
 http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=weight
 http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=cat
+http://localhost:8983/solr/collection1/select?q=*%3A*&wt=json&indent=true&stats=true&stats.field=popularity&stats.facet=manu_exact
 
 
 

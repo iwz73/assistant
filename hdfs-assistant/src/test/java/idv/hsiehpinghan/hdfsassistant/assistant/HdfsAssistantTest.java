@@ -10,6 +10,7 @@ import org.apache.hadoop.io.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -22,6 +23,7 @@ import idv.hsiehpinghan.hdfsassistant.configuration.SpringConfiguration;
 public class HdfsAssistantTest extends AbstractTestNGSpringContextTests {
 	private String userName;
 	private String hdfsFilePath;
+	private String hdfsFilePath_2;
 	private String writeAndReadFilePath;
 	private File file_1;
 	private String hdfsDirectoryPath;
@@ -97,6 +99,14 @@ public class HdfsAssistantTest extends AbstractTestNGSpringContextTests {
 		Assert.assertTrue(testDir.exists());
 	}
 
+	@Test(dependsOnMethods = { "copyToLocal" })
+	public void putAndGet() throws IOException {
+		ClassPathResource resource = new ClassPathResource("log4j.properties");
+		hdfsAssistant.put(resource.getInputStream(), hdfsFilePath_2);
+		byte[] result = hdfsAssistant.get(hdfsFilePath_2);
+		Assert.assertEquals(result.length, 2997);
+	}
+
 	private void setTestData(ApplicationContext applicationContext) throws IOException {
 		userName = env.getProperty("USER");
 		writeAndReadFilePath = "/user/" + userName + "/test/hdfs/writeAndReadFile.seq";
@@ -104,6 +114,10 @@ public class HdfsAssistantTest extends AbstractTestNGSpringContextTests {
 		hdfsFilePath = "/user/" + userName + "/test/hdfs/file_1";
 		if (hdfsAssistant.exists(hdfsFilePath)) {
 			hdfsAssistant.delete(hdfsFilePath);
+		}
+		hdfsFilePath_2 = "/user/" + userName + "/test/hdfs/file_2";
+		if (hdfsAssistant.exists(hdfsFilePath_2)) {
+			hdfsAssistant.delete(hdfsFilePath_2);
 		}
 		folder_1 = applicationContext.getResource("classpath:sample/folder_1").getFile();
 		hdfsDirectoryPath = "/user/" + userName + "/test/hdfs/folder_1";

@@ -1,12 +1,16 @@
 package idv.hsiehpinghan.hdfsassistant.assistant;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.SequenceFile;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,6 +162,22 @@ public class HdfsAssistant implements InitializingBean {
 	public SequenceFile.Reader getReader(String hdfsFilePath) throws IOException {
 		SequenceFile.Reader.Option filePath = SequenceFile.Reader.file(new Path(hdfsFilePath));
 		return new SequenceFile.Reader(conf, filePath);
+	}
+
+	public void put(InputStream inputStream, String hdfsFilePath) throws IOException {
+		Path outputPath = new Path(hdfsFilePath);
+		try (FileSystem fs = FileSystem.get(conf);
+				OutputStream os = fs.create(outputPath);
+				InputStream is = new BufferedInputStream(inputStream);) {
+			IOUtils.copyBytes(is, os, conf);
+		}
+	}
+
+	public byte[] get(String hdfsFilePath) throws IOException {
+		Path inputPath = new Path(hdfsFilePath);
+		try (FileSystem fs = FileSystem.get(conf); InputStream is = new BufferedInputStream(fs.open(inputPath));) {
+			return org.apache.commons.io.IOUtils.toByteArray(is);
+		}
 	}
 
 	public Configuration getHdfsConfiguration() {

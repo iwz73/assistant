@@ -70,7 +70,7 @@ ALTER TABLE public.my_character_table
 INSERT INTO public.my_character_table(character_varying, character, text)
 VALUES ('abc', 'abc', 'abcde');
 
-## Date/Time table
+## datetime table
 # create
 CREATE TABLE public.my_datetime_table
 (

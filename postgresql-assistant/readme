@@ -1,18 +1,19 @@
 # run postgresql docker : https://github.com/hsiehpinghan/docker/blob/master/postgres-docker/readme
 
-# numeric table
+## numeric table
+# create
 CREATE TABLE public.my_numeric_table
 (
-    id integer NOT NULL DEFAULT nextval('my_numeric_table_id_seq'::regclass),
-    "smallint" smallint,
-    "integer" integer,
-    "bigint" bigint,
-    "numeric" numeric,
-    "real" real,
-    double_precision double precision,
-    smallserial smallint NOT NULL DEFAULT nextval('my_table_smallserial_seq'::regclass),
-    serial integer NOT NULL DEFAULT nextval('my_table_serial_seq'::regclass),
-    bigserial bigint NOT NULL DEFAULT nextval('my_table_bigserial_seq'::regclass),
+    id SMALLSERIAL,
+    smallint SMALLINT,
+    integer INTEGER,
+    bigint BIGINT,
+    numeric NUMERIC(6,4),
+    real REAL,
+    double_precision DOUBLE PRECISION,
+    smallserial SMALLSERIAL,
+    serial SERIAL,
+    bigserial BIGSERIAL,
     CONSTRAINT my_numeric_table_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -23,54 +24,114 @@ TABLESPACE pg_default;
 ALTER TABLE public.my_numeric_table
     OWNER to postgres;
 
-    
-    ---------------------------
--- Table: public.my_table
+# insert
+INSERT INTO public.my_numeric_table(smallint, integer, bigint, numeric, real, double_precision)
+VALUES (1, 2, 3, 12.3456, 4.4, 5.5);
 
--- DROP TABLE public.my_table;
-
-CREATE TABLE public.my_table
+## money table
+# create
+CREATE TABLE public.my_money_table
 (
-    id integer NOT NULL DEFAULT nextval('my_table_id_seq'::regclass),
-    "smallint" smallint,
-    "integer" integer,
-    "bigint" bigint,
-    "numeric" numeric,
-    "real" real,
-    double_precision double precision,
-    smallserial smallint NOT NULL DEFAULT nextval('my_table_smallserial_seq'::regclass),
-    serial integer NOT NULL DEFAULT nextval('my_table_serial_seq'::regclass),
-    bigserial bigint NOT NULL DEFAULT nextval('my_table_bigserial_seq'::regclass),
-    money money,
-    character_varying character varying COLLATE pg_catalog."default",
-    "character" character(1) COLLATE pg_catalog."default",
-    text text COLLATE pg_catalog."default",
-    bytea bytea,
-    "timestamp_without_time_zone " timestamp without time zone,
-    timestamp_with_time_zone timestamp with time zone,
-    date date,
-    time_without_time_zone time without time zone,
-    time_with_time_zone time with time zone,
-    "interval" interval,
-    "boolean" boolean,
-    point point,
-    line line,
-    lseg lseg,
-    box box,
-    path path,
-    polygon polygon,
-    circle circle,
-    cidr cidr,
-    inet inet,
-    macaddr macaddr,
-    macaddr8 macaddr8,
-    uuid uuid,
-    CONSTRAINT my_table_pkey PRIMARY KEY (id)
+    id SMALLSERIAL,
+    money MONEY,
+    CONSTRAINT my_money_table_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.my_table
+ALTER TABLE public.my_money_table
     OWNER to postgres;
+
+# insert
+INSERT INTO public.my_money_table(money)
+VALUES (12345.6789);
+
+## character table
+# create
+CREATE TABLE public.my_character_table
+(
+    id SMALLSERIAL,
+    character_varying CHARACTER VARYING(3),
+    character CHARACTER(3),
+    text TEXT,
+    CONSTRAINT my_character_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_character_table
+    OWNER to postgres;
+
+# insert
+INSERT INTO public.my_character_table(character_varying, character, text)
+VALUES ('abc', 'abc', 'abcde');
+
+## Date/Time table
+# create
+CREATE TABLE public.my_datetime_table
+(
+    id SMALLSERIAL,
+    timestamp_without_time_zone TIMESTAMP WITHOUT TIME ZONE,
+    timestamp_with_time_zone TIMESTAMP WITH TIME ZONE,
+    date DATE,
+    time_without_time_zone TIME WITHOUT TIME ZONE,
+    time_with_time_zone TIME WITH TIME ZONE,
+    interval INTERVAL,
+    CONSTRAINT my_datetime_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_datetime_table
+    OWNER to postgres;
+
+# insert
+INSERT INTO public.my_datetime_table(timestamp_without_time_zone, timestamp_with_time_zone, date, time_without_time_zone, time_with_time_zone, interval)
+VALUES ('2019-01-01 01:02:03.456', '2019-01-01 01:02:03.456+08', '2019-01-01', '01:02:03.456', '01:02:03.456+08', 'P1Y2M3DT4H5M6S');
+
+## boolean table
+# create
+CREATE TABLE public.my_boolean_table
+(
+    id SMALLSERIAL,
+    boolean BOOLEAN,
+    CONSTRAINT my_boolean_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_boolean_table
+    OWNER to postgres;
+
+# insert
+INSERT INTO public.my_boolean_table(boolean)
+VALUES (true);
+
+## uuid table
+# create
+CREATE TABLE public.my_uuid_table
+(
+    id SMALLSERIAL,
+    uuid UUID,
+    CONSTRAINT my_uuid_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_uuid_table
+    OWNER to postgres;
+
+# insert
+INSERT INTO public.my_uuid_table(uuid)
+VALUES ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+

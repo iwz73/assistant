@@ -1,0 +1,76 @@
+# run postgresql docker : https://github.com/hsiehpinghan/docker/blob/master/postgres-docker/readme
+
+# numeric table
+CREATE TABLE public.my_numeric_table
+(
+    id integer NOT NULL DEFAULT nextval('my_numeric_table_id_seq'::regclass),
+    "smallint" smallint,
+    "integer" integer,
+    "bigint" bigint,
+    "numeric" numeric,
+    "real" real,
+    double_precision double precision,
+    smallserial smallint NOT NULL DEFAULT nextval('my_table_smallserial_seq'::regclass),
+    serial integer NOT NULL DEFAULT nextval('my_table_serial_seq'::regclass),
+    bigserial bigint NOT NULL DEFAULT nextval('my_table_bigserial_seq'::regclass),
+    CONSTRAINT my_numeric_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_numeric_table
+    OWNER to postgres;
+
+    
+    ---------------------------
+-- Table: public.my_table
+
+-- DROP TABLE public.my_table;
+
+CREATE TABLE public.my_table
+(
+    id integer NOT NULL DEFAULT nextval('my_table_id_seq'::regclass),
+    "smallint" smallint,
+    "integer" integer,
+    "bigint" bigint,
+    "numeric" numeric,
+    "real" real,
+    double_precision double precision,
+    smallserial smallint NOT NULL DEFAULT nextval('my_table_smallserial_seq'::regclass),
+    serial integer NOT NULL DEFAULT nextval('my_table_serial_seq'::regclass),
+    bigserial bigint NOT NULL DEFAULT nextval('my_table_bigserial_seq'::regclass),
+    money money,
+    character_varying character varying COLLATE pg_catalog."default",
+    "character" character(1) COLLATE pg_catalog."default",
+    text text COLLATE pg_catalog."default",
+    bytea bytea,
+    "timestamp_without_time_zone " timestamp without time zone,
+    timestamp_with_time_zone timestamp with time zone,
+    date date,
+    time_without_time_zone time without time zone,
+    time_with_time_zone time with time zone,
+    "interval" interval,
+    "boolean" boolean,
+    point point,
+    line line,
+    lseg lseg,
+    box box,
+    path path,
+    polygon polygon,
+    circle circle,
+    cidr cidr,
+    inet inet,
+    macaddr macaddr,
+    macaddr8 macaddr8,
+    uuid uuid,
+    CONSTRAINT my_table_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.my_table
+    OWNER to postgres;

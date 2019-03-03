@@ -1,9 +1,0 @@
-# create role
-su - postgres
-psql
-CREATE ROLE thank WITH LOGIN ENCRYPTED PASSWORD '!)09w5t43w1oJ';
-
-# create schema
-su - postgres
-psql
-CREATE SCHEMA my_schema AUTHORIZATION thank;

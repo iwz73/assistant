@@ -38,8 +38,8 @@ import idv.hsiehpinghan.hibernateassistant.service.EnumerationService;
 import idv.hsiehpinghan.hibernateassistant.service.SequenceGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TableGeneratorService;
 import idv.hsiehpinghan.hibernateassistant.service.TemporalService;
-import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
-import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
+import idv.hsiehpinghan.hibernateassistant.utility.InputStreamUtility;
+import idv.hsiehpinghan.hibernateassistant.utility.ReaderUtility;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
 public class BasicTest extends AbstractTestNGSpringContextTests {
@@ -181,7 +181,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 		int id = entity.getId();
 		TableGeneratorEntity returnEntity = service.findOne(id);
 		Assert.assertEquals(returnEntity.getId().intValue(), id);
-		service.dropTable();
+//		service.dropTable();
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 		int id = entity.getId();
 		SequenceGeneratorEntity returnEntity = service.findOne(id);
 		Assert.assertEquals(returnEntity.getId().intValue(), id);
-		service.dropTable();
+//		service.dropTable();
 	}
 
 	@Test

@@ -1,9 +1,5 @@
 package idv.hsiehpinghan.hibernateassistant.repository;
 
-import idv.hsiehpinghan.hibernateassistant.entity.BasicTypeEntity;
-import idv.hsiehpinghan.streamutility.utility.InputStreamUtility;
-import idv.hsiehpinghan.streamutility.utility.ReaderUtility;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -16,6 +12,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import idv.hsiehpinghan.hibernateassistant.entity.BasicTypeEntity;
+import idv.hsiehpinghan.hibernateassistant.utility.InputStreamUtility;
+import idv.hsiehpinghan.hibernateassistant.utility.ReaderUtility;
 
 @Repository
 public class BasicTypeRepository {

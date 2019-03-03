@@ -15,3 +15,18 @@ CREATE ROLE thank WITH LOGIN ENCRYPTED PASSWORD '!)09w5t43w1oJ';
 su - postgres
 psql
 CREATE SCHEMA hibernate_assistant AUTHORIZATION thank;
+
+-----------------------------------------------------------------------
+# create store procedure
+CREATE PROCEDURE basic_procedure(IN my_in TEXT, INOUT my_inout INT) 
+AS $$
+BEGIN
+    RAISE NOTICE 'input parameter: %', my_in;
+	my_inout = 3;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+
+

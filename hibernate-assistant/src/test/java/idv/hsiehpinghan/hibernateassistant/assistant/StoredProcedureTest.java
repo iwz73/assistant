@@ -9,12 +9,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.hibernateassistant.configuration.SpringConfiguration;
-import idv.hsiehpinghan.hibernateassistant.service.StoreProcedureService;
+import idv.hsiehpinghan.hibernateassistant.service.StoredProcedureService;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class StoreProcedureTest extends AbstractTestNGSpringContextTests {
+public class StoredProcedureTest extends AbstractTestNGSpringContextTests {
 	@Autowired
-	private StoreProcedureService service;
+	private StoredProcedureService service;
 
 	@Test
 	public void callBasicProcedure() {

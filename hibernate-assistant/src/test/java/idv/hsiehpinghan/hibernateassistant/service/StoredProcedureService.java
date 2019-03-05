@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class StoreProcedureService {
+public class StoredProcedureService {
 	@Autowired
 	private SessionFactory sessionFactory;
 

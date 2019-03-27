@@ -5,8 +5,6 @@ import java.util.Set;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import idv.hsiehpinghan.seleniumchromedriverassistant.constant.Constant;
-
 @Component
 public class ChromeDriverFactory extends BasePooledObjectFactory<ChromeDriver> implements InitializingBean {
+	public static final String DEFAULT_URL = "https://www.google.com.tw/";
 	private String webdriverChromeDriver;
 	private String binary;
 	private boolean headless;
@@ -76,8 +73,7 @@ public class ChromeDriverFactory extends BasePooledObjectFactory<ChromeDriver> i
 	}
 
 	private void openNewEmptyTab(ChromeDriver chromeDriver) {
-		chromeDriver.get(Constant.DEFAULT_URL);
-		chromeDriver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
+		chromeDriver.get(DEFAULT_URL);
 	}
 
 	private ChromeOptions generateChromeOptions() {

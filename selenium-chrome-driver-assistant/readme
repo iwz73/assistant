@@ -1,15 +1,16 @@
-# instal chrome in centos 7
-1. vi /etc/yum.repos.d/google-chrome.repo
-[google-chrome]
-name=google-chrome
-baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
-enabled=1
-gpgcheck=1
-gpgkey=https://dl.google.com/linux/linux_signing_key.pub
+# install chome on centos
+vi /etc/yum.repos.d/google.repo
+	[google64]
+	name=Google - x86_64
+	baseurl=http://dl.google.com/linux/rpm/stable/x86_64
+	enabled=1
+	gpgcheck=1
+	gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+yum install google-chrome-stable
+google-chrome -version
 
-2. yum search google-chrome
-
-3. yum -y install google-chrome-stable
+# download chromedriver : http://chromedriver.chromium.org/downloads
+chmod +x /home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/chrome_driver/73.0.3683.68/chromedriver
 
 
 

@@ -1,5 +1,5 @@
 # chrome setting
-webdriver_chrome_driver=/home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/chrome_driver/2.33/chromedriver
+webdriver_chrome_driver=/home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/chrome_driver/73.0.3683.68/chromedriver
 binary=/opt/google/chrome/chrome
 headless=true
 # pool setting

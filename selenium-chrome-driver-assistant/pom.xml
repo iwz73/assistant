@@ -19,8 +19,8 @@
 		<slf4j.version>1.7.10</slf4j.version>
 		<testng.version>6.9.4</testng.version>
 		<spring.version>5.0.1.RELEASE</spring.version>
-		<selenium-chrome-driver.version>3.7.1</selenium-chrome-driver.version>
-		<commons-pool2.version>2.4.3</commons-pool2.version>
+		<selenium-chrome-driver.version>3.9.1</selenium-chrome-driver.version>
+		<commons-pool2.version>2.5.0</commons-pool2.version>
 	</properties>
 
 	<dependencies>

@@ -1,0 +1,13 @@
+# pull oracle docker image (referencer : 
+	https://yingclin.github.io/2018/create-oracle-docker-container.html
+	https://hub.docker.com/u/hsiehpinghan/content/sub-cd6475be-7f7d-4a90-abbe-e7f87fc1de93
+)
+docker login
+docker pull store/oracle/database-enterprise:12.2.0.1
+
+# run container
+docker run -d -it --name oracle -p 1521:1521 store/oracle/database-enterprise:12.2.0.1
+docker ps
+
+# run SQL*Plus
+docker exec -it oracle bash -c "source /home/oracle/.bashrc; sqlplus /nolog"

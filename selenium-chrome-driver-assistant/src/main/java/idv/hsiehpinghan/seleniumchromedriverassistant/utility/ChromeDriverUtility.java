@@ -11,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import idv.hsiehpinghan.seleniumchromedriverassistant.enumeration.CssPropertyEnumeration;
 
 public class ChromeDriverUtility {
-	public static void setAllElementAttributeValue(ChromeDriver chromeDriver, String attributeName) {
+	public static void setPosterityElementAttributeValue(ChromeDriver chromeDriver, String attributeName) {
 		WebElement webElement = chromeDriver.findElement(By.tagName("body"));
 		String attributePrefix = "";
 		setChildElementAttributeValue(chromeDriver, webElement, attributeName, attributePrefix);

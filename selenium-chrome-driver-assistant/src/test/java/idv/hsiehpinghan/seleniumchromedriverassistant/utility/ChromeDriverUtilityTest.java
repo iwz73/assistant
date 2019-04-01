@@ -23,17 +23,17 @@ public class ChromeDriverUtilityTest extends AbstractTestNGSpringContextTests {
 	private GenericObjectPool<ChromeDriver> chromeDriverPool;
 
 	@Test
-	public void setAllElementAttributeValue() throws Exception {
+	public void setPosterityElementAttributeValue() throws Exception {
 		chromeDriver = chromeDriverPool.borrowObject();
 		chromeDriver.get(
-				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/setAllElementAttributeValue.html");
+				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/setPosterityElementAttributeValue.html");
 		String attributeName = "id";
-		ChromeDriverUtility.setAllElementAttributeValue(chromeDriver, attributeName);
+		ChromeDriverUtility.setPosterityElementAttributeValue(chromeDriver, attributeName);
 		WebElement webElement = chromeDriver.findElement(By.id("_1_2_2"));
 		Assert.assertEquals(webElement.getText(), "18");
 	}
 
-	@Test(dependsOnMethods = { "setAllElementAttributeValue" })
+	@Test(dependsOnMethods = { "setPosterityElementAttributeValue" })
 	public void getBoundingClientRect() throws Exception {
 		chromeDriver.get(
 				"file:///home/hsiehpinghan/git/assistant/selenium-chrome-driver-assistant/html/getElementAllAttribute.html");

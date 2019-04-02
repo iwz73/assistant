@@ -1,13 +1,37 @@
-# pull oracle docker image (referencer : 
+# pull oracle docker image (goto https://hub.docker.com/_/oracle-database-enterprise-edition and get docker pull store/oracle/database-enterprise:12.2.0.1)
+(referencer : 
 	https://yingclin.github.io/2018/create-oracle-docker-container.html
 	https://hub.docker.com/u/hsiehpinghan/content/sub-cd6475be-7f7d-4a90-abbe-e7f87fc1de93
 )
 docker login
-docker pull store/oracle/database-enterprise:12.2.0.1
+<full version>docker pull store/oracle/database-enterprise:12.2.0.1
+<slim version>docker pull store/oracle/database-enterprise:12.2.0.1-slim
+
 
 # run container
-docker run -d -it --name oracle -p 1521:1521 store/oracle/database-enterprise:12.2.0.1
+mkdir /ORCL
+docker run -itd --name oracle \
+  -p 1521:1521 -p 5500:5500 \
+  -v /ORCL:/ORCL \
+  store/oracle/database-enterprise:12.2.0.1-slim
 docker ps
 
 # run SQL*Plus
 docker exec -it oracle bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
+SQL> connect sys as sysdba;		(password : Oradoc_db1)
+SQL> alter session set "_ORACLE_SCRIPT"=true;
+SQL> create user thank identified by "^94qdo3L";
+SQL> GRANT CONNECT, RESOURCE, DBA TO thank;
+SQL> select value from v$parameter where name='service_names';
+SQL> disconnect;
+SQL> exit
+
+# install SQL Developer (https://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html)
+rpm -ivh sqldeveloper-18.4.0-376.1900.noarch.rpm
+
+# run SQL Developer
+sqldeveloper
+
+# uninstall SQL Developer
+rpm -e sqldeveloper-18.4.0-376.1900.noarch
+

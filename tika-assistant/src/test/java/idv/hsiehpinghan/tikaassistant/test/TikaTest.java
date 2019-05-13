@@ -1,12 +1,15 @@
 package idv.hsiehpinghan.tikaassistant.test;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import org.apache.tika.Tika;
+import org.apache.tika.detect.EncodingDetector;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageConfidence;
@@ -14,7 +17,10 @@ import org.apache.tika.language.detect.LanguageDetector;
 import org.apache.tika.language.detect.LanguageResult;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.html.HtmlEncodingDetector;
 import org.apache.tika.parser.html.HtmlParser;
+import org.apache.tika.parser.txt.Icu4jEncodingDetector;
+import org.apache.tika.parser.txt.UniversalEncodingDetector;
 import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -47,6 +53,43 @@ public class TikaTest extends AbstractTestNGSpringContextTests {
 	@Test
 	public void detectLanguage() throws Exception {
 		detectLanguage_html();
+	}
+
+	@Test
+	public void detectEncoding() throws Exception {
+		detectEncoding_HtmlEncodingDetector();
+		detectEncoding_Icu4jEncodingDetector();
+		detectEncoding_UniversalEncodingDetector();
+	}
+
+	private void detectEncoding_HtmlEncodingDetector() throws IOException {
+		EncodingDetector encodingDetector = new HtmlEncodingDetector();
+		File file = new File("/home/hsiehpinghan/git/assistant/tika-assistant/file/html");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+		Metadata metadata = new Metadata();
+		Charset charset = encodingDetector.detect(bufferedInputStream, metadata);
+		Assert.assertEquals(charset.name(), "GBK");
+	}
+
+	private void detectEncoding_Icu4jEncodingDetector() throws IOException {
+		EncodingDetector encodingDetector = new Icu4jEncodingDetector();
+		File file = new File("/home/hsiehpinghan/git/assistant/tika-assistant/file/html");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+		Metadata metadata = new Metadata();
+		Charset charset = encodingDetector.detect(bufferedInputStream, metadata);
+		Assert.assertEquals(charset.name(), "GB18030");
+	}
+
+	private void detectEncoding_UniversalEncodingDetector() throws IOException {
+		EncodingDetector encodingDetector = new UniversalEncodingDetector();
+		File file = new File("/home/hsiehpinghan/git/assistant/tika-assistant/file/html");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+		Metadata metadata = new Metadata();
+		Charset charset = encodingDetector.detect(bufferedInputStream, metadata);
+		Assert.assertEquals(charset.name(), "GB18030");
 	}
 
 	public void detectLanguage_html() throws IOException {

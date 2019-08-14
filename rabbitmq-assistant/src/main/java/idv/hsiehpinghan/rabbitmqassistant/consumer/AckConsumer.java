@@ -19,12 +19,14 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 @Component
-public class BasicConsumer {
+public class AckConsumer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private final String QUEUE_NAME = "basic";
+	private final String QUEUE_NAME = "ack";
 	private final Map<String, Object> ARGUMENTS = null;
-	private boolean AUTO_ACK = true;
+	private boolean AUTO_ACK = false;
+	private boolean MULTIPLE = false;
 	private List<String> messages = new LinkedList<>();
+	private boolean isSuccess = false;
 	@Value("${rabbitmq.durable}")
 	private boolean durable;
 	@Value("${rabbitmq.exclusive}")
@@ -42,7 +44,16 @@ public class BasicConsumer {
 		DeliverCallback deliverCallback = (consumerTag, message) -> {
 			String msg = new String(message.getBody(), "UTF-8");
 			LOGGER.info("get message({}).", msg);
-			messages.add(msg);
+			try {
+				if (isSuccess == false) {
+					throw new RuntimeException("isSuccess is false !!!");
+				}
+				messages.add(msg);
+				channel.basicAck(message.getEnvelope().getDeliveryTag(), MULTIPLE);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
+				isSuccess = true;
+			}
 		};
 		CancelCallback cancelCallback = consumerTag -> {
 		};

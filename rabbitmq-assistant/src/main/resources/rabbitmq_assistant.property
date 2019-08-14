@@ -2,4 +2,3 @@ rabbitmq.host=localhost
 rabbitmq.durable=false
 rabbitmq.exclusive=false
 rabbitmq.autoDelete=false
-rabbitmq.autoAck=true

@@ -18,13 +18,14 @@ import com.rabbitmq.client.ConnectionFactory;
 @Component
 public class BasicProducer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private final String QUEUE_NAME = "basic";
 	private final Map<String, Object> ARGUMENTS = null;
-	@Value("${rabbitmq.durable}")
+	@Value("${rabbitmq.basic.queue}")
+	private String queue;
+	@Value("${rabbitmq.basic.durable}")
 	private boolean durable;
-	@Value("${rabbitmq.exclusive}")
+	@Value("${rabbitmq.basic.exclusive}")
 	private boolean exclusive;
-	@Value("${rabbitmq.autoDelete}")
+	@Value("${rabbitmq.basic.autoDelete}")
 	private boolean autoDelete;
 	@Autowired
 	private ConnectionFactory connectionFactory;
@@ -32,9 +33,9 @@ public class BasicProducer {
 	public void publish(String message) throws IOException, TimeoutException {
 		connectionFactory.newConnection();
 		try (Connection connection = connectionFactory.newConnection(); Channel channel = connection.createChannel()) {
-			channel.queueDeclare(QUEUE_NAME, durable, exclusive, autoDelete, ARGUMENTS);
+			channel.queueDeclare(queue, durable, exclusive, autoDelete, ARGUMENTS);
 			String exchange = "";
-			String routingKey = QUEUE_NAME;
+			String routingKey = queue;
 			BasicProperties props = null;
 			byte[] body = message.getBytes("UTF-8");
 			channel.basicPublish(exchange, routingKey, props, body);

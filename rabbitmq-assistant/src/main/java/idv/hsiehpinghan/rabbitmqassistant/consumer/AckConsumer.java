@@ -21,17 +21,18 @@ import com.rabbitmq.client.DeliverCallback;
 @Component
 public class AckConsumer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private final String QUEUE_NAME = "ack";
 	private final Map<String, Object> ARGUMENTS = null;
-	private boolean AUTO_ACK = false;
-	private boolean MULTIPLE = false;
+	private final boolean AUTO_ACK = false;
+	private final boolean MULTIPLE = false;
 	private List<String> messages = new LinkedList<>();
 	private boolean isSuccess = false;
-	@Value("${rabbitmq.durable}")
+	@Value("${rabbitmq.ack.queue}")
+	private String queue;
+	@Value("${rabbitmq.ack.durable}")
 	private boolean durable;
-	@Value("${rabbitmq.exclusive}")
+	@Value("${rabbitmq.ack.exclusive}")
 	private boolean exclusive;
-	@Value("${rabbitmq.autoDelete}")
+	@Value("${rabbitmq.ack.autoDelete}")
 	private boolean autoDelete;
 	@Autowired
 	private ConnectionFactory connectionFactory;
@@ -39,7 +40,7 @@ public class AckConsumer {
 	public void consume() throws IOException, TimeoutException {
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
-		channel.queueDeclare(QUEUE_NAME, durable, exclusive, autoDelete, ARGUMENTS);
+		channel.queueDeclare(queue, durable, exclusive, autoDelete, ARGUMENTS);
 		LOGGER.info("waiting for message.");
 		DeliverCallback deliverCallback = (consumerTag, message) -> {
 			String msg = new String(message.getBody(), "UTF-8");
@@ -57,7 +58,7 @@ public class AckConsumer {
 		};
 		CancelCallback cancelCallback = consumerTag -> {
 		};
-		channel.basicConsume(QUEUE_NAME, AUTO_ACK, deliverCallback, cancelCallback);
+		channel.basicConsume(queue, AUTO_ACK, deliverCallback, cancelCallback);
 	}
 
 	public List<String> getMessages() {

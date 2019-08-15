@@ -19,18 +19,20 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 @Component
-public class BasicConsumer {
+public class PrefetchCountConsumer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final Map<String, Object> ARGUMENTS = null;
-	private final boolean AUTO_ACK = true;
+	private final boolean AUTO_ACK = false;
+	private final boolean MULTIPLE = false;
+	private final int PREFETCH_COUNT = 1;
 	private List<String> messages = new LinkedList<>();
-	@Value("${rabbitmq.basic.queue}")
+	@Value("${rabbitmq.prefetchCount.queue}")
 	private String queue;
-	@Value("${rabbitmq.basic.durable}")
+	@Value("${rabbitmq.prefetchCount.durable}")
 	private boolean durable;
-	@Value("${rabbitmq.basic.exclusive}")
+	@Value("${rabbitmq.prefetchCount.exclusive}")
 	private boolean exclusive;
-	@Value("${rabbitmq.basic.autoDelete}")
+	@Value("${rabbitmq.prefetchCount.autoDelete}")
 	private boolean autoDelete;
 	@Autowired
 	private ConnectionFactory connectionFactory;
@@ -39,11 +41,13 @@ public class BasicConsumer {
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.queueDeclare(queue, durable, exclusive, autoDelete, ARGUMENTS);
+		channel.basicQos(PREFETCH_COUNT);
 		LOGGER.info("waiting for message.");
 		DeliverCallback deliverCallback = (consumerTag, message) -> {
 			String msg = new String(message.getBody(), "UTF-8");
 			LOGGER.info("get message({}).", msg);
 			messages.add(msg);
+			channel.basicAck(message.getEnvelope().getDeliveryTag(), MULTIPLE);
 		};
 		CancelCallback cancelCallback = consumerTag -> {
 		};

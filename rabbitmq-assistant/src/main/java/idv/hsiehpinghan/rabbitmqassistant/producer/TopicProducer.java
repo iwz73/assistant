@@ -1,7 +1,6 @@
 package idv.hsiehpinghan.rabbitmqassistant.producer;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
@@ -11,33 +10,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 @Component
-public class AckProducer {
+public class TopicProducer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	private final Map<String, Object> ARGUMENTS = null;
-	@Value("${rabbitmq.ack.queue}")
-	private String queue;
-	@Value("${rabbitmq.ack.durable}")
-	private boolean durable;
-	@Value("${rabbitmq.ack.exclusive}")
-	private boolean exclusive;
-	@Value("${rabbitmq.ack.autoDelete}")
-	private boolean autoDelete;
+	@Value("${rabbitmq.topic.exchange}")
+	private String exchange;
 	@Autowired
 	private ConnectionFactory connectionFactory;
 
 	public void publish(String message) throws IOException, TimeoutException {
 		connectionFactory.newConnection();
 		try (Connection connection = connectionFactory.newConnection(); Channel channel = connection.createChannel()) {
-			channel.queueDeclare(queue, durable, exclusive, autoDelete, ARGUMENTS);
-			String exchange = "";
-			String routingKey = queue;
+			channel.exchangeDeclare(exchange, BuiltinExchangeType.TOPIC);
 			BasicProperties props = null;
 			byte[] body = message.getBytes("UTF-8");
+			String routingKey="my.topic.routingKey";
 			channel.basicPublish(exchange, routingKey, props, body);
 			LOGGER.info("publish message({})", message);
 		}

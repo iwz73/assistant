@@ -19,18 +19,19 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 @Component
-public class BasicConsumer {
+public class DurableConsumer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final Map<String, Object> ARGUMENTS = null;
-	private final boolean AUTO_ACK = true;
+	private final boolean AUTO_ACK = false;
+	private final boolean MULTIPLE = false;
 	private List<String> messages = new LinkedList<>();
-	@Value("${rabbitmq.basic.queue}")
+	@Value("${rabbitmq.durable.queue}")
 	private String queue;
-	@Value("${rabbitmq.basic.durable}")
+	@Value("${rabbitmq.durable.durable}")
 	private boolean durable;
-	@Value("${rabbitmq.basic.exclusive}")
+	@Value("${rabbitmq.durable.exclusive}")
 	private boolean exclusive;
-	@Value("${rabbitmq.basic.autoDelete}")
+	@Value("${rabbitmq.durable.autoDelete}")
 	private boolean autoDelete;
 	@Autowired
 	private ConnectionFactory connectionFactory;
@@ -44,6 +45,7 @@ public class BasicConsumer {
 			String msg = new String(message.getBody(), "UTF-8");
 			LOGGER.info("get message({}).", msg);
 			messages.add(msg);
+			channel.basicAck(message.getEnvelope().getDeliveryTag(), MULTIPLE);
 		};
 		CancelCallback cancelCallback = consumerTag -> {
 		};

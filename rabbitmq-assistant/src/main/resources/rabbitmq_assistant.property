@@ -1,12 +1,12 @@
 rabbitmq.host=localhost
-rabbitmq.ack.queue=act
-rabbitmq.ack.durable=false
-rabbitmq.ack.exclusive=false
-rabbitmq.ack.autoDelete=false
 rabbitmq.basic.queue=basic
 rabbitmq.basic.durable=false
 rabbitmq.basic.exclusive=false
 rabbitmq.basic.autoDelete=false
+rabbitmq.ack.queue=act
+rabbitmq.ack.durable=false
+rabbitmq.ack.exclusive=false
+rabbitmq.ack.autoDelete=false
 rabbitmq.durable.queue=durable
 rabbitmq.durable.durable=true
 rabbitmq.durable.exclusive=false

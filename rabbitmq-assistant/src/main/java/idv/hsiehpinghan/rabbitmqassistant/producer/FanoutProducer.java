@@ -16,9 +16,9 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 @Component
-public class ExchangeProducer {
+public class FanoutProducer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-	@Value("${rabbitmq.exchange.exchange}")
+	@Value("${rabbitmq.fanout.exchange}")
 	private String exchange;
 	@Autowired
 	private ConnectionFactory connectionFactory;

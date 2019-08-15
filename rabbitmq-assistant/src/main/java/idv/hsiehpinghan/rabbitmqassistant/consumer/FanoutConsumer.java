@@ -19,12 +19,12 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 @Component
-public class ExchangeConsumer {
+public class FanoutConsumer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private final boolean AUTO_ACK = false;
 	private final boolean MULTIPLE = false;
 	private List<String> messages = new LinkedList<>();
-	@Value("${rabbitmq.exchange.exchange}")
+	@Value("${rabbitmq.fanout.exchange}")
 	private String exchange;
 	@Autowired
 	private ConnectionFactory connectionFactory;

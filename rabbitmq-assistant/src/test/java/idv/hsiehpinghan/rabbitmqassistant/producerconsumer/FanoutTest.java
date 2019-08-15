@@ -9,28 +9,28 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import idv.hsiehpinghan.rabbitmqassistant.configuration.SpringConfiguration;
-import idv.hsiehpinghan.rabbitmqassistant.consumer.ExchangeConsumer;
-import idv.hsiehpinghan.rabbitmqassistant.producer.ExchangeProducer;
+import idv.hsiehpinghan.rabbitmqassistant.consumer.FanoutConsumer;
+import idv.hsiehpinghan.rabbitmqassistant.producer.FanoutProducer;
 
 @ContextConfiguration(classes = { SpringConfiguration.class })
-public class ExchangeTest extends AbstractTestNGSpringContextTests {
+public class FanoutTest extends AbstractTestNGSpringContextTests {
 	private final long SLEEP_MILLISECONDS = 1000 * 3;
 	private final String MESSAGE = String.valueOf(System.currentTimeMillis());
 	@Autowired
-	private ExchangeProducer exchangeProducer;
+	private FanoutProducer fanoutProducer;
 	@Autowired
-	private ExchangeConsumer exchangeConsumer;
+	private FanoutConsumer fanoutConsumer;
 
 	@Test
 	public void consume() throws Exception {
-		exchangeConsumer.consume();
+		fanoutConsumer.consume();
 	}
 
 	@Test(dependsOnMethods = { "consume" })
 	public void publish() throws Exception {
-		exchangeProducer.publish(MESSAGE);
+		fanoutProducer.publish(MESSAGE);
 		Thread.sleep(SLEEP_MILLISECONDS);
-		List<String> messages = exchangeConsumer.getMessages();
+		List<String> messages = fanoutConsumer.getMessages();
 		Assert.assertTrue(messages.contains(MESSAGE));
 	}
 

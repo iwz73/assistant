@@ -5,17 +5,22 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.records.AuthorBookRecord;
 import idv.hsiehpinghan.jooqassistant.jooq.tables.records.AuthorRecord;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.records.BookRecord;
 
 import javax.annotation.Generated;
 
+import org.jooq.ForeignKey;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
 
 
 /**
  * A class modelling foreign key relationships and constraints of tables of 
- * the <code>joop_assistant</code> schema.
+ * the <code>jooq_assistant</code> schema.
  */
 @Generated(
     value = {
@@ -37,11 +42,15 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<AuthorRecord> KEY_AUTHOR_PRIMARY = UniqueKeys0.KEY_AUTHOR_PRIMARY;
+    public static final UniqueKey<AuthorBookRecord> KEY_AUTHOR_BOOK_PRIMARY = UniqueKeys0.KEY_AUTHOR_BOOK_PRIMARY;
+    public static final UniqueKey<BookRecord> KEY_BOOK_PRIMARY = UniqueKeys0.KEY_BOOK_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<AuthorBookRecord, AuthorRecord> FK_AB_AUTHOR = ForeignKeys0.FK_AB_AUTHOR;
+    public static final ForeignKey<AuthorBookRecord, BookRecord> FK_AB_BOOK = ForeignKeys0.FK_AB_BOOK;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -49,5 +58,12 @@ public class Keys {
 
     private static class UniqueKeys0 {
         public static final UniqueKey<AuthorRecord> KEY_AUTHOR_PRIMARY = Internal.createUniqueKey(Author.AUTHOR, "KEY_author_PRIMARY", Author.AUTHOR.ID);
+        public static final UniqueKey<AuthorBookRecord> KEY_AUTHOR_BOOK_PRIMARY = Internal.createUniqueKey(AuthorBook.AUTHOR_BOOK, "KEY_author_book_PRIMARY", AuthorBook.AUTHOR_BOOK.AUTHOR_ID, AuthorBook.AUTHOR_BOOK.BOOK_ID);
+        public static final UniqueKey<BookRecord> KEY_BOOK_PRIMARY = Internal.createUniqueKey(Book.BOOK, "KEY_book_PRIMARY", Book.BOOK.ID);
+    }
+
+    private static class ForeignKeys0 {
+        public static final ForeignKey<AuthorBookRecord, AuthorRecord> FK_AB_AUTHOR = Internal.createForeignKey(idv.hsiehpinghan.jooqassistant.jooq.Keys.KEY_AUTHOR_PRIMARY, AuthorBook.AUTHOR_BOOK, "fk_ab_author", AuthorBook.AUTHOR_BOOK.AUTHOR_ID);
+        public static final ForeignKey<AuthorBookRecord, BookRecord> FK_AB_BOOK = Internal.createForeignKey(idv.hsiehpinghan.jooqassistant.jooq.Keys.KEY_BOOK_PRIMARY, AuthorBook.AUTHOR_BOOK, "fk_ab_book", AuthorBook.AUTHOR_BOOK.BOOK_ID);
     }
 }

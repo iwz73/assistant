@@ -5,6 +5,8 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
 
 import javax.annotation.Generated;
 
@@ -14,7 +16,7 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling indexes of tables of the <code>joop_assistant</code> 
+ * A class modelling indexes of tables of the <code>jooq_assistant</code> 
  * schema.
  */
 @Generated(
@@ -32,6 +34,9 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index AUTHOR_PRIMARY = Indexes0.AUTHOR_PRIMARY;
+    public static final Index AUTHOR_BOOK_FK_AB_BOOK = Indexes0.AUTHOR_BOOK_FK_AB_BOOK;
+    public static final Index AUTHOR_BOOK_PRIMARY = Indexes0.AUTHOR_BOOK_PRIMARY;
+    public static final Index BOOK_PRIMARY = Indexes0.BOOK_PRIMARY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -39,5 +44,8 @@ public class Indexes {
 
     private static class Indexes0 {
         public static Index AUTHOR_PRIMARY = Internal.createIndex("PRIMARY", Author.AUTHOR, new OrderField[] { Author.AUTHOR.ID }, true);
+        public static Index AUTHOR_BOOK_FK_AB_BOOK = Internal.createIndex("fk_ab_book", AuthorBook.AUTHOR_BOOK, new OrderField[] { AuthorBook.AUTHOR_BOOK.BOOK_ID }, false);
+        public static Index AUTHOR_BOOK_PRIMARY = Internal.createIndex("PRIMARY", AuthorBook.AUTHOR_BOOK, new OrderField[] { AuthorBook.AUTHOR_BOOK.AUTHOR_ID, AuthorBook.AUTHOR_BOOK.BOOK_ID }, true);
+        public static Index BOOK_PRIMARY = Internal.createIndex("PRIMARY", Book.BOOK, new OrderField[] { Book.BOOK.ID }, true);
     }
 }

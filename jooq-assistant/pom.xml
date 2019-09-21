@@ -21,6 +21,10 @@
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<jooq.version>3.12.1</jooq.version>
 		<mysql.version>5.1.46</mysql.version>
+		<mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
+		<mysql.url>jdbc:mysql://localhost/jooq_assistant</mysql.url>
+		<mysql.user>root</mysql.user>
+		<mysql.password>%j6w1oW</mysql.password>
 	</properties>
 
 	<dependencies>
@@ -94,17 +98,17 @@
 				</executions>
 				<configuration>
 					<jdbc>
-						<driver>com.mysql.jdbc.Driver</driver>
-						<url>jdbc:mysql://localhost/joop_assistant</url>
-						<user>root</user>
-						<password>%j6w1oW</password>
+						<driver>${mysql.driver}</driver>
+						<url>${mysql.url}</url>
+						<user>${mysql.user}</user>
+						<password>${mysql.password}</password>
 					</jdbc>
 					<generator>
 						<database>
 							<name>org.jooq.meta.mysql.MySQLDatabase</name>
 							<includes>.*</includes>
 							<excludes></excludes>
-							<inputSchema>joop_assistant</inputSchema>
+							<inputSchema>jooq_assistant</inputSchema>
 						</database>
 						<target>
 							<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>

@@ -1,10 +1,4 @@
-# init
-https://github.com/hsiehpinghan/docker/tree/master/mysql-docker
-
-# sql
-CREATE DATABASE `joop_assistant`;
-
-USE `joop_assistant`;
+USE `jooq_assistant`;
 
 DROP TABLE IF EXISTS author_book, author, book;
  
@@ -28,29 +22,3 @@ CREATE TABLE author_book (
     ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_ab_book       FOREIGN KEY (book_id)    REFERENCES book   (id)
 );
- 
-INSERT INTO author VALUES
-  (1, 'Kathy', 'Sierra'), 
-  (2, 'Bert', 'Bates'), 
-  (3, 'Bryan', 'Basham');
- 
-INSERT INTO book VALUES
-  (1, 'Head First Java'), 
-  (2, 'Head First Servlets and JSP'),
-  (3, 'OCA/OCP Java SE 7 Programmer');
- 
-INSERT INTO author_book VALUES (1, 1), (1, 3), (2, 1);
-
-
-
-
-
-
-CREATE TABLE `author` (
-  `id` int NOT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
-insert into author values(0, 'first_name_0', 'last_name_0');

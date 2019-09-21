@@ -28,45 +28,45 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AuthorRecord extends UpdatableRecordImpl<AuthorRecord> implements Record3<Integer, String, String> {
 
-    private static final long serialVersionUID = 1026534616;
+    private static final long serialVersionUID = -1198137514;
 
     /**
-     * Setter for <code>joop_assistant.author.id</code>.
+     * Setter for <code>jooq_assistant.author.id</code>.
      */
     public void setId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>joop_assistant.author.id</code>.
+     * Getter for <code>jooq_assistant.author.id</code>.
      */
     public Integer getId() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>joop_assistant.author.first_name</code>.
+     * Setter for <code>jooq_assistant.author.first_name</code>.
      */
     public void setFirstName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>joop_assistant.author.first_name</code>.
+     * Getter for <code>jooq_assistant.author.first_name</code>.
      */
     public String getFirstName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>joop_assistant.author.last_name</code>.
+     * Setter for <code>jooq_assistant.author.last_name</code>.
      */
     public void setLastName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>joop_assistant.author.last_name</code>.
+     * Getter for <code>jooq_assistant.author.last_name</code>.
      */
     public String getLastName() {
         return (String) get(2);

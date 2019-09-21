@@ -5,7 +5,7 @@ package idv.hsiehpinghan.jooqassistant.jooq.tables;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.Indexes;
-import idv.hsiehpinghan.jooqassistant.jooq.JoopAssistant;
+import idv.hsiehpinghan.jooqassistant.jooq.JooqAssistant;
 import idv.hsiehpinghan.jooqassistant.jooq.Keys;
 import idv.hsiehpinghan.jooqassistant.jooq.tables.records.AuthorRecord;
 
@@ -41,10 +41,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Author extends TableImpl<AuthorRecord> {
 
-    private static final long serialVersionUID = -152715479;
+    private static final long serialVersionUID = -1437792074;
 
     /**
-     * The reference instance of <code>joop_assistant.author</code>
+     * The reference instance of <code>jooq_assistant.author</code>
      */
     public static final Author AUTHOR = new Author();
 
@@ -57,36 +57,36 @@ public class Author extends TableImpl<AuthorRecord> {
     }
 
     /**
-     * The column <code>joop_assistant.author.id</code>.
+     * The column <code>jooq_assistant.author.id</code>.
      */
     public final TableField<AuthorRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>joop_assistant.author.first_name</code>.
+     * The column <code>jooq_assistant.author.first_name</code>.
      */
-    public final TableField<AuthorRecord, String> FIRST_NAME = createField(DSL.name("first_name"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<AuthorRecord, String> FIRST_NAME = createField(DSL.name("first_name"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>joop_assistant.author.last_name</code>.
+     * The column <code>jooq_assistant.author.last_name</code>.
      */
-    public final TableField<AuthorRecord, String> LAST_NAME = createField(DSL.name("last_name"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<AuthorRecord, String> LAST_NAME = createField(DSL.name("last_name"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * Create a <code>joop_assistant.author</code> table reference
+     * Create a <code>jooq_assistant.author</code> table reference
      */
     public Author() {
         this(DSL.name("author"), null);
     }
 
     /**
-     * Create an aliased <code>joop_assistant.author</code> table reference
+     * Create an aliased <code>jooq_assistant.author</code> table reference
      */
     public Author(String alias) {
         this(DSL.name(alias), AUTHOR);
     }
 
     /**
-     * Create an aliased <code>joop_assistant.author</code> table reference
+     * Create an aliased <code>jooq_assistant.author</code> table reference
      */
     public Author(Name alias) {
         this(alias, AUTHOR);
@@ -106,7 +106,7 @@ public class Author extends TableImpl<AuthorRecord> {
 
     @Override
     public Schema getSchema() {
-        return JoopAssistant.JOOP_ASSISTANT;
+        return JooqAssistant.JOOQ_ASSISTANT;
     }
 
     @Override

@@ -5,12 +5,14 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
 
 import javax.annotation.Generated;
 
 
 /**
- * Convenience access to all tables in joop_assistant
+ * Convenience access to all tables in jooq_assistant
  */
 @Generated(
     value = {
@@ -23,7 +25,17 @@ import javax.annotation.Generated;
 public class Tables {
 
     /**
-     * The table <code>joop_assistant.author</code>.
+     * The table <code>jooq_assistant.author</code>.
      */
     public static final Author AUTHOR = Author.AUTHOR;
+
+    /**
+     * The table <code>jooq_assistant.author_book</code>.
+     */
+    public static final AuthorBook AUTHOR_BOOK = AuthorBook.AUTHOR_BOOK;
+
+    /**
+     * The table <code>jooq_assistant.book</code>.
+     */
+    public static final Book BOOK = Book.BOOK;
 }

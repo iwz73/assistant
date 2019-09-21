@@ -1,0 +1,14 @@
+# init sql
+
+CREATE DATABASE `joop_assistant`;
+
+USE `joop_assistant`;
+
+CREATE TABLE `author` (
+  `id` int NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+insert into author values(0, 'first_name_0', 'last_name_0');

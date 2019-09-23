@@ -5,8 +5,10 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
-import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookToBookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Language;
 
 import javax.annotation.Generated;
 
@@ -30,12 +32,22 @@ public class Tables {
     public static final Author AUTHOR = Author.AUTHOR;
 
     /**
-     * The table <code>jooq_assistant.author_book</code>.
-     */
-    public static final AuthorBook AUTHOR_BOOK = AuthorBook.AUTHOR_BOOK;
-
-    /**
      * The table <code>jooq_assistant.book</code>.
      */
     public static final Book BOOK = Book.BOOK;
+
+    /**
+     * The table <code>jooq_assistant.book_store</code>.
+     */
+    public static final BookStore BOOK_STORE = BookStore.BOOK_STORE;
+
+    /**
+     * The table <code>jooq_assistant.book_to_book_store</code>.
+     */
+    public static final BookToBookStore BOOK_TO_BOOK_STORE = BookToBookStore.BOOK_TO_BOOK_STORE;
+
+    /**
+     * The table <code>jooq_assistant.language</code>.
+     */
+    public static final Language LANGUAGE = Language.LANGUAGE;
 }

@@ -5,8 +5,10 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
-import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookToBookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Language;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +34,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JooqAssistant extends SchemaImpl {
 
-    private static final long serialVersionUID = 815062585;
+    private static final long serialVersionUID = -69861493;
 
     /**
      * The reference instance of <code>jooq_assistant</code>
@@ -45,14 +47,24 @@ public class JooqAssistant extends SchemaImpl {
     public final Author AUTHOR = idv.hsiehpinghan.jooqassistant.jooq.tables.Author.AUTHOR;
 
     /**
-     * The table <code>jooq_assistant.author_book</code>.
-     */
-    public final AuthorBook AUTHOR_BOOK = idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook.AUTHOR_BOOK;
-
-    /**
      * The table <code>jooq_assistant.book</code>.
      */
     public final Book BOOK = idv.hsiehpinghan.jooqassistant.jooq.tables.Book.BOOK;
+
+    /**
+     * The table <code>jooq_assistant.book_store</code>.
+     */
+    public final BookStore BOOK_STORE = idv.hsiehpinghan.jooqassistant.jooq.tables.BookStore.BOOK_STORE;
+
+    /**
+     * The table <code>jooq_assistant.book_to_book_store</code>.
+     */
+    public final BookToBookStore BOOK_TO_BOOK_STORE = idv.hsiehpinghan.jooqassistant.jooq.tables.BookToBookStore.BOOK_TO_BOOK_STORE;
+
+    /**
+     * The table <code>jooq_assistant.language</code>.
+     */
+    public final Language LANGUAGE = idv.hsiehpinghan.jooqassistant.jooq.tables.Language.LANGUAGE;
 
     /**
      * No further instances allowed
@@ -77,7 +89,9 @@ public class JooqAssistant extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Author.AUTHOR,
-            AuthorBook.AUTHOR_BOOK,
-            Book.BOOK);
+            Book.BOOK,
+            BookStore.BOOK_STORE,
+            BookToBookStore.BOOK_TO_BOOK_STORE,
+            Language.LANGUAGE);
     }
 }

@@ -5,8 +5,10 @@ package idv.hsiehpinghan.jooqassistant.jooq;
 
 
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Author;
-import idv.hsiehpinghan.jooqassistant.jooq.tables.AuthorBook;
 import idv.hsiehpinghan.jooqassistant.jooq.tables.Book;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.BookToBookStore;
+import idv.hsiehpinghan.jooqassistant.jooq.tables.Language;
 
 import javax.annotation.Generated;
 
@@ -34,9 +36,13 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index AUTHOR_PRIMARY = Indexes0.AUTHOR_PRIMARY;
-    public static final Index AUTHOR_BOOK_FK_AB_BOOK = Indexes0.AUTHOR_BOOK_FK_AB_BOOK;
-    public static final Index AUTHOR_BOOK_PRIMARY = Indexes0.AUTHOR_BOOK_PRIMARY;
+    public static final Index BOOK_FK_BOOK_AUTHOR = Indexes0.BOOK_FK_BOOK_AUTHOR;
+    public static final Index BOOK_FK_BOOK_LANGUAGE = Indexes0.BOOK_FK_BOOK_LANGUAGE;
     public static final Index BOOK_PRIMARY = Indexes0.BOOK_PRIMARY;
+    public static final Index BOOK_STORE_NAME = Indexes0.BOOK_STORE_NAME;
+    public static final Index BOOK_TO_BOOK_STORE_FK_B2BS_BOOK = Indexes0.BOOK_TO_BOOK_STORE_FK_B2BS_BOOK;
+    public static final Index BOOK_TO_BOOK_STORE_PRIMARY = Indexes0.BOOK_TO_BOOK_STORE_PRIMARY;
+    public static final Index LANGUAGE_PRIMARY = Indexes0.LANGUAGE_PRIMARY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -44,8 +50,12 @@ public class Indexes {
 
     private static class Indexes0 {
         public static Index AUTHOR_PRIMARY = Internal.createIndex("PRIMARY", Author.AUTHOR, new OrderField[] { Author.AUTHOR.ID }, true);
-        public static Index AUTHOR_BOOK_FK_AB_BOOK = Internal.createIndex("fk_ab_book", AuthorBook.AUTHOR_BOOK, new OrderField[] { AuthorBook.AUTHOR_BOOK.BOOK_ID }, false);
-        public static Index AUTHOR_BOOK_PRIMARY = Internal.createIndex("PRIMARY", AuthorBook.AUTHOR_BOOK, new OrderField[] { AuthorBook.AUTHOR_BOOK.AUTHOR_ID, AuthorBook.AUTHOR_BOOK.BOOK_ID }, true);
+        public static Index BOOK_FK_BOOK_AUTHOR = Internal.createIndex("fk_book_author", Book.BOOK, new OrderField[] { Book.BOOK.AUTHOR_ID }, false);
+        public static Index BOOK_FK_BOOK_LANGUAGE = Internal.createIndex("fk_book_language", Book.BOOK, new OrderField[] { Book.BOOK.LANGUAGE_ID }, false);
         public static Index BOOK_PRIMARY = Internal.createIndex("PRIMARY", Book.BOOK, new OrderField[] { Book.BOOK.ID }, true);
+        public static Index BOOK_STORE_NAME = Internal.createIndex("name", BookStore.BOOK_STORE, new OrderField[] { BookStore.BOOK_STORE.NAME }, true);
+        public static Index BOOK_TO_BOOK_STORE_FK_B2BS_BOOK = Internal.createIndex("fk_b2bs_book", BookToBookStore.BOOK_TO_BOOK_STORE, new OrderField[] { BookToBookStore.BOOK_TO_BOOK_STORE.BOOK_ID }, false);
+        public static Index BOOK_TO_BOOK_STORE_PRIMARY = Internal.createIndex("PRIMARY", BookToBookStore.BOOK_TO_BOOK_STORE, new OrderField[] { BookToBookStore.BOOK_TO_BOOK_STORE.NAME, BookToBookStore.BOOK_TO_BOOK_STORE.BOOK_ID }, true);
+        public static Index LANGUAGE_PRIMARY = Internal.createIndex("PRIMARY", Language.LANGUAGE, new OrderField[] { Language.LANGUAGE.ID }, true);
     }
 }

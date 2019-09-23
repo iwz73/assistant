@@ -19,7 +19,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row2;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Book extends TableImpl<BookRecord> {
 
-    private static final long serialVersionUID = 1060439122;
+    private static final long serialVersionUID = -441044778;
 
     /**
      * The reference instance of <code>jooq_assistant.book</code>
@@ -62,9 +62,24 @@ public class Book extends TableImpl<BookRecord> {
     public final TableField<BookRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
+     * The column <code>jooq_assistant.book.author_id</code>.
+     */
+    public final TableField<BookRecord, Integer> AUTHOR_ID = createField(DSL.name("author_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
      * The column <code>jooq_assistant.book.title</code>.
      */
-    public final TableField<BookRecord, String> TITLE = createField(DSL.name("title"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<BookRecord, String> TITLE = createField(DSL.name("title"), org.jooq.impl.SQLDataType.VARCHAR(400).nullable(false), this, "");
+
+    /**
+     * The column <code>jooq_assistant.book.published_in</code>.
+     */
+    public final TableField<BookRecord, Integer> PUBLISHED_IN = createField(DSL.name("published_in"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>jooq_assistant.book.language_id</code>.
+     */
+    public final TableField<BookRecord, Integer> LANGUAGE_ID = createField(DSL.name("language_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>jooq_assistant.book</code> table reference
@@ -106,7 +121,7 @@ public class Book extends TableImpl<BookRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.BOOK_PRIMARY);
+        return Arrays.<Index>asList(Indexes.BOOK_FK_BOOK_AUTHOR, Indexes.BOOK_FK_BOOK_LANGUAGE, Indexes.BOOK_PRIMARY);
     }
 
     @Override
@@ -117,6 +132,19 @@ public class Book extends TableImpl<BookRecord> {
     @Override
     public List<UniqueKey<BookRecord>> getKeys() {
         return Arrays.<UniqueKey<BookRecord>>asList(Keys.KEY_BOOK_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<BookRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<BookRecord, ?>>asList(Keys.FK_BOOK_AUTHOR, Keys.FK_BOOK_LANGUAGE);
+    }
+
+    public Author author() {
+        return new Author(this, Keys.FK_BOOK_AUTHOR);
+    }
+
+    public Language language() {
+        return new Language(this, Keys.FK_BOOK_LANGUAGE);
     }
 
     @Override
@@ -146,11 +174,11 @@ public class Book extends TableImpl<BookRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row2 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<Integer, String> fieldsRow() {
-        return (Row2) super.fieldsRow();
+    public Row5<Integer, Integer, String, Integer, Integer> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

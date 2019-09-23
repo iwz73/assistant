@@ -1,3 +1,5 @@
+sqlDialect=MYSQL
+driverClass=com.mysql.jdbc.Driver
 userName=root
 password=%j6w1oW
 url=jdbc:mysql://localhost:3306/jooq_assistant

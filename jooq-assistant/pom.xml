@@ -152,6 +152,9 @@
 							<inputSchema>jooq_assistant</inputSchema>
 							<recordVersionFields>version</recordVersionFields>
 						</database>
+						<generate>
+							<daos>true</daos>
+						</generate>
 						<target>
 							<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>
 							<directory>target/generated-sources/jooq-mysql</directory>

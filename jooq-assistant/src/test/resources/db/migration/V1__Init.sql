@@ -34,8 +34,8 @@ CREATE TABLE book (
 );
 
 CREATE TABLE book_store (
-  version         INT     DEFAULT 0,
-  name            VARCHAR(400) NOT NULL UNIQUE
+  version         INT              DEFAULT 0,
+  name            VARCHAR(400)     NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE book_to_book_store (

@@ -73,3 +73,4 @@ INSERT INTO book_to_book_store VALUES ('Orell Füssli'             , 3, 10);
 INSERT INTO book_to_book_store VALUES ('Ex Libris'                , 1, 1 );
 INSERT INTO book_to_book_store VALUES ('Ex Libris'                , 3, 2 );
 INSERT INTO book_to_book_store VALUES ('Buchhandlung im Volkshaus', 3, 1 );
+

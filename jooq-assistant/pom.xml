@@ -103,39 +103,61 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jooq</groupId>
-				<artifactId>jooq-codegen-maven</artifactId>
-				<version>${jooq.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<jdbc>
-						<driver>${mysql.driver}</driver>
+			<plugins>
+				<plugin>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-maven-plugin</artifactId>
+					<version>6.0.4</version>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>migrate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
 						<url>${mysql.url}</url>
 						<user>${mysql.user}</user>
 						<password>${mysql.password}</password>
-					</jdbc>
-					<generator>
-						<database>
-							<name>org.jooq.meta.mysql.MySQLDatabase</name>
-							<includes>.*</includes>
-							<excludes></excludes>
-							<inputSchema>jooq_assistant</inputSchema>
-						</database>
-						<target>
-							<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>
-							<directory>src/main/java</directory>
-						</target>
-					</generator>
-				</configuration>
-			</plugin>
-		</plugins>
+						<locations>
+							<location>filesystem:src/test/resources/db/migration</location>
+						</locations>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jooq</groupId>
+					<artifactId>jooq-codegen-maven</artifactId>
+					<version>${jooq.version}</version>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<jdbc>
+							<driver>${mysql.driver}</driver>
+							<url>${mysql.url}</url>
+							<user>${mysql.user}</user>
+							<password>${mysql.password}</password>
+						</jdbc>
+						<generator>
+							<database>
+								<name>org.jooq.meta.mysql.MySQLDatabase</name>
+								<includes>.*</includes>
+								<excludes></excludes>
+								<inputSchema>jooq_assistant</inputSchema>
+							</database>
+							<target>
+								<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>
+								<directory>target/generated-sources/jooq-mysql</directory>
+							</target>
+						</generator>
+					</configuration>
+				</plugin>
+			</plugins>
 	</build>
 </project>

@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.jooq.ConnectionProvider;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -85,6 +86,8 @@ public class SpringConfiguration {
 		MyExecuteListener myExecuteListener = new MyExecuteListener();
 		DefaultExecuteListenerProvider executeListenerProvider = new DefaultExecuteListenerProvider(myExecuteListener);
 		configuration.setExecuteListenerProvider(executeListenerProvider);
+		Settings setting = new Settings().withExecuteWithOptimisticLocking(true);
+		configuration.setSettings(setting);
 		return configuration;
 	}
 

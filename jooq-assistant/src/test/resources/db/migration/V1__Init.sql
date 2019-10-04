@@ -5,12 +5,14 @@ USE `jooq_assistant`;
 DROP TABLE IF EXISTS language, author, book, book_store, book_to_book_store;
 
 CREATE TABLE language (
+  version         INT     DEFAULT 0,
   id              INT     NOT NULL PRIMARY KEY,
   cd              CHAR(2)       NOT NULL,
   description     VARCHAR(50)
 );
 
 CREATE TABLE author (
+  version         INT     DEFAULT 0,
   id              INT     NOT NULL PRIMARY KEY,
   first_name      VARCHAR(50),
   last_name       VARCHAR(50)  NOT NULL,
@@ -20,6 +22,7 @@ CREATE TABLE author (
 );
 
 CREATE TABLE book (
+  version         INT     DEFAULT 0,
   id              INT     NOT NULL PRIMARY KEY,
   author_id       INT     NOT NULL,
   title           VARCHAR(400) NOT NULL,
@@ -31,11 +34,13 @@ CREATE TABLE book (
 );
 
 CREATE TABLE book_store (
+  version         INT     DEFAULT 0,
   name            VARCHAR(400) NOT NULL UNIQUE
 );
 
 CREATE TABLE book_to_book_store (
-  name            VARCHAR(400) NOT NULL,
+  version         INT           DEFAULT 0,
+  name            VARCHAR(400)  NOT NULL,
   book_id         INTEGER       NOT NULL,
   stock           INTEGER,
   
@@ -63,14 +68,14 @@ INSERT INTO book (id, author_id, title         , published_in, language_id)
 INSERT INTO book (id, author_id, title         , published_in, language_id)
   VALUES         (4 , 2        , 'Brida'       , 1990        , 2          );
 
-INSERT INTO book_store VALUES ('Orell Füssli');
-INSERT INTO book_store VALUES ('Ex Libris');
-INSERT INTO book_store VALUES ('Buchhandlung im Volkshaus');
+INSERT INTO book_store (name) VALUES ('Orell Füssli');
+INSERT INTO book_store (name) VALUES ('Ex Libris');
+INSERT INTO book_store (name) VALUES ('Buchhandlung im Volkshaus');
 
-INSERT INTO book_to_book_store VALUES ('Orell Füssli'             , 1, 10);
-INSERT INTO book_to_book_store VALUES ('Orell Füssli'             , 2, 10);
-INSERT INTO book_to_book_store VALUES ('Orell Füssli'             , 3, 10);
-INSERT INTO book_to_book_store VALUES ('Ex Libris'                , 1, 1 );
-INSERT INTO book_to_book_store VALUES ('Ex Libris'                , 3, 2 );
-INSERT INTO book_to_book_store VALUES ('Buchhandlung im Volkshaus', 3, 1 );
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Orell Füssli'             , 1, 10);
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Orell Füssli'             , 2, 10);
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Orell Füssli'             , 3, 10);
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Ex Libris'                , 1, 1 );
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Ex Libris'                , 3, 2 );
+INSERT INTO book_to_book_store (name, book_id, stock) VALUES ('Buchhandlung im Volkshaus', 3, 1 );
 

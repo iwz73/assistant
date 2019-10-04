@@ -103,61 +103,113 @@
 	</dependencies>
 
 	<build>
-			<plugins>
-				<plugin>
-					<groupId>org.flywaydb</groupId>
-					<artifactId>flyway-maven-plugin</artifactId>
-					<version>6.0.4</version>
-					<executions>
-						<execution>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>migrate</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
+		<plugins>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>6.0.4</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>migrate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<url>${mysql.url}</url>
+					<user>${mysql.user}</user>
+					<password>${mysql.password}</password>
+					<locations>
+						<location>filesystem:src/test/resources/db/migration</location>
+					</locations>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<version>${jooq.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<jdbc>
+						<driver>${mysql.driver}</driver>
 						<url>${mysql.url}</url>
 						<user>${mysql.user}</user>
 						<password>${mysql.password}</password>
-						<locations>
-							<location>filesystem:src/test/resources/db/migration</location>
-						</locations>
-					</configuration>
-				</plugin>
+					</jdbc>
+					<generator>
+						<database>
+							<name>org.jooq.meta.mysql.MySQLDatabase</name>
+							<includes>.*</includes>
+							<excludes></excludes>
+							<inputSchema>jooq_assistant</inputSchema>
+							<recordVersionFields>version</recordVersionFields>
+						</database>
+						<target>
+							<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>
+							<directory>target/generated-sources/jooq-mysql</directory>
+						</target>
+					</generator>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
-					<groupId>org.jooq</groupId>
-					<artifactId>jooq-codegen-maven</artifactId>
-					<version>${jooq.version}</version>
-					<executions>
-						<execution>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
 					<configuration>
-						<jdbc>
-							<driver>${mysql.driver}</driver>
-							<url>${mysql.url}</url>
-							<user>${mysql.user}</user>
-							<password>${mysql.password}</password>
-						</jdbc>
-						<generator>
-							<database>
-								<name>org.jooq.meta.mysql.MySQLDatabase</name>
-								<includes>.*</includes>
-								<excludes></excludes>
-								<inputSchema>jooq_assistant</inputSchema>
-							</database>
-							<target>
-								<packageName>idv.hsiehpinghan.jooqassistant.jooq</packageName>
-								<directory>target/generated-sources/jooq-mysql</directory>
-							</target>
-						</generator>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jooq</groupId>
+										<artifactId>
+											jooq-codegen-maven
+										</artifactId>
+										<versionRange>
+											[3.12.1,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.flywaydb</groupId>
+										<artifactId>
+											flyway-maven-plugin
+										</artifactId>
+										<versionRange>
+											[6.0.4,)
+										</versionRange>
+										<goals>
+											<goal>migrate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
 			</plugins>
+		</pluginManagement>
 	</build>
 </project>

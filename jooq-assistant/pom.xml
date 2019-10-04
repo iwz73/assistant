@@ -148,7 +148,7 @@
 						<database>
 							<name>org.jooq.meta.mysql.MySQLDatabase</name>
 							<includes>.*</includes>
-							<excludes></excludes>
+							<excludes>flyway_schema_history</excludes>
 							<inputSchema>jooq_assistant</inputSchema>
 							<recordVersionFields>version</recordVersionFields>
 						</database>

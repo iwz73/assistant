@@ -19,7 +19,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.1.2.RELEASE</spring.version>
 		<elasticsearch.version>2.4.4</elasticsearch.version>
-		<jackson.version>2.7.0</jackson.version>
+		<jackson.version>2.9.10.1</jackson.version>
 	</properties>
 
 	<dependencies>

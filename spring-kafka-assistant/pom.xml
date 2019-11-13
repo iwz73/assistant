@@ -17,7 +17,7 @@
 		<testng.version>6.9.4</testng.version>
 		<spring.version>4.3.3.RELEASE</spring.version>
 		<spring-kafka.version>1.1.1.RELEASE</spring-kafka.version>
-		<jackson-databind.version>2.9.2</jackson-databind.version>
+		<jackson-databind.version>2.9.10.1</jackson-databind.version>
 	</properties>
 
 	<dependencies>
